@@ -41,12 +41,12 @@
 
     <f:comment>Add check if it needs to be run</f:comment>
     <f:be.infobox title="You need to run this, to update your configuration for using with TemplaVoilà! Plus 8" state="-1" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\TemplaVoilaPlus8Update" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="actions-play" /> Update configuration to TemplaVoilà! Plus 8 <small><small>(Version: 0.0.2)</small></small></f:link.action>
+        <f:link.action controller="Backend\ControlCenter\TemplaVoilaPlus8Update" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" /> Update configuration to TemplaVoilà! Plus 8 <small><small>(Version: 0.0.2)</small></small></f:link.action>
     </f:be.infobox>
     <f:comment>Disable it, while TV+ 8 update didn't run yet?</f:comment>
     <f:if condition="{is8orNewer}">
         <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8 LTS" state="-2" disableIcon="true">
-            <f:link.action controller="Backend\ControlCenter\DataStructureV8Update" action="stepStart" class="btn btn-default btn-block btn-lg disabled"><core:icon identifier="actions-ban" state="disabled" /> Update DataStructure from TYPO3 v7 LTS to v8 LTS <small><small>(Version: 0.0.2)</small></small></f:link.action>
+            <f:link.action controller="Backend\ControlCenter\DataStructureV8Update" action="stepStart" class="btn btn-default btn-block btn-lg disabled"><core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-ban', else: 'actions-close')}" state="disabled" /> Update DataStructure from TYPO3 v7 LTS to v8 LTS <small><small>(Version: 0.0.2)</small></small></f:link.action>
         </f:be.infobox>
     </f:if>
 
