@@ -85,7 +85,7 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function() {
+require(['jquery'], function($) {
     $('input[type=radio][name=selection], #newExtensionKey').bind('input propertychange', function() {
         if (this.value != '' && this.value != 'new'
             || this.value == 'new' && $('#newExtensionKey').val().length > 3
