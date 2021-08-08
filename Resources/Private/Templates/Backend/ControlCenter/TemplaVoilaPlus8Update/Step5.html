@@ -20,23 +20,18 @@
                     </f:for>
                 </ul>
             </f:be.infobox>
-
-            <p><input type="checkbox" name="overwrite" value="true"> Remove data or overwrite on rerun.</p>
         </f:if>
 
         <f:if condition="!{hasError}">
             <p class="lead">All done, hopefully TV+ converted your complete dream of a website to the new configuration and you are amazed how this worked out so good.</p>
-            <p class="lead">If you like, TV+ can now eliminate all old data, so you get a clean setup, you made a backup, did you? Otherwise return to the Update Script selection</p>
+            <p class="lead">If you like, TV+ can now eliminate all old data, so you get a clean setup, you made a backup, did you? Otherwise return to the Update Script selection.</p>
         </f:if>
 
         <div class="row">
             <div class="col-sm-4">
-                <form action="#" method="POST">
-                    <input type="hidden" name="update" value="" />
-                    <button class="btn btn-primary btn-block btn-lg" type="submit" name="step" value="start">
-                        <core:icon identifier="actions-view-go-back" /> Back to TV+ Update Script collection
-                    </button>
-                </form>
+                <f:link.action controller="Backend\ControlCenter\Update" action="info" class="btn btn-primary btn-block btn-lg">
+                    <core:icon identifier="actions-view-go-back" /> Back to TV+ Update Script collection
+                </f:link.action>
             </div>
             <div class="col-sm-4">
             </div>

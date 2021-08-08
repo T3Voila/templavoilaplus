@@ -34,19 +34,19 @@
 
         <div class="row">
             <div class="col-sm-4">
-                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="3">
+                <f:link.action action="step3" class="btn btn-default btn-block btn-lg">
                     <core:icon identifier="actions-view-go-back" /> Back to step 3
-                </button>
+                </f:link.action>
             </div>
             <div class="col-sm-4">
-                <button class="btn {f:if(condition='!{hasError}', then='btn-success', else='btn-primary')} btn-block btn-lg" type="submit" name="step" value="4">
+                <button class="btn {f:if(condition='!{hasError}', then='btn-success', else='btn-primary')} btn-block btn-lg" type="submit">
                     <core:icon identifier="actions-system-refresh" /> Rerun step 4
                 </button>
             </div>
             <div class="col-sm-4">
-                <button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError}', then='disabled')}" type="{f:if(condition='{hasError}', then='button', else='submit')}" id="continueButton" name="step" value="5">
+                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError}', then='disabled')}" type="{f:if(condition='{hasError}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\TemplaVoilaPlus8Update\', action: \'step5\')}'}">
                     <core:icon identifier="actions-view-go-forward" /> Continue with step 5
-                </button>
+                </f:form.button>
             </div>
         </div>
     </form>

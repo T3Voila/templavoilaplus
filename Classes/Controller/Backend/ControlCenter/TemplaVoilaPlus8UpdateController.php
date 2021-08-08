@@ -1393,7 +1393,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
         /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
         $installUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
-        $installUtility->install($selection);
+
+        try {
+            $installUtility->install($selection);
+        } catch (\UnexpectedValueException $e) {
+            $errors[] = 'Error while installing Extension. Please do this by your own. Original message from extension manager is: "' . $e->getMessage() . '"';
+        }
 
         // Read mapping information from json
         $covertingInstructions = json_decode($_POST['covertingInstructionsJson'], true);
@@ -1436,6 +1441,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 ->set('tx_templavoilaplus_map', $instruction['toMap'])
                 ->execute();
         }
+
+        $this->view->assignMultiple([
+            'errors' => $errors,
+            'hasError' => (count($errors) ? true : false),
+        ]);
 
         // Write into sys_registry including which storage_pid we already did
     }
