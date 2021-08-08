@@ -12,6 +12,13 @@
         </f:be.infobox>
     </f:if>
 
+    <div class="lead">What does the colors mean:
+        <f:be.infobox state="0" disableIcon="true">This extension is seams to be your already existing configuration/themes extension which you like to use to write TV+ configuration into.</f:be.infobox>
+        <f:be.infobox state="-1" disableIcon="true">This extension is possible for usage to write your TV+ configuration.</f:be.infobox>
+        <f:be.infobox state="1" disableIcon="true">This extension can not be used, see hint. (not visible by default)</f:be.infobox>
+        <f:be.infobox state="2" disableIcon="true">This extension can not be used, see hint. (not visible by default)</f:be.infobox>
+    </div>
+
     <h2>Select an option</h2>
 
     <form action="#" method="POST">
@@ -66,19 +73,19 @@
         <p><input type="checkbox" name="showAll" value="true"> Show all extensions on rerun.</p>
         <div class="row">
             <div class="col-sm-4">
-                <button class="btn btn-default btn-block btn-lg" type="submit" name="step" value="1">
+                <f:link.action action="step1" class="btn btn-default btn-block btn-lg">
                     <core:icon identifier="actions-view-go-back" /> Back to step 1
-                </button>
+                </f:link.action>
             </div>
             <div class="col-sm-4">
-                <button class="btn btn-success btn-block btn-lg" type="submit" name="step" value="2">
+                <button class="btn btn-success btn-block btn-lg" type="submit">
                     <core:icon identifier="actions-system-refresh" /> Rerun step 2
                 </button>
             </div>
             <div class="col-sm-4">
-                <button class="btn btn-primary btn-block btn-lg disabled" type="button" id="continueButton" name="step" value="3">
+                <f:form.button class="btn btn-primary btn-block btn-lg disabled" id="continueButton" type="submit" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\TemplaVoilaPlus8Update\', action: \'step3\')}'}">
                     <core:icon identifier="actions-view-go-forward" /> Continue with step 3
-                </button>
+                </f:form.button>
             </div>
         </div>
     </form>
