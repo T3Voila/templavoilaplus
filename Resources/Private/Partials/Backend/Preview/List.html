@@ -2,4 +2,9 @@
 
 <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'list_type')}" />
 <f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'list_type', key:'{node.raw.entity.list_type}')}" />
-<strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong> <f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" />
+<f:if condition="{itemLabel}">
+    <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>
+</f:if>
+<f:if condition="{labelFromItemlist}">
+    <f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" />
+</f:if>
