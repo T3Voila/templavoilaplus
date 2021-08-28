@@ -88,10 +88,6 @@ class ConfigurationService implements SingletonInterface
             $this->isInitialized = true;
 
             \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::handleAllExtensions();
-
-            $this->formSettings = GeneralUtility::makeInstance(ObjectManager::class)
-                ->get(ConfigurationManagerInterface::class)
-                ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_YAML_SETTINGS, 'templavoilaplus');
         }
     }
 
@@ -102,26 +98,6 @@ class ConfigurationService implements SingletonInterface
         /** @var PlacesService */
         $placesService = GeneralUtility::makeInstance(PlacesService::class);
         return $placesService;
-    }
-
-    /**
-     * Get the prototype configuration
-     *
-     * @param string $prototypeName name of the prototype to get the configuration for
-     * @return array the prototype configuration
-     * @throws PrototypeNotFoundException if prototype with the name $prototypeName was not found
-     * @api
-     */
-    public function getFormPrototypeConfiguration(string $prototypeName): array
-    {
-        if (!isset($this->formSettings['prototypes'][$prototypeName])) {
-//             throw new PrototypeNotFoundException(
-            throw new \Exception(
-                sprintf('The Prototype "%s" was not found.', $prototypeName),
-                1475924277
-            );
-        }
-        return $this->formSettings['prototypes'][$prototypeName];
     }
 
     public function getExtensionConfig(): array

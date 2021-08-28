@@ -50,7 +50,7 @@ if (TYPO3_MODE === 'BE') {
         'bottom',
         [
             $classPrefixForRegisterModule . 'Backend\ControlCenter' . $classPostfixForRegisterModule => 'show,debug',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\DataStructures' . $classPostfixForRegisterModule => 'list,add,edit,info,delete',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\DataStructures' . $classPostfixForRegisterModule => 'list,info,delete',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Mappings' . $classPostfixForRegisterModule => 'list',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Templates' . $classPostfixForRegisterModule => 'list,info',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update' . $classPostfixForRegisterModule => 'info',
