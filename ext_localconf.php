@@ -9,13 +9,6 @@ $_EXTCONF = unserialize($_EXTCONF);
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
     = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
 
-// Register XCLASSes
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\ContentCreationPagePositionMap::class]['className']
-    = \Tvp\TemplaVoilaPlus\Tree\View\ContentCreationPagePositionMap::class;
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Backend\Tree\View\PagePositionMap::class]['className']
-    = \Tvp\TemplaVoilaPlus\Xclass\PagePositionMap::class;
-
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
