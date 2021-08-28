@@ -34,18 +34,10 @@ class DataHandler
     public $debug = false;
 
     /**
-     * Extension configuration
-     *
-     * @var array
-     */
-    protected $extConf = array();
-
-    /**
      * @return \Tvp\TemplaVoilaPlus\Service\DataHandling\DataHandler
      */
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
     }
 
     /********************************************
