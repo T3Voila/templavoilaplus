@@ -3,9 +3,6 @@ defined('TYPO3_MODE') or die();
 
 if (TYPO3_MODE === 'BE') {
 
-    $GLOBALS['TYPO3_CONF_VARS']['BE']['ContextMenu']['ItemProviders']['templavoilaplus']
-        = \Tvp\TemplaVoilaPlus\ContextMenu\ItemProvider::class;
-
     $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['cms']['db_new_content_el']['wizardItemsHook'][\Tvp\TemplaVoilaPlus\Hooks\WizardItems::class]
         = \Tvp\TemplaVoilaPlus\Hooks\WizardItems::class;
 
