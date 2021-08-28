@@ -27,10 +27,6 @@ class BackendControllerHook
                 'TemplaVoilaPlus',
                 [
                     'layoutModuleUrl' => $uriBuilder->buildUriFromRoute('web_TemplaVoilaPlusLayout'),
-                    'mappingModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_mapping'),
-                    'dislplayModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_template_disply'),
-                    'newSiteWizardModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_new_site_wizard'),
-                    'flexformCleanerModuleUrl' => $uriBuilder->buildUriFromRoute('templavoilaplus_flexform_cleaner'),
                 ]
             );
         } else {
@@ -38,10 +34,6 @@ class BackendControllerHook
                 'TemplaVoilaPlus',
                 [
                     'layoutModuleUrl' => BackendUtility::getModuleUrl('web_TemplaVoilaPlusLayout'),
-                    'mappingModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_mapping'),
-                    'dislplayModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_template_disply'),
-                    'newSiteWizardModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_new_site_wizard'),
-                    'flexformCleanerModuleUrl' => BackendUtility::getModuleUrl('templavoilaplus_flexform_cleaner'),
                 ]
             );
         }
