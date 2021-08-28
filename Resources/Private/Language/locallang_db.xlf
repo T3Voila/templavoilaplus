@@ -21,6 +21,9 @@
             <trans-unit id="pages.tx_templavoilaplus_next_map" xml:space="preserve">
                 <source>Subpages - Use Design:</source>
             </trans-unit>
+            <trans-unit id="pages.tab.tx_templavoilaplus_flex" xml:space="preserve">
+                <source>TemplaVoilà! Plus Content</source>
+            </trans-unit>
             <trans-unit id="pages.tx_templavoilaplus_flex" xml:space="preserve">
                 <source>Content:</source>
             </trans-unit>

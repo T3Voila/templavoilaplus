@@ -64,9 +64,7 @@ $tempColumns = array(
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'pages',
-    'tx_templavoilaplus_flex',
-    '',
-    'after:title'
+    '--div--;LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:pages.tab.tx_templavoilaplus_flex,tx_templavoilaplus_flex'
 );
 
 $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes']['contains-tv+'] = 'extensions-templavoila-folder';
