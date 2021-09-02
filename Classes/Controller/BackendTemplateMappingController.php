@@ -879,7 +879,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                 // Get <head>...</head> from template:
                 $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
                 // There should be only one head tag
-                $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+                $html_header = '';
+                if (is_string($splitByHeader)) {
+                    $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+                }
 
                 $this->markupObj->tags = $this->head_markUpTags; // Set up the markupObject to process only header-section tags:
 
@@ -1788,7 +1791,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
             // Get <head>...</head> from template:
             $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
             // There should be only one head tag
-            $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+            $html_header = '';
+            if (is_string($splitByHeader)) {
+                $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+            }
 
             $this->markupObj->tags = $this->head_markUpTags; // Set up the markupObject to process only header-section tags:
 
@@ -1912,7 +1918,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
         // Get <head>...</head> from template:
         $splitByHeader = $this->markupObj->htmlParse->splitIntoBlock('head', $fileContent);
         // There should be only one head tag
-        $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+
+        $html_header = '';
+        if (is_string($splitByHeader)) {
+            $html_header = $this->markupObj->htmlParse->removeFirstAndLastTag($splitByHeader[1]);
+        }
 
         // Set up the markupObject to process only header-section tags:
         $this->markupObj->tags = $this->head_markUpTags;
