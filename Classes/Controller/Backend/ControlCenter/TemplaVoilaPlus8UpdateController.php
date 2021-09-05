@@ -910,7 +910,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $to = $this->getAllToFromDB();
 
             // Read old data, convert and write to new places
-            $covertingInstructions = $this->convertDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
+            $covertingInstructions = $this->convertAllDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
         }
@@ -928,22 +928,36 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         ]);
     }
 
-    protected function convertDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes): array
+    protected function convertAllDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes): array
     {
         $systemPath = $this->getSystemPath();
         $covertingInstructions = [];
         $copiedTemplateFiles = [];
         $copiedBackendLayoutFiles = [];
+        $convertedDS = [];
         $filenameUsed = [];
+
+        /** Move childTemplates/rendertypes into their parents as child */
+        // Step 1: filter out all childTos
+        $childTos = [];
+        foreach ($allTos as $key => $to) {
+            if ($to['parent'] > 0) {
+                $childTos[$to['parent']][] = $to;
+                unset($allTos[$key]);
+            }
+        }
+        // Step 2: Put them onto the parents
+        if (count($childTos)) {
+            foreach ($allTos as $key => $to) {
+                if (isset($childTos[$to['uid']])) {
+                    $allTos[$key]['childTO'] = $childTos[$to['uid']];
+                }
+            }
+        }
 
         // Change the logic the other way arround, we need to itterate over the TOs
         // and then convert the dependend DS files as we need their data for the mappings
         foreach ($allTos as $to) {
-            if ($to['parent'] !== 0) {
-                /** @TODO Implement subtemplates/rendertypes */
-                continue;
-            }
-
             $resultingFileName = $this->copyFile($to['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates']);
 
             $yamlFileName = pathinfo($resultingFileName, PATHINFO_FILENAME) . '.tvp.yaml';
@@ -956,89 +970,29 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 $filenameUsed[$yamlFileName] = 1;
             }
 
-            $ds = $this->getDsForTo($allDs, $to);
+            list($mappingConfiguration, $scopeName, $scopePath) = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
 
-            /** @TODO check if DS was already converted? */
-            $dataStructure = GeneralUtility::xml2array($ds['xml']);
+            if (isset($to['childTO'])) {
+                foreach ($to['childTO'] as $childTo) {
+                    if ($childTo['fileref'] !== $to['fileref']) {
+                        $resultingFileName = $this->copyFile($childTo['fileref'], $copiedTemplateFiles, $publicExtensionDirectory, $innerPathes['templates'], $childTo['rendertype']);
+                    }
 
-            $dsXmlFileName = 'a.xml';
+                    // Add rendertype name to filename before .tvp.yaml
+                    $yamlChildFileName = substr($yamlFileName, 0, -strlen('.tvp.yaml')) . '_' . $childTo['rendertype'] . '.tvp.yaml';
 
-            if ($ds['staticDS']) {
-                $dsXmlFileName = basename($ds['path']);
-            } else {
-                $dsXmlFileName = $this->makeCleanFileName($ds['title']) . '.xml';
-
-                // Mostly the DS from database have no title inside XML so update this field
-                // Works like writeXmlWithTitle from old StaticDataUpdateController
-                if (
-                    empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
-                    || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
-                    && (empty($dataStructure['meta']['title'])
-                        || $dataStructure['meta']['title'] === 'ROOT'
-                    )
-                ) {
-                    $dataStructure['meta']['title'] = $ds['title'];
+                    // childTemplates should use the DS from parent, as they are only processed in FE
+                    // So set it to parent datastructure to take the field processing into account.
+                    // Clean this up afterwards
+                    if ($childTo['datastructure'] === '') {
+                        $childTo['datastructure'] = $to['datastructure'];
+                    }
+                    // No scopePath/Name from child convert call used
+                    list($childMappingConfiguration) = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
+                    $this->cleanupChildMappingConfiguration($mappingConfiguration, $childMappingConfiguration);
+                    $mappingConfiguration['tvp-mapping']['childTemplate'][$childTo['rendertype']] = $childMappingConfiguration['tvp-mapping'];
                 }
             }
-
-            switch ($ds['scope']) {
-                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
-                    $scopePath = '/Page';
-                    $scopeName = 'page';
-                    break;
-                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
-                    $scopePath = '/FCE';
-                    $scopeName = 'fce';
-                    break;
-                default:
-                    $scopePath = '';
-                    $scopeName = 'unknown';
-            }
-
-            $templateMappingInfo = $this->convertTemplateMappingInformation(
-                unserialize($to['templatemapping'])['MappingInfo'],
-                $publicExtensionDirectory . $innerPathes['templates'] . '/' . $resultingFileName
-            );
-            $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure['ROOT'], $templateMappingInfo['ROOT'], $to);
-
-            $templateConfiguration = [
-                'tvp-template' => [
-                    'meta' => [
-                        'name' => $to['title'],
-                        'renderer' => \Tvp\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
-                        'template' => '../../Template/' . $resultingFileName,
-                    ],
-                    'mapping' => $templateMappingInfo['ROOT'],
-                ],
-            ];
-
-            $mappingConfiguration = [
-                'tvp-mapping' => [
-                    'meta' => [
-                        'name' => $to['title'],
-                    ],
-                    /** @TODO if DS contains no fields, we do not need it */
-                    'combinedDataStructureIdentifier' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
-                    'combinedTemplateConfigurationIdentifier' => $packageName . $scopePath . '/TemplateConfiguration:' . $yamlFileName,
-                ],
-            ];
-
-            /**
-             * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
-             * Add this to the getAllDsFromStatic function.
-             * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
-             */
-            if (!empty($to['belayout']) || !empty($ds['belayout'])) {
-                $beLayout = $to['belayout'];
-                if (empty($beLayout)) {
-                    // Old, in nonStaticDS time this was in the DS record
-                    $beLayout = $ds['belayout'];
-                }
-                $backendLayoutFileName = $this->copyFile($beLayout, $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
-                $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
-            }
-
-            $mappingConfiguration['tvp-mapping']['mappingToTemplate'] = $mappingToTemplateInfo;
 
             $covertingInstructions[] = [
                 'fromTo' => $to['uid'],
@@ -1046,19 +1000,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             ];
 
             GeneralUtility::writeFile(
-                $publicExtensionDirectory . $innerPathes['templateConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
-            );
-
-            GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
                 \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
-            );
-
-            /** @TODO if DS contains no fields, we do not need it */
-            GeneralUtility::writeFile(
-                $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
-                DataStructureUtility::array2xml($dataStructure)
             );
         }
 
@@ -1076,6 +1019,91 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return $covertingInstructions;
     }
 
+    function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
+    {
+        $convertedDsConfig = $this->getAndConvertDsForTo($allDs, $to, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes);
+
+        $templateMappingInfo = $this->convertTemplateMappingInformation(
+            unserialize($to['templatemapping'])['MappingInfo'],
+            $publicExtensionDirectory . $innerPathes['templates'] . '/' . $templateFileName
+        );
+
+        // We need everytime the original to create $mappingToTemplateInfo correctly
+        // After this conversion this information is everytime the same
+        $dataStructure = $convertedDsConfig['datastructureOriginal'];
+        $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure['ROOT'], $templateMappingInfo['ROOT'], $to);
+        $convertedDsConfig['datastructureSaveable'] = $dataStructure;
+
+        // This gurentees that only one time we write this new content of DS
+        $this->saveNewDs($convertedDsConfig);
+
+        $templateConfiguration = [
+            'tvp-template' => [
+                'meta' => [
+                    'name' => $to['title'],
+                    'renderer' => \Tvp\TemplaVoilaPlus\Handler\Render\XpathRenderHandler::$identifier,
+                    'template' => '../../Template/' . $templateFileName,
+                ],
+                'mapping' => $templateMappingInfo['ROOT'],
+            ],
+        ];
+
+        $mappingConfiguration = [
+            'tvp-mapping' => [
+                'meta' => [
+                    'name' => $to['title'],
+                ],
+                'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'], // Is empty string if no DS is needed
+                'combinedTemplateConfigurationIdentifier' => $packageName . $convertedDsConfig['scopePath'] . '/TemplateConfiguration:' . $yamlFileName,
+            ],
+        ];
+
+        /**
+         * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
+         * Add this to the getAllDsFromStatic function.
+         * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
+         */
+        if (!empty($to['belayout']) || !empty($convertedDsConfig['data']['belayout'])) {
+            $beLayout = $to['belayout'];
+            if (empty($beLayout)) {
+                // Old, in nonStaticDS time this was in the DS record
+                $beLayout = $convertedDsConfig['data']['belayout'];
+            }
+            $backendLayoutFileName = $this->copyFile($beLayout, $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
+            $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
+        }
+
+        $mappingConfiguration['tvp-mapping']['mappingToTemplate'] = $mappingToTemplateInfo;
+
+        GeneralUtility::writeFile(
+            $publicExtensionDirectory . $innerPathes['templateConfiguration'][$convertedDsConfig['scopeName']] . '/' . $yamlFileName,
+            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+        );
+
+        return [$mappingConfiguration, $convertedDsConfig['scopeName'], $convertedDsConfig['scopePath']];
+    }
+
+    protected function cleanupChildMappingConfiguration(array $parent, array &$child)
+    {
+        // child templates can not have own data structure
+        unset($child['tvp-mapping']['combinedDataStructureIdentifier']);
+        // child templates can not have own belayout
+        unset($child['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier']);
+
+        // Now check every field for differences
+        foreach ($parent['tvp-mapping']['mappingToTemplate'] as $fieldName => $parentFieldConfig) {
+            $childFieldConfig = $child['tvp-mapping']['mappingToTemplate'][$fieldName];
+
+            // TRUE if $a and $b have the same key/value pairs in the same order and of the same types.
+            if ($parentFieldConfig === $childFieldConfig) {
+                unset($child['tvp-mapping']['mappingToTemplate'][$fieldName]);
+            }
+        }
+
+        if (count($child['tvp-mapping']['mappingToTemplate']) === 0) {
+            unset($child['tvp-mapping']['mappingToTemplate']);
+        }
+    }
 
     protected function makeCleanFileName(string $fileName): string
     {
@@ -1295,6 +1323,88 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return implode('/', $xPathPartsConverted);
     }
 
+    protected function getAndConvertDsForTo(array $allDs, array $to, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes): array
+    {
+        if ($to['datastructure'] === '') {
+            return [];
+        }
+        if (!isset($convertedDS[$to['datastructure']])) {
+            $ds = $this->getDsForTo($allDs, $to);
+
+            $dataStructure = GeneralUtility::xml2array($ds['xml']);
+
+            $dsXmlFileName = 'a.xml';
+
+            if ($ds['staticDS']) {
+                $dsXmlFileName = basename($ds['path']);
+            } else {
+                $dsXmlFileName = $this->makeCleanFileName($ds['title']) . '.xml';
+
+                // Mostly the DS from database have no title inside XML so update this field
+                // Works like writeXmlWithTitle from old StaticDataUpdateController
+                if (
+                    empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
+                    || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
+                    && (empty($dataStructure['meta']['title'])
+                        || $dataStructure['meta']['title'] === 'ROOT'
+                    )
+                ) {
+                    $dataStructure['meta']['title'] = $ds['title'];
+                }
+            }
+
+            switch ($ds['scope']) {
+                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_PAGE:
+                    $scopePath = '/Page';
+                    $scopeName = 'page';
+                    break;
+                case \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE:
+                    $scopePath = '/FCE';
+                    $scopeName = 'fce';
+                    break;
+                default:
+                    $scopePath = '';
+                    $scopeName = 'unknown';
+            }
+
+            /**
+             * There is a cleanup of DS inside convertDsTo2mappingInformation
+             * So we can't save here, needs to be done later
+             */
+            $convertedDS[$to['datastructure']] = [
+                'scopeName' => $scopeName,
+                'scopePath' => $scopePath,
+                'savePath' => $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
+                'referencePath' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
+                'datastructureOriginal' => $dataStructure,
+                'datastructureSaveable' => $dataStructure,
+                'alreadySaved' => false,
+                'data' => $ds,
+            ];
+        }
+
+        return $convertedDS[$to['datastructure']];
+    }
+
+    protected function saveNewDs(array &$convertedDs): void
+    {
+        if (!$convertedDs['alreadySaved']) {
+            if (isset($convertedDs['datastructureSaveable']['ROOT'])
+                && isset($convertedDs['datastructureSaveable']['ROOT']['el'])
+                && count($convertedDs['datastructureSaveable']['ROOT']['el']) > 0
+            ) {
+                /** DS is only needed, if we have have a fields configuration */
+                GeneralUtility::writeFile(
+                    $convertedDs['savePath'],
+                    DataStructureUtility::array2xml($convertedDs['datastructureSaveable'])
+                );
+            } else {
+                unset($convertedDs['referencePath']);
+            }
+            $convertedDs['alreadySaved'] = true;
+        }
+    }
+
     protected function getDsForTo(array $allDs, array $to): array
     {
         foreach ($allDs as $ds) {
@@ -1305,7 +1415,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         throw new \Exception('DataStructure "' . $to['datastructure'] . '" not found for Template Object with uid "' . $to['uid'] . '"');
     }
 
-    protected function copyFile(string $readPathAndFilename, array &$copiedTemplateFiles, string $publicExtensionDirectory, string $subPath): string
+    protected function copyFile(string $readPathAndFilename, array &$copiedTemplateFiles, string $publicExtensionDirectory, string $subPath, string $extraPart = ''): string
     {
         $source = GeneralUtility::getFileAbsFileName($readPathAndFilename);
 
@@ -1314,6 +1424,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         $filename = basename($readPathAndFilename);
+
+        if ($extraPart) {
+            $filenameInfo = pathinfo($filename);
+            $filename = $filenameInfo['filename'] . '_' . $extraPart . '.' . $filenameInfo['extension'];
+        }
+
         $destination = $publicExtensionDirectory . $subPath . '/';
 
         if (file_exists($destination . $filename)) {
