@@ -776,6 +776,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     'replace' => [
                         $vendorName . '/' . $newExtensionKey => 'self.version',
                     ],
+                    'extra' => [
+                        'typo3/cms' => [
+                            'extension-key' => $newExtensionKey,
+                        ],
+                    ],
                 ];
 
                 if ($author) {
