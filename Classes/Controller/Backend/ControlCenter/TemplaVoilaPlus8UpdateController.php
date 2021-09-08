@@ -1029,8 +1029,21 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         );
 
         // We need everytime the original to create $mappingToTemplateInfo correctly
-        // After this conversion this information is everytime the same
+
+        // We support DS with direct ['ROOT'] but not with ['sheets'][$sheetname]['ROOT']
+        // @see #318
         $dataStructureRoot = $convertedDsConfig['datastructureOriginal']['ROOT'] ?: [];
+
+        if ($to['localprocessing'] !== null && $to['localprocessing'] !== '') {
+            $localprocessing = GeneralUtility::xml2array($to['localprocessing']);
+
+            if (isset($localprocessing['ROOT'])) {
+                $dataStructureRoot = array_replace_recursive(
+                    $dataStructureRoot,
+                    $localprocessing['ROOT']
+                );
+            }
+        }
         $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructureRoot, $templateMappingInfo['ROOT'], $to);
 
         // This gurentees that only one time we write this new content of DS
@@ -1096,6 +1109,15 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             // TRUE if $a and $b have the same key/value pairs in the same order and of the same types.
             if ($parentFieldConfig === $childFieldConfig) {
                 unset($child['tvp-mapping']['mappingToTemplate'][$fieldName]);
+            } else {
+                // Or check every field config parameter
+                foreach ($parentFieldConfig as $parentFieldConfigParam => $parentFieldConfigValue) {
+                    if (isset($childFieldConfig[$parentFieldConfigParam])
+                        && $childFieldConfig[$parentFieldConfigParam] === $parentFieldConfigValue
+                    ) {
+                        unset($child['tvp-mapping']['mappingToTemplate'][$fieldName][$parentFieldConfigParam]);
+                    }
+                }
             }
         }
 
