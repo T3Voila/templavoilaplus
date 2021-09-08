@@ -391,10 +391,10 @@ final class TemplaVoilaUtility
             // If not an array, but still set, then regard it as a relative reference to a file:
             if ($dataStruct && !is_array($dataStruct)) {
                 // Resolve FILE:EXT and EXT: for single sheets
-                if (strpos(trim($sheetStructure), 'FILE:') === 0) {
-                    $file = GeneralUtility::getFileAbsFileName(substr(trim($sheetStructure), 5));
+                if (strpos(trim($dataStruct), 'FILE:') === 0) {
+                    $file = GeneralUtility::getFileAbsFileName(substr(trim($dataStruct), 5));
                 } else {
-                    $file = GeneralUtility::getFileAbsFileName(trim($sheetStructure));
+                    $file = GeneralUtility::getFileAbsFileName(trim($dataStruct));
                 }
                 if ($file && @is_file($file)) {
                     $dataStruct = GeneralUtility::xml2array(file_get_contents($file));
