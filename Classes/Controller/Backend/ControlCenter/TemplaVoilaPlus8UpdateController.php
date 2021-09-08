@@ -776,11 +776,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     'replace' => [
                         $vendorName . '/' . $newExtensionKey => 'self.version',
                     ],
-                    'extra' => [
-                        'typo3/cms' => [
-                            'extension-key' => $newExtensionKey,
-                        ],
-                    ],
                 ];
 
                 if ($author) {
@@ -1035,9 +1030,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         // We need everytime the original to create $mappingToTemplateInfo correctly
         // After this conversion this information is everytime the same
-        $dataStructure = $convertedDsConfig['datastructureOriginal'];
-        $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructure['ROOT'], $templateMappingInfo['ROOT'], $to);
-        $convertedDsConfig['datastructureSaveable'] = $dataStructure;
+        $dataStructureRoot = $convertedDsConfig['datastructureOriginal']['ROOT'] ?: [];
+        $mappingToTemplateInfo = $this->convertDsTo2mappingInformation($dataStructureRoot, $templateMappingInfo['ROOT'], $to);
 
         // This gurentees that only one time we write this new content of DS
         $this->saveNewDs($convertedDsConfig);
@@ -1196,11 +1190,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     /**
      * We are also updating the dsXml, as we remove TypoScript points!
      */
-    protected function convertDsTo2mappingInformation(array &$dsXml, array &$templateMappingInfo, array $to): array
+    protected function convertDsTo2mappingInformation(array $dsRoot, array &$templateMappingInfo, array $to): array
     {
         $mappingToTemplate = [];
 
-        foreach ($dsXml['el'] as $fieldName => $dsElement) {
+        foreach ($dsRoot['el'] as $fieldName => $dsElement) {
             $fieldConfig = [];
             $useHtmlValue = false;
 
@@ -1222,7 +1216,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     'dataType' => 'typoscriptObjectPath',
                     'dataPath' => $dsElement['tx_templavoilaplus']['TypoScriptObjPath'],
                 ];
-                unset($dsXml['el'][$fieldName]);
 
                 if (
                     !isset($dsElement['tx_templavoilaplus']['proc']['HSC'])
@@ -1232,8 +1225,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 }
             } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
                 // Blind TypoScript element, nothing todo here, already done
-
-                unset($dsXml['el'][$fieldName]);
             } else {
                 // Respect EType_extra??
                 // Respect proc ?
@@ -1241,8 +1232,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     'dataType' => 'flexform',
                     'dataPath' => $fieldName,
                 ];
-
-                unset($dsXml['el'][$fieldName]['tx_templavoilaplus']);
             }
 
             $typoScript = trim($dsElement['tx_templavoilaplus']['TypoScript'] ?? '');
@@ -1269,8 +1258,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     $fieldConfig['valueProcessing'] = 'container';
                     $templateMappingInfo['container'][$fieldName]['containerType'] = 'box';
                 }
-                $fieldConfig['container'] = $this->convertDsTo2mappingInformation($dsXml['el'][$fieldName], $templateMappingInfo['container'][$fieldName], $to);
-                /** @TODO Unset empty TCEforms config? Or is this needed? */
+                $fieldConfig['container'] = $this->convertDsTo2mappingInformation($dsElement, $templateMappingInfo['container'][$fieldName], $to);
             }
 
             if ($useHtmlValue) {
@@ -1372,41 +1360,78 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                     $scopeName = 'unknown';
             }
 
+            $dataStructureCleaned = $dataStructure;
+            $dataStructureCleaned['ROOT'] = $this->cleanupDataStructureRoot($dataStructure['ROOT']);
+
             /**
              * There is a cleanup of DS inside convertDsTo2mappingInformation
              * So we can't save here, needs to be done later
              */
-            $convertedDS[$to['datastructure']] = [
+            $convertedDsConfig = [
                 'scopeName' => $scopeName,
                 'scopePath' => $scopePath,
                 'savePath' => $publicExtensionDirectory . $innerPathes['ds'][$scopeName] . '/' . $dsXmlFileName,
                 'referencePath' => $packageName . $scopePath . '/DataStructure:' . $dsXmlFileName,
                 'datastructureOriginal' => $dataStructure,
-                'datastructureSaveable' => $dataStructure,
-                'alreadySaved' => false,
+                'dataStructureCleaned' => $dataStructureCleaned,
                 'data' => $ds,
             ];
+
+            $this->saveNewDs($convertedDsConfig);
+
+            $convertedDS[$to['datastructure']] = $convertedDsConfig;
         }
 
         return $convertedDS[$to['datastructure']];
     }
 
+
+    /**
+     * We are also updating the dsXml, as we remove TypoScript points!
+     */
+    protected function cleanupDataStructureRoot(array $dsRoot): array
+    {
+        if (isset($dsRoot['el'])) {
+            foreach ($dsRoot['el'] as $fieldName => $dsElement) {
+
+                if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
+                    unset($dsRoot['el'][$fieldName]);
+                } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
+                    // Blind TypoScript element, nothing todo here, already done
+                    unset($dsRoot['el'][$fieldName]);
+                } else {
+                    unset($dsRoot['el'][$fieldName]['tx_templavoilaplus']);
+                }
+
+                // Section and repeatables
+                if ($dsElement['type'] === 'array' || (isset($dsElement['section']) && $dsElement['section'] == 1)) {
+                    $dsRoot['el'][$fieldName] = $this->cleanupDataStructureRoot($dsElement);
+                    if (!isset($dsRoot['el'][$fieldName]['el'])) {
+                        unset($dsRoot['el'][$fieldName]);
+                    }
+                }
+            }
+            if (count($dsRoot['el']) === 0) {
+                unset($dsRoot['el']);
+            }
+        }
+
+        return $dsRoot;
+    }
+
     protected function saveNewDs(array &$convertedDs): void
     {
-        if (!$convertedDs['alreadySaved']) {
-            if (isset($convertedDs['datastructureSaveable']['ROOT'])
-                && isset($convertedDs['datastructureSaveable']['ROOT']['el'])
-                && count($convertedDs['datastructureSaveable']['ROOT']['el']) > 0
-            ) {
-                /** DS is only needed, if we have have a fields configuration */
-                GeneralUtility::writeFile(
-                    $convertedDs['savePath'],
-                    DataStructureUtility::array2xml($convertedDs['datastructureSaveable'])
-                );
-            } else {
-                unset($convertedDs['referencePath']);
-            }
-            $convertedDs['alreadySaved'] = true;
+        if (isset($convertedDs['dataStructureCleaned']['ROOT'])
+            && isset($convertedDs['dataStructureCleaned']['ROOT']['el'])
+            && count($convertedDs['dataStructureCleaned']['ROOT']['el']) > 0
+        ) {
+            /** DS is only needed, if we have have a fields configuration */
+            GeneralUtility::writeFile(
+                $convertedDs['savePath'],
+                DataStructureUtility::array2xml($convertedDs['dataStructureCleaned'])
+            );
+        } else {
+            unset($convertedDs['referencePath']);
         }
     }
 
