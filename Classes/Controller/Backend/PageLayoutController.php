@@ -221,6 +221,8 @@ class PageLayoutController extends ActionController
             'configuration',
             [
                 'allAvailableLanguages' => $this->allAvailableLanguages,
+                // If we have more then "all-languages" and 1 editors language available
+                'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'clipboard' => $this->clipboard2fluid(),
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
@@ -656,8 +658,7 @@ class PageLayoutController extends ActionController
     protected function initializeCurrentLanguage()
     {
         // Fill array allAvailableLanguages and currently selected language (from language selector or from outside)
-        $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages(0, true, true, $this->modSharedTSconfig);
-
+        $this->allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages($this->pageId, true, true, $this->modSharedTSconfig);
         $languageFromSession = (int)TemplaVoilaUtility::getBackendUser()->getSessionData('templavoilaplus.language');
         // determine language parameter
         $this->currentLanguageUid = (int)GeneralUtility::_GP('language') > 0

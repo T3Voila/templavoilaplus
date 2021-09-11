@@ -24,15 +24,15 @@
         <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
             <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
                 <header id="tvp-component-stage-header">
-                    <f:render section="Header"  arguments="{_all}" />
+                    <f:render section="Header" arguments="{_all}" />
                 </header>
                 <div id="tvp-component-stage-content">
-                    <f:render section="Stage"  arguments="{_all}" />
+                    <f:render section="Stage" arguments="{_all}" />
                 </div>
             </div>
         </section>
         <section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
-            <f:render section="SidebarContentManipulation" />
+            <f:render section="SidebarContentManipulation" arguments="{_all}" />
         </section>
 
     </div>
@@ -79,6 +79,13 @@
                             </f:if>
                         </div>
                     </li>
+                    <f:if condition="{configuration.moreThenOneLanguageAvailable}">
+                        <li class="sidenav-item disabled" id="navbarLanguages">
+                            <div>
+                                <core:icon identifier="flags-multiple" size="default" />
+                            </div>
+                        </li>
+                    </f:if>
                     <li class="sidenav-item disabled" id="navbarClipboard">
                         <div>
                             <f:if condition="{is10orNewer}">
