@@ -21,6 +21,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Site\SiteFinder;
 
 /**
  * Class with static functions for templavoila.
@@ -120,45 +121,112 @@ final class TemplaVoilaUtility
         }
 
         $languageRecords = [];
+        $useSysLanguageRecords = false;
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            // Since 9.0 we do not have pages_language_overlay anymore
-            $languageRecords = static::getSysLanguageRows9($id);
+            $languageRecords = self::getUseableLanguages($id);
+
+            if (empty($languageRecords)) {
+                // Since 9.0 we do not have pages_language_overlay anymore
+                $useSysLanguageRecords = true;
+                $languageRecords = static::getSysLanguageRows9($id);
+            }
         } elseif (version_compare(TYPO3_version, '8.4.0', '>=')) {
             // Since 8.2 we have Doctrine and since 8.4 sorting is done by an own field and not title
+            $useSysLanguageRecords = true;
             $languageRecords = static::getSysLanguageRows8($id);
         } else {
+            $useSysLanguageRecords = true;
             $languageRecords = static::getSysLanguageRows7($id);
         }
 
-        foreach ($languageRecords as $languageRecord) {
-            $languages[$languageRecord['uid']] = $languageRecord;
-            $languages[$languageRecord['uid']]['ISOcode'] = strtoupper($languageRecord['language_isocode']);
+        if ($useSysLanguageRecords) {
+            foreach ($languageRecords as $languageRecord) {
+                $languages[$languageRecord['uid']] = $languageRecord;
+                $languages[$languageRecord['uid']]['ISOcode'] = strtoupper($languageRecord['language_isocode']);
 
-            // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
-            if ($languageRecord['static_lang_isocode'] && $useStaticInfoTables) {
-                $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
-                if ($staticLangRow['lg_iso_2']) {
-                    $languages[$languageRecord['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+                // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
+                if ($languageRecord['static_lang_isocode'] && $useStaticInfoTables) {
+                    $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
+                    if ($staticLangRow['lg_iso_2']) {
+                        $languages[$languageRecord['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
+                    }
+                }
+                if ($languageRecord['flag'] !== '') {
+                    $languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
+                }
+
+                if (!isset($languages[$languageRecord['uid']]['ISOcode'])) {
+                    unset($languages[$languageRecord['uid']]);
                 }
             }
-            if ($languageRecord['flag'] !== '') {
-                $languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
+        } else {
+            if (isset($languages[0])) {
+                // If default Language already is set
+                // Take title and flag from default language
+                $languages[0]['title'] = $languageRecords[0]['title'];
+                $languages[0]['flagIcon'] = $languageRecords[0]['flagIcon'];
+                unset($languageRecords[0]);
             }
+            $languages += $languageRecords;
+        }
 
-            if (!isset($languages[$languageRecord['uid']]['ISOcode'])) {
-                unset($languages[$languageRecord['uid']]);
-            }
-
-            if (isset($modSharedTSconfig['properties']['disableLanguages'])) {
-                $disableLanguages = GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1);
-                foreach ($disableLanguages as $disableLanguage) {
-                    // $disableLanguage is the uid of a sys_language
-                    unset($languages[$disableLanguage]);
-                }
+        if (isset($modSharedTSconfig['properties']['disableLanguages'])) {
+            $disableLanguages = GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1);
+            foreach ($disableLanguages as $disableLanguage) {
+                // $disableLanguage is the uid of a sys_language
+                unset($languages[$disableLanguage]);
             }
         }
 
         return $languages;
+    }
+
+    public function getUseableLanguages(int $pageId = 0)
+    {
+        $foundLanguages = [];
+        $useableLanguages = [];
+
+        /** @var SiteFinder */
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+
+        $backendUserAuth = self::getBackendUserAuthentication();
+
+        if ($pageId === 0) {
+            // Used for e.g. filelist, where there is no site selected
+            // This also means that there is no "-1" (All Languages) selectable.
+            $sites = $siteFinder->getAllSites();
+            foreach ($sites as $site) {
+                if ($backendUserAuth) {
+                    $foundLanguages += $site->getAvailableLanguages($backendUserAuth);
+                } else {
+                    $foundLanguages += $site->getAllLanguages();
+                }
+            }
+        } else {
+            try {
+                $site = $siteFinder->getSiteByPageId((int)$pageId);
+            } catch (SiteNotFoundException $e) {
+                $site = new NullSite();
+            }
+            if ($backendUserAuth) {
+                $foundLanguages = $site->getAvailableLanguages($backendUserAuth);
+            } else {
+                $foundLanguages = $site->getAllLanguages();
+            }
+        }
+
+        foreach ($foundLanguages as $language) {
+            $languageId = $language->getLanguageId();
+            $useableLanguages[$languageId] = [
+                'uid' => $languageId,
+                'title' => $language->getTitle(),
+                'ISOcode' => $language->getTwoLetterIsoCode(),
+                'flagIcon' => $language->getFlagIdentifier(),
+            ];
+        }
+
+        ksort($useableLanguages);
+        return $useableLanguages;
     }
 
     private static function getSysLanguageRows7($id = 0)
@@ -435,5 +503,13 @@ final class TemplaVoilaUtility
             $out = ['sheets' => ['sDEF' => $ds]];
         }
         return $out;
+    }
+
+    /**
+     * @return BackendUserAuthentication|null
+     */
+    protected static function getBackendUserAuthentication():? \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'] ?? null;
     }
 }
