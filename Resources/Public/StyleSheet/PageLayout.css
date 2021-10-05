@@ -146,8 +146,16 @@ div.warning a {
   position: relative;
 }
 
+.t3-page-ce .t3-page-ce-header {
+    display: block;
+}
+
 .t3-page-ce.tpm-container-element .t3-page-ce-header-icons-left {
     float: unset;
+}
+
+.t3-page-ce.tpm-container-element .t3-page-ce-header-icons-right {
+    float: right;
 }
 
 .t3-page-ce.tpm-container-element .tpm-titlebar-fromOtherPage {
