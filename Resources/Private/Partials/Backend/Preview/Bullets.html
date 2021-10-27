@@ -5,14 +5,20 @@
     <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
 </f:if>
 
-<f:variable name="entries" value="{tvp:splitIntoArray(value:'{node.raw.entity.bodytext}', pattern:'\R', limit: 10)}" />
+<f:if condition="{node.raw.entity.subheader}">
+    <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'subheader')}" />
+    <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>: {node.raw.entity.subheader}<br />
+</f:if>
 
-<ul>
-    <f:for each="{entries}" as="entry">
-        <li>
-            <tvp:format.wordLength maxCharacters="75">
-                <tvp:format.stripTags whitespace="true">{entry}</tvp:format.stripTags>
-            </tvp:format.wordLength>
-        </li>
-    </f:for>
-</ul>
+<f:if condition="{node.raw.entity.bodytext}">
+    <f:variable name="entries" value="{tvp:splitIntoArray(value:'{node.raw.entity.bodytext}', pattern:'\R', limit: 10)}" />
+    <ul>
+        <f:for each="{entries}" as="entry">
+            <li>
+                <tvp:format.wordLength maxCharacters="75">
+                    <tvp:format.stripTags whitespace="true">{entry}</tvp:format.stripTags>
+                </tvp:format.wordLength>
+            </li>
+        </f:for>
+    </ul>
+</f:if>

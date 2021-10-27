@@ -5,6 +5,11 @@
     <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
 </f:if>
 
+<f:if condition="{node.raw.entity.subheader}">
+    <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'subheader')}" />
+    <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>: {node.raw.entity.subheader}<br />
+</f:if>
+
 <f:variable name="lines" value="{tvp:splitIntoArray(value:'{node.raw.entity.bodytext}', pattern:'\R', limit: 10)}" />
 
 <table>

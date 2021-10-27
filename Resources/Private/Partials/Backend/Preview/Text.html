@@ -3,8 +3,15 @@
 <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'bodytext')}" />
 <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong><br />
 
-<f:format.crop maxCharacters="2000">
-    <tvp:format.wordLength maxCharacters="75">
-        <tvp:format.stripTags whitespace="true">{node.raw.entity.bodytext}</tvp:format.stripTags>
-    </tvp:format.wordLength>
-</f:format.crop>
+<f:if condition="{node.raw.entity.subheader}">
+    <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'subheader')}" />
+    <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>: {node.raw.entity.subheader}<br />
+</f:if>
+
+<f:if condition="{node.raw.entity.bodytext}">
+    <f:format.crop maxCharacters="2000">
+        <tvp:format.wordLength maxCharacters="75">
+            <tvp:format.stripTags whitespace="true">{node.raw.entity.bodytext}</tvp:format.stripTags>
+        </tvp:format.wordLength>
+    </f:format.crop>
+</f:if>
