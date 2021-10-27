@@ -21,7 +21,8 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to assign. If not in arguments then taken from tag content');
-        $this->registerArgument('pattern', 'string', 'The delimiter/seperator for the string as regex (mostly \R) without delimiter', true);
+        $this->registerArgument('pattern', 'string', 'The delimiter/seperator for the string as regex (mostly \R) without delimiter');
+        $this->registerArgument('delimiterDecimal', 'int', 'A delimiter char as decimal number (like table_delimiter)');
         $this->registerArgument('limit', 'string', 'It will be split in limit elements as maximum');
     }
 
@@ -36,10 +37,11 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
+        $pattern = $arguments['pattern'] ?? ($arguments['delimiterDecimal'] ? '\x' . dechex($arguments['delimiterDecimal']) : '');
         $value = $arguments['value'] ?? $renderChildrenClosure();
         $limit = $arguments['limit'] ?? -1; // mb_split default is -1
 
-        $result = mb_split($arguments['pattern'], $value, $limit);
+        $result = mb_split($pattern, $value, $limit);
 
         // Return empty array for false
         if ($result === false) {
