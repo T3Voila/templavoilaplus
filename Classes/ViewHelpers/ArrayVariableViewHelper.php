@@ -36,7 +36,7 @@ class ArrayVariableViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $value = $renderChildrenClosure();
+        $value = ($arguments['value'] ?? $renderChildrenClosure());
 
         $container = [];
 
