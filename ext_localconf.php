@@ -75,25 +75,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila
     = array(\Tvp\TemplaVoilaPlus\Service\UserFunc\UsedContentElement::class);
 
 // Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['default']  = \Tvp\TemplaVoilaPlus\Controller\Preview\DefaultController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['text']     = \Tvp\TemplaVoilaPlus\Controller\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['table']    = \Tvp\TemplaVoilaPlus\Controller\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['mailform'] = \Tvp\TemplaVoilaPlus\Controller\Preview\TextController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['header']   = \Tvp\TemplaVoilaPlus\Controller\Preview\HeaderController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['multimedia'] = \Tvp\TemplaVoilaPlus\Controller\Preview\MultimediaController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['media']    = \Tvp\TemplaVoilaPlus\Controller\Preview\MediaController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['uploads']  = \Tvp\TemplaVoilaPlus\Controller\Preview\UploadsController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['textpic']  = \Tvp\TemplaVoilaPlus\Controller\Preview\TextpicController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['splash']   = \Tvp\TemplaVoilaPlus\Controller\Preview\TextpicController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['image']    = \Tvp\TemplaVoilaPlus\Controller\Preview\ImageController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['bullets']  = \Tvp\TemplaVoilaPlus\Controller\Preview\BulletsController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['html']     = \Tvp\TemplaVoilaPlus\Controller\Preview\HtmlController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['menu']     = \Tvp\TemplaVoilaPlus\Controller\Preview\MenuController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['list']     = \Tvp\TemplaVoilaPlus\Controller\Preview\ListController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['search']   = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['login']    = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['shortcut'] = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['div']      = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoilaplus_pi1'] = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
 
 // Register slot for translation mirror url
