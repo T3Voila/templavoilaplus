@@ -1,0 +1,18 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}" />
+<f:if condition="{labelFromItemlist}">
+    <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
+</f:if>
+
+<f:variable name="entries" value="{tvp:splitIntoArray(value:'{node.raw.entity.bodytext}', pattern:'\R', limit: 10)}" />
+
+<ul>
+    <f:for each="{entries}" as="entry">
+        <li>
+            <tvp:format.wordLength maxCharacters="75">
+                <tvp:format.stripTags whitespace="true">{entry}</tvp:format.stripTags>
+            </tvp:format.wordLength>
+        </li>
+    </f:for>
+</ul>
