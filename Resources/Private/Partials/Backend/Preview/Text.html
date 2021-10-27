@@ -1,7 +1,8 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
 <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'bodytext')}" />
-<strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>
+<strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong><br />
+
 <f:format.crop maxCharacters="2000">
     <tvp:format.wordLength maxCharacters="75">
         <tvp:format.stripTags whitespace="true">{node.raw.entity.bodytext}</tvp:format.stripTags>
