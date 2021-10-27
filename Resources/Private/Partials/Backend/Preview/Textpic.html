@@ -1,0 +1,14 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}" />
+<f:if condition="{labelFromItemlist}">
+    <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
+</f:if>
+
+<f:format.crop maxCharacters="2000">
+    <tvp:format.wordLength maxCharacters="75">
+        <tvp:format.stripTags whitespace="true">{node.raw.entity.bodytext}</tvp:format.stripTags>
+    </tvp:format.wordLength>
+</f:format.crop>
+
+<tvp:backend.thumbCode row="{node.raw.entity}" table="tt_content" fieldName="image" />
