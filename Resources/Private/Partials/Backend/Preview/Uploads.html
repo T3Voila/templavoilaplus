@@ -1,0 +1,8 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}" />
+<f:if condition="{labelFromItemlist}">
+    <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
+</f:if>
+
+<tvp:backend.thumbCode row="{node.raw.entity}" table="tt_content" fieldName="media" />
