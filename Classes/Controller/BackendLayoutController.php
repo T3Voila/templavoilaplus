@@ -1162,7 +1162,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $this->global_tt_content_elementRegister = $contentTreeData['contentElementUsage'];
 
         // Setting localization mode for root element:
-        $this->rootElementLangMode = $contentTreeData['tree']['ds_meta']['langDisable'] ? 'disable' : ($contentTreeData['tree']['ds_meta']['langChildren'] ? 'inheritance' : 'separate');
+        $this->rootElementLangMode = !empty($contentTreeData['tree']['ds_meta']['langDisable']) ? 'disable' : (!empty($contentTreeData['tree']['ds_meta']['langChildren']) ? 'inheritance' : 'separate');
         $this->rootElementLangParadigm = ($this->modTSconfig['properties']['translationParadigm'] == 'free') ? 'free' : 'bound';
 
         // Create a back button if neccessary:
@@ -1464,7 +1464,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Preview made:
-        $previewContent = $contentTreeArr['ds_meta']['disableDataPreview'] ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
+        $previewContent = !empty($contentTreeArr['ds_meta']['disableDataPreview']) ? '&nbsp;' : $this->render_previewData($contentTreeArr['previewData'], $contentTreeArr['el'], $contentTreeArr['ds_meta'], $languageKey, $sheet);
 
         // Wrap workspace notification colors:
         if ($contentTreeArr['el']['_ORIG_uid']) {
@@ -1525,8 +1525,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $canEditContent = TemplaVoilaUtility::getBackendUser()->isPSet($calcPerms, 'pages', 'editcontent');
 
         // Define l/v keys for current language:
-        $langChildren = (int)$elementContentTreeArr['ds_meta']['langChildren'];
-        $langDisable = (int)$elementContentTreeArr['ds_meta']['langDisable'];
+        $langChildren = (isset($elementContentTreeArr['ds_meta']['langChildren']) ? (int)$elementContentTreeArr['ds_meta']['langChildren'] : 0);
+        $langDisable = (isset($elementContentTreeArr['ds_meta']['langDisable']) ? (int)$elementContentTreeArr['ds_meta']['langDisable'] : 0);
 
         $lKey = $this->determineFlexLanguageKey($langDisable, $langChildren, $languageKey);
         $vKey = $this->determineFlexValueKey($langDisable, $langChildren, $languageKey);
@@ -1852,8 +1852,8 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         // Preview of FlexForm content if any:
         if (is_array($previewData['sheets'][$sheet])) {
             // Define l/v keys for current language:
-            $langChildren = (int)$ds_meta['langChildren'];
-            $langDisable = (int)$ds_meta['langDisable'];
+            $langChildren = (isset($ds_meta['langChildren']) ? (int) $ds_meta['langChildren'] : 0);
+            $langDisable = (isset($ds_meta['langDisable']) ? (int)$ds_meta['langDisable'] : 0);
             $lKey = $langDisable ? 'lDEF' : ($langChildren ? 'lDEF' : 'l' . $languageKey);
             $vKey = $langDisable ? 'vDEF' : ($langChildren ? 'v' . $languageKey : 'vDEF');
 

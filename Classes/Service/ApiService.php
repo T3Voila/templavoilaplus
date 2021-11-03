@@ -1575,8 +1575,8 @@ class ApiService
             }
 
             // Respect the currently selected language, for both concepts - with langChildren enabled and disabled:
-            $langChildren = (int)$tree['ds_meta']['langChildren'];
-            $langDisable = (int)$tree['ds_meta']['langDisable'];
+            $langChildren = isset($tree['ds_meta']['langChildren']) ? (int) $tree['ds_meta']['langChildren'] : 0;
+            $langDisable = isset($tree['ds_meta']['langDisable']) ? (int)$tree['ds_meta']['langDisable'] : 0;
 
             $lKeys = $langDisable ? array('lDEF') : ($langChildren ? array('lDEF') : $this->allSystemWebsiteLanguages['all_lKeys']);
             $vKeys = $langDisable ? array('vDEF') : ($langChildren ? $this->allSystemWebsiteLanguages['all_vKeys'] : array('vDEF'));

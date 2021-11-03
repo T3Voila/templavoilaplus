@@ -906,7 +906,10 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
 
                 if ($cmd != 'showXMLDS') {
                     // Set default flags to <meta> tag
-                    if (!isset($dataStruct['meta'])) {
+                    if (!isset($dataStruct['meta']) || !is_array($dataStruct['meta'])) {
+                        if (isset($dataStruct['meta'])) {
+                            unset($dataStruct['meta']);
+                        }
                         // Make sure <meta> goes at the beginning of data structure.
                         // This is not critical for typo3 but simply convinient to
                         // people who used to see it at the beginning.
@@ -2239,9 +2242,9 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
                     $icon = '<span class="dsType_Icon dsType_' . $info['id'] . '" title="' . $info['title'] . '">' . strtoupper($info['id']) . '</span>';
 
                     if ($key === 'ROOT') {
-                        $fieldTitle = $dataStruct['meta']['title'];
+                        $fieldTitle = (isset($dataStruct['meta']['title']) ? $dataStruct['meta']['title'] : $value['title']);
                     } else {
-                        $fieldTitle = ($value['TCEforms']['label'] ? $value['TCEforms']['label'] : $value['title']);
+                        $fieldTitle = (!empty($value['TCEforms']['label']) ? $value['TCEforms']['label'] : $value['title']);
                     }
 
                     // Composing title-cell:
