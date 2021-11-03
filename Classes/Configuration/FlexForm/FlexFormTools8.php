@@ -203,21 +203,23 @@ class FlexFormTools8 extends FlexFormTools
         }
 
         // Traverse languages:
-        foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
-            // Render sheet:
-            if (is_array($sheetData['ROOT']) && is_array($sheetData['ROOT']['el'])) {
-                $lang = 'l' . $lKey;
+        foreach ($lKeys as $lKey) {
+            foreach ($dataStructureArray['sheets'] as $sheetKey => $sheetData) {
+                // Render sheet:
+                if (is_array($sheetData['ROOT']) && is_array($sheetData['ROOT']['el'])) {
+                    $lang = 'l' . $lKey;
 
-                $PA['vKeys'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : ['DEF'];
-                $PA['lKey'] = $lang;
-                $PA['callBackMethod_value'] = $callBackMethod_value;
-                $PA['table'] = $table;
-                $PA['field'] = $field;
-                $PA['uid'] = $row['uid'];
-                // Render flexform:
-                $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey][$lang], $PA, 'data/' . $sheetKey . '/' . $lang);
-            } else {
-                return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheetKey . '".';
+                    $PA['vKeys'] = $langChildren && !$langDisabled ? $editData['meta']['currentLangId'] : ['DEF'];
+                    $PA['lKey'] = $lang;
+                    $PA['callBackMethod_value'] = $callBackMethod_value;
+                    $PA['table'] = $table;
+                    $PA['field'] = $field;
+                    $PA['uid'] = $row['uid'];
+                    // Render flexform:
+                    $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey][$lang], $PA, 'data/' . $sheetKey . '/' . $lang);
+                } else {
+                    return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheetKey . '".';
+                }
             }
         }
         return true;
