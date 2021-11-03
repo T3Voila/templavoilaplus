@@ -422,8 +422,10 @@ class FrontendController extends AbstractPlugin
 
                         // Visual identification aids:
 
-                        $feedit = is_object(TemplaVoilaUtility::getBackendUser())
-                            && TemplaVoilaUtility::getBackendUser()->isFrontendEditingActive()
+                        $backendUser = TemplaVoilaUtility::getBackendUser();
+                        $feedit = is_object($backendUser)
+                            && method_exists($backendUser, 'isFrontendEditingActive')
+                            && $backendUser->isFrontendEditingActive()
                             && isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/classes/class.frontendedit.php']['edit']);
 
                         if ($GLOBALS['TSFE']->fePreview && $GLOBALS['TSFE']->beUserLogin && !$GLOBALS['TSFE']->workspacePreview && !$this->conf['disableExplosivePreview'] && !$feedit) {
