@@ -370,11 +370,11 @@ class BackendTemplateMappingController extends \TYPO3\CMS\Backend\Module\BaseScr
     public function main()
     {
         // Initialize ds_edit
-        $this->dsEdit = GeneralUtility::getUserObj(\Ppi\TemplaVoilaPlus\Module\Cm1\DsEdit::class, '');
+        $this->dsEdit = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Cm1\DsEdit::class);
         $this->dsEdit->init($this);
 
         // Initialize eTypes
-        $this->eTypes = GeneralUtility::getUserObj(\Ppi\TemplaVoilaPlus\Module\Cm1\ETypes::class, '');
+        $this->eTypes = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Cm1\ETypes::class);
         $this->eTypes->init($this);
 
         $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);

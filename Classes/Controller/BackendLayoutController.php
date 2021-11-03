@@ -435,21 +435,21 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         }
 
         // Initialize side bar and wizards:
-        $this->sideBarObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Sidebar', '');
+        $this->sideBarObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Sidebar::class);
         $this->sideBarObj->init($this);
 
-        $this->wizardsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Wizards', '');
+        $this->wizardsObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Wizards::class);
         $this->wizardsObj->init($this);
         // Initialize the clipboard
-        $this->clipboardObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Clipboard', '');
+        $this->clipboardObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Clipboard::class);
         $this->clipboardObj->init($this);
 
         // Initialize the record module
-        $this->recordsObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Records', '');
+        $this->recordsObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Records::class);
         $this->recordsObj->init($this);
         // Add the localization module if localization is enabled:
         if ($this->alternativeLanguagesDefined()) {
-            $this->localizationObj = GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Localization', '');
+            $this->localizationObj = GeneralUtility::makeInstance(\Ppi\TemplaVoilaPlus\Module\Mod1\Localization::class);
             $this->localizationObj->init($this);
         }
     }
@@ -733,7 +733,7 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
             // Show message if the page is of a special doktype:
             if ($this->rootElementTable == 'pages') {
                 // Initialize the special doktype class:
-                $specialDoktypesObj =& GeneralUtility::getUserObj('Ppi\\TemplaVoilaPlus\Module\\Mod1\\Specialdoktypes', '');
+                $specialDoktypesObj = GeneralUtility::getUserObj(\Ppi\TemplaVoilaPlus\Module\Mod1\Specialdoktypes::class);
                 $specialDoktypesObj->init($this);
                 $doktype = $this->rootElementRecord['doktype'];
 
@@ -3057,7 +3057,11 @@ class BackendLayoutController extends \TYPO3\CMS\Backend\Module\BaseScriptClass
         $hookObjectsArr = array();
         if (@is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['mod1'][$hookName] as $key => $classRef) {
-                $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    $hookObjectsArr[$key] = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObjectsArr[$key] = & GeneralUtility::getUserObj($classRef);
+                }
             }
         }
 

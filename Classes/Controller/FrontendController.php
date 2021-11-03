@@ -256,7 +256,11 @@ class FrontendController extends AbstractPlugin
         $hookObjectsArr = array();
         if (is_array($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'])) {
             foreach ($TYPO3_CONF_VARS['EXTCONF']['templavoilaplus']['pi1']['renderElementClass'] as $classRef) {
-                $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    $hookObjectsArr[] = GeneralUtility::makeInstance($classRef);
+                } else {
+                    $hookObjectsArr[] = & GeneralUtility::getUserObj($classRef);
+                }
             }
         }
 
@@ -281,7 +285,11 @@ class FrontendController extends AbstractPlugin
             // Sheet Selector:
             if ($DS['meta']['sheetSelector']) {
                 // <meta><sheetSelector> could be something like "EXT:user_extension/class.user_extension_selectsheet.php:&amp;user_extension_selectsheet"
-                $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
+                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+                    $sheetSelector = GeneralUtility::makeInstance($DS['meta']['sheetSelector']);
+                } else {
+                    $sheetSelector = & GeneralUtility::getUserObj($DS['meta']['sheetSelector']);
+                }
                 $renderSheet = $sheetSelector->selectSheet();
             } else {
                 $renderSheet = 'sDEF';
