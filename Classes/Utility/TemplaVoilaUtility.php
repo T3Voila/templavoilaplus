@@ -181,7 +181,7 @@ final class TemplaVoilaUtility
         return $languages;
     }
 
-    public function getUseableLanguages(int $pageId = 0)
+    public static function getUseableLanguages(int $pageId = 0)
     {
         $foundLanguages = [];
         $useableLanguages = [];
@@ -205,7 +205,7 @@ final class TemplaVoilaUtility
         } else {
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageId);
-            } catch (SiteNotFoundException $e) {
+            } catch (\TYPO3\CMS\Core\Exception\SiteNotFoundException $e) {
                 $site = new NullSite();
             }
             if ($backendUserAuth) {
