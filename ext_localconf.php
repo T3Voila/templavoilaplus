@@ -74,9 +74,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoilaplus_usedCE']
     = array(\Tvp\TemplaVoilaPlus\Service\UserFunc\UsedContentElement::class);
 
-// Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoilaplus_pi1'] = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
-
 // Register slot for translation mirror url
 /** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
 $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
