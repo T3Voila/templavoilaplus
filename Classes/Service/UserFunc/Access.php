@@ -44,10 +44,9 @@ class Access implements SingletonInterface
                 return true;
             }
 
-            if (!$this->checkObjectAccess('tx_templavoilaplus_datastructure', $params['idOrRow']['tx_templavoilaplus_ds'], $backendUser)) {
-                $error = 'access_noDSaccess';
-            } elseif (!$this->checkObjectAccess('tx_templavoilaplus_tmplobj', $params['idOrRow']['tx_templavoilaplus_to'], $backendUser)) {
-                $error = 'access_noTOaccess';
+            if (!1 == 1) {
+                /** @TODO Implementing access restrictions to the mappings? */
+                $error = 'access_noAaccess';
             } else {
                 return true;
             }

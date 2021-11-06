@@ -1,4 +1,4 @@
-<f:if condition="{doktypeDefault.treeData.tree}">
+<f:if condition="{doktypeDefault.nodeTree.node}">
     <f:then>
         <f:if condition="!{basicEditRights}">
             <f:be.infobox title="{f:translate(key:'{configuration.lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{configuration.lllFile}:infoContentMissingEditRights"/></f:be.infobox>

@@ -88,7 +88,6 @@ class DoktypeDefaultHandler
                 $controller->getView()->assign(
                     'doktypeDefault',
                     [
-                        'treeData' => $apiService->getContentTree('pages', $pageRecord),
                         'nodeTree' => $processingService->getNodeWithTree('pages', $pageRecord),
                         'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                     ]

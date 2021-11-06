@@ -61,35 +61,6 @@ if (TYPO3_MODE === 'BE') {
             'inheritNavigationComponentFromMainModule' => false
         ]
     );
-
-//     $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
-//     unset($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
-
-    // Registering CSH:
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'be_groups',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_begr.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'pages',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_pages.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'tt_content',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_ttc.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'xMOD_tx_templavoilaplus',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_module.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        'xEXT_templavoila',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_intro.xlf'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
-        '_MOD_web_txtemplavoilaplusLayout',
-        'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_pm.xlf'
-    );
 }
 
 // complex condition to make sure the icons are available during frontend editing...

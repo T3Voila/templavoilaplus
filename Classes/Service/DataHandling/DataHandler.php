@@ -68,9 +68,6 @@ class DataHandler
             return;
         }
 
-        // Update DS if TO was changed
-        $this->updateDataSourceFromTemplateObject($table, $incomingFieldArray, $reference->BE_USER);
-
         if ($table == 'tt_content') {
             $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id] = $incomingFieldArray;
         }
@@ -314,29 +311,6 @@ class DataHandler
                 );
                 $sortNumber += 100;
             }
-        }
-    }
-
-    /**
-     * Checks if template object was changed (== exists in the $incomingFieldArray)
-     * and sets data source accordingly.
-     *
-     * @param string $table Table name
-     * @param array &$incomingFieldArray Array with fields
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser Current backend user for this operation
-     *
-     * @return void
-     */
-    protected function updateDataSourceFromTemplateObject($table, array &$incomingFieldArray, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
-    {
-        if (
-            ($table == 'pages' || $table == 'tt_content') &&
-            isset($incomingFieldArray['tx_templavoilaplus_to'])
-        ) {
-            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoilaplus_ds', 'tx_templavoilaplus_to', $beUser);
-        }
-        if ($table == 'pages' && isset($incomingFieldArray['tx_templavoilaplus_next_to'])) {
-            $this->updateDataSourceFieldFromTemplateObjectField($incomingFieldArray, 'tx_templavoilaplus_next_ds', 'tx_templavoilaplus_next_to', $beUser);
         }
     }
 
