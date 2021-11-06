@@ -90,20 +90,6 @@ if (TYPO3_MODE === 'BE') {
         '_MOD_web_txtemplavoilaplusLayout',
         'EXT:templavoilaplus/Resources/Private/Language/locallang_csh_pm.xlf'
     );
-
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-        'web_func',
-        'Tvp\\TemplaVoilaPlus\Controller\\ReferenceElementWizardController',
-        null,
-        'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_refElements'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-        'web_func',
-        'Tvp\\TemplaVoilaPlus\Controller\\RenameFieldInPageFlexWizardController',
-        null,
-        'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang.xlf:wiz_renameFieldsInPage'
-    );
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('_MOD_web_func', 'EXT:wizard_crpages/locallang_csh.xlf');
 }
 
 // complex condition to make sure the icons are available during frontend editing...
