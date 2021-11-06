@@ -77,106 +77,6 @@ class DataHandler
     }
 
     /**
-     * This function is called by TCEmain after a new record has been inserted into the database.
-     * If a new content element has been created, we make sure that it is referenced by its page.
-     *
-     * @param string $status The command which has been sent to processDatamap
-     * @param string $table    The table we're dealing with
-     * @param mixed $id Either the record UID or a string if a new record has been created
-     * @param array $fieldArray The record row how it has been inserted into the database
-     * @param object $reference A reference to the TCEmain instance
-     *
-     * @return void
-     */
-    public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, &$reference)
-    {
-
-        if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_afterDatabaseOperations ', 'templavoilaplus', 0, array($status, $table, $id, $fieldArray));
-        }
-        if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
-            return;
-        }
-        if ($table != 'tt_content') {
-            return;
-        }
-
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
-
-        switch ($status) {
-            case 'new':
-                if (!isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
-                    $destinationFlexformPointer = false;
-
-                    BackendUtility::fixVersioningPid($table, $fieldArray);
-
-                    if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id])) {
-                        $positionReferenceUid = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays'][$id]['pid'];
-                        if ($positionReferenceUid < 0) {
-                            $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($positionReferenceUid), $fieldArray['pid']);
-                            $neighbourFlexformPointer = $neighbourFlexformPointersArr[0];
-
-                            if (is_array($neighbourFlexformPointer)) {
-                                $destinationFlexformPointer = $neighbourFlexformPointer;
-                            }
-                        }
-                    }
-
-                    if (!is_array($destinationFlexformPointer)) {
-                        $mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($fieldArray['pid'], (int)$fieldArray['colPos']);
-                        if ($mainContentAreaFieldName !== false) {
-                            $sorting_field = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
-                            $sorting = (!$sorting_field ? 0 : ($fieldArray[$sorting_field] ? -$fieldArray[$sorting_field] : 0));
-
-                            $destinationFlexformPointer = array(
-                                'table' => 'pages',
-                                'uid' => $fieldArray['pid'],
-                                'sheet' => 'sDEF',
-                                'sLang' => 'lDEF',
-                                'field' => $mainContentAreaFieldName,
-                                'vLang' => 'vDEF',
-                                'position' => 0
-                            );
-
-                            if ($sorting < 0) {
-                                $parentRecord = BackendUtility::getRecordWSOL($destinationFlexformPointer['table'], $destinationFlexformPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
-                                $currentReferencesArr = $templaVoilaAPI->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationFlexformPointer);
-                                if (count($currentReferencesArr)) {
-                                    $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows('uid,' . $sorting_field, $table, 'uid IN (' . implode(',', $currentReferencesArr) . ')' . BackendUtility::deleteClause($table));
-                                    $sort = array($reference->substNEWwithIDs[$id] => -$sorting);
-                                    foreach ($rows as $row) {
-                                        $sort[$row['uid']] = $row[$sorting_field];
-                                    }
-                                    asort($sort, SORT_NUMERIC);
-                                    $destinationFlexformPointer['position'] = array_search($reference->substNEWwithIDs[$id], array_keys($sort));
-                                }
-                            }
-                        }
-                    } else {
-                        $templaVoilaAPI->insertElement_setElementReferences($destinationFlexformPointer, $reference->substNEWwithIDs[$id]);
-                    }
-                }
-                break;
-        }
-
-        // clearing the cache of all related pages - see #1332
-        if (method_exists($reference, 'clear_cacheCmd')) {
-            $element = array(
-                'table' => $table,
-                'uid' => $id
-            );
-            $references = TemplaVoilaUtility::getElementForeignReferences($element, $fieldArray['pid']);
-            if (is_array($references) && is_array($references['pages'])) {
-                foreach ($references['pages'] as $pageUid => $__) {
-                    $reference->clear_cacheCmd($pageUid);
-                }
-            }
-        }
-
-        unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['preProcessFieldArrays']);
-    }
-
-    /**
      * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
      *
      * @param string $command The TCEmain operation status, fx. 'update'
@@ -196,11 +96,6 @@ class DataHandler
         }
         if ($GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
-        }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']++;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] = 1;
         }
 
         if ($table != 'tt_content') {
@@ -241,38 +136,6 @@ class DataHandler
                     }
                 }
                 break;
-            case 'copy':
-                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']);
-                break;
-        }
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']--;
-        }
-    }
-
-    /**
-     * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
-     *
-     * @param string $command The TCEmain operation status, fx. 'update'
-     * @param string $table The table TCEmain is currently processing
-     * @param string $id The records id (if any)
-     * @param array $value The field names and their values to be processed
-     * @param object &$reference Reference to the parent object (TCEmain)
-     *
-     * @return void
-     */
-    public function processCmdmap_postProcess($command, $table, $id, $value, &$reference)
-    {
-
-        if ($this->debug) {
-            GeneralUtility::devLog('processCmdmap_postProcess', 'templavoilaplus', 0, array($command, $table, $id, $value));
-        }
-
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'])) {
-            $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']--;
-            if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage'] == 0) {
-                unset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_tcemain']['doNotInsertElementRefsToPage']);
-            }
         }
     }
 
