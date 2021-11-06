@@ -35,16 +35,6 @@ final class TemplaVoilaUtility
 {
     private static $connectionPool = null;
 
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    public static function getDatabaseConnection()
-    {
-        debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-        die('PLEASE REWORK TO USE DB API');
-        return $GLOBALS['TYPO3_DB'];
-    }
-
     public static function getConnectionPool(): ConnectionPool
     {
         if (static::$connectionPool === null) {

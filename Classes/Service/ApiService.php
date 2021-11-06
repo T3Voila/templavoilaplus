@@ -1404,41 +1404,6 @@ class ApiService
         return $expandedDataStructureArr;
     }
 
-    /**
-     * Returns an array of available Page Template Object records from the scope of the given page.
-     *
-     * Note: All TO records which are found in the selected storage folder will be returned, no matter
-     *       if they match the currently selected data structure for the given page.
-     *
-     * @param integer $pageUid (current) page uid, used for finding the correct storage folder
-     *
-     * @return mixed Array of Template Object records or FALSE if an error occurred.
-     */
-    public function ds_getAvailablePageTORecords($pageUid)
-    {
-        $storageFolderPID = $this->getStorageFolderPid($pageUid);
-
-        $tTO = 'tx_templavoilaplus_tmplobj';
-        $tDS = 'tx_templavoilaplus_datastructure';
-        $res = $this->getDatabaseConnection()->exec_SELECTquery(
-            "$tTO.*",
-            "$tTO LEFT JOIN $tDS ON $tTO.datastructure = $tDS.uid",
-            "$tTO.pid=" . (int)$storageFolderPID . " AND $tDS.scope=1" .
-            BackendUtility::deleteClause($tTO) . BackendUtility::deleteClause($tDS) .
-            BackendUtility::versioningPlaceholderClause($tTO) . BackendUtility::versioningPlaceholderClause($tDS)
-        );
-        if (!$res) {
-            return false;
-        }
-
-        $templateObjectRecords = array();
-        while (false != ($row = $this->getDatabaseConnection()->sql_fetch_assoc($res))) {
-            $templateObjectRecords[$row['uid']] = $row;
-        }
-
-        return $templateObjectRecords;
-    }
-
     /******************************************************
      *
      * Get content structure of page
