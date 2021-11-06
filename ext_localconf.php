@@ -75,7 +75,6 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['l10nmgr']['indexFilter']['tx_templavoila
     = array(\Tvp\TemplaVoilaPlus\Service\UserFunc\UsedContentElement::class);
 
 // Register Preview Classes for Page Module
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['menu']     = \Tvp\TemplaVoilaPlus\Controller\Preview\MenuController::class;
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['mod1']['renderPreviewContent']['templavoilaplus_pi1'] = \Tvp\TemplaVoilaPlus\Controller\Preview\NullController::class;
 
 // Register slot for translation mirror url
