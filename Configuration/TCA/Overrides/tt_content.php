@@ -90,7 +90,7 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
     'tt_content',
     'tx_templavoilaplus_map',
     'templavoilaplus_pi1',
-    'after:layout'
+    'after:colPos'
 );
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addToAllTCAtypes(
     'tt_content',
