@@ -241,6 +241,7 @@ class PageLayoutController extends ActionController
             'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
             'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
             'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+            'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
         ]);
     }
 

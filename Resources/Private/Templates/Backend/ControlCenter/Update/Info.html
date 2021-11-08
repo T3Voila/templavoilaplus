@@ -4,7 +4,7 @@
     <h2 class="text-primary">TemplaVoilà! Plus (TV+)</h2>
     <p class="lead text-primary"><b>Welcome to the Update Script collection to get your DataStructures, Mapping- and TemplateConfigurations updated to the latest state for your running TYPO3 and TV+ version.</b></p>
     <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.
-        <f:if condition="{is11orNewer}">
+        <f:if condition="{is12orNewer}">
             <span class="text-warning">Your TYPO3 Version is more then new, it may be, you may find some gremlins as we do not support this version yet.</span>
         </f:if>
         <f:if condition="!{is8orNewer}">
@@ -13,7 +13,7 @@
         <f:if condition="{is8orNewer} && !{is9orNewer}">
             <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but see message box below.</span>
         </f:if>
-        <f:if condition="{is9orNewer} && !{is11orNewer}">
+        <f:if condition="{is9orNewer} && !{is12orNewer}">
             <span class="text-success">Your TYPO3 Version is supported by TV+ 8.</span>
         </f:if>
     </p>
