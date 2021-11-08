@@ -24,7 +24,7 @@ EXT: TemplaVoilà! Plus
         2009-11-27
 
     :Changed:
-        2017-10-08
+        2021-11-08
 
     :Keywords:
         template,mapping
@@ -38,7 +38,7 @@ EXT: TemplaVoilà! Plus
 
         Copyright 2010 Tolleiv Nietsch <templavoila@tolleiv.de>
 
-        Copyright 2016-2020 Alexander Opitz <opitz@extrameile.agency>
+        Copyright 2016-2021 Alexander Opitz <opitz@extrameile.agency>
 
     :Author:
         Kasper Skårhøj, Robert Lemke, Alexander Opitz

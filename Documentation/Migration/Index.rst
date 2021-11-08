@@ -1,31 +1,26 @@
 .. include:: ../Includes.txt
 
-Migration from TemplaVoilà! 1.8/1.9/2.0 to TemplaVoilà! Plus 7.x
+Migration from TemplaVoilà! Plus 7.x to TemplaVoilà! Plus 8.x
 ----------------------------------------------------------------
 
-In short, it is very simple to migrate from old TemplaVoilà! to TemplaVoilà! Plus. You can do it after you migrated from
-TYPO3 6.2 LTS to the newer TYPO3 v7 LTS or TYPO3 v8 LTS, but without droping the tables.
+TV+ v8 uses files for all configurations. So you can use your VCS (version control system) to manage changes, to deploy your coniguration and so on.
+Also theming related things aren't inside DataStructure anymore. We have now different configuration files for every part from
+data to template confirguration. Every part have his own place (diretory) where it lies. So you will have the possibility to use a
+base theme which you extend with your own theme without redefining the data structure or the mapping.
 
 .. important:: Do backups as the "Plus" may eat all your database tables and files.
 
-Steps to work
-^^^^^^^^^^^^^
+Steps to do for migration
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 #. Backup your database and files!
-#. Deactivate old TemplaVoilà! in Extension Manager but do not remove it yet neither its database tables
-#. Install and Activate TemplaVoilà! Plus from TYPO3 Extension Repository (TER)
-#. Press the Update Button in Extension manager for the TemplaVoilà! Plus extension
-#. Press the "Migrate TemplaVoilà 1.8/1.9/2.0" Button
-#. Start the migration process
-#. Wait a while, till it finishes, it may take a long time on bigger systems
-#. After this was done you may need to do the same with the "Update DataStructure from TYPO3 v6.2 LTS to v7 LTS"
-#. (This Update script has a own version number, you may recheck it from time to time, you can run it as often you like)
-#. After this was done and you are using TYPO3 v7 LTS you may need to do the same with the "Update DataStructure from TYPO3 v7 LTS to v8 LTS"
-#. (This Update script has a own version number, you may recheck it from time to time, you can run it as often you like)
-#. Do _not_ run the "Convert to Static Data Structure" task, if you don't know what it will do. It isn't needed for updating to TemplaVoilà! Plus
-#. Now the automatic part is done
-#. Look now through all your TypoScript scripts and replace all occurences of tx_templavoila with tx_templavoilaplus
-#. You may also switch your PAGE object definition to
+#. Update your TemplaVoilà! Plus (TV+) installation
+#. Go to the new TV+ Control Center which will be inside the "Admin Tools" section
+#. Press the yellow "Start Update Script" button
+#. Press the "Update configuration to TemplaVoilà! Plus 8" button
+#. Follow the migration process
+#. You are done, check the generated extension and its files, put them into your VCS
+#. Update your TypoScript userFunc entry (main_page to renderPage)
 
 .. code-block:: typoscript
 
@@ -33,8 +28,8 @@ Steps to work
     page {
         typeNum = 0
         10 = USER
-        10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->main_page
+        10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->renderPage
     }
 
-Now your system should be ready. If all works you can remove the old TemplaVoilà! extension and its database tables from your system.
+Now your system should be ready. If all works you can remove the old TemplaVoilà! Plus database tables from your system.
 If you have issues, ask on slack channel or on `github <https://github.com/pluspol-interactive/templavoilaplus>`_

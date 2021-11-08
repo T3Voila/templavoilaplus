@@ -15,6 +15,6 @@ Updating the TemplaVoilà! extension for TYPO3 v7/v8/v9 LTS under the new
 name "TemplaVoilà! Plus" was sponsored by
 `PLUSPOL interactive GbR<https://www.pluspol-interactive.de>`_
 
-Updating the TemplaVoilà! Plus extension for TYPO3 v10 LTS and maintenance
+Updating the TemplaVoilà! Plus extension for TYPO3 v10/v11 LTS and maintenance
 is sponsored by
 `Extrameile GmbH <https://www.extrameile-gehen.de>`_
