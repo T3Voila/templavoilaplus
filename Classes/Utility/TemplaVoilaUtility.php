@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 
 /**
  * Class with static functions for templavoila.
@@ -206,7 +207,8 @@ final class TemplaVoilaUtility
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageId);
             } catch (\TYPO3\CMS\Core\Exception\SiteNotFoundException $e) {
-                $site = new NullSite();
+                $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+                $site = $pseudoSiteFinder->getSiteByPageId($pageId);
             }
             if ($backendUserAuth) {
                 $foundLanguages = $site->getAvailableLanguages($backendUserAuth);
