@@ -183,6 +183,7 @@ class ApiService
         $tce->process_datamap();
         if ($this->debug && count($tce->errorLog)) {
             GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoilaplus', 0, array('errorLog' => $tce->errorLog));
+            throw new \InvalidArgumentException(implode('; ', $tce->errorLog), 1636745166);
         }
         $newUid = $tce->substNEWwithIDs['NEW'];
         if (!$flagWasSet) {
