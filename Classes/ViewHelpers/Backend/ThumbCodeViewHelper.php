@@ -56,7 +56,18 @@ class ThumbCodeViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        return BackendUtility::thumbCode($arguments['row'], $arguments['table'], $arguments['fieldName']);
+        return BackendUtility::thumbCode(
+            $arguments['row'],
+            $arguments['table'],
+            $arguments['fieldName'],
+            '',
+            '',
+            null,
+            0,
+            '',
+            '',
+            false // No $linkInfoPopup
+        );
     }
 }
 
