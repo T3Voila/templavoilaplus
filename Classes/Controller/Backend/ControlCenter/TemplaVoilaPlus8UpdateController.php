@@ -72,6 +72,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into
         // Site Management
         $storagePidsAreFine = false;
+        $useStaticDS = false;
 
         $allPossiblePids = $allDs = $allTo = [];
 
@@ -418,7 +419,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $result = $queryBuilder
             ->count('uid')
-            ->addSelect('uid', 'tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
+            ->addSelect('min(uid) as uid', 'tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->neq('tx_templavoilaplus_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
