@@ -36,7 +36,7 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
 * There is no editor anymore, the planed EXT:form editor is very complicated and took to much time. Maybe something else, later as another extension, as this functionality haven't todo with TV+ base.
 * Check the extension which is created while migration, it will help to understand the configuration of TV+ 8.0.0.
 * Please help with documentation.
-* Not tested with PHP 8.0/8.1
+* Not tested with PHP 8.0/8.1 but bugreports are welcome.
 
 ### Extensions as WIP for TV+ 8
 * https://github.com/extrameile/em_tvplus_theme_demo/
@@ -49,7 +49,7 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
     * There is a Debug screen which shows more about the internal configuration of the objects.
 * There is also a new PageLayout Modul, which isn't puzzled together yet while rewriting
     * Different Output Handler -for different doktypes (standard, link, spacer, ...)
-    * Editing via Ajax (Nothing which needs another modal)
+    * Editing via Ajax
     * Drag'n'Drop insert/move/delete but only in default language
     * ~~Backend Preview only partially~~
     * ~~Loading tree but only handling page layer (not the content elements)~~
