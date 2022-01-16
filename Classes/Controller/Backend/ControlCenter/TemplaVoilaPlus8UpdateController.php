@@ -1514,7 +1514,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     protected function createPath(string $publicExtensionDirectory, string $subPath)
     {
         if (!file_exists($publicExtensionDirectory . $subPath)) {
-            GeneralUtility::mkdir_deep($publicExtensionDirectory, $subPath);
+            GeneralUtility::mkdir_deep($publicExtensionDirectory . $subPath);
         }
     }
 
