@@ -14,6 +14,8 @@ define([
     var PageLayout = {
     }
 
+    PageLayout.myModal = null;
+
     /**
      * Initialize
      */
@@ -30,6 +32,12 @@ define([
         ) {
             $('#navbarContentElementWizard').removeClass('disabled');
         }
+
+        window.addEventListener('message', function(event) {
+            if (PageLayout.myModal) {
+                PageLayout.myModal.find('.t3js-modal-iframe').get(0).contentWindow.postMessage(event.data, event.source);
+            }
+        });
 
         // Add tooltip functionality to Sidebar
         $('#navbarContentElementWizard:not(.disabled)').tooltipster({
@@ -291,7 +299,7 @@ console.log('onAdd');
         var separator = (url.indexOf('?') > -1) ? '&' : '?';
         var params = 'table=' + table + '&uid=' + uid;
 
-        Modal.advanced({
+        PageLayout.myModal = Modal.advanced({
             type: Modal.types.ajax,
             title: 'Loading',
             content: url + separator + params,
@@ -301,7 +309,7 @@ console.log('onAdd');
             ajaxCallback: function() {
                 Modal.currentModal.addClass('tvp-modal-record-edit');
                 Modal.currentModal.find('.t3js-modal-iframe').on('load', function() {
-                    var iframeDocument = Modal.currentModal.find('.t3js-modal-iframe').get(0).contentDocument;
+                  var iframeDocument = Modal.currentModal.find('.t3js-modal-iframe').get(0).contentDocument;
                     var form = iframeDocument.getElementById('EditDocumentController');
                     if (form) {
                         Modal.currentModal.find('.t3js-modal-title').text(form.querySelector('h1').innerHTML);
@@ -311,6 +319,7 @@ console.log('onAdd');
                     if (closeModal) {
                         Modal.currentModal.trigger('modal-dismiss');
                         PageLayout.reloadRecord(table, uid);
+                        PageLayout.myModal = null;
                     }
                 })
             }
