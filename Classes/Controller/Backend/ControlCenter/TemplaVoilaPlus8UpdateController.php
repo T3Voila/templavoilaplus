@@ -419,7 +419,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $result = $queryBuilder
             ->count('uid')
-            ->addSelect('min(uid) as uid', 'tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
+            ->addSelectLiteral('min(uid) as uid')
+            ->addSelect('tx_templavoilaplus_to', 'tx_templavoilaplus_next_to')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->neq('tx_templavoilaplus_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
