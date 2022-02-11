@@ -1169,6 +1169,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         $domXpath = new \DOMXPath($domDocument);
 
         foreach ($mappingInformation as $fieldName => $mappingField) {
+            // ignore fields with <type>no_map</type>. field value was used in TypoScript 
+            // in same templavoila datastructure only.
+            if('' === $mappingField['MAP_EL']){
+                continue;
+            }
+
             list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
 
             $convertedXPath = $this->convertXPath($xPath);
