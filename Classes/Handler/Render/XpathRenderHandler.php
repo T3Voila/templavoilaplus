@@ -42,16 +42,15 @@ class XpathRenderHandler implements RenderHandlerInterface
 
         $entries = $this->domXpath->query($mapping['xpath']);
 
-        if ($entries->count() === 1) {
-            $node = $entries->item(0);
+        $html = '';
+        foreach($entries as $entry) {
             if (isset($mapping['container']) && is_array($mapping['container'])) {
-                $this->processContainer($node, $mapping['container'], $processedValues, 'box');
+                $this->processContainer($entry, $mapping['container'], $processedValues, 'box');
             }
-
-            return $this->getHtml($node, $mapping['mappingType']);
+            $html .= $this->getHtml($entry, $mapping['mappingType']);
         }
 
-        return '';
+        return $html;
     }
 
     public function processHeaderInformation(TemplateConfiguration $templateConfiguration)
