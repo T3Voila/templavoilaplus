@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
@@ -213,8 +214,12 @@ final class TemplaVoilaUtility
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageId);
             } catch (\TYPO3\CMS\Core\Exception\SiteNotFoundException $e) {
-                $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-                $site = $pseudoSiteFinder->getSiteByPageId($pageId);
+                if (class_exists(PseudoSiteFinder::class)) {
+                    $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
+                    $site = $pseudoSiteFinder->getSiteByPageId($pageId);
+                } else {
+                    $site = GeneralUtility::makeInstance(NullSite::class);
+                }
             }
             if ($backendUserAuth) {
                 $foundLanguages = $site->getAvailableLanguages($backendUserAuth);
