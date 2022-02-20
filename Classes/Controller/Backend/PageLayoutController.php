@@ -20,6 +20,8 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -28,6 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -210,6 +214,7 @@ class PageLayoutController extends ActionController
 
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);
+        $this->view->assign('prePageTitleMessages',$this->getHeaderFlashMessagesForCurrentPid());
         $this->view->assign('pageTitle', $pageTitle);
         $this->view->assign('pageDoktype', $activePage['doktype']);
 
@@ -710,5 +715,69 @@ class PageLayoutController extends ActionController
     public function permissionContentEdit(): bool
     {
         return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
+    }
+
+    protected function getHeaderFlashMessagesForCurrentPid(): string
+    {
+        $content = '';
+
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName('EXT:backend/Resources/Private/Templates/InfoBox.html'));
+
+        // If content from different pid is displayed
+        if ($this->pageInfo['content_from_pid']) {
+            $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageInfo['content_from_pid']);
+            $linkToPid = GeneralUtility::linkThisScript(['id' => $this->pageInfo['content_from_pid']]);
+            $title = BackendUtility::getRecordTitle('pages', $contentPage);
+            $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$this->pageInfo['content_from_pid'] . ')</a>';
+            $message = sprintf(TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'), $link);
+            $view->assignMultiple([
+                'title' => $title,
+                'message' => $message,
+                'state' => InfoboxViewHelper::STATE_INFO
+            ]);
+            $content .= $view->render();
+        } else {
+            $links = $this->getPageLinksWhereContentIsAlsoShownOn($this->pageInfo['uid']);
+            if (!empty($links)) {
+                $message = sprintf(TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_on_pid_title'), $links);
+                $view->assignMultiple([
+                    'title' => '',
+                    'message' => $message,
+                    'state' => InfoboxViewHelper::STATE_INFO
+                ]);
+                $content .= $view->render();
+            }
+        }
+        return $content;
+    }
+
+    /**
+     * Get all pages with links where the content of a page $pageId is also shown on
+     *
+     * @param int $pageId
+     * @return string
+     */
+    protected function getPageLinksWhereContentIsAlsoShownOn($pageId): string
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder
+            ->select('*')
+            ->from('pages')
+            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
+
+        $links = [];
+        $rows = $queryBuilder->execute()->fetchAll();
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $linkToPid = GeneralUtility::linkThisScript(['id' => $row['uid']]);
+                $title = BackendUtility::getRecordTitle('pages', $row);
+                $link = '<a href="' . htmlspecialchars($linkToPid) . '">' . htmlspecialchars($title) . ' (PID ' . (int)$row['uid'] . ')</a>';
+                $links[] = $link;
+            }
+        }
+        return implode(', ', $links);
     }
 }
