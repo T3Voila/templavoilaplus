@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
@@ -51,8 +52,19 @@ class FrontendController extends AbstractPlugin
         if (!$pageRecord['tx_templavoilaplus_map']) {
             $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($GLOBALS['TSFE']->rootLine);
         }
-
-        return $this->renderElement($pageRecord, 'pages');
+        if ($pageRecord['content_from_pid']) {
+            $newRow = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
+            if (!$newRow['tx_templavoilaplus_map']) {
+                $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
+                $newRow['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline(
+                    BackendUtility::BEgetRootLine($newRow['uid'], '', false, ['tx_templavoilaplus_map'])
+                );
+            }
+            return $this->renderElement($newRow, 'pages');
+        }
+        else {
+            return $this->renderElement($pageRecord, 'pages');
+        }
     }
 
     public function renderContent($content, $conf)
