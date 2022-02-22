@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ItemsProcFunc
@@ -44,8 +45,12 @@ class ItemsProcFunc
             ['', ''],
         ];
 
+        $currentPageId = $params['table'] === 'pages' ? $params['row'] ['uid'] : $params['row'] ['pid'];
+        $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
+        $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
+
         foreach ($mappingPlaces as $mappingPlace) {
-            if ($mappingPlace->getScope() === $scope) {
+            if ($mappingPlace->getScope() === $scope && static::checkIfMapIsFiltered($tvpPageTsConfig, $mappingPlace->getIdentifier())) {
                 $mappingConfigurations = $mappingPlace->getConfigurations();
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
@@ -80,5 +85,31 @@ class ItemsProcFunc
                 $scope = $params['table'];
         }
         return $scope;
+    }
+
+    /**
+     * @param array  $tvpPageTsConfig
+     * @param string $mappingPlace
+     *
+     * @return bool
+     */
+    protected static function checkIfMapIsFiltered(array $tvpPageTsConfig, string $mappingPlace): bool
+    {
+        if (isset($tvpPageTsConfig['filterMaps.'])) {
+            $allowedPlaces = $tvpPageTsConfig['filterMaps.'];
+        }
+        elseif (isset($tvpPageTsConfig['filterMaps'])) {
+            $allowedPlaces[] = $tvpPageTsConfig['filterMaps'];
+        }
+        else {
+            return true;
+        }
+
+        foreach ($allowedPlaces as $allowedPlace) {
+            if (strpos($mappingPlace,$allowedPlace) !== false) {
+                return true;
+            }
+        }
+        return false;
     }
 }
