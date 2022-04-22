@@ -33,7 +33,7 @@ class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSav
 
         /** @var YamlFileLoader */
         $yamlFileLoader = GeneralUtility::makeInstance(YamlFileLoader::class);
-        $yamlContent = $yamlFileLoader->load($file->getPathname());
+        $yamlContent = $yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($file->getPathname()));
 
         return $yamlContent;
     }
