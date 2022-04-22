@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -43,20 +42,26 @@ class DoktypeShortcutHandler
         $output = '';
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
 
+        $pageRepositoryClass = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
+        if (version_compare(TYPO3_version, '10.0.0', '<')) {
+            $pageRepositoryClass = \TYPO3\CMS\Frontend\Page\PageRepository;
+        }
+
+
         switch ($shortcutMode) {
-            case PageRepository::SHORTCUT_MODE_NONE: // Should be SHORTCUT_MODE_SELECT
+            case $pageRepositoryClass::SHORTCUT_MODE_NONE: // Should be SHORTCUT_MODE_SELECT
                 // Use selected page
                 $targetUid = (int)$pageRecord['shortcut'];
                 break;
-            case PageRepository::SHORTCUT_MODE_FIRST_SUBPAGE:
+            case $pageRepositoryClass::SHORTCUT_MODE_FIRST_SUBPAGE:
                 // First subpage of current/selected page
-                $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+                $pageRepository = GeneralUtility::makeInstance($pageRepositoryClass);
                 $result = $pageRepository->getFirstWebPage((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
                 if ($result) {
                     $targetUid = $result['uid'];
                 }
                 break;
-            case PageRepository::SHORTCUT_MODE_PARENT_PAGE:
+            case $pageRepositoryClass::SHORTCUT_MODE_PARENT_PAGE:
                 // Parent page of current/selected page
                 if ((int)$pageRecord['shortcut']) {
                     $shortcutTargetRecord = BackendUtility::getRecord('pages', (int)$pageRecord['shortcut']);
@@ -67,7 +72,7 @@ class DoktypeShortcutHandler
                     $targetUid = (int)$pageRecord['pid'];
                 }
                 break;
-            case PageRepository::SHORTCUT_MODE_RANDOM_SUBPAGE:
+            case $pageRepositoryClass::SHORTCUT_MODE_RANDOM_SUBPAGE:
                 // Random subpage of current/selected page
             default:
                 // Random and other shortcut modes not supported
