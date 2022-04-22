@@ -48,23 +48,22 @@ class FrontendController extends AbstractPlugin
         // Current page record which we MIGHT manipulate a little:
         $pageRecord = $GLOBALS['TSFE']->page;
 
+        // replace record if content_from_pid is used. This might change the template/mapping, however
+        // it can't be expected that fields are the same between different templates, thus we need to use the
+        // other template anways
+        if ($pageRecord['content_from_pid']) {
+            $pageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
+        }
+
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoilaplus_map']) {
-            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline($GLOBALS['TSFE']->rootLine);
+            $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline(
+                $GLOBALS['TSFE']->rootLine
+            );
         }
-        if ($pageRecord['content_from_pid']) {
-            $newRow = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
-            if (!$newRow['tx_templavoilaplus_map']) {
-                $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
-                $newRow['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline(
-                    BackendUtility::BEgetRootLine($newRow['uid'], '', false, ['tx_templavoilaplus_map'])
-                );
-            }
-            return $this->renderElement($newRow, 'pages');
-        }
-        else {
-            return $this->renderElement($pageRecord, 'pages');
-        }
+
+        return $this->renderElement($pageRecord, 'pages');
+
     }
 
     public function renderContent($content, $conf)
