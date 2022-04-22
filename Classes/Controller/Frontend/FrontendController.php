@@ -63,7 +63,6 @@ class FrontendController extends AbstractPlugin
         }
 
         return $this->renderElement($pageRecord, 'pages');
-
     }
 
     public function renderContent($content, $conf)
