@@ -223,10 +223,15 @@ class XpathRenderHandler implements RenderHandlerInterface
         }
     }
 
-    protected function processValueOuter(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName)
+    protected function processValueOuter(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName): void
     {
         if (isset($mappingConfiguration['container']) && is_array($mappingConfiguration['container'])) {
             $this->processContainer($processingNode, $mappingConfiguration['container'], $processedValues[$fieldName], $mappingConfiguration['containerType'], 'outer');
+            return;
+        }
+
+        if ($processingNode->parentNode === null) {
+            // Template mapping wrong?
             return;
         }
 
