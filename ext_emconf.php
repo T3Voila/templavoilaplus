@@ -3,7 +3,7 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'TemplaVoilà! Plus',
     'description' => 'Point-and-click, popular and easy template engine for TYPO3. Replacement for old TemplaVoilà!.',
     'category' => 'misc',
-    'version' => '7.3.5',
+    'version' => '7.3.6',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => 'uploads/tx_templavoilaplus/',
@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => 'Extrameile GmbH',
     'constraints' => [
         'depends' => [
-            'php' => '5.5.0-7.3.99',
+            'php' => '5.5.0-7.4.99',
             'typo3' => '7.6.0-9.5.99',
             'install' => '7.6.0-9.5.99',
         ],
