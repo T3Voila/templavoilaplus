@@ -32,7 +32,6 @@
         "templavoila/templavoila": "*"
     },
     "replace": {
-        "templavoilaplus/templavoilaplus": "self.version",
         "typo3-ter/templavoilaplus": "self.version"
     },
     "extra": {
