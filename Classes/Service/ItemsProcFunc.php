@@ -97,11 +97,9 @@ class ItemsProcFunc
     {
         if (isset($tvpPageTsConfig['filterMaps.'])) {
             $allowedPlaces = $tvpPageTsConfig['filterMaps.'];
-        }
-        elseif (isset($tvpPageTsConfig['filterMaps'])) {
+        } elseif (isset($tvpPageTsConfig['filterMaps'])) {
             $allowedPlaces[] = $tvpPageTsConfig['filterMaps'];
-        }
-        else {
+        } else {
             return true;
         }
 
