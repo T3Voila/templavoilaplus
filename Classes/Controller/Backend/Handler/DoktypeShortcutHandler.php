@@ -56,7 +56,14 @@ class DoktypeShortcutHandler
             case $pageRepositoryClass::SHORTCUT_MODE_FIRST_SUBPAGE:
                 // First subpage of current/selected page
                 $pageRepository = GeneralUtility::makeInstance($pageRepositoryClass);
-                $result = $pageRepository->getFirstWebPage((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                if (version_compare(TYPO3_version, '10.0.0', '>=')) {
+                    $subpages = $pageRepository->getMenu((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                    if (count($subpages)) {
+                        $result = array_values($subpages)[0];
+                    }
+                } else {
+                    $result = $pageRepository->getFirstWebPage((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                }
                 if ($result) {
                     $targetUid = $result['uid'];
                 }
@@ -101,7 +108,6 @@ class DoktypeShortcutHandler
 
             $output = $this->getLinkButton($controller, $url);
         }
-
         $controller->addFlashMessage(
             sprintf(
                 TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeShortcutCannotEdit' . $shortcutMode),
@@ -122,7 +128,9 @@ class DoktypeShortcutHandler
         return '<a href="' . $url . '"'
             . ' class="btn btn-info"'
             . '>'
-            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut', Icon::SIZE_SMALL)->render()
+            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon(
+                'apps-pagetree-page-shortcut', Icon::SIZE_SMALL
+            )->render()
             . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true)
             . '</a>';
     }
