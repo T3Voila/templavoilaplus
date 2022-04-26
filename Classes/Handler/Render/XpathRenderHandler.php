@@ -198,6 +198,13 @@ class XpathRenderHandler implements RenderHandlerInterface
             $processingNode->removeChild($processingNode->firstChild);
         }
 
+        if (empty($processedValues[$fieldName])
+            && isset($mappingConfiguration['removeIfEmpty'])
+            && $mappingConfiguration['removeIfEmpty']
+        ) {
+            $processingNode->parentNode->removeChild($processingNode);
+        }
+
         switch ($mappingConfiguration['valueType']) {
             case 'html':
                 if ($processedValues[$fieldName]) {
