@@ -1,11 +1,13 @@
-.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
-Migration from TemplaVoilà! Plus 7.x to TemplaVoilà! Plus 8.x
+.. _migration:
+
+Migration from 7.x to 8.x
 ----------------------------------------------------------------
 
-TV+ v8 uses files for all configurations. So you can use your VCS (version control system) to manage changes, to deploy your coniguration and so on.
+TV+ v8 uses files for all configurations. So you can use your VCS (version control system) to manage changes, to deploy your configuration and so on.
 Also theming related things aren't inside DataStructure anymore. We have now different configuration files for every part from
-data to template confirguration. Every part have his own place (diretory) where it lies. So you will have the possibility to use a
+data to template configuration. Every part have his own place (directory) where it lies. So you will have the possibility to use a
 base theme which you extend with your own theme without redefining the data structure or the mapping.
 
 .. important:: Do backups as the "Plus" may eat all your database tables and files.
@@ -32,4 +34,4 @@ Steps to do for migration
     }
 
 Now your system should be ready. If all works you can remove the old TemplaVoilà! Plus database tables from your system.
-If you have issues, ask on slack channel or on `github <https://github.com/pluspol-interactive/templavoilaplus>`_
+If you have issues, ask on `slack channel <https://typo3.slack.com/archives/C4HCAH659>`_ or on `github <https://github.com/pluspol-interactive/templavoilaplus>`_

@@ -1,14 +1,12 @@
-﻿.. include:: ../Includes.txt
+.. include:: /Includes.rst.txt
 
 
 Introduction
 ------------
 
-
 .. toctree::
    :maxdepth: 5
    :titlesonly:
-   :glob:
 
    WhatDoesItDo/Index
    Sponsorship/Index
