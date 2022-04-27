@@ -202,6 +202,8 @@ class ProcessingService
                                 if ($listOfSubElementUids) {
                                     $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
                                     $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer);
+                                } else {
+                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = [];
                                 }
                             }
                         }
