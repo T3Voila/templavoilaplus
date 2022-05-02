@@ -84,15 +84,15 @@ class FrontendController extends AbstractPlugin
     public function renderElement($row, $table)
     {
         try {
-                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
-                // getDS from Mapping
-                $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
+            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
+            // getDS from Mapping
+            $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
-                // getTemplateConfiguration from MappingConfiguration
-                $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
+            // getTemplateConfiguration from MappingConfiguration
+            $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
-                // getDSdata from flexform field with DS
-                $flexformData = [];
+            // getDSdata from flexform field with DS
+            $flexformData = [];
             if (!empty($row['tx_templavoilaplus_flex'])) {
                 $flexformData = GeneralUtility::xml2array($row['tx_templavoilaplus_flex']);
             }
@@ -101,28 +101,28 @@ class FrontendController extends AbstractPlugin
             }
             $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
-        // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
-        /** @TODO Do we need flexibility here? */
-        /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
+            // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
+            /** @TODO Do we need flexibility here? */
+            /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
             $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
             $processedValues = $mappingHandler->process($flexformValues, $table, $row);
 
-        // get renderer from templateConfiguration
-        /** @var ConfigurationService */
+            // get renderer from templateConfiguration
+            /** @var ConfigurationService */
             $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
             $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
             $renderer = $configurationService->getHandler($renderHandlerIdentifier);
 
-        // Manipulate header data
-        // @TODO The renderer? Not realy or?
+            // Manipulate header data
+            // @TODO The renderer? Not realy or?
             $renderer->processHeaderInformation($templateConfiguration);
 
-        // give TemplateData to renderer and return result
+            // give TemplateData to renderer and return result
             return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
         } catch (\Exception $e) {
-            var_dump($e->getMessage());
-            var_dump($e);
-            die('Error message shown');
+            // Do not break FE rendering
+            // @TODO Logging
+            return '';
         }
     }
 
