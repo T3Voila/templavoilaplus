@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -122,6 +123,8 @@ class ProcessingService
         $table = $node['raw']['table'];
         $row = $node['raw']['entity'];
 
+        $rawDataStructure = [];
+
         /** @TODO At the moment, concentrating only on this parts, but more could be possible */
         if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
@@ -132,16 +135,20 @@ class ProcessingService
             );
 
             /** @TODO Runtime Cache? */
-            $rawDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-
-            if (is_array($rawDataStructure)) {
-                $rawDataStructure['identifier'] = $dataStructureIdentifier;
-                return $rawDataStructure;
+            try {
+                $rawDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            } catch (InvalidIdentifierException $e) {
+                $rawDataStructure = ['error' => $e->getMessage()];
+            } catch (\RuntimeException $e) {
+                $rawDataStructure = ['error' => $e->getMessage()];
             }
+
+            $rawDataStructure['identifier'] = $dataStructureIdentifier;
         }
 
-        return [];
+        return $rawDataStructure;
     }
+
 
     public function getFlexformForNode(array $node): array
     {

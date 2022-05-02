@@ -7,8 +7,8 @@ namespace Tvp\TemplaVoilaPlus\ViewHelpers\Backend;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
+use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
-
 
 /**
  * Returns name of MappingConfiguration
@@ -55,7 +55,11 @@ class LabelFromMappingConfigurationViewHelper extends AbstractViewHelper
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
     ) {
-        $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($arguments['identifier']);
-        return $mappingConfiguration->getName();
+        try {
+            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($arguments['identifier']);
+            return $mappingConfiguration->getName();
+        } catch (ConfigurationException $e) {
+            return $e->getMessage();
+        }
     }
 }

@@ -170,7 +170,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         }
     }
 
-    protected function processValue($processingNode, $fieldName, array $mappingConfiguration, $processedValues)
+    protected function processValue($processingNode, $fieldName, array $mappingConfiguration, array $processedValues)
     {
         switch ($mappingConfiguration['mappingType']) {
             case 'attrib':

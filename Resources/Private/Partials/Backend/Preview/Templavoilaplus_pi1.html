@@ -1,5 +1,7 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
-
+<f:if condition="{node.datastructure.error}">
+  <f:be.infobox state="2">{node.datastructure.error}</f:be.infobox>
+</f:if>
 <f:if condition="{node.raw.entity.tx_templavoilaplus_map}">
   <f:then>
     <f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}"/>

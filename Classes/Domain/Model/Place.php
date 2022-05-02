@@ -19,7 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
-use Tvp\TemplaVoilaPlus\Exception\DataStructureException;
+use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -131,7 +131,7 @@ class Place
     {
         $this->loadConfiguration();
         if (!isset($this->configurations[$configurationIdentifier])) {
-            throw new \Exception('Configuration with identifer "' . $configurationIdentifier . '" not found');
+            throw new ConfigurationException('Configuration with identifer "' . $configurationIdentifier . '" not found');
         }
 
         return $this->configurations[$configurationIdentifier]['configuration'];
