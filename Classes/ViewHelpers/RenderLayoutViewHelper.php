@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 /**
  * Like VariableViewHelper but against an array
@@ -19,13 +19,10 @@ class RenderLayoutViewHelper extends AbstractViewHelper
     use CompileWithRenderStatic;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $escapeOutput = false;
 
-    /**
-     * @return void
-     */
     public function initializeArguments()
     {
         parent::initializeArguments();
@@ -37,7 +34,6 @@ class RenderLayoutViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return null
      */
     public static function renderStatic(
         array $arguments,
@@ -45,7 +41,7 @@ class RenderLayoutViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $combinedConfigurationIdentifier = $arguments['combinedConfigurationIdentifier'];
-        $variables = (array) $arguments['arguments'];
+        $variables = (array)$arguments['arguments'];
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);

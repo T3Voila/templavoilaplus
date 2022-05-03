@@ -9,7 +9,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class ApiHelperUtilityTest extends UnitTestCase
 {
-
     protected function setUp(): void
     {
         parent::setUp();

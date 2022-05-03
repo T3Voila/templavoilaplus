@@ -19,11 +19,11 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 
 class ContentElementWizard extends AbstractResponse
 {
@@ -109,7 +109,7 @@ class ContentElementWizard extends AbstractResponse
         $newContentElementsConfig = $contentElementsConfig;
 
         if (isset($newContentElementWizardConfiguration['overwrites'])) {
-            foreach($newContentElementWizardConfiguration['overwrites'] as $tabKey => $overwrite) {
+            foreach ($newContentElementWizardConfiguration['overwrites'] as $tabKey => $overwrite) {
                 if (!isset($contentElementsConfig[$tabKey])) {
                     $newContentElementsConfig[$tabKey] = [
                         'label' => $tabKey,
@@ -129,7 +129,7 @@ class ContentElementWizard extends AbstractResponse
                 }
                 // Manage move
                 if (isset($overwrite['move'])) {
-                    foreach($overwrite['move'] as $elementKey => $position) {
+                    foreach ($overwrite['move'] as $elementKey => $position) {
                         if (isset($newContentElementsConfig[$tabKey]['contentElements'][$elementKey])) {
                             // Put into new position
                             $contentElementConfig = $newContentElementsConfig[$tabKey]['contentElements'][$elementKey];
@@ -206,7 +206,7 @@ class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\
         $wizardItems = [];
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $wizardItems = $this->getWizards();
-        } else  {
+        } else {
             $wizardItems = $this->wizardArray();
         }
 
@@ -227,4 +227,3 @@ class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\
         return $wizardItems;
     }
 }
-

@@ -43,7 +43,6 @@ class DefaultMappingHandler
         $containerInstructions = $this->mappingConfiguration->getMappingToTemplate();
 
         /** @TODO $table, $row are more globale vars, they are given from function to function */
-
         $processedMapping = $this->processContainer($flexformData, $table, $row, $containerInstructions);
 
         return $processedMapping;
@@ -195,7 +194,6 @@ class DefaultMappingHandler
 
         return $restoreData;
     }
-
 
     protected function restoreTypoScriptParentRec(array $restoreData)
     {

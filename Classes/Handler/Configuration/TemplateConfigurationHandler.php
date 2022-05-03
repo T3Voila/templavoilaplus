@@ -17,8 +17,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 class TemplateConfigurationHandler implements ConfigurationHandlerInterface

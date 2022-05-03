@@ -17,6 +17,8 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -28,8 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
 {
@@ -46,7 +46,7 @@ class PageLayoutController extends ActionController
      * @var BackendTemplateView
      * @api
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * @var int the id of current page
@@ -63,7 +63,7 @@ class PageLayoutController extends ActionController
     /**
      * Permissions for the current page
      *
-     * @var integer
+     * @var int
      */
     protected $calcPerms;
 
@@ -96,7 +96,7 @@ class PageLayoutController extends ActionController
     /**
      * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
      *
-     * @var integer
+     * @var int
      */
     protected $currentLanguageUid;
 
@@ -244,7 +244,6 @@ class PageLayoutController extends ActionController
             'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
         ]);
     }
-
 
     protected function initializeTypo3Clipboard()
     {
@@ -418,7 +417,7 @@ class PageLayoutController extends ActionController
         if ($this->pageId) {
             $this->addDocHeaderButton(
                 'tce_db',
-                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile .  'labels.clear_cache'),
+                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.clear_cache'),
                 'actions-system-cache-clear',
                 [
                     'cacheCmd' => $this->pageId,
@@ -438,7 +437,7 @@ class PageLayoutController extends ActionController
      * @param string $icon Name of the Icon (inside IconFactory)
      * @param array $params Array of parameters which should be added to module call
      * @param string $buttonPosition left|right to position button inside the bar
-     * @param integer $buttonGroup Number of the group the icon should go in
+     * @param int $buttonGroup Number of the group the icon should go in
      */
     public function addDocHeaderButton(
         $module,
@@ -532,7 +531,7 @@ class PageLayoutController extends ActionController
                     'new_unique_uid',
                     'search_field',
                     'search_levels',
-                    'showLimit'
+                    'showLimit',
                 ]
             )
             ->setSetVariables([]/*array_keys($this->MOD_MENU) @TODO*/);
@@ -549,11 +548,11 @@ class PageLayoutController extends ActionController
     }
 
     /**
-     * @param integer $pid
+     * @param int $pid
      * @TODO Cache realy needed? Statically?
      * @TODO Use constant instead of value 16!
      *
-     * @return integer
+     * @return int
      */
     protected function getCalcPerms($pid)
     {
@@ -576,7 +575,7 @@ class PageLayoutController extends ActionController
      * @TODO Use constant instead of value 16!
      * @TODO rootElement needed? View page content partially?
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasBasicEditRights($table = null, array $record = null)
     {
@@ -637,7 +636,7 @@ class PageLayoutController extends ActionController
             if (is_array($renderFunctionHook)) {
                 foreach ($renderFunctionHook as $hook) {
                     $params = [];
-                    $result .= (string) GeneralUtility::callUserFunction($hook, $params, $this);
+                    $result .= (string)GeneralUtility::callUserFunction($hook, $params, $this);
                     if ($stopOnConsume && $result) {
                         break;
                     }

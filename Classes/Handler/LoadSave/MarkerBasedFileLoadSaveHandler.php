@@ -17,9 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-
 class MarkerBasedFileLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
     public static $identifier = 'TVP\LoadSaveHandler\MarkerBasedFile';

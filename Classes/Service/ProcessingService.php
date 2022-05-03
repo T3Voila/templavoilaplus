@@ -21,8 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -32,7 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ProcessingService
 {
     /** @var FlexFormTools */
-    protected $flexFormTools = null;
+    protected $flexFormTools;
 
     public function __construct()
     {
@@ -54,9 +52,9 @@ class ProcessingService
     {
         if ($basePid === 0) {
             if ($table === 'pages') {
-                $basePid = (int) $row['uid'];
+                $basePid = (int)$row['uid'];
             } else {
-                $basePid = (int) $row['pid'];
+                $basePid = (int)$row['pid'];
             }
         }
 
@@ -85,7 +83,7 @@ class ProcessingService
         // Return result:
         return [
             'node' => $node,
-            'contentElementUsage' => $tt_content_elementRegister // ?
+            'contentElementUsage' => $tt_content_elementRegister, // ?
         ];
     }
 
@@ -93,7 +91,7 @@ class ProcessingService
     {
         $title = BackendUtility::getRecordTitle($table, $row);
 
-        $onPid = ($table === 'pages' ? (int) $row['uid'] : (int) $row['pid']);
+        $onPid = ($table === 'pages' ? (int)$row['uid'] : (int)$row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
 
         if (isset($usedElements[$table][$row['uid']])) {
@@ -153,15 +151,14 @@ class ProcessingService
         return $rawDataStructure;
     }
 
-
     public function getFlexformForNode(array $node): array
     {
-            $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
+        $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
         if (!is_array($flexform)) {
             return [];
         }
 
-            return $flexform;
+        return $flexform;
     }
 
     public function getLocalizationForNode(array $node): array
@@ -176,7 +173,6 @@ class ProcessingService
 
         $records = $localizationRepository->fetchRecordLocalizations($table, $row['uid']);
         /** @TODO WSOL? */
-
         foreach ($records as $record) {
             $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);
         }
@@ -248,9 +244,8 @@ class ProcessingService
 
             if (is_array($contentRow)) {
                 $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer, $basePid, $usedElements);
-            } else {
-                # ERROR: The element referenced was deleted! - or hidden :-)
             }
+            // ERROR: The element referenced was deleted! - or hidden :-)
         }
 
         return $nodes;

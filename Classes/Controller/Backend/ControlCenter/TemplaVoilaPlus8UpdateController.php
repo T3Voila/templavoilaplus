@@ -17,12 +17,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -68,7 +68,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound && $columnPagesMapNextFound;
 
-
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into
         // Site Management
         $storagePidsAreFine = false;
@@ -106,7 +105,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid && $allPagesContentValid;
 
-
         $indentation = 0;
         if (isset($this->extConf['ds']['indentation'])) {
             $indentation = (int)$this->extConf['ds']['indentation'];
@@ -117,7 +115,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
-            'staticDsInExtension' => (bool) (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
+            'staticDsInExtension' => (bool)(isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
             'staticDsPaths' => implode(', ', $this->getStaticDsPaths()),
             'allDsToValid' => $allDsToValid,
             'validationDsToErrors' => $validationDsToErrors,
@@ -260,7 +258,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             }
         }
 
-         return $allDs;
+        return $allDs;
     }
 
     protected function getAllDsFromDatabase(): array
@@ -287,11 +285,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $dataStructure = [
                 'staticDS' => false,
                 'title' => $row['title'],
-                'path' => (string) $row['uid'],
+                'path' => (string)$row['uid'],
                 'xml' => $row['dataprot'],
                 'scope' => $row['scope'],
                 'icon' => $row['previewicon'],
-                'belayout' => $row['belayout'], // This should be in TO or is that only there for staticDS??
+                'belayout' => $row['belayout'],
+// This should be in TO or is that only there for staticDS??
             ];
 
             $allDs[] = $dataStructure;
@@ -503,7 +502,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     protected function step2Action()
     {
         $packagesQualified = [];
-        $showAll = (bool) $_POST['showAll'];
+        $showAll = (bool)$_POST['showAll'];
 
         /** @var PackageManager */
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
@@ -530,7 +529,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             } elseif (isset($allTerExtensionKeys[$key])) {
                 $qualify -= 10;
                 $why[] = 'Existing TER Package';
-            } elseif (!is_dir($package->getPackagePath()) || !is_writeable($package->getPackagePath())) {
+            } elseif (!is_dir($package->getPackagePath()) || !is_writable($package->getPackagePath())) {
                 $qualify -= 100;
                 $why[] = 'Path not writable';
             } elseif (file_exists($package->getPackagePath() . '/Configuration/TVP')) {
@@ -593,7 +592,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $this->forward('step3ExistingExtension');
         }
 
-        $this->forward('step2'); // Return to step 2
+        $this->forward('step2');
+        // Return to step 2
     }
 
     protected function step3NewExtensionAction()
@@ -1007,7 +1007,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
+                // No inline style please
             );
         }
 
@@ -1025,7 +1026,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return $covertingInstructions;
     }
 
-    function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
+    public function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
     {
         $convertedDsConfig = $this->getAndConvertDsForTo($allDs, $to, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes);
 
@@ -1071,7 +1072,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 'meta' => [
                     'name' => $to['title'],
                 ],
-                'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'], // Is empty string if no DS is needed
+                'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'],
+// Is empty string if no DS is needed
                 'combinedTemplateConfigurationIdentifier' => $packageName . $convertedDsConfig['scopePath'] . '/TemplateConfiguration:' . $yamlFileName,
             ],
         ];
@@ -1095,7 +1097,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         GeneralUtility::writeFile(
             $publicExtensionDirectory . $innerPathes['templateConfiguration'][$convertedDsConfig['scopeName']] . '/' . $yamlFileName,
-            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
+            // No inline style please
         );
 
         return [$mappingConfiguration, $convertedDsConfig['scopeName'], $convertedDsConfig['scopePath']];
@@ -1118,7 +1121,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             } else {
                 // Or check every field config parameter
                 foreach ($parentFieldConfig as $parentFieldConfigParam => $parentFieldConfigValue) {
-                    if (isset($childFieldConfig[$parentFieldConfigParam])
+                    if (
+                        isset($childFieldConfig[$parentFieldConfigParam])
                         && $childFieldConfig[$parentFieldConfigParam] === $parentFieldConfigValue
                     ) {
                         unset($child['tvp-mapping']['mappingToTemplate'][$fieldName][$parentFieldConfigParam]);
@@ -1162,7 +1166,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         foreach ($errors as $error)
         {
         }*/
-
         libxml_clear_errors();
 
         /** @TODO Read error messages and write into a hint array for user output but do not break */
@@ -1366,7 +1369,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (
                     empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
                     || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
-                    && (empty($dataStructure['meta']['title'])
+                    && (
+                        empty($dataStructure['meta']['title'])
                         || $dataStructure['meta']['title'] === 'ROOT'
                     )
                 ) {
@@ -1413,7 +1417,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return $convertedDS[$to['datastructure']];
     }
 
-
     /**
      * We are also updating the dsXml, as we remove TypoScript points!
      */
@@ -1421,7 +1424,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     {
         if (isset($dsRoot['el'])) {
             foreach ($dsRoot['el'] as $fieldName => $dsElement) {
-
                 if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                     unset($dsRoot['el'][$fieldName]);
                 } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
@@ -1449,7 +1451,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
     protected function saveNewDs(array &$convertedDs): void
     {
-        if (isset($convertedDs['dataStructureCleaned']['ROOT'])
+        if (
+            isset($convertedDs['dataStructureCleaned']['ROOT'])
             && isset($convertedDs['dataStructureCleaned']['ROOT']['el'])
             && count($convertedDs['dataStructureCleaned']['ROOT']['el']) > 0
         ) {
@@ -1628,7 +1631,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     {
     }
 
-
     /**
      * Taken from TYPO3 Core ArrayUtility and expanded for our special object of non quoted string
      * Exports an array as string.
@@ -1683,7 +1685,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 $stringContent = str_replace('\'', '\\\'', $stringContent);
                 $lines .= '\'' . $stringContent . '\'' . ',' . LF;
             } elseif ($value instanceof UnquotedString) {
-                $lines .= (string) $value . ',' . LF;
+                $lines .= (string)$value . ',' . LF;
             } else {
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }
