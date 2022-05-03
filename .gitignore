@@ -13,3 +13,10 @@ nbproject
 thumbs.db
 desktop.ini
 .directory
+
+### composer artifacts
+/public
+/vendor
+
+### locally rendered docs
+/*GENERATED*

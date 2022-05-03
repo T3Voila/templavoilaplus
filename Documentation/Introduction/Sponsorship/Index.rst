@@ -1,4 +1,4 @@
-﻿.. include:: ../../Includes.txt
+.. include:: /Includes.rst.txt
 
 Sponsorship
 ^^^^^^^^^^^
@@ -13,7 +13,7 @@ members who enable us to develop!
 
 Updating the TemplaVoilà! extension for TYPO3 v7/v8/v9 LTS under the new
 name "TemplaVoilà! Plus" was sponsored by
-`PLUSPOL interactive GbR<https://www.pluspol-interactive.de>`_
+`PLUSPOL interactive GbR <https://www.pluspol-interactive.de>`_
 
 Updating the TemplaVoilà! Plus extension for TYPO3 v10/v11 LTS and maintenance
 is sponsored by

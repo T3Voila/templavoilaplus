@@ -1,5 +1,4 @@
-﻿.. include:: ../../Includes.txt
-
+.. include:: /Includes.rst.txt
 
 About this manual
 ^^^^^^^^^^^^^^^^^
