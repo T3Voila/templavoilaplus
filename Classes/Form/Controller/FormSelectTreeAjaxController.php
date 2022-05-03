@@ -36,7 +36,7 @@ class FormSelectTreeAjaxController extends \TYPO3\CMS\Backend\Controller\FormSel
      * @throws \RuntimeException
      * @return ResponseInterface
      */
-    public function fetchDataAction(ServerRequestInterface $request, ResponseInterface $response)
+    public function fetchDataAction(ServerRequestInterface $request, ResponseInterface $response): \Psr\Http\Message\ResponseInterface
     {
         $tableName = $request->getQueryParams()['tableName'];
         $fieldName = $request->getQueryParams()['fieldName'];
