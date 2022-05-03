@@ -21,3 +21,4 @@ parameters:
 
   excludePaths:
     - Tests/Acceptance/
+    - Classes/Form/
