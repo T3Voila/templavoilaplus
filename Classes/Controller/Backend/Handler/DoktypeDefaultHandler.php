@@ -96,7 +96,7 @@ class DoktypeDefaultHandler
                 $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
             } catch (ConfigurationException $e) {
                 $controller->getView()->getModuleTemplate()->addFlashMessage(
-                    'The page has a Layout defined, which seems to be missing on this system. The error was: ' . $e->getMessage(),
+                    'The page has a layout defined, which seems to be missing on this system. The error was: ' . $e->getMessage(),
                     'Template Configuration not loadable',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
                     false
