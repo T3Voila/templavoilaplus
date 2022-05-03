@@ -76,8 +76,8 @@ class TcaFlexProcess implements FormDataProviderInterface
      *     ^^^^^^^^^^^
      * $flexformIdentifier contains "aFlexConfig" after this operation.
      *
-     * @todo: This method is only implemented half. It basically should do all the
-     * @todo: pointer handling that is done within BackendUtility::getFlexFormDS() to $srcPointer.
+     * @TODO This method is only implemented half. It basically should do all the
+     * @TODO pointer handling that is done within BackendUtility::getFlexFormDS() to $srcPointer.
      *
      * @param array $result Result array
      * @param string $fieldName Current handle field name
@@ -85,8 +85,8 @@ class TcaFlexProcess implements FormDataProviderInterface
      */
     protected function getFlexIdentifier(array $result, $fieldName)
     {
-        // @todo: Current implementation with the "list_type, CType" fallback is rather limited and customized for
-        // @todo: tt_content, also it forces a ds_pointerField to be defined and a casual "default" sub array does not work
+        // @TODO Current implementation with the "list_type, CType" fallback is rather limited and customized for
+        // @TODO tt_content, also it forces a ds_pointerField to be defined and a casual "default" sub array does not work
         $pointerFields = !empty($result['processedTca']['columns'][$fieldName]['config']['ds_pointerField'])
             ? $result['processedTca']['columns'][$fieldName]['config']['ds_pointerField']
             : 'list_type,CType';
@@ -286,7 +286,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             if ($langDisabled && $isoCode !== 'DEF') {
                 $isAvailable = false;
             }
-            // @todo: Is it possible a user has no write access to default lang? If so, what to do?
+            // @TODO Is it possible a user has no write access to default lang? If so, what to do?
             if (!$backendUser->checkLanguageAccess($systemLanguageRow['uid'])) {
                 $isAvailable = false;
             }
@@ -961,7 +961,7 @@ class TcaFlexProcess implements FormDataProviderInterface
     /**
      * Add fields and values used by ds_pointerField to the meta data array so they can be used in AJAX context during rendering.
      *
-     * @todo: This method is a stopgap measure to get required information into the AJAX controller
+     * @TODO This method is a stopgap measure to get required information into the AJAX controller
      *
      * @param array $result Result array
      * @param string $fieldName Current handle field name

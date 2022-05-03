@@ -141,7 +141,7 @@ class ApiService
         if ($destinationPointer['position'] > 0) {
             $currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationPointer);
             /**
-             * @todo: check why $currentReferencesArr isn't used
+             * @TODO check why $currentReferencesArr isn't used
              */
         }
         $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
