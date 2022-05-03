@@ -42,12 +42,14 @@ class ProcessingService
     }
 
     /**
-     * Returns the content tree (based on the data structure) for a certain page or a flexible content element. In case of a page it will contain all the references
-     * to content elements (and some more information) and in case of a FCE, references to its sub-elements.
+     * Returns the content tree (based on the data structure) for a certain page or a flexible content element. In case
+     * of a page it will contain all the references to content elements (and some more information) and in case of a
+     * FCE, references to its sub-elements.
      *
-     * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
-     * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
-     * @param array $parentPointer @TODO Move this in a model?
+     * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible
+     *                      content elements from 'tt_content' are handled
+     * @param array  $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
+     * @param array  $parentPointer @TODO Move this in a model?
      *
      * @return array The content tree
      */
@@ -81,7 +83,7 @@ class ProcessingService
         $node['localization'] = $this->getLocalizationForNode($node);
 
         // Get node childs:
-        $node['childNodes']  = $this->getNodeChilds($node);
+        $node['childNodes'] = $this->getNodeChilds($node);
 
         // Return result:
         return [
@@ -205,8 +207,17 @@ class ProcessingService
                             foreach ($vKeys as $vKey) {
                                 $listOfSubElementUids = $node['flexform']['data'][$sheetKey][$lKey][$fieldKey][$vKey];
                                 if ($listOfSubElementUids) {
-                                    $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
-                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer);
+                                    $parentPointer = $this->createParentPointer(
+                                        $node,
+                                        $sheetKey,
+                                        $fieldKey,
+                                        $lKey,
+                                        $vKey
+                                    );
+                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree(
+                                        $listOfSubElementUids,
+                                        $parentPointer
+                                    );
                                 } else {
                                     $childs[$sheetKey][$lKey][$fieldKey][$vKey] = [];
                                 }
@@ -252,27 +263,29 @@ class ProcessingService
     }
 
     /**
-     * Converts a flexform pointer array to a string of the format "table:uid:sheet:sLang:field:vLang:position/targettable:targetuid"
+     * Converts a flexform pointer array to a string of the format
+     * "table:uid:sheet:sLang:field:vLang:position/targettable:targetuid"
      *
-     * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see flexform_getPointerFromString flexform_getStringFromPointer in ApiService
-     * NOTE: "targettable" currently must be tt_content
+     * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see flexform_getPointerFromString
+     *       flexform_getStringFromPointer in ApiService NOTE: "targettable" currently must be tt_content
      *
      * @param array $parentPointer A valid flexform pointer array
      *
-     * @return string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer.
+     * @return string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might
+     *                additionally contain "/table:uid" which is used to check the target record of the pointer.
      */
     protected function getParentPointerAsString(array $parentPointer): string
     {
         if (isset($parentPointer['sheet'])) {
-            $flexformPointerString =
-                $parentPointer['table'] . ':' .
+            $flexformPointerString = $parentPointer['table'] . ':' .
                 $parentPointer['uid'] . ':' .
                 $parentPointer['sheet'] . ':' .
                 $parentPointer['sLang'] . ':' .
                 $parentPointer['field'] . ':' .
                 $parentPointer['vLang'] . ':' .
                 $parentPointer['position'];
-            if (isset($parentPointer['targetCheckUid'])) { /** @TODO Whats that? */
+            if (isset($parentPointer['targetCheckUid'])) {
+                /** @TODO Whats that? */
                 $flexformPointerString .= '/tt_content:' . $parentPointer['targetCheckUid'];
             }
         } else {
@@ -282,8 +295,13 @@ class ProcessingService
         return $flexformPointerString;
     }
 
-    protected function createParentPointer(array $node, string $sheetKey, string $fieldKey, string $lKey, string $vKey): array
-    {
+    protected function createParentPointer(
+        array $node,
+        string $sheetKey,
+        string $fieldKey,
+        string $lKey,
+        string $vKey
+    ): array {
         return [
             'table' => $node['raw']['table'],
             'uid' => $node['raw']['entity']['uid'],

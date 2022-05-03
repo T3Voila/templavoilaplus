@@ -81,12 +81,14 @@ class TcaFlexFetch implements FormDataProviderInterface
                     $result['databaseRow']
                 );
                 $dataStructureArray = $flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                // phpcs:disable
             } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException $e) {
             } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException $e) {
             } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException $e) {
             } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException $e) {
             } catch (\TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException $e) {
             } finally {
+                //phpcs:enable
                 // Add the identifier to TCA to use it later during rendering
                 $result['processedTca']['columns'][$fieldName]['config']['dataStructureIdentifier'] = $dataStructureIdentifier;
             }

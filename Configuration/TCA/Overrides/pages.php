@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3_MODE') || die();
 
 $tempColumns = [
     'tx_templavoilaplus_map' => [

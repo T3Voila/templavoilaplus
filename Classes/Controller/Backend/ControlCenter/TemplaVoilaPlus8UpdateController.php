@@ -73,7 +73,9 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         $storagePidsAreFine = false;
         $useStaticDS = false;
 
-        $allPossiblePids = $allDs = $allTo = [];
+        $allPossiblePids = [];
+        $allDs = [];
+        $allTo = [];
 
         if ($allOldDatabaseElementsFound) {
             $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
@@ -517,7 +519,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $why = [];
             $active = (isset($activePackages[$key]) ? true : false);
             if ($active) {
-                $qualify += 1;
+                ++$qualify;
             }
 
             if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
@@ -707,6 +709,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
      * Build new extension (or replace existing one) or multiple for multiple designs
      * Or add them to Site Management directories (if support is implemented)
      * The place may depend if you use composer installed TYPO3 or package based TYPO3
+     *
+     * @throws \Exception
      */
     protected function step4Action()
     {
@@ -768,7 +772,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         ],
                     ],
                 ];
-                $emConfContent = "<?php\n$fileDescription\n\$EM_CONF['$newExtensionKey'] = " . ArrayUtility::arrayExport($emConfConfig) . ";\n";
+                $emConfContent = "<?php\n" .
+                    $fileDescription .
+                    "\n\$EM_CONF['" . $newExtensionKey . "'] = " .
+                    ArrayUtility::arrayExport($emConfConfig) .
+                    ";\n";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_emconf.php', $emConfContent, true);
 
                 $composerInfo = [
@@ -797,7 +805,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('$newExtensionKey');";
+                $extLocalconf = "<?php\n" .
+                    $fileDescription .
+                    "\ndefined('TYPO3_MODE') or die();\n\n" .
+                    "// @TODO This line can be removed after cache is implemented\n" .
+                    "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -1185,10 +1197,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             if ($result->count() === 0) {
                 $convertedXPath = '//' . $convertedXPath;
                 $result = $domXpath->query($convertedXPath, $baseNode);
+                //phpcs:disable
                 if ($result->count() === 0) {
                     /** @TODO Add to a hint array, what is wrong but do not stop converting */
 //                     throw new \Exception('The old mapping path "' . $xPath . '" converted to XPath "' . $convertedXPath . '" could not be found in template file "' . $templateFile . '"');
                 }
+                //phpcs:enable
             }
 
             // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
@@ -1254,9 +1268,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 ) {
                     $useHtmlValue = true;
                 }
+                //phpcs:disable
             } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
                 // Blind TypoScript element, nothing todo here, already done
             } else {
+                //phpcs:enable
                 // Respect EType_extra??
                 // Respect proc ?
                 $fieldConfig += [
@@ -1756,18 +1772,5 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         return false;
-    }
-}
-
-class UnquotedString
-{
-    private $value = '';
-    public function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

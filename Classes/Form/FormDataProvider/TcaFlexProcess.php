@@ -37,6 +37,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      * single field stuff like item processor functions.
      *
      * @param array $result
+     *
      * @return array
      */
     public function addData(array $result)
@@ -52,7 +53,11 @@ class TcaFlexProcess implements FormDataProviderInterface
             $result = $this->removeExcludeFieldsFromDataStructure($result, $fieldName, $flexIdentifier);
             $result = $this->removeDisabledFieldsFromDataStructure($result, $fieldName, $pageTsConfigOfFlex);
             $result = $this->prepareLanguageHandlingInDataValues($result, $fieldName);
-            $result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup($result, $fieldName, $pageTsConfigOfFlex);
+            $result = $this->modifyDataStructureAndDataValuesByFlexFormSegmentGroup(
+                $result,
+                $fieldName,
+                $pageTsConfigOfFlex
+            );
             $result = $this->addDataStructurePointersToMetaData($result, $fieldName);
             if (!empty($result['flexSectionContainerPreparation'])) {
                 // Create data and default values for a new section container, set by FormFlexAjaxController
@@ -76,12 +81,13 @@ class TcaFlexProcess implements FormDataProviderInterface
      *     ^^^^^^^^^^^
      * $flexformIdentifier contains "aFlexConfig" after this operation.
      *
-     * @todo: This method is only implemented half. It basically should do all the
+     * @param array  $result    Result array
+     * @param string $fieldName Current handle field name
+     *
+     * @return string Pointer
      * @todo: pointer handling that is done within BackendUtility::getFlexFormDS() to $srcPointer.
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @return string Pointer
+     * @todo: This method is only implemented half. It basically should do all the
      */
     protected function getFlexIdentifier(array $result, $fieldName)
     {
@@ -109,9 +115,10 @@ class TcaFlexProcess implements FormDataProviderInterface
     /**
      * Determine TCEFORM.aTable.aField.matchingIdentifier
      *
-     * @param array $result Result array
-     * @param string $fieldName Handled field name
+     * @param array  $result         Result array
+     * @param string $fieldName      Handled field name
      * @param string $flexIdentifier Determined identifier
+     *
      * @return array PageTsConfig for this flex
      */
     protected function getPageTsOfFlex(array $result, $fieldName, $flexIdentifier)
@@ -131,9 +138,10 @@ class TcaFlexProcess implements FormDataProviderInterface
      * Handle "outer" flex data structure changes like language and sheet
      * description. Does not change "TCA" or values of single elements
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $pageTsConfig Given pageTsConfig of this flex form
+     * @param array  $result       Result array
+     * @param string $fieldName    Current handle field name
+     * @param array  $pageTsConfig Given pageTsConfig of this flex form
+     *
      * @return array Modified item array
      */
     protected function modifyOuterDataStructure(array $result, $fieldName, $pageTsConfig)
@@ -160,7 +168,10 @@ class TcaFlexProcess implements FormDataProviderInterface
                     }
 
                     // sheetTitle, sheetDescription, sheetShortDescr
-                    $modifiedDataStructure['sheets'][$sheetName] = $this->modifySingleSheetInformation($sheetStructure, $pageTsOfSheet);
+                    $modifiedDataStructure['sheets'][$sheetName] = $this->modifySingleSheetInformation(
+                        $sheetStructure,
+                        $pageTsOfSheet
+                    );
                 }
             }
         }
@@ -180,9 +191,10 @@ class TcaFlexProcess implements FormDataProviderInterface
     /**
      * Removes fields from data structure the user has no access to
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
+     * @param array  $result         Result array
+     * @param string $fieldName      Current handle field name
      * @param string $flexIdentifier Determined identifier
+     *
      * @return array Modified result
      */
     protected function removeExcludeFieldsFromDataStructure(array $result, $fieldName, $flexIdentifier)
@@ -222,9 +234,10 @@ class TcaFlexProcess implements FormDataProviderInterface
      * Handle "outer" flex data structure changes like language and sheet
      * description. Does not change "TCA" or values of single elements
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $pageTsConfig Given pageTsConfig of this flex form
+     * @param array  $result       Result array
+     * @param string $fieldName    Current handle field name
+     * @param array  $pageTsConfig Given pageTsConfig of this flex form
+     *
      * @return array Modified item array
      */
     protected function removeDisabledFieldsFromDataStructure(array $result, $fieldName, $pageTsConfig)
@@ -254,8 +267,9 @@ class TcaFlexProcess implements FormDataProviderInterface
      * Remove data values in languages the user has no access to and add dummy entries
      * for languages that are available but do not exist in data values yet.
      *
-     * @param array $result Result array
+     * @param array  $result    Result array
      * @param string $fieldName Current handle field name
+     *
      * @return array Modified item array
      */
     protected function prepareLanguageHandlingInDataValues(array $result, $fieldName)
@@ -356,16 +370,21 @@ class TcaFlexProcess implements FormDataProviderInterface
      * Three main parts in this method:
      * * Process values of existing section container for default values
      * * Process values and TCA of possible section container and create a default value row for each
-     * * Process TCA of "normal" fields and have default values in data ['templateRows']['containerName'] parallel to section ['el']
+     * * Process TCA of "normal" fields and have default values in data ['templateRows']['containerName'] parallel to
+     * section ['el']
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $pageTsConfig Given pageTsConfig of this flex form
+     * @param array  $result       Result array
+     * @param string $fieldName    Current handle field name
+     * @param array  $pageTsConfig Given pageTsConfig of this flex form
+     *
      * @return array Modified item array
      * @throws \UnexpectedValueException
      */
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
+    // phpcs:disable Generic.Metrics.NestingLevel
     protected function modifyDataStructureAndDataValuesByFlexFormSegmentGroup(array $result, $fieldName, $pageTsConfig)
     {
+        // phpcs:enable
         $dataStructure = $result['processedTca']['columns'][$fieldName]['config']['ds'];
         $dataValues = $result['databaseRow'][$fieldName];
         $tableName = $result['tableName'];
@@ -373,11 +392,11 @@ class TcaFlexProcess implements FormDataProviderInterface
 
         $availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
         if ($dataStructure['meta']['langChildren']) {
-            $languagesOnSheetLevel = [ 'DEF' ];
+            $languagesOnSheetLevel = ['DEF'];
             $languagesOnElementLevel = $availableLanguageCodes;
         } else {
             $languagesOnSheetLevel = $availableLanguageCodes;
-            $languagesOnElementLevel = [ 'DEF' ];
+            $languagesOnElementLevel = ['DEF'];
         }
 
         $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['languagesOnSheetLevel'] = $languagesOnSheetLevel;
@@ -414,8 +433,7 @@ class TcaFlexProcess implements FormDataProviderInterface
             // @deprecated since TYPO3 v8, will be removed in TYPO3 v9
             // When deleting this code and comment block, the according code within AbstractItemProvider can be removed, too.
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'])) {
-                $message =
-                    'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_ID for flex forms'
+                $message = 'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_ID for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_ID. Be aware these settings are'
                     . ' no longer allowed for fields within flex form section container elements.';
@@ -427,8 +445,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                 $pageTsConfig['flexHack.']['PAGE_TSCONFIG_ID'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_ID'];
             }
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'])) {
-                $message =
-                    'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_IDLIST for flex forms'
+                $message = 'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_IDLIST for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_IDLIST. Be aware these settings are'
                     . ' no longer allowed for fields within flex form section container elements.';
@@ -440,8 +457,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                 $pageTsConfig['flexHack.']['PAGE_TSCONFIG_IDLIST'] = $result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_IDLIST'];
             }
             if (isset($result['pageTsConfig']['TCEFORM.'][$tableName . '.'][$fieldName . '.']['PAGE_TSCONFIG_STR'])) {
-                $message =
-                    'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_STR for flex forms'
+                $message = 'The page TSConfig setting TCEFORM.' . $tableName . '.' . $fieldName . '.PAGE_TSCONFIG_STR for flex forms'
                     . ' is deprecated. Use this setting for single flex fields instead, example: TCEFORM.' . $tableName . '.'
                     . $fieldName . '.theDataStructureName.theSheet.theFieldName.PAGE_TSCONFIG_STR.  Be aware these settings are'
                     . ' no longer allowed for fields within flex form section container elements.';
@@ -459,24 +475,24 @@ class TcaFlexProcess implements FormDataProviderInterface
             $tcaEditColumns = [];
             // Contains the data values for the "edit" tca fields.
             $tcaValueArray = [
-                 'uid' => $result['databaseRow']['uid'],
-             ];
+                'uid' => $result['databaseRow']['uid'],
+            ];
             foreach ($languagesOnSheetLevel as $isoSheetLevel) {
                 $langSheetLevel = 'l' . $isoSheetLevel;
                 $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']
                     = $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName]['ROOT'];
                 foreach ($dataStructureFields as $dataStructureFieldName => $dataStructureFieldDefinition) {
                     if (
-                         isset($dataStructureFieldDefinition['type']) && $dataStructureFieldDefinition['type'] === 'array'
-                         && isset($dataStructureFieldDefinition['section']) && (string)$dataStructureFieldDefinition['section'] === '1'
+                        isset($dataStructureFieldDefinition['type']) && $dataStructureFieldDefinition['type'] === 'array'
+                        && isset($dataStructureFieldDefinition['section']) && (string)$dataStructureFieldDefinition['section'] === '1'
                     ) {
                         // A section
                         $containerDataStructuresPerContainer = [];
 
                         // Existing section container elements
                         if (
-                             isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'])
-                             && is_array($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'])
+                            isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'])
+                            && is_array($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'])
                         ) {
                             $containerArray = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'];
                             foreach ($containerArray as $aContainerIdentifier => $aContainerArray) {
@@ -500,8 +516,8 @@ class TcaFlexProcess implements FormDataProviderInterface
                                             // $singleFieldValueArray = ['data']['sSections']['lDEF']['section_1']['el']['1']['container_1']['el']['element_1']
                                             $singleFieldValueArray = [];
                                             if (
-                                                 isset($aContainerElementArray['el'][$singleFieldName])
-                                                 && is_array($aContainerElementArray['el'][$singleFieldName])
+                                                isset($aContainerElementArray['el'][$singleFieldName])
+                                                && is_array($aContainerElementArray['el'][$singleFieldName])
                                             ) {
                                                 $singleFieldValueArray = $aContainerElementArray['el'][$singleFieldName];
                                             }
@@ -522,19 +538,19 @@ class TcaFlexProcess implements FormDataProviderInterface
                                             $tcaValueArray['uid'] = $result['databaseRow']['uid'];
 
                                             $inputToFlexFormSegment = [
-                                                 'tableName' => $result['tableName'],
-                                                 'command' => '',
-                                                 // It is currently not possible to have pageTsConfig for section container
-                                                 'pageTsConfig' => [],
-                                                 'databaseRow' => $tcaValueArray,
-                                                 'processedTca' => [
-                                                     'ctrl' => [],
-                                                     'columns' => [],
-                                                 ],
-                                                 'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                                                 'flexParentDatabaseRow' => $result['databaseRow'],
-                                                 'effectivePid' => $result['effectivePid'],
-                                             ];
+                                                'tableName' => $result['tableName'],
+                                                'command' => '',
+                                                // It is currently not possible to have pageTsConfig for section container
+                                                'pageTsConfig' => [],
+                                                'databaseRow' => $tcaValueArray,
+                                                'processedTca' => [
+                                                    'ctrl' => [],
+                                                    'columns' => [],
+                                                ],
+                                                'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                                                'flexParentDatabaseRow' => $result['databaseRow'],
+                                                'effectivePid' => $result['effectivePid'],
+                                            ];
                                             if (!empty($newColumns[$langElementLevel])) {
                                                 // This is scenario "field has been added to data structure, but field value does not exist in value array yet"
                                                 // We want that stuff like TCA "default" values are then applied to those fields. What we do here is
@@ -548,9 +564,14 @@ class TcaFlexProcess implements FormDataProviderInterface
 
                                                 foreach ($newColumns[$langElementLevel] as $singleFieldName => $_) {
                                                     // Set data value result
-                                                    if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
+                                                    if (
+                                                        array_key_exists(
+                                                            $singleFieldName,
+                                                            $flexSegmentResult['databaseRow']
+                                                        )
+                                                    ) {
                                                         $result['databaseRow'][$fieldName]['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'][$aContainerIdentifier][$aContainerName]['el'][$singleFieldName][$langElementLevel]
-                                                             = $flexSegmentResult['databaseRow'][$singleFieldName];
+                                                            = $flexSegmentResult['databaseRow'][$singleFieldName];
                                                     }
                                                 }
                                             }
@@ -566,16 +587,21 @@ class TcaFlexProcess implements FormDataProviderInterface
 
                                                 foreach ($editColumns[$langElementLevel] as $singleFieldName => $_) {
                                                     // Set data value result
-                                                    if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
+                                                    if (
+                                                        array_key_exists(
+                                                            $singleFieldName,
+                                                            $flexSegmentResult['databaseRow']
+                                                        )
+                                                    ) {
                                                         $result['databaseRow'][$fieldName]['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['el'][$aContainerIdentifier][$aContainerName]['el'][$singleFieldName][$langElementLevel]
-                                                             = $flexSegmentResult['databaseRow'][$singleFieldName];
+                                                            = $flexSegmentResult['databaseRow'][$singleFieldName];
                                                     }
                                                     if (!isset($containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName])) {
                                                         $containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName]
-                                                             = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+                                                            = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                                     }
                                                     $containerDataStructuresPerContainer[$aContainerIdentifier]['el'][$singleFieldName][$langElementLevel]
-                                                         = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+                                                        = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                                 }
                                             }
                                         }
@@ -603,51 +629,51 @@ class TcaFlexProcess implements FormDataProviderInterface
                                         if (isset($singleFieldConfiguration['config']['type']) && $singleFieldConfiguration['config']['type'] === 'inline') {
                                             throw new \UnexpectedValueException(
                                                 'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                                 . ' in section container "' . $possibleContainerName . '": Nesting inline elements in flex form'
-                                                 . ' sections is not allowed.',
+                                                . ' in section container "' . $possibleContainerName . '": Nesting inline elements in flex form'
+                                                . ' sections is not allowed.',
                                                 1458745468
                                             );
                                         }
 
                                         // Nesting sections is not supported. Throw an exception if configured.
                                         if (
-                                             is_array($singleFieldConfiguration)
-                                             && isset($singleFieldConfiguration['type']) && $singleFieldConfiguration['type'] === 'array'
-                                             && isset($singleFieldConfiguration['section']) && (string)$singleFieldConfiguration['section'] === '1'
+                                            is_array($singleFieldConfiguration)
+                                            && isset($singleFieldConfiguration['type']) && $singleFieldConfiguration['type'] === 'array'
+                                            && isset($singleFieldConfiguration['section']) && (string)$singleFieldConfiguration['section'] === '1'
                                         ) {
                                             throw new \UnexpectedValueException(
                                                 'Invalid flex form data structure on field name "' . $fieldName . '" with element "' . $singleFieldName . '"'
-                                                 . ' in section container "' . $possibleContainerName . '": Nesting sections in container elements'
-                                                 . ' sections is not allowed.',
+                                                . ' in section container "' . $possibleContainerName . '": Nesting sections in container elements'
+                                                . ' sections is not allowed.',
                                                 1458745712
                                             );
                                         }
                                         foreach ($languagesOnElementLevel as $isoElementLevel) {
                                             $langElementLevel = 'v' . $isoElementLevel;
                                             $inputToFlexFormSegment = [
-                                                 'tableName' => $result['tableName'],
-                                                 'command' => 'new',
-                                                 'pageTsConfig' => [],
-                                                 'databaseRow' => [
-                                                     'uid' => $result['databaseRow']['uid'],
-                                                 ],
-                                                 'processedTca' => [
-                                                     'ctrl' => [],
-                                                     'columns' => [
-                                                         $singleFieldName => $singleFieldConfiguration,
-                                                     ],
-                                                 ],
-                                                 'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                                                 'flexParentDatabaseRow' => $result['databaseRow'],
-                                                 'effectivePid' => $result['effectivePid'],
-                                             ];
+                                                'tableName' => $result['tableName'],
+                                                'command' => 'new',
+                                                'pageTsConfig' => [],
+                                                'databaseRow' => [
+                                                    'uid' => $result['databaseRow']['uid'],
+                                                ],
+                                                'processedTca' => [
+                                                    'ctrl' => [],
+                                                    'columns' => [
+                                                        $singleFieldName => $singleFieldConfiguration,
+                                                    ],
+                                                ],
+                                                'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                                                'flexParentDatabaseRow' => $result['databaseRow'],
+                                                'effectivePid' => $result['effectivePid'],
+                                            ];
                                             $flexSegmentResult = $formDataCompiler->compile($inputToFlexFormSegment);
                                             if (array_key_exists($singleFieldName, $flexSegmentResult['databaseRow'])) {
                                                 $result['databaseRow'][$fieldName]['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]['templateRows'][$possibleContainerName]['el'][$singleFieldName][$langElementLevel]
-                                                     = $flexSegmentResult['databaseRow'][$singleFieldName];
+                                                    = $flexSegmentResult['databaseRow'][$singleFieldName];
                                             }
                                             $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureFieldName]['el'][$possibleContainerName]['el'][$singleFieldName][$langElementLevel]
-                                                 = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
+                                                = $flexSegmentResult['processedTca']['columns'][$singleFieldName];
                                         }
                                     }
                                 }
@@ -659,15 +685,18 @@ class TcaFlexProcess implements FormDataProviderInterface
                         foreach ($languagesOnElementLevel as $isoElementLevel) {
                             $langElementLevel = 'v' . $isoElementLevel;
                             if (
-                                 isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName])
-                                 && array_key_exists($langElementLevel, $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName])
+                                isset($dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName])
+                                && array_key_exists(
+                                    $langElementLevel,
+                                    $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName]
+                                )
                             ) {
                                 $tcaEditColumns[$dataStructureFieldName] = $dataStructureFieldDefinition;
                             } else {
                                 $tcaNewColumns[$dataStructureFieldName] = $dataStructureFieldDefinition;
                             }
                             $tcaValueArrayLanguage[$langElementLevel][$dataStructureFieldName]
-                                 = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel];
+                                = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel];
                         }
                     } // End of single element handling
                 }
@@ -678,19 +707,19 @@ class TcaFlexProcess implements FormDataProviderInterface
 
                     // process the tca columns for the current sheet
                     $inputToFlexFormSegment = [
-                         // tablename of "parent" is given down for inline elements to resolve correctly
-                         'tableName' => $result['tableName'],
-                         'command' => '',
-                         'pageTsConfig' => $pageTsConfig,
-                         'databaseRow' => $tcaValueArray,
-                         'processedTca' => [
-                             'ctrl' => [],
-                             'columns' => [],
-                         ],
-                         'selectTreeCompileItems' => $result['selectTreeCompileItems'],
-                         'flexParentDatabaseRow' => $result['databaseRow'],
-                         'effectivePid' => $result['effectivePid'],
-                     ];
+                        // tablename of "parent" is given down for inline elements to resolve correctly
+                        'tableName' => $result['tableName'],
+                        'command' => '',
+                        'pageTsConfig' => $pageTsConfig,
+                        'databaseRow' => $tcaValueArray,
+                        'processedTca' => [
+                            'ctrl' => [],
+                            'columns' => [],
+                        ],
+                        'selectTreeCompileItems' => $result['selectTreeCompileItems'],
+                        'flexParentDatabaseRow' => $result['databaseRow'],
+                        'effectivePid' => $result['effectivePid'],
+                    ];
 
                     if (!empty($tcaNewColumns)) {
                         $inputToFlexFormSegment['command'] = 'new';
@@ -701,11 +730,11 @@ class TcaFlexProcess implements FormDataProviderInterface
                             // Set data value result
                             if (array_key_exists($dataStructureFieldName, $flexSegmentResult['databaseRow'])) {
                                 $result['databaseRow'][$fieldName]['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel]
-                                     = $flexSegmentResult['databaseRow'][$dataStructureFieldName];
+                                    = $flexSegmentResult['databaseRow'][$dataStructureFieldName];
                             }
                             // Set TCA structure result
                             $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureFieldName][$langElementLevel]
-                                 = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
+                                = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
                         }
                     }
 
@@ -718,11 +747,11 @@ class TcaFlexProcess implements FormDataProviderInterface
                             // Set data value result
                             if (array_key_exists($dataStructureFieldName, $flexSegmentResult['databaseRow'])) {
                                 $result['databaseRow'][$fieldName]['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel]
-                                     = $flexSegmentResult['databaseRow'][$dataStructureFieldName];
+                                    = $flexSegmentResult['databaseRow'][$dataStructureFieldName];
                             }
                             // Set TCA structure result
                             $result['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$dataStructureSheetName][$langSheetLevel]['ROOT']['el'][$dataStructureFieldName][$langElementLevel]
-                                 = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
+                                = $flexSegmentResult['processedTca']['columns'][$dataStructureFieldName];
                         }
                     }
                 }
@@ -735,8 +764,9 @@ class TcaFlexProcess implements FormDataProviderInterface
     /**
      * Prepare data structure and data values for a new section container.
      *
-     * @param array $result Incoming result array
+     * @param array  $result    Incoming result array
      * @param string $fieldName The field name with this flex form
+     *
      * @return array Modified result
      */
     protected function prepareNewSectionContainer(array $result, string $fieldName)
@@ -749,7 +779,7 @@ class TcaFlexProcess implements FormDataProviderInterface
 
         $availableLanguageCodes = $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['availableLanguageCodes'];
         if ($dataStructure['meta']['langChildren']) {
-            $languagesOnSheetLevel = [ 'DEF' ];
+            $languagesOnSheetLevel = ['DEF'];
         } else {
             $languagesOnSheetLevel = $availableLanguageCodes;
         }
@@ -803,6 +833,7 @@ class TcaFlexProcess implements FormDataProviderInterface
      *
      * @param array $dataStructure Given data structure
      * @param array $pageTsOfSheet Page Ts config of given field
+     *
      * @return array Modified data structure
      */
     protected function modifySingleSheetInformation(array $dataStructure, array $pageTsOfSheet)
@@ -835,9 +866,10 @@ class TcaFlexProcess implements FormDataProviderInterface
      * allowedLanguageKeys = array('lDEF', 'lNEW')
      * -> databaseRow['aFlex']['data']['sDEF'] = array('lDEF', 'lNEW');
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $allowedKeys List of allowed keys
+     * @param array  $result      Result array
+     * @param string $fieldName   Current handle field name
+     * @param array  $allowedKeys List of allowed keys
+     *
      * @return array Modified result
      */
     protected function setLanguageSheetsInDataValues(array $result, $fieldName, array $allowedKeys)
@@ -861,13 +893,16 @@ class TcaFlexProcess implements FormDataProviderInterface
      *
      * Handles this for "normal" fields and also for section container element values.
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @param array $allowedKeys List of allowed keys
+     * @param array  $result      Result array
+     * @param string $fieldName   Current handle field name
+     * @param array  $allowedKeys List of allowed keys
+     *
      * @return array Modified result
      */
+    // phpcs:disable Generic.Metrics.NestingLevel
     protected function setLanguageValueLevelValues(array $result, $fieldName, $allowedKeys)
     {
+        // phpcs:enable
         $valueArray = [];
         if (isset($result['databaseRow'][$fieldName]['data']) && is_array($result['databaseRow'][$fieldName]['data'])) {
             $valueArray = $result['databaseRow'][$fieldName]['data'];
@@ -896,7 +931,9 @@ class TcaFlexProcess implements FormDataProviderInterface
                                             foreach ($containerElementArray['el'] as $aContainerElementName => $aContainerElementValues) {
                                                 if (is_array($aContainerElementValues)) {
                                                     foreach ($aContainerElementValues as $aContainerElementValueKey => $aContainerElementValueValue) {
-                                                        if (array_key_exists($aContainerElementValueKey, $allowedKeys)) {
+                                                        if (
+                                                            array_key_exists($aContainerElementValueKey, $allowedKeys)
+                                                        ) {
                                                             $allowedSingleValues['el'][$sectionNumber][$sectionElementName]['el'][$aContainerElementName][$aContainerElementValueKey] = $aContainerElementValueValue;
                                                         }
                                                     }
@@ -927,13 +964,15 @@ class TcaFlexProcess implements FormDataProviderInterface
     }
 
     /**
-     * Add fields and values used by ds_pointerField to the meta data array so they can be used in AJAX context during rendering.
+     * Add fields and values used by ds_pointerField to the meta data array so they can be used in AJAX context during
+     * rendering.
      *
+     * @param array  $result    Result array
+     * @param string $fieldName Current handle field name
+     *
+     * @return array
      * @todo: This method is a stopgap measure to get required information into the AJAX controller
      *
-     * @param array $result Result array
-     * @param string $fieldName Current handle field name
-     * @return array
      * @internal
      */
     protected function addDataStructurePointersToMetaData(array $result, $fieldName)
@@ -951,8 +990,8 @@ class TcaFlexProcess implements FormDataProviderInterface
         ];
 
         if (!empty($pointerFields[1])) {
-            $dsPointers[$pointerFields[1]] =
-                !empty($result['databaseRow'][$pointerFields[1]]) ? $result['databaseRow'][$pointerFields[1]] : '';
+            $dsPointers[$pointerFields[1]]
+                = !empty($result['databaseRow'][$pointerFields[1]]) ? $result['databaseRow'][$pointerFields[1]] : '';
         }
         $result['processedTca']['columns'][$fieldName]['config']['ds']['meta']['dataStructurePointers'] = $dsPointers;
         return $result;

@@ -39,8 +39,10 @@ class FlexFormElementContainer extends AbstractContainer
      *
      * @return array As defined in initializeResultArray() of AbstractNode
      */
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     public function render()
     {
+        // phpcs:enable
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
