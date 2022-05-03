@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers\Backend;
 
+use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
-use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 /**
  * Returns name of MappingConfiguration

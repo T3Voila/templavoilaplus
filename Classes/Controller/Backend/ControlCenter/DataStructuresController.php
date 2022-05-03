@@ -17,21 +17,14 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use TYPO3\CMS\Fluid\View\TemplateView;
-use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DataStructuresController extends ActionController
 {
@@ -48,7 +41,7 @@ class DataStructuresController extends ActionController
      * @var BackendTemplateView
      * @api
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * Initialize action
@@ -111,7 +104,6 @@ class DataStructuresController extends ActionController
      *
      * @param string $placeIdentifier Uuid of dataStructurePlace
      * @param string $configurationIdentifier Identifier inside the dataStructurePlace
-     * @return void
      */
     public function deleteAction($placeIdentifier, $configurationIdentifier)
     {

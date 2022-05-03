@@ -21,6 +21,5 @@ use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 interface RenderHandlerInterface
 {
-
     public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string;
 }

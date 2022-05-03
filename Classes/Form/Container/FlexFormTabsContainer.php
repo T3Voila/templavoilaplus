@@ -16,7 +16,6 @@ namespace Tvp\TemplaVoilaPlus\Form\Container;
  */
 
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
-use TYPO3\CMS\Backend\Template\DocumentTemplate;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Lang\LanguageService;
 
@@ -39,7 +38,8 @@ class FlexFormTabsContainer extends AbstractContainer
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
-        $fieldName = $this->data['fieldName']; // field name of the flex form field in DB
+        $fieldName = $this->data['fieldName'];
+        // field name of the flex form field in DB
         $parameterArray = $this->data['parameterArray'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];
@@ -50,7 +50,7 @@ class FlexFormTabsContainer extends AbstractContainer
 
         $domIdPrefix = 'DTM-' . GeneralUtility::shortMD5($this->data['parameterArray']['itemFormElName'] . $flexFormCurrentLanguage);
         $tabCounter = 0;
-        $tabElements = array();
+        $tabElements = [];
 
         foreach ($flexFormDataStructureArray['sheets'] as $sheetName => $sheetDataStructure) {
             $flexFormRowSheetDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
@@ -82,19 +82,19 @@ class FlexFormTabsContainer extends AbstractContainer
             $options['parameterArray'] = $parameterArray;
             // Merge elements of this tab into a single list again and hand over to
             // palette and single field container to render this group
-            $options['tabAndInlineStack'][] = array(
+            $options['tabAndInlineStack'][] = [
                 'tab',
                 $domIdPrefix . '-' . $tabCounter,
-            );
+            ];
             $options['renderType'] = 'flexFormElementContainer';
             $childReturn = $this->nodeFactory->create($options)->render();
 
-            $tabElements[] = array(
+            $tabElements[] = [
                 'label' => !empty($sheetDataStructure['ROOT']['sheetTitle']) ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetTitle'])) : $sheetName,
                 'content' => $childReturn['html'],
                 'description' => $sheetDataStructure['ROOT']['sheetDescription'] ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetDescription'])) : '',
                 'linkTitle' => $sheetDataStructure['ROOT']['sheetShortDescr'] ? $languageService->sL(trim($sheetDataStructure['ROOT']['sheetShortDescr'])) : '',
-            );
+            ];
 
             $childReturn['html'] = '';
             $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $childReturn);

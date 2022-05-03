@@ -20,12 +20,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ItemsProcFunc
 {
-
     /**
      * @param array $params Parameters to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
-     *
-     * @return void
      */
     public function mapItems(array $params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj)
     {
@@ -56,7 +53,7 @@ class ItemsProcFunc
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $params['items'][] = [
                         $mappingConfiguration['configuration']->getName(),
-                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier()
+                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier(),
                         // @TODO Icon file
                     ];
                 }
@@ -70,7 +67,7 @@ class ItemsProcFunc
      *
      * @param array $params
      *
-     * @return string|integer
+     * @return string|int
      */
     protected function getScope(array $params)
     {

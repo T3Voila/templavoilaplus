@@ -19,7 +19,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -30,7 +29,7 @@ class UserSettings
         $backendUser = TemplaVoilaUtility::getBackendUser();
 
         $userconfig = $backendUser->uc['templavoilaplus'];
-        $userconfig['enableDarkMode'] = (bool) $request->getQueryParams()['enable'];
+        $userconfig['enableDarkMode'] = (bool)$request->getQueryParams()['enable'];
         $backendUser->uc['templavoilaplus'] = $userconfig;
         $backendUser->writeUC();
         return new JsonResponse(['success' => true]);

@@ -17,12 +17,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Abstract Controller for Update Scripts
@@ -44,7 +44,7 @@ class AbstractUpdateController extends ActionController
      * @var BackendTemplateView
      * @api
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * @var int the id of current page

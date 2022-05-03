@@ -108,21 +108,12 @@ class FormFlexAjaxController extends \TYPO3\CMS\Backend\Controller\FormFlexAjaxC
         // by flexFormElementContainer which prepares parameterArray. Important for initialized
         // values of group element.
         if (
-            isset($formData['databaseRow'][$fieldName]
-                ['data'][$flexFormSheetName]
-                [$flexFormCurrentLanguage][$flexFormFieldName]
-                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'])
+            isset($formData['databaseRow'][$fieldName]['data'][$flexFormSheetName][$flexFormCurrentLanguage][$flexFormFieldName]['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'])
             && is_array(
-                $formData['databaseRow'][$fieldName]
-                ['data'][$flexFormSheetName]
-                [$flexFormCurrentLanguage][$flexFormFieldName]
-                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
+                $formData['databaseRow'][$fieldName]['data'][$flexFormSheetName][$flexFormCurrentLanguage][$flexFormFieldName]['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el']
             )
         ) {
-            $formData['flexFormRowData'] = $formData['databaseRow'][$fieldName]
-                ['data'][$flexFormSheetName]
-                [$flexFormCurrentLanguage][$flexFormFieldName]
-                ['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'];
+            $formData['flexFormRowData'] = $formData['databaseRow'][$fieldName]['data'][$flexFormSheetName][$flexFormCurrentLanguage][$flexFormFieldName]['el'][$flexFormContainerIdentifier][$flexFormContainerName]['el'];
         }
 
         $formData['parameterArray']['itemFormElName'] = 'data[' . $tableName . '][' . $formData['databaseRow']['uid'] . '][' . $fieldName . ']';

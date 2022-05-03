@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Contains functions for manipulating flex form data
@@ -84,7 +84,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         return '';
     }
 
-
     /**
      * Parse a data structure identified by $identifier to the final data structure array.
      * This method is called after getDataStructureIdentifier(), finds the data structure
@@ -128,9 +127,8 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     ],
                 ],
             ];
-        } else {
-            return parent::parseDataStructureByIdentifier($identifier);
         }
+        return parent::parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -228,7 +226,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         }
         return true;
     }
-
 
     /**
      * The data structure is located in a record. This method resolves the record and
@@ -434,7 +431,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      * @param array $PA Additional configuration used in calling function
      * @param string $path Path of value in DS structure
      * @param FlexFormTools $pObj caller
-     * @return void
      */
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {

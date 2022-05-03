@@ -17,9 +17,6 @@ namespace Tvp\TemplaVoilaPlus\Form\FormDataProvider;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-
 /**
  * Class EvaluateDisplayConditions implements the TCA 'displayCond' option.
  * The display condition is a colon separated string which describes
@@ -151,10 +148,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
             $currentContainerIdentifier = $flexContext['currentContainerIdentifier'];
             $currentContainerElementName = $flexContext['currentContainerElementName'];
             $listOfLocalContainerElementNames = array_keys(
-                $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']
-                    ['el'][$currentFieldName]
-                    ['children'][$currentContainerIdentifier]
-                    ['el']
+                $flexContext['flexFormDataStructure']['sheets'][$currentSheetName]['ROOT']['el'][$currentFieldName]['children'][$currentContainerIdentifier]['el']
             );
             $listOfLocalContainerElementNamesWithSheetName = [];
             foreach ($listOfLocalContainerElementNames as $aContainerElementName) {
@@ -168,41 +162,26 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
             if (in_array($givenFieldName, $listOfLocalContainerElementNames, true)) {
                 // Condition references field of same container instance
                 $containerType = array_shift(array_keys(
-                    $flexContext['flexFormRowData']['data'][$currentSheetName]
-                        [$langSheetLevel][$currentFieldName]
-                        ['el'][$currentContainerIdentifier]
+                    $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$currentFieldName]['el'][$currentContainerIdentifier]
                 ));
-                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                    [$langSheetLevel][$currentFieldName]
-                    ['el'][$currentContainerIdentifier]
-                    [$containerType]
-                    ['el'][$givenFieldName][$langElementLevel];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$currentFieldName]['el'][$currentContainerIdentifier][$containerType]['el'][$givenFieldName][$langElementLevel];
             } elseif (in_array($givenFieldName, array_keys($listOfLocalContainerElementNamesWithSheetName, true))) {
                 // Condition references field name of same container instance and has sheet name included
                 $containerType = array_shift(array_keys(
-                    $flexContext['flexFormRowData']['data'][$currentSheetName]
-                    [$langSheetLevel][$currentFieldName]
-                    ['el'][$currentContainerIdentifier]
+                    $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$currentFieldName]['el'][$currentContainerIdentifier]
                 ));
                 $fieldName = $listOfLocalContainerElementNamesWithSheetName[$givenFieldName]['containerElementName'];
-                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                    [$langSheetLevel][$currentFieldName]
-                    ['el'][$currentContainerIdentifier]
-                    [$containerType]
-                    ['el'][$fieldName][$langElementLevel];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$currentFieldName]['el'][$currentContainerIdentifier][$containerType]['el'][$fieldName][$langElementLevel];
             } elseif (in_array($givenFieldName, $listOfLocalFlexFieldNames, true)) {
                 // Condition reference field name of sheet this section container is in
-                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName]
-                    [$langSheetLevel][$givenFieldName][$langElementLevel];
+                $fieldValue = $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$givenFieldName][$langElementLevel];
             } elseif (in_array($givenFieldName, array_keys($flexContext['sheetNameFieldNames'], true))) {
                 $sheetName = $flexContext['sheetNameFieldNames'][$givenFieldName]['sheetName'];
                 $fieldName = $flexContext['sheetNameFieldNames'][$givenFieldName]['fieldName'];
                 $fieldValue = $flexContext['flexFormRowData']['data'][$sheetName][$langSheetLevel][$fieldName][$langElementLevel];
             } else {
                 $containerType = array_shift(array_keys(
-                    $flexContext['flexFormRowData']['data'][$currentSheetName]
-                    [$langSheetLevel][$currentFieldName]
-                    ['el'][$currentContainerIdentifier]
+                    $flexContext['flexFormRowData']['data'][$currentSheetName][$langSheetLevel][$currentFieldName]['el'][$currentContainerIdentifier]
                 ));
                 throw new \RuntimeException(
                     'Flex form displayCond on section container field "' . $currentContainerElementName . '" of container type "'
@@ -266,8 +245,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                 // Unset per sheet
                 if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
                     unset(
-                        $result['processedTca']['columns'][$columnName]['config']['ds']
-                            ['sheets'][$sheetName]['ROOT']['displayCond']
+                        $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]['ROOT']['displayCond']
                     );
                 }
 
@@ -275,9 +253,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                     // Unset per flex field
                     if (is_array($flexConfiguration['displayCond'])) {
                         unset(
-                            $result['processedTca']['columns'][$columnName]['config']['ds']
-                                ['sheets'][$sheetName]['ROOT']
-                                ['el'][$flexField]['displayCond']
+                            $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]['ROOT']['el'][$flexField]['displayCond']
                         );
                     }
 
@@ -288,11 +264,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                                     // Unset per container
                                     if (is_array($containerElementConfiguration['displayCond'])) {
                                         unset(
-                                            $result['processedTca']['columns'][$columnName]['config']['ds']
-                                                ['sheets'][$sheetName]['ROOT']
-                                                ['el'][$flexField]
-                                                ['children'][$containerInstanceName]
-                                                ['el'][$containerElementName]['displayCond']
+                                            $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName]['ROOT']['el'][$flexField]['children'][$containerInstanceName]['el'][$containerElementName]['displayCond']
                                         );
                                     }
                                 }
@@ -329,9 +301,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                             $conditionResult = $this->evaluateConditionRecursiveByLanguage($flexConfiguration['displayCond'], $langSheetLevel, $langElementLevel);
                             if (!$conditionResult) {
                                 unset(
-                                    $result['processedTca']['columns'][$columnName]['config']['ds']
-                                        ['sheets'][$sheetName][$langSheetLevel]['ROOT']
-                                        ['el'][$flexField][$langElementLevel]
+                                    $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName][$langSheetLevel]['ROOT']['el'][$flexField][$langElementLevel]
                                 );
                             }
                         }
@@ -349,11 +319,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                                         if (is_array($containerElementConfiguration['displayCond'])) {
                                             if (!$this->evaluateConditionRecursive($containerElementConfiguration['displayCond'])) {
                                                 unset(
-                                                    $result['processedTca']['columns'][$columnName]['config']['ds']
-                                                        ['sheets'][$sheetName][$langSheetLevel]['ROOT']
-                                                        ['el'][$flexField][$langElementLevel]
-                                                        ['children'][$containerInstanceName]
-                                                        ['el'][$containerElementName]
+                                                    $result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName][$langSheetLevel]['ROOT']['el'][$flexField][$langElementLevel]['children'][$containerInstanceName]['el'][$containerElementName]
                                                 );
                                             }
                                         }

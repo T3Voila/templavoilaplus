@@ -36,7 +36,8 @@ class FlexFormNoTabsContainer extends AbstractContainer
     {
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
-        $fieldName = $this->data['fieldName']; // field name of the flex form field in DB
+        $fieldName = $this->data['fieldName'];
+        // field name of the flex form field in DB
         $parameterArray = $this->data['parameterArray'];
         $flexFormDataStructureArray = $this->data['flexFormDataStructureArray'];
         $flexFormCurrentLanguage = $this->data['flexFormCurrentLanguage'];

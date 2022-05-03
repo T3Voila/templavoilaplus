@@ -3,12 +3,12 @@
 defined('TYPO3_MODE') or die();
 
 // Adding the new content element, "Flexible Content":
-$tempColumns = array(
-    'tx_templavoilaplus_map' => array(
+$tempColumns = [
+    'tx_templavoilaplus_map' => [
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_map',
         'displayCond' => 'FIELD:CType:=:templavoilaplus_pi1',
-        'config' => array(
+        'config' => [
             'type' => 'select',
             'renderType' => 'selectSingle',
             'allowNonIdValues' => 1,
@@ -18,27 +18,27 @@ $tempColumns = array(
             'maxitems' => 1,
             'showIconTable' => true,
             'selicon_cols' => 10,
-        )
-    ),
-    'tx_templavoilaplus_flex' => array(
+        ],
+    ],
+    'tx_templavoilaplus_flex' => [
         'l10n_cat' => 'text',
         'exclude' => 1,
         'label' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.tx_templavoilaplus_flex',
         'displayCond' => 'FIELD:tx_templavoilaplus_map:REQ:true',
-        'config' => array(
+        'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoilaplus_map',
             'ds_pointerType' => 'combinedMappingIdentifier',
-        )
-    ),
-);
+        ],
+    ],
+];
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns('tt_content', $tempColumns);
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     [
         'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_db.xlf:tt_content.CType_pi1',
         'templavoilaplus_pi1',
-        'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png'
+        'EXT:templavoilaplus/Resources/Public/Icon/icon_fce_ce.png',
     ],
     'CType',
     'templavoilaplus'

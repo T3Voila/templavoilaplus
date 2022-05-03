@@ -60,7 +60,7 @@ class FlexFormElementContainer extends AbstractContainer
                 $value = 'v' . $value;
             });
         } else {
-            $lkeys = array('vDEF');
+            $lkeys = ['vDEF'];
         }
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
@@ -86,7 +86,7 @@ class FlexFormElementContainer extends AbstractContainer
                 $options = $this->data;
                 $options['flexFormDataStructureArray'] = $flexFormFieldArray;
                 $options['flexFormFieldName'] = $flexFormFieldName;
-                $options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : array();
+                $options['flexFormRowData'] = is_array($flexFormRowData[$flexFormFieldName]['el']) ? $flexFormRowData[$flexFormFieldName]['el'] : [];
                 $options['renderType'] = 'flexFormSectionContainer';
                 $sectionContainerResult = $this->nodeFactory->create($options)->render();
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
@@ -97,15 +97,15 @@ class FlexFormElementContainer extends AbstractContainer
                 $html = [];
                 foreach ($lkeys as $lkey) {
                     // Set up options for single element
-                    $fakeParameterArray = array(
-                        'fieldConf' => array(
+                    $fakeParameterArray = [
+                        'fieldConf' => [
                             'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'])),
                             'config' => $flexFormFieldArray[$lkey]['config'],
                             'children' => $flexFormFieldArray[$lkey]['children'],
                             'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'],
                             'onChange' => $flexFormFieldArray[$lkey]['onChange'],
-                        ),
-                    );
+                        ],
+                    ];
 
                     $alertMsgOnChange = '';
                     if (
@@ -175,7 +175,7 @@ class FlexFormElementContainer extends AbstractContainer
                     $childResult = $this->nodeFactory->create($options)->render();
 
                     $theTitle = htmlspecialchars($fakeParameterArray['fieldConf']['label']);
-                    $defInfo = array();
+                    $defInfo = [];
 
                     // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
                     $processedTitle = str_replace('\\n', '<br />', $theTitle);

@@ -43,7 +43,7 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
 
         // Prepare processedTca: Remove all column definitions except the one that contains
         // our tree definition. This way only this field is calculated, everything else is ignored.
-        if (!isset($GLOBALS['TCA'][$tableName])  || !is_array($GLOBALS['TCA'][$tableName])) {
+        if (!isset($GLOBALS['TCA'][$tableName]) || !is_array($GLOBALS['TCA'][$tableName])) {
             throw new \RuntimeException(
                 'TCA for table ' . $tableName . ' not found',
                 1479386729
@@ -88,8 +88,7 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
             // Reduce given data structure down to the relevant element only
             if (empty($flexFormContainerFieldName)) {
                 if (
-                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                    ['el'][$flexFormFieldName])
+                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName])
                 ) {
                     $dataStructure = [
                         'sheets' => [
@@ -97,8 +96,7 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
                                 'ROOT' => [
                                     'type' => 'array',
                                     'el' => [
-                                        $flexFormFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                                            ['el'][$flexFormFieldName],
+                                        $flexFormFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName],
                                     ],
                                 ],
                             ],
@@ -107,10 +105,7 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
                 }
             } else {
                 if (
-                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                    ['el'][$flexFormFieldName]
-                    ['el'][$flexFormContainerName]
-                    ['el'][$flexFormContainerFieldName])
+                    isset($dataStructure['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName]['el'][$flexFormContainerFieldName])
                 ) {
                     // If this is a tree in a section container that has just been added by the FlexFormAjaxController
                     // "new container" action, then this container is not yet persisted, so we need to trigger the
@@ -136,10 +131,7 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
                                             'el' => [
                                                 $flexFormContainerName => [
                                                     'el' => [
-                                                        $flexFormContainerFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']
-                                                            ['el'][$flexFormFieldName]
-                                                            ['el'][$flexFormContainerName]
-                                                            ['el'][$flexFormContainerFieldName]
+                                                        $flexFormContainerFieldName => $dataStructure['sheets'][$flexFormSheetName]['ROOT']['el'][$flexFormFieldName]['el'][$flexFormContainerName]['el'][$flexFormContainerFieldName],
                                                     ],
                                                 ],
                                             ],
@@ -168,18 +160,11 @@ class FormSelectTreeAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormSe
         ];
         $formData = $formDataCompiler->compile($formDataCompilerInput);
 
-
         if ($formData['processedTca']['columns'][$fieldName]['config']['type'] === 'flex') {
             if (empty($flexFormContainerFieldName)) {
-                $treeData = $formData['processedTca']['columns'][$fieldName]['config']['ds']
-                    ['sheets'][$flexFormSheetName]['lDEF']['ROOT']
-                    ['el'][$flexFormFieldName]['vDEF']['config']['items'];
+                $treeData = $formData['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$flexFormSheetName]['lDEF']['ROOT']['el'][$flexFormFieldName]['vDEF']['config']['items'];
             } else {
-                $treeData = $formData['processedTca']['columns'][$fieldName]['config']['ds']
-                    ['sheets'][$flexFormSheetName]['lDEF']['ROOT']
-                    ['el'][$flexFormFieldName]['vDEF']
-                    ['children'][$flexFormContainerIdentifier]
-                    ['el'][$flexFormContainerFieldName]['config']['items'];
+                $treeData = $formData['processedTca']['columns'][$fieldName]['config']['ds']['sheets'][$flexFormSheetName]['lDEF']['ROOT']['el'][$flexFormFieldName]['vDEF']['children'][$flexFormContainerIdentifier]['el'][$flexFormContainerFieldName]['config']['items'];
             }
         } else {
             $treeData = $formData['processedTca']['columns'][$fieldName]['config']['items'];

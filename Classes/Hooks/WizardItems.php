@@ -2,13 +2,11 @@
 
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
-use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
-use TYPO3\CMS\Core\Imaging\IconProvider\BitmapIconProvider;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class WizardItems implements NewContentElementWizardHookInterface
 {
@@ -21,10 +19,10 @@ class WizardItems implements NewContentElementWizardHookInterface
     public function manipulateWizardItems(&$wizardItems, &$parentObject)
     {
         $fceWizardItems = [
-            'fce' =>  [
+            'fce' => [
                 'header' => $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newContentElementWizard.fce'),
                 'after' => 'common',
-            ]
+            ],
         ];
 
         /** @var ConfigurationService */
@@ -42,13 +40,12 @@ class WizardItems implements NewContentElementWizardHookInterface
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier();
-                    $fceWizardItems['fce_' .$combinedMappingIdentifier] = [
+                    $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
                         'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
                         'description' => /** @TODO $mappingConfiguration['configuration']->getDescription() ?? */TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                         'title' => $mappingConfiguration['configuration']->getName(),
-                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier)
+                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
                     ];
-
                 }
             }
         }

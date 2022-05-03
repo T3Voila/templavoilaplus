@@ -17,9 +17,9 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Symfony\Component\Finder\Finder;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {

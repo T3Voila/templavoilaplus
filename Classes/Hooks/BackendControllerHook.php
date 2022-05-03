@@ -20,7 +20,6 @@ class BackendControllerHook
      */
     public function addInlineSettings(array $configuration, BackendController $backendController)
     {
-
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
             $this->getPageRenderer()->addInlineSettingArray(

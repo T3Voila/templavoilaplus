@@ -67,7 +67,7 @@ class FormEngineUtility
                 $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
                     = $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class];
                 $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class] = [
-                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
+                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class],
                 ];
             }
         }

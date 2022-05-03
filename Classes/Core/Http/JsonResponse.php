@@ -116,4 +116,3 @@ class JsonResponse extends \TYPO3\CMS\Core\Http\Response
         return $json;
     }
 }
-

@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Utility;
 
-use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Helper class for easy Api access but all of this is not stable yet.
@@ -54,7 +52,7 @@ class ApiHelperUtility
 
     public static function getConfiguration(string $combinedConfigurationIdentifier, string $handlerIdentifier): AbstractConfiguration
     {
-        if (strpos($combinedConfigurationIdentifier,':') === false) {
+        if (strpos($combinedConfigurationIdentifier, ':') === false) {
             throw new InvalidIdentifierException('The combined identifier "' . $combinedConfigurationIdentifier . '" does not have the right format of "<place>:<identifier>"');
         }
         [$placeIdentifier, $configurationIdentifier] = explode(':', $combinedConfigurationIdentifier);

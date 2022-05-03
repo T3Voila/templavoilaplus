@@ -19,12 +19,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ContentElements extends AbstractResponse
 {
@@ -48,7 +48,7 @@ class ContentElements extends AbstractResponse
 
         return new JsonResponse([
             'uid' => $result,
-            'nodeHtml' => $this->record2html('tt_content', $result)
+            'nodeHtml' => $this->record2html('tt_content', $result),
         ]);
     }
 
@@ -62,7 +62,7 @@ class ContentElements extends AbstractResponse
 
         /** @TODO $parameters['table'] */
         return new JsonResponse([
-            'nodeHtml' => $this->record2html('tt_content', (int)$parameters['uid'])
+            'nodeHtml' => $this->record2html('tt_content', (int)$parameters['uid']),
         ]);
     }
 

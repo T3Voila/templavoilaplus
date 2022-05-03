@@ -82,23 +82,23 @@ class FlexFormSectionContainer extends AbstractContainer
             }
             $containerTemplateHtml = [];
             $containerTemplateHtml[] = '<a';
-            $containerTemplateHtml[] =     'href="#"';
-            $containerTemplateHtml[] =     'class="btn btn-default t3js-flex-container-add"';
-            $containerTemplateHtml[] =     'data-vanillauid="' . (int)$this->data['vanillaUid'] . '"';
+            $containerTemplateHtml[] = 'href="#"';
+            $containerTemplateHtml[] = 'class="btn btn-default t3js-flex-container-add"';
+            $containerTemplateHtml[] = 'data-vanillauid="' . (int)$this->data['vanillaUid'] . '"';
             // no int cast for databaseRow uid, this can be "NEW1234..."
-            $containerTemplateHtml[] =     'data-databaserowuid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
-            $containerTemplateHtml[] =     'data-command="' . htmlspecialchars($this->data['command']) . '"';
-            $containerTemplateHtml[] =     'data-tablename="' . htmlspecialchars($this->data['tableName']) . '"';
-            $containerTemplateHtml[] =     'data-fieldname="' . htmlspecialchars($this->data['fieldName']) . '"';
-            $containerTemplateHtml[] =     'data-recordtypevalue="' . $this->data['recordTypeValue'] . '"';
-            $containerTemplateHtml[] =     'data-datastructureidentifier="' . htmlspecialchars($flexFormDataStructureIdentifier) . '"';
-            $containerTemplateHtml[] =     'data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
-            $containerTemplateHtml[] =     'data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
-            $containerTemplateHtml[] =     'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
-            $containerTemplateHtml[] =     'data-flexformcurrentlanguage="' . htmlspecialchars($flexFormCurrentLanguage) . '"';
+            $containerTemplateHtml[] = 'data-databaserowuid="' . htmlspecialchars($this->data['databaseRow']['uid']) . '"';
+            $containerTemplateHtml[] = 'data-command="' . htmlspecialchars($this->data['command']) . '"';
+            $containerTemplateHtml[] = 'data-tablename="' . htmlspecialchars($this->data['tableName']) . '"';
+            $containerTemplateHtml[] = 'data-fieldname="' . htmlspecialchars($this->data['fieldName']) . '"';
+            $containerTemplateHtml[] = 'data-recordtypevalue="' . $this->data['recordTypeValue'] . '"';
+            $containerTemplateHtml[] = 'data-datastructureidentifier="' . htmlspecialchars($flexFormDataStructureIdentifier) . '"';
+            $containerTemplateHtml[] = 'data-flexformsheetname="' . htmlspecialchars($flexFormSheetName) . '"';
+            $containerTemplateHtml[] = 'data-flexformfieldname="' . htmlspecialchars($flexFormFieldName) . '"';
+            $containerTemplateHtml[] = 'data-flexformcontainername="' . htmlspecialchars($flexFormContainerName) . '"';
+            $containerTemplateHtml[] = 'data-flexformcurrentlanguage="' . htmlspecialchars($flexFormCurrentLanguage) . '"';
             $containerTemplateHtml[] = '>';
-            $containerTemplateHtml[] =    $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
-            $containerTemplateHtml[] =    htmlspecialchars(GeneralUtility::fixed_lgd_cs($containerTitle, 30));
+            $containerTemplateHtml[] = $iconFactory->getIcon('actions-document-new', Icon::SIZE_SMALL)->render();
+            $containerTemplateHtml[] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($containerTitle, 30));
             $containerTemplateHtml[] = '</a>';
             $containerTemplatesHtml[] = implode(LF, $containerTemplateHtml);
         }
@@ -106,9 +106,9 @@ class FlexFormSectionContainer extends AbstractContainer
         $createElementsHtml = [];
         if ($userHasAccessToDefaultLanguage) {
             $createElementsHtml[] = '<div class="t3-form-field-add-flexsection">';
-            $createElementsHtml[] =    '<div class="btn-group">';
-            $createElementsHtml[] =        implode('', $containerTemplatesHtml);
-            $createElementsHtml[] =    '</div>';
+            $createElementsHtml[] = '<div class="btn-group">';
+            $createElementsHtml[] = implode('', $containerTemplatesHtml);
+            $createElementsHtml[] = '</div>';
             $createElementsHtml[] = '</div>';
         }
 
@@ -121,27 +121,27 @@ class FlexFormSectionContainer extends AbstractContainer
         $toggleAll = htmlspecialchars($languageService->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.toggleall'));
         $html = [];
         $html[] = '<div class="panel panel-tab">';
-        $html[] =     '<div class="panel-body">';
-        $html[] =         '<div class="t3-form-field-container t3-form-flex">';
-        $html[] =             '<div class="t3-form-field-label-flexsection">';
-        $html[] =                 '<h4>';
-        $html[] =                     htmlspecialchars($sectionTitle);
-        $html[] =                 '</h4>';
-        $html[] =             '</div>';
-        $html[] =             '<div class="t3js-form-field-toggle-flexsection t3-form-flexsection-toggle">';
-        $html[] =                 '<a class="btn btn-default" href="#" title="' . $toggleAll . '">';
-        $html[] =                     $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
-        $html[] =                 '</a>';
-        $html[] =             '</div>';
-        $html[] =             '<div';
-        $html[] =                 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
-        $html[] =                 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
-        $html[] =             '>';
-        $html[] =                 $resultArray['html'];
-        $html[] =             '</div>';
-        $html[] =             implode(LF, $createElementsHtml);
-        $html[] =         '</div>';
-        $html[] =     '</div>';
+        $html[] = '<div class="panel-body">';
+        $html[] = '<div class="t3-form-field-container t3-form-flex">';
+        $html[] = '<div class="t3-form-field-label-flexsection">';
+        $html[] = '<h4>';
+        $html[] = htmlspecialchars($sectionTitle);
+        $html[] = '</h4>';
+        $html[] = '</div>';
+        $html[] = '<div class="t3js-form-field-toggle-flexsection t3-form-flexsection-toggle">';
+        $html[] = '<a class="btn btn-default" href="#" title="' . $toggleAll . '">';
+        $html[] = $iconFactory->getIcon('actions-move-right', Icon::SIZE_SMALL)->render() . $toggleAll;
+        $html[] = '</a>';
+        $html[] = '</div>';
+        $html[] = '<div';
+        $html[] = 'class="panel-group panel-hover t3-form-field-container-flexsection t3-flex-container"';
+        $html[] = 'data-t3-flex-allow-restructure="' . ($userHasAccessToDefaultLanguage ? '1' : '0') . '"';
+        $html[] = '>';
+        $html[] = $resultArray['html'];
+        $html[] = '</div>';
+        $html[] = implode(LF, $createElementsHtml);
+        $html[] = '</div>';
+        $html[] = '</div>';
         $html[] = '</div>';
 
         $resultArray['html'] = implode(LF, $html);
