@@ -18,65 +18,16 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class DataStructureConfigurationHandler implements ConfigurationHandlerInterface
+class DataStructureConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\DataStructure';
 
-    /**
-     * @var Place
-     */
-    protected $place;
-
-    /**
-     * @var LoadSaveHandlerInterface
-     */
-    protected $loadSaveHandler;
-
-    public function setPlace(Place $place)
-    {
-        $this->place = $place;
-    }
-
-    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler)
-    {
-        $this->loadSaveHandler = $loadSaveHandler;
-    }
-
-    /** @TODO it may be possible that this could go into an abstract */
-    public function loadConfigurations()
-    {
-        $configurations = [];
-        $files = $this->loadSaveHandler->find();
-
-        /** @TODO No, we don't know if this are files, this may be something totaly different! */
-        foreach ($files as $file) {
-            $content = $this->loadSaveHandler->load($file);
-
-            $identifier = $file->getRelativePath() . $file->getFilename();
-
-            try {
-                $dataStructure = $this->createConfigurationFromConfigurationArray(
-                    $content,
-                    $identifier,
-                    pathinfo($file->getFilename(), PATHINFO_FILENAME)
-                );
-                $configurations[$identifier] = [
-                    'configuration' => $dataStructure,
-                    'store' => ['file' => $file], /** @TODO Better place to save this information? */
-                ];
-            } catch (\Exception $e) {
-                /** @TODO log error, that we can't read the configuration */
-            }
-        }
-
-        $this->place->setConfigurations($configurations);
-    }
-
-    public function createConfigurationFromConfigurationArray(array $dataStructureArray, $identifier, $possibleName): DataStructure
-    {
+    public function createConfigurationFromConfigurationArray(
+        $dataStructureArray,
+        $identifier,
+        $possibleName
+    ): DataStructure {
         $dataStructure = new DataStructure($this->place, $identifier);
         $dataStructure->setName($possibleName);
         // Read title from XML file and set, if not empty or ROOT
