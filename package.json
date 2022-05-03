@@ -1,19 +1,8 @@
 {
-	"name": "tea",
-	"description": "npm helper tools used for the extension",
-	"repository": {
-		"url": "https://github.com/TYPO3-Documentation/tea.git"
-	},
-	"keywords": [],
-	"author": "",
+	"name": "templavoilaplus-qa",
+	"description": "npm helper tools used for the extension templavoilaplus",
 	"version": "1.0.0",
-	"license": "ISC",
-	"scripts": {
-		"lint:js": "eslint 'Resources/Public/**/*.js'",
-		"lint:js:fix": "eslint 'Resources/Public/**/*.js' --quiet --fix",
-		"lint:style": "stylelint Resources/Public/**/*.css",
-		"lint:style:fix": "stylelint Resources/Public/**/*.css --fix"
-	},
+	"author": "",
 	"devDependencies": {
 		"eslint": "^6.8.0",
 		"eslint-config-prettier": "^6.11.0",
@@ -23,5 +12,16 @@
 		"stylelint": "^13",
 		"stylelint-config-recommended": "^3.0.0",
 		"stylelint-no-browser-hacks": "^1.2.1"
+	},
+	"keywords": [],
+	"license": "ISC",
+	"repository": {
+		"url": "https://github.com/T3Voila/templavoilaplus.git"
+	},
+	"scripts": {
+		"lint:js": "eslint 'Resources/Public/**/*.js'",
+		"lint:js:fix": "eslint 'Resources/Public/**/*.js' --quiet --fix",
+		"lint:style": "stylelint Resources/Public/**/*.css",
+		"lint:style:fix": "stylelint Resources/Public/**/*.css --fix"
 	}
 }
