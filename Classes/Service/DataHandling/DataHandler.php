@@ -83,7 +83,7 @@ class DataHandler
      * @param object $reference Reference to the parent object (TCEmain)
      *
      * @return void
-     * @todo "delete" should search for all references to the element.
+     * @TODO "delete" should search for all references to the element.
      */
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
     {
