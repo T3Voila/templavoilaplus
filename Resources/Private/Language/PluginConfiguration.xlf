@@ -1,21 +1,21 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoilaplus">
-        <header/>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-05-03T15:48:23+02:00">
+        <header></header>
         <body>
-            <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
-                <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
-            </trans-unit>
-            <trans-unit id="ds.indentation" xml:space="preserve">
+            <trans-unit id="ds.indentation" resname="ds.indentation">
                 <source>Defines the XML indentation in the Data Structures.:This is usefull for static Data Structures. Number smaller then zero means no indentation, zero means using tabs and number larger then zero means number of space chars.</source>
             </trans-unit>
-            <trans-unit id="staticDS.enable" xml:space="preserve">
+            <trans-unit id="enable.renderFCEHeader" resname="enable.renderFCEHeader">
+                <source>Enable Header for FCE&#39;s:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
+            </trans-unit>
+            <trans-unit id="staticDS.enable" resname="staticDS.enable">
                 <source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
             </trans-unit>
-            <trans-unit id="staticDS.path_fce" xml:space="preserve">
+            <trans-unit id="staticDS.path_fce" resname="staticDS.path_fce">
                 <source>FCE Data Structure Path:Path to the static data structures for flexible content elements</source>
             </trans-unit>
-            <trans-unit id="staticDS.path_page" xml:space="preserve">
+            <trans-unit id="staticDS.path_page" resname="staticDS.path_page">
                 <source>Page Data Structure Path:Path to the static data structures for pages</source>
             </trans-unit>
         </body>

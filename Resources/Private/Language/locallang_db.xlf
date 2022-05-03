@@ -1,31 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:10Z" product-name="templavoilaplus">
-        <header/>
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-05-03T15:48:16+02:00">
+        <header></header>
         <body>
-            <trans-unit id="be_groups.tx_templavoilaplus_access" xml:space="preserve">
+            <trans-unit id="be_groups.tx_templavoilaplus_access" resname="be_groups.tx_templavoilaplus_access">
                 <source>Disallow access to TemplaVoilà! Plus objects:</source>
             </trans-unit>
-            <trans-unit id="tt_content.tx_templavoilaplus_map" xml:space="preserve">
-                <source>Element Design:</source>
-            </trans-unit>
-            <trans-unit id="tt_content.tx_templavoilaplus_flex" xml:space="preserve">
-                <source>Content:</source>
-            </trans-unit>
-            <trans-unit id="tt_content.CType_pi1" xml:space="preserve">
-                <source>Flexible Content</source>
-            </trans-unit>
-            <trans-unit id="pages.tx_templavoilaplus_map" xml:space="preserve">
-                <source>Use Design:</source>
-            </trans-unit>
-            <trans-unit id="pages.tx_templavoilaplus_next_map" xml:space="preserve">
-                <source>Subpages - Use Design:</source>
-            </trans-unit>
-            <trans-unit id="pages.tab.tx_templavoilaplus_flex" xml:space="preserve">
+            <trans-unit id="pages.tab.tx_templavoilaplus_flex" resname="pages.tab.tx_templavoilaplus_flex">
                 <source>TemplaVoilà! Plus Content</source>
             </trans-unit>
-            <trans-unit id="pages.tx_templavoilaplus_flex" xml:space="preserve">
+            <trans-unit id="pages.tx_templavoilaplus_flex" resname="pages.tx_templavoilaplus_flex">
                 <source>Content:</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_templavoilaplus_map" resname="pages.tx_templavoilaplus_map">
+                <source>Use Design:</source>
+            </trans-unit>
+            <trans-unit id="pages.tx_templavoilaplus_next_map" resname="pages.tx_templavoilaplus_next_map">
+                <source>Subpages - Use Design:</source>
+            </trans-unit>
+            <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1">
+                <source>Flexible Content</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_templavoilaplus_flex" resname="tt_content.tx_templavoilaplus_flex">
+                <source>Content:</source>
+            </trans-unit>
+            <trans-unit id="tt_content.tx_templavoilaplus_map" resname="tt_content.tx_templavoilaplus_map">
+                <source>Element Design:</source>
             </trans-unit>
         </body>
     </file>
