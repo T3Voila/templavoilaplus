@@ -39,7 +39,7 @@
             </tr>
             <tr>
                 <f:for each="{layoutFields}" key="layoutKey" as="layoutField">
-                    <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%" class="tpm-content-cell tvjs-dropzone" data-parent-pointer="{node.rendering.parentPointer}:sDEF:lDEF:{layoutKey}:vDEF"><f:format.raw>{layoutField}</f:format.raw></td>
+                    <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%" class="tpm-content-cell tvjs-dropzone" data-parent-pointer="{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:{layoutKey}:vDEF"><f:format.raw>{layoutField}</f:format.raw></td>
                 </f:for>
             </tr>
         </table>
