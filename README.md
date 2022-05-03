@@ -61,6 +61,7 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
     * Templates using the XPath Renderer (a.k.a. old TemplaVoilà! template handling)
     * Add Meta/CSS/JS informations from TemplateConfiguration
     * ~~No support for container yet~~
+    * Subtemplates/Rendertypes not supported yet
 * Extending
     * You could extend TV+ 8 with new Places types with their own handler to load data
     * You could add new renderer (~~TYPO3 marker based,~~ Smarty, Twig, Fluid, ...)
@@ -69,7 +70,7 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
     * There is an Update Script which already works quite extensive
     * ~~Only support for StaticDS yet! Need to find a project which uses DS in DB to check if it works as it should~~
     * You should select "creating new extension" also if it shows you a green extension to select
-    * Subtemplates/Rendertypes won't be processed yet
+    * ~~Subtemplates/Rendertypes won't be processed yet~~
     * ~~BElayout won't be processed yet~~
     * No support for multiple storage pids yet
     * ~~No support for container yet~~
