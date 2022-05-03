@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Utility;
 
+use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
@@ -53,7 +54,10 @@ class ApiHelperUtility
 
     public static function getConfiguration(string $combinedConfigurationIdentifier, string $handlerIdentifier): AbstractConfiguration
     {
-        list($placeIdentifier, $configurationIdentifier) = explode(':', $combinedConfigurationIdentifier);
+        if (strpos($combinedConfigurationIdentifier,':') === false) {
+            throw new InvalidIdentifierException('The combined identifier "' . $combinedConfigurationIdentifier . '" does not have the right format of "<place>:<identifier>"');
+        }
+        [$placeIdentifier, $configurationIdentifier] = explode(':', $combinedConfigurationIdentifier);
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
