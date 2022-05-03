@@ -26,7 +26,7 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * -Interface
  * -Registration
  * -More needed besides this Default one?
- * - Its hard wired till yet
+ * - It's hardwired still
  */
 class DefaultMappingHandler
 {
@@ -42,7 +42,7 @@ class DefaultMappingHandler
         $processedMapping = [];
         $containerInstructions = $this->mappingConfiguration->getMappingToTemplate();
 
-        /** @TODO $table, $row are more globale vars, they are given from function to function */
+        /** @TODO $table, $row are more global vars, they are given from function to function */
 
         $processedMapping = $this->processContainer($flexformData, $table, $row, $containerInstructions);
 
@@ -106,12 +106,12 @@ class DefaultMappingHandler
         $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
         $restoreData = [];
 
-        // add into TSFE register the parent rec data
-        /** @TODO On every value which gets processed? Not realy? */
+        // Add parent rec data into the TSFE register
+        /** @TODO On every value which gets processed? Not really? */
         $restoreData = $this->registerTypoScriptParentRec($row);
 
         // Copy current global TypoScript configuration except numerical objects:
-        /** @TODO On every value which gets processed? Not realy? */
+        /** @TODO On every value which gets processed? Not really? */
         if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
             foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
                 if ($tsObjectKey !== (int)$tsObjectKey) {
@@ -124,7 +124,7 @@ class DefaultMappingHandler
         $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
 
         if (count($restoreData)) {
-            /** @TODO On every value which gets processed? Not realy? */
+            /** @TODO On every value which gets processed? Not really? */
             $this->restoreTypoScriptParentRec($restoreData);
         }
 

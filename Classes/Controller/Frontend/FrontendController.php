@@ -48,9 +48,9 @@ class FrontendController extends AbstractPlugin
         // Current page record which we MIGHT manipulate a little:
         $pageRecord = $GLOBALS['TSFE']->page;
 
-        // replace record if content_from_pid is used. This might change the template/mapping, however
+        // Replace record if content_from_pid is used. This might change the template/mapping, however
         // it can't be expected that fields are the same between different templates, thus we need to use the
-        // other template anways
+        // other template anyway
         if ($pageRecord['content_from_pid']) {
             $pageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
         }

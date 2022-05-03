@@ -152,7 +152,7 @@ final class TemplaVoilaUtility
                 $languages[$languageRecord['uid']] = $languageRecord;
                 $languages[$languageRecord['uid']]['ISOcode'] = strtoupper($languageRecord['language_isocode']);
 
-                // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
+                // @todo: This should probably resolve language_isocode too and throw a deprecation if not filled
                 if ($languageRecord['static_lang_isocode'] && $useStaticInfoTables) {
                     $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
                     if ($staticLangRow['lg_iso_2']) {

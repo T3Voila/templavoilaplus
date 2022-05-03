@@ -34,7 +34,7 @@ class ProcessingService
     /** @var FlexFormTools */
     protected $flexFormTools = null;
 
-    /** @TODO This makes the Service statefull!! */
+    /** @TODO This makes the Service stateful!! */
     /** @var int */
     protected $basePid = null;
 

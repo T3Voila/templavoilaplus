@@ -320,7 +320,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
-                        . ' with uid "' . $row[$parentFieldName] . '" was done. This row however does not exist or was deleted.',
+                        . ' with uid "' . $row[$parentFieldName] . '" was done. However, this row does not exist or was deleted.',
                         1463833794
                     );
                 }
@@ -378,14 +378,14 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
             if (!isset($fieldTca['config']['ds_tableField'])) {
                 throw new InvalidTcaException(
                     'Invalid data structure pointer for field "' . $fieldName . '" in table "' . $tableName . '", the value'
-                    . 'resolved to "' . $pointerValue . '" . which is an integer, so "ds_tableField" must be configured',
+                    . 'resolved to "' . $pointerValue . '", . which is an integer, so "ds_tableField" must be configured',
                     1464115639
                 );
             }
             if (substr_count($fieldTca['config']['ds_tableField'], ':') !== 1) {
                 // ds_tableField must be of the form "table:field"
                 throw new InvalidTcaException(
-                    'Invalid TCA configuration for field "' . $fieldName . '" in table "' . $tableName . '", the setting'
+                    'Invalid TCA configuration for field "' . $fieldName . '" in table "' . $tableName . '". The setting'
                     . '"ds_tableField" must be of the form "tableName:fieldName"',
                     1464116002
                 );

@@ -28,8 +28,8 @@ interface LoadSaveHandlerInterface
     public function find();
 
     /**
-     * @TODO This is wrong, we only can givbe an identifier for the handler, we do not know,
-     * if this are files. The finder should only return an array of identifier for more
+     * @TODO This is wrong, we only can give an identifier for the handler, we do not know,
+     * if these are files. The finder should only return an array of identifier for more
      * operations.
      */
     public function load(\Symfony\Component\Finder\SplFileInfo $file): array;
