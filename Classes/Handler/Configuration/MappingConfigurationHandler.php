@@ -45,13 +45,13 @@ class MappingConfigurationHandler implements ConfigurationHandlerInterface
         $this->loadSaveHandler = $loadSaveHandler;
     }
 
-    /** @TODO it may be possible that this could go into an abstract */
+    /** @TODO It may be possible that this could go into an abstract */
     public function loadConfigurations()
     {
         $configurations = [];
         $files = $this->loadSaveHandler->find();
 
-        /** @TODO No, we don't know if this are files, this may be something totaly different! */
+        /** @TODO No, we don't know if this are files, this may be something totally different! */
         foreach ($files as $file) {
             $content = $this->loadSaveHandler->load($file);
 
@@ -68,7 +68,7 @@ class MappingConfigurationHandler implements ConfigurationHandlerInterface
                     'store' => ['file' => $file], /** @TODO Better place to save this information? */
                 ];
             } catch (\Exception $e) {
-                /** @TODO log error, that we can't read the configuration */
+                /** @TODO Log error, that we can't read the configuration */
             }
         }
 

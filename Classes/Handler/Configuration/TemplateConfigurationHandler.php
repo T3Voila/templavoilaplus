@@ -45,13 +45,13 @@ class TemplateConfigurationHandler implements ConfigurationHandlerInterface
         $this->loadSaveHandler = $loadSaveHandler;
     }
 
-    /** @TODO it may be possible that this could go into an abstract */
+    /** @TODO It may be possible that this could go into an abstract */
     public function loadConfigurations()
     {
         $configurations = [];
         $files = $this->loadSaveHandler->find();
 
-        /** @TODO No, we don't know if this are files, this may be something totaly different! */
+        /** @TODO No, we don't know if this are files, this may be something totally different! */
         foreach ($files as $file) {
             $content = $this->loadSaveHandler->load($file);
 
@@ -68,7 +68,7 @@ class TemplateConfigurationHandler implements ConfigurationHandlerInterface
                     'store' => ['file' => $file], /** @TODO Better place to save this information? */
                 ];
             } catch (\Exception $e) {
-                /** @TODO log error, that we can't read the configuration */
+                /** @TODO Log error, that we can't read the configuration */
             }
         }
 
@@ -88,12 +88,12 @@ class TemplateConfigurationHandler implements ConfigurationHandlerInterface
             $templateConfiguration->setName($configuration['tvp-template']['meta']['name']);
         }
         if (isset($configuration['tvp-template']['meta']['renderer'])) {
-            /** @TODO check before setting */
+            /** @TODO Check before setting */
             $templateConfiguration->setRenderHandlerIdentifier($configuration['tvp-template']['meta']['renderer']);
         }
         if (isset($configuration['tvp-template']['meta']['template'])) {
             /**
-             * @TODO check before setting
+             * @TODO Check before setting
              * @TODO Relative to Place or configuration file? Support Absolute or 'EXT:' (insecure?)
              */
             $templateConfiguration->setTemplateFileName($configuration['tvp-template']['meta']['template']);

@@ -3,7 +3,7 @@
 What does it do?
 ^^^^^^^^^^^^^^^^
 
-In short, TemplaVoilà! Plus is an alternate templating enginge offering a
+In short, TemplaVoilà! Plus is an alternate templating engine offering a
 new way of creating and working with design elements. On top of that
 it provides a new user interface in the backend (aka the “Page
 Module”).
