@@ -34,10 +34,6 @@ class ProcessingService
     /** @var FlexFormTools */
     protected $flexFormTools = null;
 
-    /** @TODO This makes the Service statefull!! */
-    /** @var int */
-    protected $basePid = null;
-
     public function __construct()
     {
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -50,16 +46,17 @@ class ProcessingService
      * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
      * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
      * @param array $parentPointer @TODO Move this in a model?
+     * @param int $basePid The uid of the page this node should belong
      *
      * @return array The content tree
      */
-    public function getNodeWithTree(string $table, array $row, array $parentPointer = []): array
+    public function getNodeWithTree(string $table, array $row, array $parentPointer = [], int $basePid = 0, array &$usedElements = []): array
     {
-        if ($this->basePid === null) {
+        if ($basePid === 0) {
             if ($table === 'pages') {
-                $this->basePid = (int) $row['uid'];
+                $basePid = (int) $row['uid'];
             } else {
-                $this->basePid = (int) $row['pid'];
+                $basePid = (int) $row['pid'];
             }
         }
 
@@ -71,7 +68,7 @@ class ProcessingService
             ];
         }
 
-        $node = $this->getNodeFromRow($table, $row, $parentPointer);
+        $node = $this->getNodeFromRow($table, $row, $parentPointer, $basePid, $usedElements);
         $node['datastructure'] = $this->getDatastructureForNode($node);
         $node['flexform'] = $this->getFlexformForNode($node);
 
@@ -83,7 +80,7 @@ class ProcessingService
         $node['localization'] = $this->getLocalizationForNode($node);
 
         // Get node childs:
-        $node['childNodes']  = $this->getNodeChilds($node);
+        $node['childNodes']  = $this->getNodeChilds($node, $basePid, $usedElements);
 
         // Return result:
         return [
@@ -92,12 +89,18 @@ class ProcessingService
         ];
     }
 
-    public function getNodeFromRow(string $table, array $row, array $parentPointer = [])
+    public function getNodeFromRow(string $table, array $row, array $parentPointer = [], int $basePid = 0, array &$usedElements = [])
     {
         $title = BackendUtility::getRecordTitle($table, $row);
 
         $onPid = ($table === 'pages' ? (int) $row['uid'] : (int) $row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
+
+        if (isset($usedElements[$table][$row['uid']])) {
+            $usedElements[$table][$row['uid']]++;
+        } else {
+            $usedElements[$table][$row['uid']] = 1;
+        }
 
         $node = [
             'raw' => [
@@ -109,7 +112,8 @@ class ProcessingService
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
                 'partial' => 'Backend/Handler/DoktypeDefaultHandler/' . ($table === 'pages' ? 'Page' : 'Content') . 'Element',
-                'belongsToCurrentPage' => ($this->basePid === $onPid),
+                'belongsToCurrentPage' => ($basePid === $onPid),
+                'countUsedOnPage' => $usedElements[$table][$row['uid']],
                 'parentPointer' => $parentPointerString,
                 'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
             ],
@@ -180,7 +184,7 @@ class ProcessingService
         return $localization;
     }
 
-    public function getNodeChilds(array $node): array
+    public function getNodeChilds(array $node, int $basePid, array &$usedElements): array
     {
         $childs = [];
 
@@ -208,7 +212,7 @@ class ProcessingService
                                 $listOfSubElementUids = $node['flexform']['data'][$sheetKey][$lKey][$fieldKey][$vKey];
                                 if ($listOfSubElementUids) {
                                     $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
-                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer);
+                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $usedElements);
                                 } else {
                                     $childs[$sheetKey][$lKey][$fieldKey][$vKey] = [];
                                 }
@@ -224,7 +228,7 @@ class ProcessingService
         return $childs;
     }
 
-    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer): array
+    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, array &$usedElements): array
     {
         $nodes = [];
 
@@ -243,7 +247,7 @@ class ProcessingService
             $parentPointer['position'] = $position;
 
             if (is_array($contentRow)) {
-                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer);
+                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer, $basePid, $usedElements);
             } else {
                 # ERROR: The element referenced was deleted! - or hidden :-)
             }

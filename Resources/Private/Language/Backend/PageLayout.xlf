@@ -105,6 +105,9 @@
             <trans-unit id="infoElementFromOtherPage" xml:space="preserve">
                 <source>This is a reference to an element on page %2$d.</source>
             </trans-unit>
+            <trans-unit id="infoElementUsedMultipleTimes" xml:space="preserve">
+                <source>This element has been used %s times on this page!</source>
+            </trans-unit>
             <trans-unit id="labelLocalizations" xml:space="preserve">
                 <source>Localizations</source>
             </trans-unit>
