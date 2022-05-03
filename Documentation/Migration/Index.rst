@@ -34,4 +34,4 @@ Steps to do for migration
     }
 
 Now your system should be ready. If all works you can remove the old TemplaVoilà! Plus database tables from your system.
-If you have issues, ask on `slack channel <https://typo3.slack.com/archives/C4HCAH659>`_ or on `github <https://github.com/pluspol-interactive/templavoilaplus>`_
+If you have issues, ask on `slack channel <https://typo3.slack.com/archives/C4HCAH659>`_ or on `github <https://github.com/T3Voila/templavoilaplus>`_

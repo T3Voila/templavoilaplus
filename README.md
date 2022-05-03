@@ -1,6 +1,6 @@
 # TemplaVoilà! Plus
 
-[![license](https://img.shields.io/github/license/pluspol-interactive/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
+[![license](https://img.shields.io/github/license/T3Voila/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
 [![version](https://img.shields.io/badge/TER_version-7.3.6-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 
@@ -9,7 +9,7 @@ TemplaVoilà! extension from Kasper Skårhøj prepared for modern versions of TY
 
 ## Language files
 
-If you like to help with the translation of the extension, please visit https://github.com/pluspol-interactive/templavoilaplus-languagefiles
+If you like to help with the translation of the extension, please visit https://github.com/T3Voila/templavoilaplus-languagefiles
 
 ## The next big TV+ version
 
