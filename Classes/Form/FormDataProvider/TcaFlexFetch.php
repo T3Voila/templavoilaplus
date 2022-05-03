@@ -139,8 +139,8 @@ class TcaFlexFetch implements FormDataProviderInterface
     /**
      * Single fields can be extracted to files again. This is resolved and parsed here.
      *
-     * @todo: Why is this not done in BackendUtility::getFlexFormDS() directly? If done there, the two methods
-     * @todo: since this resolving is basically the only really useful thing they actually do.
+     * @TODO Why is this not done in BackendUtility::getFlexFormDS() directly? If done there, the two methods
+     * @TODO since this resolving is basically the only really useful thing they actually do.
      *
      * @TODO Copied from core, can be removed, is solved with code paths for TYPO3 8.5.0
      *

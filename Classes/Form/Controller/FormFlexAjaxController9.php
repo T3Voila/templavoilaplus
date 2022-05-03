@@ -85,7 +85,7 @@ class FormFlexAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormFlexAjax
         ];
         // A new container on a new record needs the 'NEW123' uid here, see comment
         // in DatabaseUniqueUidNewRow for more information on that.
-        // @todo: Resolve, maybe with a redefinition of vanillaUid to transport the information more clean through this var?
+        // @TODO Resolve, maybe with a redefinition of vanillaUid to transport the information more clean through this var?
         // @see issue #80100 for a series of changes in this area
         if ($command === 'new') {
             $formDataCompilerInput['databaseRow']['uid'] = $databaseRowUid;
@@ -128,7 +128,7 @@ class FormFlexAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormFlexAjax
         $formData['parameterArray']['itemFormElName'] = 'data[' . $tableName . '][' . $formData['databaseRow']['uid'] . '][' . $fieldName . ']';
 
         // JavaScript code for event handlers:
-        // @todo: See if we can get rid of this - used in group elements, and also for the "reload" on type field changes
+        // @TODO See if we can get rid of this - used in group elements, and also for the "reload" on type field changes
         $formData['parameterArray']['fieldChangeFunc'] = [];
         $formData['parameterArray']['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = 'TBE_EDITOR.fieldChanged('
             . GeneralUtility::quoteJSvalue($tableName)
@@ -136,7 +136,7 @@ class FormFlexAjaxController9 extends \TYPO3\CMS\Backend\Controller\FormFlexAjax
             . ',' . GeneralUtility::quoteJSvalue($fieldName)
             . ',' . GeneralUtility::quoteJSvalue($formData['parameterArray']['itemFormElName'])
             . ');';
-        // @todo: Check GroupElement for usage of elementBaseName ... maybe kick that thing?
+        // @TODO Check GroupElement for usage of elementBaseName ... maybe kick that thing?
 
         // Feed resulting form data to container structure to render HTML and other result data
         $nodeFactory = GeneralUtility::makeInstance(NodeFactory::class);
