@@ -31,8 +31,8 @@ jobs:
           - 7.2
           - 7.3
           - 7.4
-          - 8.0
-          - 8.1
+#          - 8.0
+#          - 8.1
   code-quality:
     name: "Code quality checks"
     runs-on: ubuntu-20.04
@@ -162,18 +162,18 @@ jobs:
           - typo3-version: ^11.5
             php-version: 7.4
             composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: lowest
+#          - typo3-version: ^11.5
+#            php-version: 8.0
+#            composer-dependencies: highest
+#          - typo3-version: ^11.5
+#            php-version: 8.0
+#            composer-dependencies: lowest
+#          - typo3-version: ^11.5
+#            php-version: 8.1
+#            composer-dependencies: highest
+#          - typo3-version: ^11.5
+#            php-version: 8.1
+#            composer-dependencies: lowest
   functional-tests:
     name: "Functional tests"
     runs-on: ubuntu-18.04
@@ -249,15 +249,15 @@ jobs:
           - typo3-version: ^11.5
             php-version: 7.4
             composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: lowest
+#          - typo3-version: ^11.5
+#            php-version: 8.0
+#            composer-dependencies: highest
+#          - typo3-version: ^11.5
+#            php-version: 8.0
+#            composer-dependencies: lowest
+#          - typo3-version: ^11.5
+#            php-version: 8.1
+#            composer-dependencies: highest
+#          - typo3-version: ^11.5
+#            php-version: 8.1
+#            composer-dependencies: lowest
