@@ -1,7 +1,7 @@
 # TemplaVoilà! Plus
 
 [![license](https://img.shields.io/github/license/pluspol-interactive/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
-[![version](https://img.shields.io/badge/TER_version-7.3.5-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
+[![version](https://img.shields.io/badge/TER_version-7.3.6-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 
 TemplaVoilà! Plus is a templating extension for the TYPO3 content management system. It is the follow up of the popular
@@ -36,7 +36,7 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
 * There is no editor anymore, the planed EXT:form editor is very complicated and took to much time. Maybe something else, later as another extension, as this functionality haven't todo with TV+ base.
 * Check the extension which is created while migration, it will help to understand the configuration of TV+ 8.0.0.
 * Please help with documentation.
-* Not tested with PHP 8.0/8.1 but bugreports are welcome.
+* Not tested with PHP 8.0/8.1 but bugreports are welcome. See https://github.com/T3Voila/templavoilaplus/issues/346
 
 ### Extensions as WIP for TV+ 8
 * https://github.com/extrameile/em_tvplus_theme_demo/
