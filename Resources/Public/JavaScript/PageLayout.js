@@ -268,7 +268,7 @@ console.log('onAdd');
 
         for (const item of allItems) {
             item.addEventListener('click', function(event) {
-                var origItem = item.parentNode.parentNode;
+                var origItem = item.parentNode.parentNode.parentNode;
                 PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }

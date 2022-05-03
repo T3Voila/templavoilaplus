@@ -10,7 +10,7 @@
             </div>
         </div>
 
-        <div class="t3-page-ce-body tpm-sub-elements tvp-edit-record">
+        <div class="t3-page-ce-body tpm-sub-elements">
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
                 <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{configuration.lllFile}:infoElementFromOtherPage" arguments="{0: node.raw.entity.uid, 1: node.raw.entity.pid}" /></em></div>
             </f:if>
@@ -23,7 +23,10 @@
             <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{configuration: configuration, node: node}" />
             </f:if>
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{configuration: configuration, node: node}" />
+
+            <div class="tvp-edit-record">
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{configuration: configuration, node: node}" />
+            </div>
 
             <f:if condition="{f:count(subject: node.localization)} > 0">
                 <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
