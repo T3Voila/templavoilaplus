@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3_MODE') || die();
 
 // Adding access list to be_groups
 $tempColumns = [

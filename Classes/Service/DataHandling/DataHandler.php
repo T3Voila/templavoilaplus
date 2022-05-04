@@ -14,6 +14,7 @@ namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,15 +49,27 @@ class DataHandler
      * going to be processed, this function saves the "incomingFieldArray" for later use in some
      * post processing functions (see other functions below).
      *
-     * @param array $incomingFieldArray The original field names and their values before they are processed
-     * @param string $table The table TCEmain is currently processing
-     * @param string $id The records id (if any)
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference Reference to the parent object (TCEmain)
+     * @param array                                    $incomingFieldArray The original field names and their values
+     *                                                                     before they are processed
+     * @param string                                   $table              The table TCEmain is currently processing
+     * @param string                                   $id                 The records id (if any)
+     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference          Reference to the parent object (TCEmain)
      */
-    public function processDatamap_preProcessFieldArray(array &$incomingFieldArray, $table, $id, \TYPO3\CMS\Core\DataHandling\DataHandler &$reference)
-    {
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
+    public function processDatamap_preProcessFieldArray(
+        array &$incomingFieldArray,
+        $table,
+        $id,
+        \TYPO3\CMS\Core\DataHandling\DataHandler &$reference
+    ) {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('processDatamap_preProcessFieldArray', 'templavoilaplus', 0, [$incomingFieldArray, $table, $id]);
+            GeneralUtility::devLog(
+                'processDatamap_preProcessFieldArray',
+                'templavoilaplus',
+                0,
+                [$incomingFieldArray, $table, $id]
+            );
         }
 
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
@@ -71,16 +84,18 @@ class DataHandler
     /**
      * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
      *
-     * @param string $command The TCEmain operation status, fx. 'update'
-     * @param string $table The table TCEmain is currently processing
-     * @param string $id The records id (if any)
-     * @param array $value The field names and their values to be processed
+     * @param string $command   The TCEmain operation status, fx. 'update'
+     * @param string $table     The table TCEmain is currently processing
+     * @param string $id        The records id (if any)
+     * @param array  $value     The field names and their values to be processed
      * @param object $reference Reference to the parent object (TCEmain)
      *
      * @todo "delete" should search for all references to the element.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
     {
+        // phpcs:enable
         if ($this->debug) {
             GeneralUtility::devLog('processCmdmap_preProcess', 'templavoilaplus', 0, [$command, $table, $id, $value]);
         }
@@ -109,7 +124,10 @@ class DataHandler
                         $this
                     )
                 ) {
-                    $reference->newlog(sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id), 1);
+                    $reference->newlog(
+                        sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id),
+                        1
+                    );
                     $command = '';
                 // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {
@@ -121,7 +139,10 @@ class DataHandler
                     }
                     // avoid that deleting offline version in the live workspace unlinks the online version - see #11359
                     if ($record['uid'] && $record['pid']) {
-                        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($record['uid'], $record['pid']);
+                        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
+                            $record['uid'],
+                            $record['pid']
+                        );
                         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
                         $templaVoilaAPI->unlinkElement($sourceFlexformPointer);
                     }
@@ -134,17 +155,31 @@ class DataHandler
      * This function is called by TCEmain after a record has been moved to the first position of
      * the page. We make sure that this is also reflected in the pages references.
      *
-     * @param string $table    The table we're dealing with
-     * @param int $uid The record UID
-     * @param int $destPid The page UID of the page the element has been moved to
-     * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
-     * @param array $updateFields The updated fields of the record row in question (we don't use that)
-     * @param object $reference A reference to the TCEmain instance
+     * @param string $table                  The table we're dealing with
+     * @param int    $uid                    The record UID
+     * @param int    $destPid                The page UID of the page the element has been moved to
+     * @param array  $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
+     *                                       possibly been changed)
+     * @param array  $updateFields           The updated fields of the record row in question (we don't use that)
+     * @param object $reference              A reference to the TCEmain instance
      */
-    public function moveRecord_firstElementPostProcess($table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields, &$reference)
-    {
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
+    public function moveRecord_firstElementPostProcess(
+        $table,
+        $uid,
+        $destPid,
+        $sourceRecordBeforeMove,
+        $updateFields,
+        &$reference
+    ) {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_firstElementPostProcess', 'templavoilaplus', 0, [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]);
+            GeneralUtility::devLog(
+                'moveRecord_firstElementPostProcess',
+                'templavoilaplus',
+                0,
+                [$table, $uid, $destPid, $sourceRecordBeforeMove, $updateFields]
+            );
         }
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
@@ -155,7 +190,10 @@ class DataHandler
 
         $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
-        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
+        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
+            $uid,
+            $sourceRecordBeforeMove['pid']
+        );
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
 
         $mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($destPid, 0);
@@ -177,18 +215,34 @@ class DataHandler
      * This function is called by TCEmain after a record has been moved to after another record on some
      * the page. We make sure that this is also reflected in the pages references.
      *
-     * @param string $table    The table we're dealing with
-     * @param int $uid The record UID
-     * @param int $destPid The page UID of the page the element has been moved to
-     * @param int $origDestPid The "original" PID: This tells us more about after which record our record wants to be moved. So it's not a page uid but a tt_content uid!
-     * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has possibly been changed)
-     * @param array $updateFields The updated fields of the record row in question (we don't use that)
-     * @param object $reference A reference to the TCEmain instance
+     * @param string $table                  The table we're dealing with
+     * @param int    $uid                    The record UID
+     * @param int    $destPid                The page UID of the page the element has been moved to
+     * @param int    $origDestPid            The "original" PID: This tells us more about after which record our record
+     *                                       wants to be moved. So it's not a page uid but a tt_content uid!
+     * @param array  $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
+     *                                       possibly been changed)
+     * @param array  $updateFields           The updated fields of the record row in question (we don't use that)
+     * @param object $reference              A reference to the TCEmain instance
      */
-    public function moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields, &$reference)
-    {
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
+    public function moveRecord_afterAnotherElementPostProcess(
+        $table,
+        $uid,
+        $destPid,
+        $origDestPid,
+        $sourceRecordBeforeMove,
+        $updateFields,
+        &$reference
+    ) {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('moveRecord_afterAnotherElementPostProcess', 'templavoilaplus', 0, [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]);
+            GeneralUtility::devLog(
+                'moveRecord_afterAnotherElementPostProcess',
+                'templavoilaplus',
+                0,
+                [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]
+            );
         }
         if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
             return;
@@ -199,7 +253,10 @@ class DataHandler
 
         $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
 
-        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord($uid, $sourceRecordBeforeMove['pid']);
+        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
+            $uid,
+            $sourceRecordBeforeMove['pid']
+        );
         $sourceFlexformPointer = $sourceFlexformPointersArr[0];
 
         $neighbourFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(abs($origDestPid), $destPid);
@@ -220,12 +277,12 @@ class DataHandler
      * so they reflect the order of the references.
      *
      * @param string $flexformXML The flexform XML data of the page
-     * @param int $pid Current page id
+     * @param int    $pid         Current page id
      */
+    // phpcs:disable Generic.Metrics.NestingLevel
     public function correctSortingAndColposFieldsForPage($flexformXML, $pid)
     {
-        global $TCA;
-
+        //phpcs:enable
         $elementsOnThisPage = [];
 
         /** @var \Tvp\TemplaVoilaPlus\Service\ApiService */
@@ -278,7 +335,7 @@ class DataHandler
 
         $sortNumber = 100;
 
-        $sortByField = $TCA['tt_content']['ctrl']['sortby'];
+        $sortByField = $GLOBALS['TCA']['tt_content']['ctrl']['sortby'];
         if ($sortByField) {
             /** @var \TYPO3\CMS\Core\Database\Connection */
             $connection = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)
@@ -304,19 +361,31 @@ class DataHandler
      * Finds data source value for the current template object and sets it to the
      * $incomingFieldArray.
      *
-     * @param array $incomingFieldArray Array with fields
-     * @param string $dsField Data source field name in the $incomingFieldArray
-     * @param string $toField Template object field name in the $incomingFieldArray
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for this operation
+     * @param array                                                    $incomingFieldArray Array with fields
+     * @param string                                                   $dsField            Data source field name in
+     *                                                                                     the $incomingFieldArray
+     * @param string                                                   $toField            Template object field name
+     *                                                                                     in the $incomingFieldArray
+     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser             Current backend user for
+     *                                                                                     this operation
      */
-    protected function updateDataSourceFieldFromTemplateObjectField(array &$incomingFieldArray, $dsField, $toField, \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser)
-    {
+    protected function updateDataSourceFieldFromTemplateObjectField(
+        array &$incomingFieldArray,
+        $dsField,
+        $toField,
+        \TYPO3\CMS\Core\Authentication\BackendUserAuthentication &$beUser
+    ) {
         $toId = $incomingFieldArray[$toField];
         if ((int)$toId == 0) {
             $incomingFieldArray[$dsField] = '';
         } else {
             if ($beUser->workspace) {
-                $record = BackendUtility::getWorkspaceVersionOfRecord($beUser->workspace, 'tx_templavoilaplus_tmplobj', $toId, 'datastructure');
+                $record = BackendUtility::getWorkspaceVersionOfRecord(
+                    $beUser->workspace,
+                    'tx_templavoilaplus_tmplobj',
+                    $toId,
+                    'datastructure'
+                );
                 if (!is_array($record)) {
                     $record = BackendUtility::getRecord('tx_templavoilaplus_tmplobj', $toId, 'datastructure');
                 }
@@ -337,21 +406,25 @@ class DataHandler
      * @see http://bugs.typo3.org/view.php?id=485
      *
      * @param string $table
-     * @param int $id
-     * @param array $data
-     * @param bool $res
+     * @param int    $id
+     * @param array  $data
+     * @param bool   $res
      * @param object $pObj
      *
      * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not
      */
     public function checkRecordUpdateAccess($table, $id, $data, $res, &$pObj)
     {
-        global $TCA;
         // Only perform additional checks if not admin and just for pages table.
         if (($table == 'pages') && is_array($data) && !$pObj->admin) {
             $res = 1;
             foreach ($data as $field => $value) {
-                if (in_array($table . '-' . $field, $pObj->getExcludeListArray()) || $pObj->data_disableFields[$table][$id][$field]) {
+                if (
+                    in_array(
+                        $table . '-' . $field,
+                        $pObj->getExcludeListArray()
+                    ) || $pObj->data_disableFields[$table][$id][$field]
+                ) {
                     continue;
                 }
                 // we're not inserting useful data - can't make a decission
@@ -361,14 +434,14 @@ class DataHandler
                 }
                 // we're not inserting operating on an flex field - can't make a decission
                 if (
-                    !is_array($TCA[$table]['columns'][$field]['config']) ||
-                    $TCA[$table]['columns'][$field]['config']['type'] != 'flex'
+                    !is_array($GLOBALS['TCA'][$table]['columns'][$field]['config']) ||
+                    $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] != 'flex'
                 ) {
                     $res = null;
                     break;
                 }
                 // get the field-information and check if only "ce" fields are updated
-                $conf = $TCA[$table]['columns'][$field]['config'];
+                $conf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {

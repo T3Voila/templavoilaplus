@@ -76,7 +76,7 @@ class FrontendController extends AbstractPlugin
      * @param array $row Current data record, either a tt_content element or page record.
      * @param string $table Table name, either "pages" or "tt_content".
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException|\Exception
      *
      * @return string HTML output.
      */

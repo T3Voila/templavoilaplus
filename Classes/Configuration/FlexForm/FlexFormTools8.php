@@ -75,12 +75,14 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         // if there is a solution we can adapt it accordingly
         try {
             return parent::getDataStructureIdentifier($fieldTca, $tableName, $fieldName, $row);
+            // phpcs:disable
         } catch (InvalidParentRowException $e) {
         } catch (InvalidParentRowLoopException $e) {
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidIdentifierException $e) {
         }
+        // phpcs:enable
         return '';
     }
 
@@ -163,12 +165,14 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         try {
             $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
             $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);
+            // phpcs:disable
         } catch (InvalidParentRowException $e) {
         } catch (InvalidParentRowLoopException $e) {
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidIdentifierException $e) {
         }
+        // phpcs:enable
 
         // Get flexform XML data
         $editData = GeneralUtility::xml2array($row[$field]);
@@ -278,7 +282,8 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      */
     protected function getDataStructureIdentifierFromRecord(array $fieldTca, string $tableName, string $fieldName, array $row): array
     {
-        $pointerFieldName = $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
+        $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
+        $pointerFieldName = $finalPointerFieldName;
         if (!array_key_exists($pointerFieldName, $row)) {
             // The user may not have rights to edit this field so set it to empty
             // Will validate later on, if there is a parent available which have something set
@@ -432,8 +437,10 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      * @param string $path Path of value in DS structure
      * @param FlexFormTools $pObj caller
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {
+        // phpcs:enable
         // Just setting value in our own result array, basically replicating the structure:
         $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
         // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:

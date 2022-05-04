@@ -28,6 +28,8 @@ class DataStructureIdentifierHook
     /**
      * Hook class method parseDataStructureByIdentifierPreProcess must either return an empty string or a data structure
      * string or a parsed data structure array.
+     *
+     * @throws \RuntimeException
      */
     public function parseDataStructureByIdentifierPreProcess(array $identifier)
     {

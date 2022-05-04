@@ -175,11 +175,11 @@ class PageLayoutController extends ActionController
             $contentBody = $this->renderFunctionHook('renderBody', [], true);
 
             $activePage = $this->pageInfo;
-            if (
-                $this->currentLanguageUid !== 0
-                && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
-            ) {
-                $activePage = $row[0];
+            if ($this->currentLanguageUid !== 0) {
+                $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid);
+                if ($row) {
+                    $activePage = $row[0];
+                }
             }
             $pageTitle = BackendUtility::getRecordTitle('pages', $activePage);
 
@@ -262,7 +262,7 @@ class PageLayoutController extends ActionController
 
         if ($clipboard['hasContent']) {
             $element = key($this->typo3Clipboard->clipData['normal']['el']);
-            list($clipboard['table'], $clipboard['uid']) = explode('|', $element);
+            [$clipboard['table'], $clipboard['uid']] = explode('|', $element);
             $clipboard['mode'] = $this->typo3Clipboard->clipData['normal']['mode'];
         }
 
