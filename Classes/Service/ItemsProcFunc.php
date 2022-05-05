@@ -85,7 +85,7 @@ class ItemsProcFunc
     }
 
     /**
-     * @param array  $tvpPageTsConfig
+     * @param array $tvpPageTsConfig
      * @param string $mappingPlace
      *
      * @return bool

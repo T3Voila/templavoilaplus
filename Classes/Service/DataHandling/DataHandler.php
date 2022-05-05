@@ -49,11 +49,11 @@ class DataHandler
      * going to be processed, this function saves the "incomingFieldArray" for later use in some
      * post processing functions (see other functions below).
      *
-     * @param array                                    $incomingFieldArray The original field names and their values
-     *                                                                     before they are processed
-     * @param string                                   $table              The table TCEmain is currently processing
-     * @param string                                   $id                 The records id (if any)
-     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference          Reference to the parent object (TCEmain)
+     * @param array $incomingFieldArray The original field names and their values
+     *                                  before they are processed
+     * @param string $table The table TCEmain is currently processing
+     * @param string $id The records id (if any)
+     * @param \TYPO3\CMS\Core\DataHandling\DataHandler $reference Reference to the parent object (TCEmain)
      */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function processDatamap_preProcessFieldArray(
@@ -84,10 +84,10 @@ class DataHandler
     /**
      * This method is called by a hook in the TYPO3 Core Engine (TCEmain).
      *
-     * @param string $command   The TCEmain operation status, fx. 'update'
-     * @param string $table     The table TCEmain is currently processing
-     * @param string $id        The records id (if any)
-     * @param array  $value     The field names and their values to be processed
+     * @param string $command The TCEmain operation status, fx. 'update'
+     * @param string $table The table TCEmain is currently processing
+     * @param string $id The records id (if any)
+     * @param array $value The field names and their values to be processed
      * @param object $reference Reference to the parent object (TCEmain)
      *
      * @todo "delete" should search for all references to the element.
@@ -155,13 +155,13 @@ class DataHandler
      * This function is called by TCEmain after a record has been moved to the first position of
      * the page. We make sure that this is also reflected in the pages references.
      *
-     * @param string $table                  The table we're dealing with
-     * @param int    $uid                    The record UID
-     * @param int    $destPid                The page UID of the page the element has been moved to
-     * @param array  $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
-     *                                       possibly been changed)
-     * @param array  $updateFields           The updated fields of the record row in question (we don't use that)
-     * @param object $reference              A reference to the TCEmain instance
+     * @param string $table The table we're dealing with
+     * @param int $uid The record UID
+     * @param int $destPid The page UID of the page the element has been moved to
+     * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
+     *                                      possibly been changed)
+     * @param array $updateFields The updated fields of the record row in question (we don't use that)
+     * @param object $reference A reference to the TCEmain instance
      */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function moveRecord_firstElementPostProcess(
@@ -215,15 +215,15 @@ class DataHandler
      * This function is called by TCEmain after a record has been moved to after another record on some
      * the page. We make sure that this is also reflected in the pages references.
      *
-     * @param string $table                  The table we're dealing with
-     * @param int    $uid                    The record UID
-     * @param int    $destPid                The page UID of the page the element has been moved to
-     * @param int    $origDestPid            The "original" PID: This tells us more about after which record our record
-     *                                       wants to be moved. So it's not a page uid but a tt_content uid!
-     * @param array  $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
-     *                                       possibly been changed)
-     * @param array  $updateFields           The updated fields of the record row in question (we don't use that)
-     * @param object $reference              A reference to the TCEmain instance
+     * @param string $table The table we're dealing with
+     * @param int $uid The record UID
+     * @param int $destPid The page UID of the page the element has been moved to
+     * @param int $origDestPid The "original" PID: This tells us more about after which record our record
+     *                         wants to be moved. So it's not a page uid but a tt_content uid!
+     * @param array $sourceRecordBeforeMove (A part of) the record before it has been moved (and thus the PID has
+     *                                      possibly been changed)
+     * @param array $updateFields The updated fields of the record row in question (we don't use that)
+     * @param object $reference A reference to the TCEmain instance
      */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function moveRecord_afterAnotherElementPostProcess(
@@ -277,7 +277,7 @@ class DataHandler
      * so they reflect the order of the references.
      *
      * @param string $flexformXML The flexform XML data of the page
-     * @param int    $pid         Current page id
+     * @param int $pid Current page id
      */
     // phpcs:disable Generic.Metrics.NestingLevel
     public function correctSortingAndColposFieldsForPage($flexformXML, $pid)
@@ -361,13 +361,13 @@ class DataHandler
      * Finds data source value for the current template object and sets it to the
      * $incomingFieldArray.
      *
-     * @param array                                                    $incomingFieldArray Array with fields
-     * @param string                                                   $dsField            Data source field name in
-     *                                                                                     the $incomingFieldArray
-     * @param string                                                   $toField            Template object field name
-     *                                                                                     in the $incomingFieldArray
-     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser             Current backend user for
-     *                                                                                     this operation
+     * @param array $incomingFieldArray Array with fields
+     * @param string $dsField Data source field name in
+     *                        the $incomingFieldArray
+     * @param string $toField Template object field name
+     *                        in the $incomingFieldArray
+     * @param \TYPO3\CMS\Core\Authentication\BackendUserAuthentication $beUser Current backend user for
+     *                                                                         this operation
      */
     protected function updateDataSourceFieldFromTemplateObjectField(
         array &$incomingFieldArray,
@@ -406,9 +406,9 @@ class DataHandler
      * @see http://bugs.typo3.org/view.php?id=485
      *
      * @param string $table
-     * @param int    $id
-     * @param array  $data
-     * @param bool   $res
+     * @param int $id
+     * @param array $data
+     * @param bool $res
      * @param object $pObj
      *
      * @return mixed - "1" if we grant access and "false" if we can't decide whether to give access or not
