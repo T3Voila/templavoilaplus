@@ -7,6 +7,8 @@
     <arg name="colors"/>
     <arg name="extensions" value="php"/>
 
+    <exclude-pattern>*/Classes/Form/**/*.php$</exclude-pattern>
+
     <!--The complete PSR-12 rule set-->
     <rule ref="PSR12"/>
 
