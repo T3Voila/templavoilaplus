@@ -42,7 +42,7 @@ class ItemsProcFunc
             ['', ''],
         ];
 
-        $currentPageId = $params['table'] === 'pages' ? $params['row'] ['uid'] : $params['row'] ['pid'];
+        $currentPageId = $params['table'] === 'pages' ? $params['row']['uid'] : $params['row']['pid'];
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
 
@@ -101,7 +101,7 @@ class ItemsProcFunc
         }
 
         foreach ($allowedPlaces as $allowedPlace) {
-            if (strpos($mappingPlace,$allowedPlace) !== false) {
+            if (strpos($mappingPlace, $allowedPlace) !== false) {
                 return true;
             }
         }
