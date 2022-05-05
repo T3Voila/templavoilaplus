@@ -47,8 +47,8 @@ class DoktypeShortcutHandler
         }
 
         switch ($shortcutMode) {
+            // Should be SHORTCUT_MODE_SELECT
             case $pageRepositoryClass::SHORTCUT_MODE_NONE:
-// Should be SHORTCUT_MODE_SELECT
                 // Use selected page
                 $targetUid = (int)$pageRecord['shortcut'];
                 break;

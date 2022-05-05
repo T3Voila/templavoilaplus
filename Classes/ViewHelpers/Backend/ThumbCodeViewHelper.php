@@ -67,7 +67,6 @@ class ThumbCodeViewHelper extends AbstractViewHelper
             '',
             '',
             false
-            // No $linkInfoPopup
         );
     }
 }

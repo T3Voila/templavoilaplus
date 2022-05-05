@@ -370,8 +370,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         $mappingInformation = unserialize($to['templatemapping']);
                         if (isset($mappingInformation['MappingInfo']['ROOT'])) {
                             $to['valid'] = true;
-                            $to['DS'] = $validatedDs[$to['datastructure']];
                             /** @TODO If parent then from parent! Check if parent exists */
+                            $to['DS'] = $validatedDs[$to['datastructure']];
                         } else {
                             $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping seams not existing.';
                         }
@@ -773,11 +773,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         ],
                     ],
                 ];
-                $emConfContent = "<?php\n" .
-                    $fileDescription .
-                    "\n\$EM_CONF['" . $newExtensionKey . "'] = " .
-                    ArrayUtility::arrayExport($emConfConfig) .
-                    ";\n";
+                $emConfContent = "<?php\n" . $fileDescription . "\n\$EM_CONF['" . $newExtensionKey . "'] = " . ArrayUtility::arrayExport($emConfConfig) . ";\n";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_emconf.php', $emConfContent, true);
 
                 $composerInfo = [
@@ -1016,8 +1012,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
                 // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
             );
         }
 
@@ -1081,8 +1077,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 'meta' => [
                     'name' => $to['title'],
                 ],
+                // Is empty string if no DS is needed
                 'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'],
-// Is empty string if no DS is needed
                 'combinedTemplateConfigurationIdentifier' => $packageName . $convertedDsConfig['scopePath'] . '/TemplateConfiguration:' . $yamlFileName,
             ],
         ];
@@ -1106,8 +1102,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         GeneralUtility::writeFile(
             $publicExtensionDirectory . $innerPathes['templateConfiguration'][$convertedDsConfig['scopeName']] . '/' . $yamlFileName,
-            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
             // No inline style please
+            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
         );
 
         return [$mappingConfiguration, $convertedDsConfig['scopeName'], $convertedDsConfig['scopePath']];
