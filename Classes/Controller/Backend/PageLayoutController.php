@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,6 +28,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
@@ -212,6 +212,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
         $this->view->assign('pageDoktype', $activePage['doktype']);
+        $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
@@ -710,5 +711,38 @@ class PageLayoutController extends ActionController
     public function permissionContentEdit(): bool
     {
         return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
+    }
+
+    /**
+     * Creates a Message object and adds it to the FlashMessageQueue.
+     *
+     * @param string $messageBody The message
+     * @param string $messageTitle Optional message title
+     * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
+     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
+     * @throws \InvalidArgumentException if the message body is no string
+     */
+    public function addFlashMessage(
+        $messageBody,
+        $messageTitle = '',
+        $severity = FlashMessage::OK,
+        $storeInSession = false,
+        string $buttonUrl = '',
+        string $buttonLabel = '',
+        string $buttonIcon = ''
+    ) {
+        /* @var \Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage $flashMessage */
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
+            (string)$messageBody,
+            (string)$messageTitle,
+            $severity,
+            $storeInSession,
+            $buttonUrl,
+            $buttonLabel,
+            $buttonIcon
+        );
+
+        $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
     }
 }
