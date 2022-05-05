@@ -441,14 +441,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There is a page(s) using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
                 }
             }
             if ($row['tx_templavoilaplus_next_to'] != 0) {
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_next_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_next_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There is a page(s) using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
                 }
             }
         }
