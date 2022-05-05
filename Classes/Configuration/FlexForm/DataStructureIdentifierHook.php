@@ -33,8 +33,8 @@ class DataStructureIdentifierHook
      */
     public function parseDataStructureByIdentifierPreProcess(array $identifier)
     {
-        $dataStructure = '';
         // I know, wrong naming, but thats it inside FlexFormTools
+        $dataStructure = '';
         if ($identifier['type'] === 'combinedMappingIdentifier') {
             if (empty($identifier['tableName']) || empty($identifier['uid']) || empty($identifier['fieldName'])) {
                 throw new \RuntimeException(

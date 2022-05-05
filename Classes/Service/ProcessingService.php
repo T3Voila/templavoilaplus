@@ -81,9 +81,10 @@ class ProcessingService
         $node['childNodes']  = $this->getNodeChilds($node, $basePid, $usedElements);
 
         // Return result:
+        // contentElementUsage set to unset var??
         return [
             'node' => $node,
-            'contentElementUsage' => $tt_content_elementRegister, // ?
+            'contentElementUsage' => $tt_content_elementRegister
         ];
     }
 
@@ -184,7 +185,8 @@ class ProcessingService
     {
         $childs = [];
 
-        if (!isset($node['datastructure']['sheets'])
+        if (
+            !isset($node['datastructure']['sheets'])
             || !is_array($node['datastructure']['sheets'])
         ) {
             return $childs;
@@ -214,7 +216,8 @@ class ProcessingService
                                 }
                             }
                         }
-                    } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) { // If generally there are non-container fields, register them:
+                    } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) {
+                        // If generally there are non-container fields, register them:
                         $childs['contentFields'][$sheetKey][$fieldKey] = $fieldKey;
                     }
                 }
@@ -234,7 +237,8 @@ class ProcessingService
         $dbAnalysis->start($listOfNodes, 'tt_content');
 
         // Traverse records:
-        $counter = 1; // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
+        // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
+        $counter = 1;
         foreach ($dbAnalysis->itemArray as $position => $recIdent) {
             $idStr = 'tt_content:' . $recIdent['id'];
 
@@ -242,10 +246,10 @@ class ProcessingService
 
             $parentPointer['position'] = $position;
 
+            // Only do it if the element referenced was not deleted! - or hidden :-)
             if (is_array($contentRow)) {
                 $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer, $basePid, $usedElements);
             }
-            // ERROR: The element referenced was deleted! - or hidden :-)
         }
 
         return $nodes;

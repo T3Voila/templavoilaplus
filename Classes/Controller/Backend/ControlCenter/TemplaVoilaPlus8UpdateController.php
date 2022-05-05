@@ -93,14 +93,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         $allDsToValid = false;
-        list($validationDsToErrors, $validatedDs, $validatedToWithDs) = $this->checkAllDsToValid($allDs, $allTo);
+        [$validationDsToErrors, $validatedDs, $validatedToWithDs] = $this->checkAllDsToValid($allDs, $allTo);
         if (count($validationDsToErrors) === 0) {
             $allDsToValid = true;
         }
 
         // Check database if the found ds/to are in usage, give the possibility to delete them?
         $allPagesContentValid = false;
-        list($validationPagesContentErrors, $validatedToWithDs) = $this->checkAllPageContentForTo($validatedToWithDs);
+        [$validationPagesContentErrors, $validatedToWithDs] = $this->checkAllPageContentForTo($validatedToWithDs);
         if (count($validationPagesContentErrors) === 0) {
             $allPagesContentValid = true;
         }
@@ -284,6 +284,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             ->fetchAll();
 
         foreach ($result as $row) {
+            // assoc item 'belayout' should be in TO or is that only there for staticDS??
             $dataStructure = [
                 'staticDS' => false,
                 'title' => $row['title'],
@@ -292,7 +293,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 'scope' => $row['scope'],
                 'icon' => $row['previewicon'],
                 'belayout' => $row['belayout'],
-// This should be in TO or is that only there for staticDS??
             ];
 
             $allDs[] = $dataStructure;
@@ -370,7 +370,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         $mappingInformation = unserialize($to['templatemapping']);
                         if (isset($mappingInformation['MappingInfo']['ROOT'])) {
                             $to['valid'] = true;
-                            $to['DS'] = $validatedDs[$to['datastructure']]; /** @TODO If parent then from parent! Check if parent exists */
+                            $to['DS'] = $validatedDs[$to['datastructure']];
+                            /** @TODO If parent then from parent! Check if parent exists */
                         } else {
                             $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping seams not existing.';
                         }
@@ -416,7 +417,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         // PAGES
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -456,7 +457,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         // TT_CONTENT
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('tt_content');
+            ->getQueryBuilderForTable('tt_content');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -805,11 +806,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n" .
-                    $fileDescription .
-                    "\ndefined('TYPO3_MODE') or die();\n\n" .
-                    "// @TODO This line can be removed after cache is implemented\n" .
-                    "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');";
+                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "// @TODO This line can be removed after cache is implemented\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -988,7 +985,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 $filenameUsed[$yamlFileName] = 1;
             }
 
-            list($mappingConfiguration, $scopeName, $scopePath) = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
+            [$mappingConfiguration, $scopeName, $scopePath] = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
 
             if (isset($to['childTO'])) {
                 foreach ($to['childTO'] as $childTo) {
@@ -1006,7 +1003,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         $childTo['datastructure'] = $to['datastructure'];
                     }
                     // No scopePath/Name from child convert call used
-                    list($childMappingConfiguration) = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
+                    [$childMappingConfiguration] = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
                     $this->cleanupChildMappingConfiguration($mappingConfiguration, $childMappingConfiguration);
                     $mappingConfiguration['tvp-mapping']['childTemplate'][$childTo['rendertype']] = $childMappingConfiguration['tvp-mapping'];
                 }
@@ -1174,17 +1171,17 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         /** @TODO Check the errors if they are fatal
-        $errors = libxml_get_errors();
-        foreach ($errors as $error)
-        {
-        }*/
+         * $errors = libxml_get_errors();
+         * foreach ($errors as $error)
+         * {
+         * }*/
         libxml_clear_errors();
 
         /** @TODO Read error messages and write into a hint array for user output but do not break */
         $domXpath = new \DOMXPath($domDocument);
 
         foreach ($mappingInformation as $fieldName => $mappingField) {
-            list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
+            [$xPath, $mappingType] = explode('/', $mappingField['MAP_EL']);
 
             $convertedXPath = $this->convertXPath($xPath);
 
@@ -1522,7 +1519,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $copiedTemplateFiles[$source] = $filename;
 
-        return  $filename;
+        return $filename;
     }
 
     protected function createPaths(string $publicExtensionDirectory, array $innerSubPaths)
@@ -1656,6 +1653,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
      *
      * @param array $array Array to export
      * @param int $level Internal level used for recursion, do *not* set from outside!
+     *
      * @return string String representation of array
      * @throws \RuntimeException
      */
