@@ -60,7 +60,7 @@ class DataStructureIdentifierHook
                 $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
                 $dataStructure = $dataStructure->getDataStructureArray();
-            } catch (ConfigurationException $e) {
+            } catch (ConfigurationException | \TypeError $e) {
                 $dataStructure = ['error' => $e->getMessage()];
                 /** @TODO Do logging, if we cannot found the Mapping or DS? */
             }
