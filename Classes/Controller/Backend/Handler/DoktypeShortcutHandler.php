@@ -115,9 +115,11 @@ class DoktypeShortcutHandler
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeShortcut'),
             FlashMessage::INFO,
             false,
-            (string)$url,
-            TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
-            'apps-pagetree-page-shortcut'
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
+                'icon' => 'apps-pagetree-page-shortcut',
+            ]]
         );
 
         return '';

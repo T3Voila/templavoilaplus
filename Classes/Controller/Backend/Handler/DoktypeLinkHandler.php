@@ -88,9 +88,11 @@ class DoktypeLinkHandler
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeLink'),
             FlashMessage::INFO,
             false,
-            (string)$url,
-            TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeLinkOpen', true),
-            'apps-pagetree-page-shortcut-external'
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeLinkOpen', true),
+                'icon' => 'apps-pagetree-page-shortcut-external',
+            ]]
         );
 
         return '';

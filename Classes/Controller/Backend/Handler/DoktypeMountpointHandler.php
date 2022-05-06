@@ -69,9 +69,11 @@ class DoktypeMountpointHandler
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeMountpoint'),
             FlashMessage::INFO,
             false,
-            (string)$url,
-            TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true),
-            'apps-pagetree-page-mountpoint'
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true),
+                'icon' => 'apps-pagetree-page-mountpoint',
+            ]]
         );
 
         return '';

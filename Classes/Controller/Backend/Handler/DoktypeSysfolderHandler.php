@@ -46,9 +46,11 @@ class DoktypeSysfolderHandler
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSysfolder'),
             FlashMessage::INFO,
             false,
-            (string)$listModuleUrl,
-            TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true),
-            'actions-system-list-open'
+            [[
+                'url' => (string)$listModuleUrl,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true),
+                'icon' => 'actions-system-list-open',
+            ]]
         );
 
         return '';

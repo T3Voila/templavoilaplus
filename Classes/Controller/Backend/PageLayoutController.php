@@ -720,6 +720,7 @@ class PageLayoutController extends ActionController
      * @param string $messageTitle Optional message title
      * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
      * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
+     * @param array $buttons Optional array of button configuration
      * @throws \InvalidArgumentException if the message body is no string
      */
     public function addFlashMessage(
@@ -727,9 +728,7 @@ class PageLayoutController extends ActionController
         $messageTitle = '',
         $severity = FlashMessage::OK,
         $storeInSession = false,
-        string $buttonUrl = '',
-        string $buttonLabel = '',
-        string $buttonIcon = ''
+        array $buttons = []
     ) {
         /* @var \Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage $flashMessage */
         $flashMessage = GeneralUtility::makeInstance(
@@ -738,9 +737,7 @@ class PageLayoutController extends ActionController
             (string)$messageTitle,
             $severity,
             $storeInSession,
-            $buttonUrl,
-            $buttonLabel,
-            $buttonIcon
+            $buttons
         );
 
         $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
