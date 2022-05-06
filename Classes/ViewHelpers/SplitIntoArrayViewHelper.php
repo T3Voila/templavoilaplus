@@ -21,7 +21,7 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to assign. If not in arguments then taken from tag content');
-        $this->registerArgument('pattern', 'string', 'The delimiter/seperator for the string as regex (mostly \R) without delimiter');
+        $this->registerArgument('pattern', 'string', 'The delimiter/separator for the string as regex (mostly \R) without delimiter');
         $this->registerArgument('delimiterDecimal', 'int', 'A delimiter char as decimal number (like table_delimiter)');
         $this->registerArgument('limit', 'string', 'It will be split in limit elements as maximum');
     }

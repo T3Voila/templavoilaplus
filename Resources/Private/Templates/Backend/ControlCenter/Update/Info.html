@@ -5,13 +5,13 @@
     <p class="lead text-primary"><b>Welcome to the Update Script collection to get your DataStructures, Mapping- and TemplateConfigurations updated to the latest state for your running TYPO3 and TV+ version.</b></p>
     <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.
         <f:if condition="{is12orNewer}">
-            <span class="text-warning">Your TYPO3 Version is more then new, it may be, you may find some gremlins as we do not support this version yet.</span>
+            <span class="text-warning">Your TYPO3 Version is beyond a currently released version, so you may run into some issue since we do not support this version yet.</span>
         </f:if>
         <f:if condition="!{is8orNewer}">
-            <span class="text-danger">Your TYPO3 Version is very old, TV+ 8 do not support this version anymore. Please stay at latest TV+ 7 version. Hopefully you are running an ELTS Version of TYPO3.</span>
+            <span class="text-danger">Your TYPO3 Version is very old, TV+ 8 does not support this version anymore. Please use the latest TV+ 7 version instead. Hopefully you are running an ELTS Version of TYPO3.</span>
         </f:if>
         <f:if condition="{is8orNewer} && !{is9orNewer}">
-            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but see message box below.</span>
+            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but please see the message box below.</span>
         </f:if>
         <f:if condition="{is9orNewer} && !{is12orNewer}">
             <span class="text-success">Your TYPO3 Version is supported by TV+ 8.</span>
@@ -21,8 +21,8 @@
     <f:if condition="!{is9orNewer}">
         <f:be.infobox title="You are using a TYPO3 v8 release" state="1">
             <ul>
-                <li>On the one side this release is out of normal maintenance support since 31. March 2020. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
-                <li>On the other side "TYPO3 v8" do not have the "Site Management" (it was introduced in "TYPO3 v9") so this feature isn't useable together with TemplaVoilà! Plus 8</li>
+                <li>Your version of TYPO3 is out of normal maintenance support as of March 31, 2020. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
+                <li>However, even if you upgrade to TYPO3 v8, it still doesn't have the "Site Management" feature since it was introduced in "TYPO3 v9". So, unfortunately this feature isn't usable together with TemplaVoilà! Plus 8.</li>
             </ul>
         </f:be.infobox>
     </f:if>
@@ -33,14 +33,14 @@
     <f:be.infobox title="Warning" state="2">
         <ul>
             <li>Please backup your data before running any of the update scripts!</li>
-            <li>Do not run any database deletion tasks before all possible update scripts are done!</li>
+            <li>Do not run any database deletion tasks until all possible update scripts have been completed!</li>
         </ul>
     </f:be.infobox>
 
     <h3>Please select an update script</h3>
 
     <f:comment>Add check if it needs to be run</f:comment>
-    <f:be.infobox title="You need to run this, to update your configuration for using with TemplaVoilà! Plus 8" state="-1" disableIcon="true">
+    <f:be.infobox title="You need to run this to update your configuration to be compatible with TemplaVoilà! Plus 8" state="-1" disableIcon="true">
         <f:link.action controller="Backend\ControlCenter\TemplaVoilaPlus8Update" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" /> Update configuration to TemplaVoilà! Plus 8 <small><small>(Version: 0.0.2)</small></small></f:link.action>
     </f:be.infobox>
     <f:comment>Disable it, while TV+ 8 update didn't run yet?</f:comment>
