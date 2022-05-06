@@ -178,6 +178,11 @@
 		"style:lint:fix": [
 			"npm run lint:style:fix"
 		],
+		"xliff:lint": [
+			"echo \"[WARNING] this only works if wget and xmllint are installed locally\"",
+			"wget -q -O .Build/xliff-core-1.2-strict.xsd https://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd",
+			"xmllint --schema .Build/xliff-core-1.2-strict.xsd --noout $(find Resources/Private/Language -name '*.xlf')"
+		],
 		"yarn:init": [
 			"yarn --cwd Resources/Private install"
 		]
