@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
+USE Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
@@ -167,6 +168,7 @@ class PageLayoutController extends ActionController
 
         if ($access) {
             $this->calcPerms = $this->getCalcPerms($this->pageInfo['uid']);
+            $this->checkContentFromPid();
 
             // Additional header content
             $contentHeader = $this->renderFunctionHook('renderHeader');
@@ -246,6 +248,62 @@ class PageLayoutController extends ActionController
         ]);
     }
 
+    protected function checkContentFromPid()
+    {
+        // If content from different pid is displayed
+        if ($this->pageInfo['content_from_pid']) {
+            $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageInfo['content_from_pid']);
+            $linkToPage = GeneralUtility::linkThisScript(['id' => $this->pageInfo['content_from_pid']]);
+            $title = BackendUtility::getRecordTitle('pages', $contentPage)
+                . ' [' . $contentPage['uid'] . ']';
+
+            $this->addFlashMessage(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'),
+                    $title
+                ),
+                '',
+                FlashMessage::INFO,
+                false,
+                [[
+                    'url' => (string)$linkToPage,
+                    'label' => $title,
+                    'icon' => 'apps-pagetree-page-shortcut',
+                ]]
+            );
+        }
+
+        /** @var PageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pages = $pageRepository->getPagesUsingContentFrom($this->pageInfo['uid']);
+
+        if (count($pages)) {
+
+            $titles = [];
+            $buttons = [];
+            foreach ($pages as $contentPage) {
+                $title = BackendUtility::getRecordTitle('pages', $contentPage)
+                . ' [' . $contentPage['uid'] . ']';
+                $titles[] = $title;
+                $buttons[] = [
+                    'url' => $linkToPage = GeneralUtility::linkThisScript(['id' =>$contentPage['uid']]),
+                    'label' => $title,
+                    'icon' => 'apps-pagetree-page-shortcut',
+                ];
+            }
+
+            $this->addFlashMessage(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_on_pid_title'),
+                    implode(', ', $titles)
+                ),
+                '',
+                FlashMessage::INFO,
+                false,
+                $buttons
+            );
+        }
+    }
 
     protected function initializeTypo3Clipboard()
     {
