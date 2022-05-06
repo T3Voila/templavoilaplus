@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -158,7 +159,7 @@ class PageLayoutController extends ActionController
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
         $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $contentHeader = '';
         $contentBody = '';
@@ -798,5 +799,17 @@ class PageLayoutController extends ActionController
         );
 
         $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
+    }
+
+    /**
+     * getFlashMessageQueue is in the ActionController starting with 11LTS, before it is in the ControllerContext
+     */
+    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
+    {
+        if (version_compare(TYPO3_version, '11.5.0', '>=')) {
+            return parent::getFlashMessageQueue($identifier);
+        } else {
+            return $this->controllerContext->getFlashMessageQueue($identifier);
+        }
     }
 }
