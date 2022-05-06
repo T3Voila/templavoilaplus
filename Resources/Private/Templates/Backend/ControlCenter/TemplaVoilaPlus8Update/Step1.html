@@ -4,24 +4,24 @@
     <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
     <h2>Step 1 - Check your System</h2>
 
-    <p class="lead">TV+ checks your database and existing configuration for issues, which may hinder TV+ to update your configuration. Also check the output of DataStructures and Temnplate Objects if they are all, does it sound reasonable how often they are used, if not, check your database consistency. Only the green entries, which are listed below, will be migrated, DataStructures and Template Objects wich are marked as deleted inside the TYPO3 database won't be migrated.</p>
+    <p class="lead">TV+ checks your database and existing configuration for issues that may hinder TV+ from updating your configuration. Also check the output of DataStructures and Template Objects, does it seem reasonable how often they are used, if not, check your database consistency. Only the green entries, which are listed below, will be migrated, DataStructures and Template Objects, which are marked as deleted inside the TYPO3 database won't be migrated.</p>
 
     <f:if condition="!{allOldDatabaseElementsFound}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">It seams you have deleted database tables and/or fields which are necessary for the Update Script.<br>Process stopped.</p>
+            <p class="lead">It seems you have deleted database tables and/or fields that are necessary for the Update Script.<br>Process stopped.</p>
         </f:be.infobox>
     </f:if>
 
     <f:if condition="!{allNewDatabaseElementsFound}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">The new fields on table pages and tt_content do not exists, please run the "Analyze Database Structure" tool and add that fields (but do not remove any tables or fields) and come back afterwards.<br>Process stopped.</p>
+            <p class="lead">The new fields on table pages and tt_content do not exist, please run the "Analyze Database Structure" tool and add that fields (but do not remove any tables or fields) and then try again.<br>Process stopped.</p>
         </f:be.infobox>
     </f:if>
 
     <f:if condition="{allOldDatabaseElementsFound}">
         <f:if condition="!{storagePidsAreFine}">
             <f:be.infobox title="Error" state="2">
-                <p class="lead">You have some Template Objects inside Workspaces, as this is unusal and hard to determine what you have done, you need to check for yourself what needs to be done, to get this cleaned up. (This may be old data, left behind by an older and broken TemplaVoilà! or TYPO3 version and can be removed from database.)<br>Process stopped.</p>
+                <p class="lead">You have some Template Objects inside Workspaces. Since this is unusual and hard to determine what you have done, you need to check for yourself what needs to be done and clean things up. (This may be old data, left behind by an older and broken TemplaVoilà! or TYPO3 version so can be potentially removed from database.)<br>Process stopped.</p>
             </f:be.infobox>
         </f:if>
 
@@ -43,7 +43,7 @@
 
     <f:if condition="!{allDsToValid}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">You have DataStructures and/or Template Objects which have errors while checking.<br>Process stopped.</p>
+            <p class="lead">You have DataStructures and/or Template Objects that have errors.<br>Process stopped.</p>
             <ul class="list-group">
                 <f:for each="{validationDsToErrors}" as="validationError">
                     <li class="list-group-item list-group-item-danger">{validationError}</li>
@@ -54,7 +54,7 @@
 
     <f:if condition="!{allPagesContentValid}">
         <f:be.infobox title="Error" state="2">
-            <p class="lead">You have Pages or content elements which have errors while checking.<br>Process stopped.</p>
+            <p class="lead">You have Pages or content elements which have errors.<br>Process stopped.</p>
             <ul class="list-group">
                 <f:for each="{validationPagesContentErrors}" as="validationError">
                     <li class="list-group-item list-group-item-danger">{validationError}</li>
@@ -66,7 +66,7 @@
     <f:if condition="{indentation} == 0">
         <f:then>
             <f:be.infobox title="Information" state="-1">
-                <p class="lead">The indentation in XML files will be one tabular. You can change this also to a number of chars in the extension configuration.</p>
+                <p class="lead">The indentation in XML files will be single tab. You can change this also to a number of chars in the extension configuration.</p>
             </f:be.infobox>
         </f:then>
         <f:else>
@@ -115,11 +115,11 @@
     </div>
 
     <f:if condition="!{allChecksAreFine}">
-        <p class="lead">Please fix the errors before you can continue in this Update Script. After fixing all issues you can rerun this step. It may be possible, that other errors arrise after your changes.</p>
+        <p class="lead">Please fix the errors before you can continue this Update Script. After fixing all issues you can rerun this step. Please note that it may be also be possible for other errors to crop up after you make your changes.</p>
     </f:if>
 
     <f:if condition="{allChecksAreFine}">
-        <p class="lead">It seams all your data is fine, so you can go to the next step. Or rerun this step, if you changed some data (maybe deleted a DS or TO as it was unused).</p>
+        <p class="lead">It seems all your data is fine. You can go to the next step or rerun this step if you changed some data (i.e. you deleted an unused DS or TO, etc.).</p>
     </f:if>
 
     <div class="row">

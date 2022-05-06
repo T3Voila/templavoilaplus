@@ -57,7 +57,7 @@ class FlexFormSectionContainer extends AbstractContainer
         // Render each existing container
         foreach ($flexFormDataStructureArray['children'] as $flexFormContainerIdentifier => $containerDataStructure) {
             $existingContainerData = $flexFormRowData[$flexFormContainerIdentifier];
-            // @todo: This relies on the fact that "_TOGGLE" is *below* the real data in the saved xml structure
+            // @TODO This relies on the fact that "_TOGGLE" is *below* the real data in the saved xml structure
             $existingSectionContainerDataStructureType = key($existingContainerData);
             $existingContainerData = $existingContainerData[$existingSectionContainerDataStructureType];
             $options = $this->data;

@@ -34,11 +34,10 @@ class DoktypeShortcutHandler
      *
      * @return string HTML output from this submodule
      */
-    public function handle(PageLayoutController $controller, array $pageRecord)
+    public function handle(PageLayoutController $controller, array $pageRecord): string
     {
         $targetUid = 0;
         $targetPageRecord = [];
-        $output = '';
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
 
         $pageRepositoryClass = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
@@ -85,6 +84,7 @@ class DoktypeShortcutHandler
                 break;
         }
 
+        $url = '';
         if ($targetUid) {
             $targetPageRecord = BackendUtility::getRecordWSOL('pages', $targetUid);
             if (version_compare(TYPO3_version, '9.0.0', '>=')) {
@@ -104,34 +104,23 @@ class DoktypeShortcutHandler
                     ]
                 );
             }
-
-            $output = $this->getLinkButton($controller, $url);
         }
+
         $controller->addFlashMessage(
             sprintf(
                 TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeShortcutCannotEdit' . $shortcutMode),
                 $targetPageRecord ? BackendUtility::getRecordTitle('pages', $targetPageRecord) : ''
             ),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeShortcut'),
-            FlashMessage::INFO
+            FlashMessage::INFO,
+            false,
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
+                'icon' => 'apps-pagetree-page-shortcut',
+            ]]
         );
 
-        return $output;
-    }
-
-    /**
-     * @TODO Move into fluid
-     */
-    protected function getLinkButton(PageLayoutController $controller, $url)
-    {
-        return '<a href="' . $url . '"'
-            . ' class="btn btn-info"'
-            . '>'
-            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon(
-                'apps-pagetree-page-shortcut',
-                Icon::SIZE_SMALL
-            )->render()
-            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true)
-            . '</a>';
+        return '';
     }
 }

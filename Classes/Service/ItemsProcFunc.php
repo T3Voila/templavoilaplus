@@ -37,7 +37,7 @@ class ItemsProcFunc
         );
         $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
-        // @TODO Do we have a better way for the emptyness? In tt_content this should be hindered?
+        // @TODO Do we have a better way for the emptiness? In tt_content this should be hindered?
         $params['items'] = [
             ['', ''],
         ];

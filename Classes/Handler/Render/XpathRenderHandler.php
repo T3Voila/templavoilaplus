@@ -92,7 +92,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                 $outerCloneNode = $node->cloneNode(true);
                 $plainCloneNode = $node->cloneNode(false);
                 foreach ($processedValues as $processedContainerValues) {
-                    // For every entrie we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
+                    // For every entry we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
                     $cloneNode = $outerCloneNode->cloneNode(true);
 
                     $processingNodes = $this->getProcessingNodes($cloneNode, $mappingConfiguration);

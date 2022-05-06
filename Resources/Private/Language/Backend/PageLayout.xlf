@@ -100,7 +100,7 @@
                 <source>Your user settings don't allow creating, moving or removing elements from this page.</source>
             </trans-unit>
             <trans-unit id="infoContentMissingEditRights" xml:space="preserve">
-                <source>Your settings indicate that you're either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
+                <source>Your settings indicate that you either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
             </trans-unit>
             <trans-unit id="infoElementFromOtherPage" xml:space="preserve">
                 <source>This is a reference to an element on page %2$d.</source>

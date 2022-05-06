@@ -66,8 +66,8 @@ class DoktypeDefaultHandler
             );
             if (!empty($pageRecord['tx_templavoilaplus_ds']) || !empty($pageRecord['tx_templavoilaplus_next_ds'])) {
                 $controller->getView()->getModuleTemplate()->addFlashMessage(
-                    'Older configuration found, did you upgrade to "TemplaVoilà! Plus 8" but forgot to run the upgrade scripts?',
-                    'Did you forgot to Upgrade',
+                    'Older configuration found. Did you upgrade to "TemplaVoilà! Plus 8" but forgot to run the upgrade scripts?',
+                    'Did you forget to Upgrade',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
                     false
                 );
@@ -93,7 +93,7 @@ class DoktypeDefaultHandler
                 // @TODO Add them automagically in controller to harden naming?
             } catch (ConfigurationException $e) {
                 $controller->getView()->getModuleTemplate()->addFlashMessage(
-                    'The page have a Layout defined, which seams missing on this system. The error was: ' . $e->getMessage(),
+                    'The page has a layout defined, which seems to be missing on this system. The error was: ' . $e->getMessage(),
                     'Template Configuration not loadable',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
                     false

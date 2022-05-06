@@ -150,7 +150,7 @@ class DataStructureUpdateHandler
             if (is_callable($callback)) {
                 $changed = $callback($element) || $changed;
             } else {
-                throw new \Exception('Callback function "' . $callback[1] . '" not available. Cann\'t update DataStructure.');
+                throw new \Exception('Callback function "' . $callback[1] . '" not available. Can\'t update DataStructure.');
             }
         }
 

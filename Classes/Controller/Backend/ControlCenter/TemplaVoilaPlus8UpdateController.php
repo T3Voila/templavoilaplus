@@ -373,14 +373,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                             /** @TODO If parent then from parent! Check if parent exists */
                             $to['DS'] = $validatedDs[$to['datastructure']];
                         } else {
-                            $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping seams not existing.';
+                            $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because mapping does not seem to exist.';
                         }
                     }
                 } else {
-                    $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as template file "' . $to['fileref'] . '" could not be found.';
+                    $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because template file "' . $to['fileref'] . '" could not be found.';
                 }
             } else {
-                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DataStructure "' . $to['datastructure'] . '" could not be found.';
+                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because DataStructure "' . $to['datastructure'] . '" could not be found.';
             }
             $validatedToWithDs[$to['uid']] = $to;
         }
@@ -400,7 +400,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         foreach ($validatedDs as $key => $ds) {
             if ($ds['countUsage'] === 0) {
                 $validatedDs[$key]['valid'] = false;
-                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '" it has no Template Object data';
+                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '" since it has no Template Object data.';
             }
         }
 
@@ -443,14 +443,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
                 }
             }
             if ($row['tx_templavoilaplus_next_to'] != 0) {
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_next_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_next_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
                 }
             }
         }
@@ -479,7 +479,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are content elements which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like content element with uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There are content elements using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like content element with uid: "' . $row['uid'] . '"';
                 }
             }
         }
@@ -667,7 +667,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
          * The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_
          */
         if (preg_match('/^(tx|pages_|tt_|sys_|ts_language_|csh_)/', $newExtensionKey)) {
-            $errors[] = 'The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_';
+            $errors[] = 'The key must not begin with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_';
         }
 
         if (isset($allTerExtensionKeys[$newExtensionKey])) {
@@ -1084,7 +1084,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         ];
 
         /**
-         * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
+         * @TODO in staticDS it was also possible that we had a filename with same name but with .html as ending which included the belayout
          * Add this to the getAllDsFromStatic function.
          * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
          */

@@ -90,7 +90,8 @@ class DataHandler
      * @param array $value The field names and their values to be processed
      * @param object $reference Reference to the parent object (TCEmain)
      *
-     * @todo "delete" should search for all references to the element.
+     * @return void
+     * @TODO "delete" should search for all references to the element.
      */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function processCmdmap_preProcess(&$command, $table, $id, $value, &$reference)
