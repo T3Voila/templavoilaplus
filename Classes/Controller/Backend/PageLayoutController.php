@@ -18,6 +18,8 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  */
 
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
+use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -29,10 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
-use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
-use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
 {
