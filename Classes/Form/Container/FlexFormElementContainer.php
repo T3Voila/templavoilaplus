@@ -179,7 +179,7 @@ class FlexFormElementContainer extends AbstractContainer
 
                     // Possible line breaks in the label through xml: \n => <br/>, usage of nl2br() not possible, so it's done through str_replace (?!)
                     $processedTitle = str_replace('\\n', '<br />', $theTitle);
-                    // @todo: Similar to the processing within SingleElementContainer ... use it from there?!
+                    // @TODO Similar to the processing within SingleElementContainer ... use it from there?!
                     $html[] = '<div class="form-group t3js-formengine-palette-field t3js-formengine-validation-marker">';
                     $html[] = '<label class="t3js-formengine-label">';
                     if (is_array($metaData) && isset($metaData['langChildren']) && $metaData['langChildren']) {

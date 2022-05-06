@@ -17,9 +17,9 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class MarkerBasedRenderHandler implements RenderHandlerInterface
 {

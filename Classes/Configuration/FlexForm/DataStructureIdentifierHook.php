@@ -17,23 +17,24 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
-use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 
 class DataStructureIdentifierHook
 {
     /**
      * Hook class method parseDataStructureByIdentifierPreProcess must either return an empty string or a data structure
      * string or a parsed data structure array.
+     *
+     * @throws \RuntimeException
      */
     public function parseDataStructureByIdentifierPreProcess(array $identifier)
     {
-        $dataStructure = ''; // I know, wrong naming, but thats it inside FlexFormTools
+        // I know, wrong naming, but thats it inside FlexFormTools
+        $dataStructure = '';
         if ($identifier['type'] === 'combinedMappingIdentifier') {
             if (empty($identifier['tableName']) || empty($identifier['uid']) || empty($identifier['fieldName'])) {
                 throw new \RuntimeException(
@@ -59,7 +60,7 @@ class DataStructureIdentifierHook
                 $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
                 $dataStructure = $dataStructure->getDataStructureArray();
-            } catch (ConfigurationException $e) {
+            } catch (ConfigurationException | \TypeError $e) {
                 $dataStructure = ['error' => $e->getMessage()];
                 /** @TODO Do logging, if we cannot found the Mapping or DS? */
             }

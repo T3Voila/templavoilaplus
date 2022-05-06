@@ -19,14 +19,13 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
-use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
+use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class with static functions for templavoila.
@@ -35,7 +34,7 @@ use TYPO3\CMS\Core\Site\PseudoSiteFinder;
  */
 final class TemplaVoilaUtility
 {
-    private static $connectionPool = null;
+    private static $connectionPool;
 
     public static function getConnectionPool(): ConnectionPool
     {
@@ -73,12 +72,11 @@ final class TemplaVoilaUtility
     {
         if (isset($GLOBALS['LANG'])) {
             return $GLOBALS['LANG'];
-        } else {
-            if (version_compare(TYPO3_version, '9.3.0', '>=')) {
-                return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-            }
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
         }
+        if (version_compare(TYPO3_version, '9.3.0', '>=')) {
+            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        }
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
     }
 
     /**
@@ -95,14 +93,13 @@ final class TemplaVoilaUtility
     /**
      * Returns an array of available languages (to use for FlexForms)
      *
-     * @param integer $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
-     * @param boolean $onlyIsoCoded If set, only languages which are paired witch have a ISO code set (via core or static_info_tables)
-     * @param boolean $setDefault If set, an array entry for a default language is added (uid 0).
-     * @param boolean $setMulti If set, an array entry for "multiple languages" is added (uid -1)
+     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+     * @param bool $onlyIsoCoded If set, only languages which are paired witch have a ISO code set (via core or static_info_tables)
+     * @param bool $setDefault If set, an array entry for a default language is added (uid 0).
+     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
      * @param array $modSharedTSconfig
      *
      * @return array
-     * @access protected
      */
     public static function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false, array $modSharedTSconfig = [])
     {
@@ -119,7 +116,7 @@ final class TemplaVoilaUtility
                 'ISOcode' => 'DEF',
                 'flagIcon' => !empty($modSharedTSconfig['properties']['defaultLanguageFlag'])
                     ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag']
-                    : 'mimetypes-x-sys_language'
+                    : 'mimetypes-x-sys_language',
             ];
         }
 
@@ -152,7 +149,7 @@ final class TemplaVoilaUtility
                 $languages[$languageRecord['uid']] = $languageRecord;
                 $languages[$languageRecord['uid']]['ISOcode'] = strtoupper($languageRecord['language_isocode']);
 
-                // @todo: this should probably resolve language_isocode too and throw a deprecation if not filled
+                // @TODO This should probably resolve language_isocode too and throw a deprecation if not filled
                 if ($languageRecord['static_lang_isocode'] && $useStaticInfoTables) {
                     $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
                     if ($staticLangRow['lg_iso_2']) {
@@ -317,7 +314,7 @@ final class TemplaVoilaUtility
      */
     public static function getDenyListForUser()
     {
-        $denyItems = array();
+        $denyItems = [];
         foreach (static::getBackendUser()->userGroups as $group) {
             $groupDenyItems = GeneralUtility::trimExplode(',', $group['tx_templavoilaplus_access'], true);
             $denyItems = array_merge($denyItems, $groupDenyItems);
@@ -330,11 +327,11 @@ final class TemplaVoilaUtility
      * Get a list of referencing elements other than the given pid.
      *
      * @param array $element array with tablename and uid for a element
-     * @param integer $pid the suppoed source-pid
-     * @param integer $recursion recursion limiter
+     * @param int $pid the suppoed source-pid
+     * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return boolean true if there are other references for this element
+     * @return bool true if there are other references for this element
      */
     public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
     {
@@ -355,7 +352,7 @@ final class TemplaVoilaUtility
             $selectArray['deleted'] = 0;
         }
 
-        $refrows = TemplaVoilaUtility::getConnectionPool()
+        $refrows = self::getConnectionPool()
             ->getConnectionForTable('sys_refindex')
             ->select(
                 ['*'],
@@ -376,7 +373,7 @@ final class TemplaVoilaUtility
                             = self::hasElementForeignReferences(
                                 [
                                     'table' => $ref['tablename'],
-                                    'uid' => $ref['recuid']
+                                    'uid' => $ref['recuid'],
                                 ],
                                 $pid,
                                 $recursion - 1,
@@ -396,11 +393,11 @@ final class TemplaVoilaUtility
      * Checks if a element is referenced from other pages / elements on other pages than his own.
      *
      * @param array $element array with tablename and uid for a element
-     * @param integer $pid the suppoed source-pid
-     * @param integer $recursion recursion limiter
+     * @param int $pid the suppoed source-pid
+     * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return boolean true if there are other references for this element
+     * @return bool true if there are other references for this element
      */
     public static function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
     {
@@ -430,7 +427,7 @@ final class TemplaVoilaUtility
     /**
      * @return BackendUserAuthentication|null
      */
-    protected static function getBackendUserAuthentication():? \TYPO3\CMS\Core\Authentication\BackendUserAuthentication
+    protected static function getBackendUserAuthentication(): ?\TYPO3\CMS\Core\Authentication\BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'] ?? null;
     }

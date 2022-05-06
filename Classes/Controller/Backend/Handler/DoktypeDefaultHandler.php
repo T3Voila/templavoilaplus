@@ -17,17 +17,13 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DoktypeDefaultHandler
 {
@@ -70,8 +66,8 @@ class DoktypeDefaultHandler
             );
             if (!empty($pageRecord['tx_templavoilaplus_ds']) || !empty($pageRecord['tx_templavoilaplus_next_ds'])) {
                 $controller->getView()->getModuleTemplate()->addFlashMessage(
-                    'Older configuration found, did you upgrade to "TemplaVoilà! Plus 8" but forgot to run the upgrade scripts?',
-                    'Did you forgot to Upgrade',
+                    'Older configuration found. Did you upgrade to "TemplaVoilà! Plus 8" but forgot to run the upgrade scripts?',
+                    'Did you forget to Upgrade',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
                     false
                 );
@@ -81,7 +77,7 @@ class DoktypeDefaultHandler
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
                 $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 
-            /** @TODO Use a default beLayout thing instead of the double rendering in the template yet */
+                /** @TODO Use a default beLayout thing instead of the double rendering in the template yet */
 //             if ($combinedBackendLayoutConfigurationIdentifier === '') {
 //                 $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
 //             }
@@ -93,10 +89,11 @@ class DoktypeDefaultHandler
                         'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                     ]
                 );
-                $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler'); // @TODO Add them automagically in controller to harden naming?
+                $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler');
+                // @TODO Add them automagically in controller to harden naming?
             } catch (ConfigurationException $e) {
                 $controller->getView()->getModuleTemplate()->addFlashMessage(
-                    'The page have a Layout defined, which seams missing on this system. The error was: ' . $e->getMessage(),
+                    'The page has a layout defined, which seems to be missing on this system. The error was: ' . $e->getMessage(),
                     'Template Configuration not loadable',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
                     false

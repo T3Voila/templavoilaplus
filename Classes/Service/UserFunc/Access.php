@@ -16,22 +16,21 @@ namespace Tvp\TemplaVoilaPlus\Service\UserFunc;
  */
 
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class being included by UserAuthGroup using a hook
  */
 class Access implements SingletonInterface
 {
-
     /**
      * Checks if user is allowed to modify FCE.
      *
      * @param array $params Parameters
      * @param BackendUserAuthentication $backendUser Parent object
      *
-     * @return boolean <code>true</code> if change is allowed
+     * @return bool <code>true</code> if change is allowed
      */
     public function recordEditAccessInternals($params, $backendUser)
     {
@@ -68,7 +67,7 @@ class Access implements SingletonInterface
      * @param int $uid UID of the record
      * @param BackendUserAuthentication $backendUser BE user object
      *
-     * @return boolean <code>true</code> if access is allowed
+     * @return bool <code>true</code> if access is allowed
      */
     public function checkObjectAccess($table, $uid, $backendUser)
     {
@@ -91,7 +90,6 @@ class Access implements SingletonInterface
 
         return true;
     }
-
 
     /**
      * @return \TYPO3\CMS\Core\Authentication\BackendUserAuthentication

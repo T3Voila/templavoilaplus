@@ -20,12 +20,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ItemsProcFunc
 {
-
     /**
      * @param array $params Parameters to the itemsProcFunc
      * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
-     *
-     * @return void
      */
     public function mapItems(array $params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj)
     {
@@ -40,12 +37,12 @@ class ItemsProcFunc
         );
         $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
-        // @TODO Do we have a better way for the emptyness? In tt_content this should be hindered?
+        // @TODO Do we have a better way for the emptiness? In tt_content this should be hindered?
         $params['items'] = [
             ['', ''],
         ];
 
-        $currentPageId = $params['table'] === 'pages' ? $params['row'] ['uid'] : $params['row'] ['pid'];
+        $currentPageId = $params['table'] === 'pages' ? $params['row']['uid'] : $params['row']['pid'];
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
 
@@ -56,7 +53,7 @@ class ItemsProcFunc
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $params['items'][] = [
                         $mappingConfiguration['configuration']->getName(),
-                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier()
+                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier(),
                         // @TODO Icon file
                     ];
                 }
@@ -70,7 +67,7 @@ class ItemsProcFunc
      *
      * @param array $params
      *
-     * @return string|integer
+     * @return string|int
      */
     protected function getScope(array $params)
     {
@@ -88,7 +85,7 @@ class ItemsProcFunc
     }
 
     /**
-     * @param array  $tvpPageTsConfig
+     * @param array $tvpPageTsConfig
      * @param string $mappingPlace
      *
      * @return bool
@@ -104,7 +101,7 @@ class ItemsProcFunc
         }
 
         foreach ($allowedPlaces as $allowedPlace) {
-            if (strpos($mappingPlace,$allowedPlace) !== false) {
+            if (strpos($mappingPlace, $allowedPlace) !== false) {
                 return true;
             }
         }

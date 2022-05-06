@@ -15,11 +15,10 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
 use Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
 use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Handles Updates in DataStructure via Callbacks
@@ -99,7 +98,6 @@ class DataStructureUpdateHandler
         return false;
     }
 
-
     public function processUpdate(
         array &$data,
         array $rootCallbacks,
@@ -152,7 +150,7 @@ class DataStructureUpdateHandler
             if (is_callable($callback)) {
                 $changed = $callback($element) || $changed;
             } else {
-                throw new \Exception('Callback function "' . $callback[1] . '" not available. Cann\'t update DataStructure.');
+                throw new \Exception('Callback function "' . $callback[1] . '" not available. Can\'t update DataStructure.');
             }
         }
 

@@ -15,9 +15,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Controller to show the switch dialog.
  *
@@ -25,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class UpdateController extends AbstractUpdateController
 {
-
     /**
      * List all available configurations for templates
      */

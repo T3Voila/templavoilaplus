@@ -17,11 +17,11 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DoktypeMountpointHandler
 {
@@ -33,7 +33,7 @@ class DoktypeMountpointHandler
      *
      * @return string HTML output from this submodule
      */
-    public function handle(PageLayoutController $controller, array $pageRecord)
+    public function handle(PageLayoutController $controller, array $pageRecord): string
     {
         // Mountpoint starts here but start content is taken from this page
         if (!$pageRecord['mount_pid_ol']) {
@@ -42,15 +42,6 @@ class DoktypeMountpointHandler
         }
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
-
-        $controller->addFlashMessage(
-            sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeMountpointCannotEdit'),
-                $mountSourcePageRecord['title']
-            ),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeMountpoint'),
-            FlashMessage::INFO
-        );
 
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
@@ -70,19 +61,21 @@ class DoktypeMountpointHandler
             );
         }
 
-        return $this->getLinkButton($controller, $url);
-    }
+        $controller->addFlashMessage(
+            sprintf(
+                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeMountpointCannotEdit'),
+                $mountSourcePageRecord['title']
+            ),
+            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeMountpoint'),
+            FlashMessage::INFO,
+            false,
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true),
+                'icon' => 'apps-pagetree-page-mountpoint',
+            ]]
+        );
 
-    /**
-     * @TODO Move into fluid
-     */
-    protected function getLinkButton(PageLayoutController $controller, $url)
-    {
-        return '<a href="' . $url . '"'
-            . ' class="btn btn-info"'
-            . '>'
-            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-mountpoint', Icon::SIZE_SMALL)->render()
-            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true)
-            . '</a>';
+        return '';
     }
 }

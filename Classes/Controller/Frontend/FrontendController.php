@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 class FrontendController extends AbstractPlugin
 {
@@ -47,18 +46,40 @@ class FrontendController extends AbstractPlugin
 
         // Current page record which we MIGHT manipulate a little:
         $pageRecord = $GLOBALS['TSFE']->page;
+        $originalUid = $pageRecord['uid'];
 
-        // replace record if content_from_pid is used. This might change the template/mapping, however
-        // it can't be expected that fields are the same between different templates, thus we need to use the
-        // other template anways
+        // replace record and rootline if content_from_pid is used
         if ($pageRecord['content_from_pid']) {
+            $oldMap = $pageRecord['tx_templavoilaplus_map'];
+            // we only support direct content_from_pid not chained content_from_pid
             $pageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
+
+            // restore the old map, as this eases lookup
+            // or perhaps we want a specific different map here
+            $pageRecord['tx_templavoilaplus_map'] = $oldMap;
         }
 
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoilaplus_map']) {
             $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline(
                 $GLOBALS['TSFE']->rootLine
+            );
+        }
+
+        if (!$pageRecord['tx_templavoilaplus_map']) {
+            $rootLine = [];
+            foreach ($GLOBALS['TSFE']->rootLine as $rootLineElement) {
+                $rootLine[] = $rootLineElement['uid'];
+            }
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Tried to render page %s%s, but neither this page nor the parents (%s) have an TemplaVoilà! Plus ' .
+                    'template set (tx_templavoilaplus_map is empty).',
+                    $pageRecord['uid'],
+                    $pageRecord['uid'] === $originalUid ? '' : ' (as page ' . $originalUid . ' defined this as content_from_pid)',
+                    implode(',', $rootLine)
+                ),
+                1651146497916
             );
         }
 
@@ -77,7 +98,7 @@ class FrontendController extends AbstractPlugin
      * @param array $row Current data record, either a tt_content element or page record.
      * @param string $table Table name, either "pages" or "tt_content".
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException|\Exception
      *
      * @return string HTML output.
      */

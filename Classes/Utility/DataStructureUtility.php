@@ -17,8 +17,8 @@ namespace Tvp\TemplaVoilaPlus\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class with static functions for data structures templavoila.
@@ -27,7 +27,7 @@ use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
  */
 final class DataStructureUtility
 {
-    static function array2xml(array $dataStructure)
+    public static function array2xml(array $dataStructure)
     {
         $indentation = 0;
 

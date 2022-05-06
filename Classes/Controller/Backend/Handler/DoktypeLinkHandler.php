@@ -17,11 +17,10 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 class DoktypeLinkHandler
 {
@@ -33,7 +32,7 @@ class DoktypeLinkHandler
      *
      * @return string HTML output from this submodule
      */
-    public function handle(PageLayoutController $controller, array $pageRecord)
+    public function handle(PageLayoutController $controller, array $pageRecord): string
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $controller->addFlashMessage(
@@ -46,9 +45,8 @@ class DoktypeLinkHandler
             );
 
             return $this->getLinkButton($controller, $pageRecord['url']);
-        } else {
-            return $this->handle8($controller, $pageRecord);
         }
+        return $this->handle8($controller, $pageRecord);
     }
 
     public function handle8(PageLayoutController $controller, array $pageRecord)
@@ -72,6 +70,7 @@ class DoktypeLinkHandler
                     break;
                 }
             // fall through
+            // no break
             case 1:
                 $url = 'http://' . $pageRecord['url'];
                 break;
@@ -86,29 +85,15 @@ class DoktypeLinkHandler
         $controller->addFlashMessage(
             $notice,
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeLink'),
-            FlashMessage::INFO
+            FlashMessage::INFO,
+            false,
+            [[
+                'url' => (string)$url,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeLinkOpen', true),
+                'icon' => 'apps-pagetree-page-shortcut-external',
+            ]]
         );
 
-        return $this->getLinkButton($controller, $url);
-    }
-
-    /**
-     * @TODO Move into fluid
-     */
-    protected function getLinkButton(PageLayoutController $controller, $url)
-    {
-        if ($url && parse_url($url)) {
-            return '<a href="' . $url . '"'
-                . ' class="btn btn-info"'
-                . ' target="_blank"'
-                . '>'
-                . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('apps-pagetree-page-shortcut-external', Icon::SIZE_SMALL)->render()
-                . ' ' . sprintf(
-                    TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeLinkOpen', true),
-                    htmlspecialchars($url)
-                )
-                . '</a>';
-        }
         return '';
     }
 }

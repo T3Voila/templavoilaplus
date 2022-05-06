@@ -13,7 +13,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-
 declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers\Format;
@@ -95,7 +94,7 @@ class StripTagsViewHelper extends AbstractViewHelper
     public function initializeArguments()
     {
         $this->registerArgument('value', 'string', 'string to format');
-        $this->registerArgument('whitespace', 'bool', 'Avoid that the output is concatinated without spaces', false, false);
+        $this->registerArgument('whitespace', 'bool', 'Avoid concatenated output without spaces', false, false);
         $this->registerArgument('allowedTags', 'string', 'Optional string of allowed tags as required by PHPs strip_tags() function');
     }
 

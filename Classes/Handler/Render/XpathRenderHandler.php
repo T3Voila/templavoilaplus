@@ -16,8 +16,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class XpathRenderHandler implements RenderHandlerInterface
 {
@@ -33,7 +33,6 @@ class XpathRenderHandler implements RenderHandlerInterface
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);
         /** @TODO Support non file here? The place do not need to be file based! */
-
         $path = GeneralUtility::getFileAbsFileName($templateConfiguration->getPlace()->getEntryPoint());
         $this->domDocument->loadHTMLFile($path . '/' . $templateConfiguration->getTemplateFileName(), $this->libXmlConfig);
         $this->domXpath = new \DOMXPath($this->domDocument);
@@ -93,7 +92,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                 $outerCloneNode = $node->cloneNode(true);
                 $plainCloneNode = $node->cloneNode(false);
                 foreach ($processedValues as $processedContainerValues) {
-                    // For every entrie we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
+                    // For every entry we need a clean original node, so they can be appended (inner) or replaced (outer) afterwards
                     $cloneNode = $outerCloneNode->cloneNode(true);
 
                     $processingNodes = $this->getProcessingNodes($cloneNode, $mappingConfiguration);
@@ -174,7 +173,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         switch ($mappingConfiguration['mappingType']) {
             case 'attrib':
-                $processingNode->setAttribute($mappingConfiguration['attribName'], (string) $processedValues[$fieldName]);
+                $processingNode->setAttribute($mappingConfiguration['attribName'], (string)$processedValues[$fieldName]);
                 break;
             case 'inner':
                 $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
@@ -198,7 +197,8 @@ class XpathRenderHandler implements RenderHandlerInterface
             $processingNode->removeChild($processingNode->firstChild);
         }
 
-        if (empty($processedValues[$fieldName])
+        if (
+            empty($processedValues[$fieldName])
             && isset($mappingConfiguration['removeIfEmpty'])
             && $mappingConfiguration['removeIfEmpty']
         ) {
@@ -224,7 +224,7 @@ class XpathRenderHandler implements RenderHandlerInterface
             default:
                 // Default is plain
                 $processingNode->appendChild(
-                    $this->domDocument->createTextNode((string) $processedValues[$fieldName])
+                    $this->domDocument->createTextNode((string)$processedValues[$fieldName])
                 );
                 break;
         }
@@ -279,7 +279,7 @@ class XpathRenderHandler implements RenderHandlerInterface
             default:
                 // Default is plain
                 $processingNode->parentNode->replaceChild(
-                    $processingNode->ownerDocument->createTextNode((string) $processedValues[$fieldName]),
+                    $processingNode->ownerDocument->createTextNode((string)$processedValues[$fieldName]),
                     $processingNode
                 );
         }

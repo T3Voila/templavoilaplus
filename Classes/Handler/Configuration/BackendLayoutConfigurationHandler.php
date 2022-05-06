@@ -19,9 +19,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 
 use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
+class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 
@@ -45,7 +44,7 @@ class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
         $this->loadSaveHandler = $loadSaveHandler;
     }
 
-    /** @TODO it may be possible that this could go into an abstract */
+    /** @TODO It may be possible that this could go into an abstract */
     public function loadConfigurations()
     {
         $configurations = [];
@@ -68,7 +67,7 @@ class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
                     'store' => ['file' => $file], /** @TODO Better place to save this information? */
                 ];
             } catch (\Exception $e) {
-                /** @TODO log error, that we can't read the configuration */
+                /** @TODO Log error, that we can't read the configuration */
             }
         }
 
@@ -88,12 +87,12 @@ class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
             $templateConfiguration->setName($configuration['tvp-beLayout']['meta']['name']);
         }
         if (isset($configuration['tvp-beLayout']['meta']['renderer'])) {
-            /** @TODO check before setting */
+            /** @TODO Check before setting */
             $templateConfiguration->setRenderHandlerIdentifier($configuration['tvp-beLayout']['meta']['renderer']);
         }
         if (isset($configuration['tvp-beLayout']['meta']['template'])) {
             /**
-             * @TODO check before setting
+             * @TODO Check before setting
              * @TODO Relative to Place or configuration file? Support Absolute or 'EXT:' (insecure?)
              */
             $templateConfiguration->setTemplateFileName($configuration['tvp-beLayout']['meta']['template']);

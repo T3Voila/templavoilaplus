@@ -52,7 +52,7 @@ class FormEngineUtility
 
     /**
      * In TYPO3 8 LTS TcaFlexFetch was merged into TcaFlexPrepare, so we need to add our TcaFlexFetch back,
-     * as we support also TYPO3 7 LTS. We can merge oure side if we start TV+ 8
+     * as we support also TYPO3 7 LTS. We can merge our side if we start TV+ 8
      * Call after replaceInFormDataGroups!
      *
      * @TODO remove with TV+ 8
@@ -67,7 +67,7 @@ class FormEngineUtility
                 $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
                     = $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class];
                 $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class] = [
-                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
+                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class],
                 ];
             }
         }

@@ -17,13 +17,13 @@ namespace Tvp\TemplaVoilaPlus\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @TODO Better name? Is this a Service? A Factory? Registry?
@@ -43,7 +43,7 @@ class PlacesService implements SingletonInterface
 
     public function getAvailablePlacesUsingConfigurationHandlerIdentifier($configurationHandlerIdentifier): array
     {
-        return ($this->availablePlacesByConfigurationHandlerIdentifier[$configurationHandlerIdentifier] ?: []);
+        return $this->availablePlacesByConfigurationHandlerIdentifier[$configurationHandlerIdentifier] ?: [];
     }
 
     public function getPlace(string $placeIdentifier, string $configurationHandlerIdentifier): Place

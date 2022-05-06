@@ -16,10 +16,9 @@ namespace Tvp\TemplaVoilaPlus\Utility;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class ExtensionUtility implements SingletonInterface
 {
@@ -35,7 +34,7 @@ class ExtensionUtility implements SingletonInterface
     public static function registerExtension($extensionKey)
     {
         if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded($extensionKey)) {
-            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey)  . 'Configuration/TVP';
+            $path = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath($extensionKey) . 'Configuration/TVP';
             if (is_dir($path)) {
                 self::$registeredExtensions[$extensionKey] = $path;
             }
@@ -68,7 +67,6 @@ class ExtensionUtility implements SingletonInterface
      * Loads the DataStructurePlaces.php inside the extension path
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadDataStructurePlaces($path)
     {
@@ -82,7 +80,6 @@ class ExtensionUtility implements SingletonInterface
      * Loads the MappingPlaces.php inside the extension path
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadMappingPlaces($path)
     {
@@ -96,7 +93,6 @@ class ExtensionUtility implements SingletonInterface
      * Loads the TemplatePlaces.php inside the extension path
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadTemplatePlaces($path)
     {
@@ -110,7 +106,6 @@ class ExtensionUtility implements SingletonInterface
      * Loads the TemplatePlaces.php inside the extension path
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadBackendLayoutPlaces($path)
     {
@@ -124,7 +119,6 @@ class ExtensionUtility implements SingletonInterface
      * @param string $pathAndFilename
      * @param string $defaultConfigurationHandlerIdentifier
      * @internal
-     * @return void
      */
     protected static function loadPlaces(string $pathAndFilename, string $defaultConfigurationHandlerIdentifier)
     {
@@ -146,7 +140,6 @@ class ExtensionUtility implements SingletonInterface
      * Loads the Extending.php inside the extension path and registers dataStructureHandler
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadExtending($path)
     {
@@ -184,12 +177,10 @@ class ExtensionUtility implements SingletonInterface
         }
     }
 
-
     /**
      * Loads the Extending.php inside the extension path and registers dataStructureHandler
      * @param string $path
      * @internal
-     * @return void
      */
     protected static function loadNewContentElementWizardConfiguration($path)
     {

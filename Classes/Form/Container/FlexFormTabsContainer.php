@@ -63,7 +63,7 @@ class FlexFormTabsContainer extends AbstractContainer
             $tabCounter++;
 
             // Assemble key for loading the correct CSH file
-            // @todo: what is that good for? That is for the title of single elements ... see FlexFormElementContainer!
+            // @TODO What is that good for? That is for the title of single elements ... see FlexFormElementContainer!
             $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'], true);
             $parameterArray['_cshKey'] = $table . '.' . $fieldName;
             foreach ($dsPointerFields as $key) {

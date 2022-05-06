@@ -25,7 +25,6 @@ use TYPO3\CMS\Install\Updates\AbstractUpdate;
  */
 class Typo3Lts8Update extends AbstractUpdate
 {
-
     /**
      * holds the extconf configuration
      *

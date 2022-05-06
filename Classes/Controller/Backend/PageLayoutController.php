@@ -17,11 +17,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,6 +30,8 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
+use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
+use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
@@ -46,7 +49,7 @@ class PageLayoutController extends ActionController
      * @var BackendTemplateView
      * @api
      */
-    protected $view = null;
+    protected $view;
 
     /**
      * @var int the id of current page
@@ -63,7 +66,7 @@ class PageLayoutController extends ActionController
     /**
      * Permissions for the current page
      *
-     * @var integer
+     * @var int
      */
     protected $calcPerms;
 
@@ -96,7 +99,7 @@ class PageLayoutController extends ActionController
     /**
      * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
      *
-     * @var integer
+     * @var int
      */
     protected $currentLanguageUid;
 
@@ -167,6 +170,7 @@ class PageLayoutController extends ActionController
 
         if ($access) {
             $this->calcPerms = $this->getCalcPerms($this->pageInfo['uid']);
+            $this->checkContentFromPid();
 
             // Additional header content
             $contentHeader = $this->renderFunctionHook('renderHeader');
@@ -175,11 +179,11 @@ class PageLayoutController extends ActionController
             $contentBody = $this->renderFunctionHook('renderBody', [], true);
 
             $activePage = $this->pageInfo;
-            if (
-                $this->currentLanguageUid !== 0
-                && $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid)
-            ) {
-                $activePage = $row[0];
+            if ($this->currentLanguageUid !== 0) {
+                $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid);
+                if ($row) {
+                    $activePage = $row[0];
+                }
             }
             $pageTitle = BackendUtility::getRecordTitle('pages', $activePage);
 
@@ -212,6 +216,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
         $this->view->assign('pageDoktype', $activePage['doktype']);
+        $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
@@ -245,6 +250,61 @@ class PageLayoutController extends ActionController
         ]);
     }
 
+    protected function checkContentFromPid()
+    {
+        // If content from different pid is displayed
+        if ($this->pageInfo['content_from_pid']) {
+            $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageInfo['content_from_pid']);
+            $linkToPage = GeneralUtility::linkThisScript(['id' => $this->pageInfo['content_from_pid']]);
+            $title = BackendUtility::getRecordTitle('pages', $contentPage)
+                . ' [' . $contentPage['uid'] . ']';
+
+            $this->addFlashMessage(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_from_pid_title'),
+                    $title
+                ),
+                '',
+                FlashMessage::INFO,
+                false,
+                [[
+                    'url' => (string)$linkToPage,
+                    'label' => $title,
+                    'icon' => 'apps-pagetree-page-shortcut',
+                ]]
+            );
+        }
+
+        /** @var PageRepository */
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
+        $pages = $pageRepository->getPagesUsingContentFrom($this->pageInfo['uid']);
+
+        if (count($pages)) {
+            $titles = [];
+            $buttons = [];
+            foreach ($pages as $contentPage) {
+                $title = BackendUtility::getRecordTitle('pages', $contentPage)
+                . ' [' . $contentPage['uid'] . ']';
+                $titles[] = $title;
+                $buttons[] = [
+                    'url' => $linkToPage = GeneralUtility::linkThisScript(['id' => $contentPage['uid']]),
+                    'label' => $title,
+                    'icon' => 'apps-pagetree-page-shortcut',
+                ];
+            }
+
+            $this->addFlashMessage(
+                sprintf(
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content_on_pid_title'),
+                    implode(', ', $titles)
+                ),
+                '',
+                FlashMessage::INFO,
+                false,
+                $buttons
+            );
+        }
+    }
 
     protected function initializeTypo3Clipboard()
     {
@@ -263,7 +323,7 @@ class PageLayoutController extends ActionController
 
         if ($clipboard['hasContent']) {
             $element = key($this->typo3Clipboard->clipData['normal']['el']);
-            list($clipboard['table'], $clipboard['uid']) = explode('|', $element);
+            [$clipboard['table'], $clipboard['uid']] = explode('|', $element);
             $clipboard['mode'] = $this->typo3Clipboard->clipData['normal']['mode'];
         }
 
@@ -418,7 +478,7 @@ class PageLayoutController extends ActionController
         if ($this->pageId) {
             $this->addDocHeaderButton(
                 'tce_db',
-                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile .  'labels.clear_cache'),
+                TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.clear_cache'),
                 'actions-system-cache-clear',
                 [
                     'cacheCmd' => $this->pageId,
@@ -438,7 +498,7 @@ class PageLayoutController extends ActionController
      * @param string $icon Name of the Icon (inside IconFactory)
      * @param array $params Array of parameters which should be added to module call
      * @param string $buttonPosition left|right to position button inside the bar
-     * @param integer $buttonGroup Number of the group the icon should go in
+     * @param int $buttonGroup Number of the group the icon should go in
      */
     public function addDocHeaderButton(
         $module,
@@ -532,7 +592,7 @@ class PageLayoutController extends ActionController
                     'new_unique_uid',
                     'search_field',
                     'search_levels',
-                    'showLimit'
+                    'showLimit',
                 ]
             )
             ->setSetVariables([]/*array_keys($this->MOD_MENU) @TODO*/);
@@ -549,11 +609,11 @@ class PageLayoutController extends ActionController
     }
 
     /**
-     * @param integer $pid
+     * @param int $pid
      * @TODO Cache realy needed? Statically?
      * @TODO Use constant instead of value 16!
      *
-     * @return integer
+     * @return int
      */
     protected function getCalcPerms($pid)
     {
@@ -576,7 +636,7 @@ class PageLayoutController extends ActionController
      * @TODO Use constant instead of value 16!
      * @TODO rootElement needed? View page content partially?
      *
-     * @return boolean
+     * @return bool
      */
     protected function hasBasicEditRights($table = null, array $record = null)
     {
@@ -637,7 +697,7 @@ class PageLayoutController extends ActionController
             if (is_array($renderFunctionHook)) {
                 foreach ($renderFunctionHook as $hook) {
                     $params = [];
-                    $result .= (string) GeneralUtility::callUserFunction($hook, $params, $this);
+                    $result .= (string)GeneralUtility::callUserFunction($hook, $params, $this);
                     if ($stopOnConsume && $result) {
                         break;
                     }
@@ -710,5 +770,35 @@ class PageLayoutController extends ActionController
     public function permissionContentEdit(): bool
     {
         return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
+    }
+
+    /**
+     * Creates a Message object and adds it to the FlashMessageQueue.
+     *
+     * @param string $messageBody The message
+     * @param string $messageTitle Optional message title
+     * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
+     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
+     * @param array $buttons Optional array of button configuration
+     * @throws \InvalidArgumentException if the message body is no string
+     */
+    public function addFlashMessage(
+        $messageBody,
+        $messageTitle = '',
+        $severity = FlashMessage::OK,
+        $storeInSession = false,
+        array $buttons = []
+    ) {
+        /* @var \Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage $flashMessage */
+        $flashMessage = GeneralUtility::makeInstance(
+            FlashMessage::class,
+            (string)$messageBody,
+            (string)$messageTitle,
+            $severity,
+            $storeInSession,
+            $buttons
+        );
+
+        $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
     }
 }

@@ -19,14 +19,8 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
-use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-use TYPO3\CMS\Backend\Form\FormDataCompiler;
-use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
-use TYPO3\CMS\Backend\Form\NodeFactory;
 
 class Record extends AbstractResponse
 {
@@ -49,7 +43,7 @@ class Record extends AbstractResponse
                         $uid => 'edit',
                     ],
                 ],
-                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('templavoilaplus_modalhelper_close')
+                'returnUrl' => (string)$uriBuilder->buildUriFromRoute('templavoilaplus_modalhelper_close'),
             ]
         );
 

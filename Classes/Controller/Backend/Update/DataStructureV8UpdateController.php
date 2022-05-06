@@ -15,9 +15,9 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Controller to migrate/update the DataStructure
@@ -64,7 +64,7 @@ class DataStructureV8UpdateController extends StepUpdateController
      *   TYPO3\CMS\Core\Migrations\TcaMigration::migrateDefaultExtrasRteTransFormOptions
      *
      * @param array $element The field element TCA
-     * @return boolean True if changed otherwise false
+     * @return bool True if changed otherwise false
      */
     public function migrateDefaultExtrasRteTransFormOptions(array &$element)
     {
@@ -138,7 +138,7 @@ class DataStructureV8UpdateController extends StepUpdateController
      * removes defaultExtra element, if empty
      *
      * @param array $element The field element TCA
-     * @return boolean True if changed otherwise false
+     * @return bool True if changed otherwise false
      */
     public function cleanupEmptyDefaultExtraFields(array &$element)
     {
@@ -187,12 +187,12 @@ class DataStructureV8UpdateController extends StepUpdateController
             TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                 'pages',
                 'tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'pages'),
-                array('tx_templavoilaplus_ds' => $to)
+                ['tx_templavoilaplus_ds' => $to]
             );
             TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                 'pages',
                 'tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'pages'),
-                array('tx_templavoilaplus_next_ds' => $to)
+                ['tx_templavoilaplus_next_ds' => $to]
             );
         }
 
@@ -221,7 +221,7 @@ class DataStructureV8UpdateController extends StepUpdateController
             TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
                 'tt_content',
                 'tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'tt_content'),
-                array('tx_templavoilaplus_ds' => $to)
+                ['tx_templavoilaplus_ds' => $to]
             );
         }
 

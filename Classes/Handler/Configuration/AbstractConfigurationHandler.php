@@ -17,12 +17,14 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class DataStructureConfigurationHandler extends AbstractConfigurationHandler
+abstract class AbstractConfigurationHandler implements ConfigurationHandlerInterface
 {
-    public static $identifier = 'TVP\ConfigurationHandler\DataStructure';
-
     /**
      * @var Place
      */
@@ -33,61 +35,53 @@ class DataStructureConfigurationHandler extends AbstractConfigurationHandler
      */
     protected $loadSaveHandler;
 
-    public function setPlace(Place $place)
+    public function setPlace(Place $place): void
     {
         $this->place = $place;
     }
 
-    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler)
+    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler): void
     {
         $this->loadSaveHandler = $loadSaveHandler;
     }
+    /**
+     * @var Logger
+     */
+    public $logger;
 
-    /** @TODO It may be possible that this could go into an abstract */
-    public function loadConfigurations()
+    public function __construct()
+    {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
+    }
+
+    public function loadConfigurations(): void
     {
         $configurations = [];
         $files = $this->loadSaveHandler->find();
 
-        /** @TODO No, we don't know if this are files, this may be something totally different! */
+        /** @TODO No, we don't know if this are files, this may be something totaly different! */
         foreach ($files as $file) {
             $content = $this->loadSaveHandler->load($file);
 
             $identifier = $file->getRelativePath() . $file->getFilename();
 
             try {
-                $dataStructure = $this->createConfigurationFromConfigurationArray(
+                $mappingConfiguration = $this->createConfigurationFromConfigurationArray(
                     $content,
                     $identifier,
                     pathinfo($file->getFilename(), PATHINFO_FILENAME)
                 );
                 $configurations[$identifier] = [
-                    'configuration' => $dataStructure,
+                    'configuration' => $mappingConfiguration,
                     'store' => ['file' => $file], /** @TODO Better place to save this information? */
                 ];
             } catch (\Exception $e) {
-                /** @TODO Log error, that we can't read the configuration */
+                $this->logger->error('Unable to read the configuration from "' . $file . '"');
             }
         }
 
         $this->place->setConfigurations($configurations);
     }
 
-    public function createConfigurationFromConfigurationArray(array $dataStructureArray, $identifier, $possibleName): DataStructure
-    {
-        $dataStructure = new DataStructure($this->place, $identifier);
-        $dataStructure->setName($possibleName);
-        // Read title from XML file and set, if not empty or ROOT
-        if (
-            !empty($dataStructureArray['meta']['title'])
-            && $dataStructureArray['meta']['title'] !== 'ROOT'
-        ) {
-            $dataStructure->setName($dataStructureArray['meta']['title']);
-        }
-
-        /** @TODO setIcon */
-        $dataStructure->setDataStructureArray($dataStructureArray);
-
-        return $dataStructure;
-    }
+    abstract public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName);
 }

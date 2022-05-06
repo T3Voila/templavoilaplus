@@ -17,12 +17,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -68,13 +68,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $allNewDatabaseElementsFound = $columnPagesMapFound && $columnContentMapFound && $columnPagesMapNextFound;
 
-
         // Check for storage_pid's to determine how much extensions we need to generate and/or need mapping into
         // Site Management
         $storagePidsAreFine = false;
         $useStaticDS = false;
 
-        $allPossiblePids = $allDs = $allTo = [];
+        $allPossiblePids = [];
+        $allDs = [];
+        $allTo = [];
 
         if ($allOldDatabaseElementsFound) {
             $allPossiblePids = $this->getAllPossibleStoragePidsFromTmplobj();
@@ -92,20 +93,19 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         $allDsToValid = false;
-        list($validationDsToErrors, $validatedDs, $validatedToWithDs) = $this->checkAllDsToValid($allDs, $allTo);
+        [$validationDsToErrors, $validatedDs, $validatedToWithDs] = $this->checkAllDsToValid($allDs, $allTo);
         if (count($validationDsToErrors) === 0) {
             $allDsToValid = true;
         }
 
         // Check database if the found ds/to are in usage, give the possibility to delete them?
         $allPagesContentValid = false;
-        list($validationPagesContentErrors, $validatedToWithDs) = $this->checkAllPageContentForTo($validatedToWithDs);
+        [$validationPagesContentErrors, $validatedToWithDs] = $this->checkAllPageContentForTo($validatedToWithDs);
         if (count($validationPagesContentErrors) === 0) {
             $allPagesContentValid = true;
         }
 
         $allChecksAreFine = $allOldDatabaseElementsFound && $allNewDatabaseElementsFound && $storagePidsAreFine && $allDsToValid && $allPagesContentValid;
-
 
         $indentation = 0;
         if (isset($this->extConf['ds']['indentation'])) {
@@ -117,7 +117,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             'allNewDatabaseElementsFound' => $allNewDatabaseElementsFound,
             'storagePidsAreFine' => $storagePidsAreFine,
             'useStaticDS' => $useStaticDS,
-            'staticDsInExtension' => (bool) (isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
+            'staticDsInExtension' => (bool)(isset($GLOBALS['TBE_MODULES_EXT']['xMOD_tx_templavoilaplus_cm1']['staticDataStructures']) || isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['templavoilaplus']['staticDataStructures'])),
             'staticDsPaths' => implode(', ', $this->getStaticDsPaths()),
             'allDsToValid' => $allDsToValid,
             'validationDsToErrors' => $validationDsToErrors,
@@ -260,7 +260,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             }
         }
 
-         return $allDs;
+        return $allDs;
     }
 
     protected function getAllDsFromDatabase(): array
@@ -284,14 +284,15 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             ->fetchAll();
 
         foreach ($result as $row) {
+            // assoc item 'belayout' should be in TO or is that only there for staticDS??
             $dataStructure = [
                 'staticDS' => false,
                 'title' => $row['title'],
-                'path' => (string) $row['uid'],
+                'path' => (string)$row['uid'],
                 'xml' => $row['dataprot'],
                 'scope' => $row['scope'],
                 'icon' => $row['previewicon'],
-                'belayout' => $row['belayout'], // This should be in TO or is that only there for staticDS??
+                'belayout' => $row['belayout'],
             ];
 
             $allDs[] = $dataStructure;
@@ -369,16 +370,17 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         $mappingInformation = unserialize($to['templatemapping']);
                         if (isset($mappingInformation['MappingInfo']['ROOT'])) {
                             $to['valid'] = true;
-                            $to['DS'] = $validatedDs[$to['datastructure']]; /** @TODO If parent then from parent! Check if parent exists */
+                            /** @TODO If parent then from parent! Check if parent exists */
+                            $to['DS'] = $validatedDs[$to['datastructure']];
                         } else {
-                            $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as mapping seams not existing.';
+                            $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because mapping does not seem to exist.';
                         }
                     }
                 } else {
-                    $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as template file "' . $to['fileref'] . '" could not be found.';
+                    $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because template file "' . $to['fileref'] . '" could not be found.';
                 }
             } else {
-                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '", as DataStructure "' . $to['datastructure'] . '" could not be found.';
+                $validationErrors[] = 'Cannot verify TO with title "' . $to['title'] . '" and uid "' . $to['uid'] . '" because DataStructure "' . $to['datastructure'] . '" could not be found.';
             }
             $validatedToWithDs[$to['uid']] = $to;
         }
@@ -398,7 +400,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         foreach ($validatedDs as $key => $ds) {
             if ($ds['countUsage'] === 0) {
                 $validatedDs[$key]['valid'] = false;
-                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '" it has no Template Object data';
+                $validationErrors[] = 'Cannot verify DS with title "' . $ds['title'] . '" since it has no Template Object data.';
             }
         }
 
@@ -415,7 +417,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         // PAGES
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages');
+            ->getQueryBuilderForTable('pages');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -441,21 +443,21 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like page with page uid: "' . $row['uid'] . '"';
                 }
             }
             if ($row['tx_templavoilaplus_next_to'] != 0) {
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_next_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_next_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are pages which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There is at least one page using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_next_to'] . '" for subpages like page with page uid: "' . $row['uid'] . '"';
                 }
             }
         }
 
         // TT_CONTENT
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('tt_content');
+            ->getQueryBuilderForTable('tt_content');
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -477,7 +479,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (isset($validatedToWithDs[$row['tx_templavoilaplus_to']])) {
                     $validatedToWithDs[$row['tx_templavoilaplus_to']]['countUsage'] += $row['COUNT(`uid`)'];
                 } else {
-                    $validationErrors[] = 'There are content elements which use an non existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like content element with uid: "' . $row['uid'] . '"';
+                    $validationErrors[] = 'There are content elements using a non-existent Template Object with uid "' . $row['tx_templavoilaplus_to'] . '" like content element with uid: "' . $row['uid'] . '"';
                 }
             }
         }
@@ -503,7 +505,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     protected function step2Action()
     {
         $packagesQualified = [];
-        $showAll = (bool) $_POST['showAll'];
+        $showAll = (bool)$_POST['showAll'];
 
         /** @var PackageManager */
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
@@ -518,7 +520,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $why = [];
             $active = (isset($activePackages[$key]) ? true : false);
             if ($active) {
-                $qualify += 1;
+                ++$qualify;
             }
 
             if ($package->getValueFromComposerManifest('type') === 'typo3-cms-framework') {
@@ -530,7 +532,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             } elseif (isset($allTerExtensionKeys[$key])) {
                 $qualify -= 10;
                 $why[] = 'Existing TER Package';
-            } elseif (!is_dir($package->getPackagePath()) || !is_writeable($package->getPackagePath())) {
+            } elseif (!is_dir($package->getPackagePath()) || !is_writable($package->getPackagePath())) {
                 $qualify -= 100;
                 $why[] = 'Path not writable';
             } elseif (file_exists($package->getPackagePath() . '/Configuration/TVP')) {
@@ -593,7 +595,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             $this->forward('step3ExistingExtension');
         }
 
-        $this->forward('step2'); // Return to step 2
+        $this->forward('step2');
+        // Return to step 2
     }
 
     protected function step3NewExtensionAction()
@@ -664,7 +667,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
          * The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_
          */
         if (preg_match('/^(tx|pages_|tt_|sys_|ts_language_|csh_)/', $newExtensionKey)) {
-            $errors[] = 'The key must not being with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_';
+            $errors[] = 'The key must not begin with one of the following prefixes: tx,pages,tt_,sys_,ts_language_,csh_';
         }
 
         if (isset($allTerExtensionKeys[$newExtensionKey])) {
@@ -707,6 +710,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
      * Build new extension (or replace existing one) or multiple for multiple designs
      * Or add them to Site Management directories (if support is implemented)
      * The place may depend if you use composer installed TYPO3 or package based TYPO3
+     *
+     * @throws \Exception
      */
     protected function step4Action()
     {
@@ -768,7 +773,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         ],
                     ],
                 ];
-                $emConfContent = "<?php\n$fileDescription\n\$EM_CONF['$newExtensionKey'] = " . ArrayUtility::arrayExport($emConfConfig) . ";\n";
+                $emConfContent = "<?php\n" . $fileDescription . "\n\$EM_CONF['" . $newExtensionKey . "'] = " . ArrayUtility::arrayExport($emConfConfig) . ";\n";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_emconf.php', $emConfContent, true);
 
                 $composerInfo = [
@@ -797,7 +802,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n$fileDescription\ndefined('TYPO3_MODE') or die();\n\n// @TODO This line can be removed after cache is implemented\n\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('$newExtensionKey');";
+                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "// @TODO This line can be removed after cache is implemented\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -976,7 +981,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 $filenameUsed[$yamlFileName] = 1;
             }
 
-            list($mappingConfiguration, $scopeName, $scopePath) = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
+            [$mappingConfiguration, $scopeName, $scopePath] = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
 
             if (isset($to['childTO'])) {
                 foreach ($to['childTO'] as $childTo) {
@@ -994,7 +999,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                         $childTo['datastructure'] = $to['datastructure'];
                     }
                     // No scopePath/Name from child convert call used
-                    list($childMappingConfiguration) = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
+                    [$childMappingConfiguration] = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
                     $this->cleanupChildMappingConfiguration($mappingConfiguration, $childMappingConfiguration);
                     $mappingConfiguration['tvp-mapping']['childTemplate'][$childTo['rendertype']] = $childMappingConfiguration['tvp-mapping'];
                 }
@@ -1007,7 +1012,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
             GeneralUtility::writeFile(
                 $publicExtensionDirectory . $innerPathes['mappingConfiguration'][$scopeName] . '/' . $yamlFileName,
-                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+                // No inline style please
+                \Symfony\Component\Yaml\Yaml::dump($mappingConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
             );
         }
 
@@ -1025,7 +1031,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return $covertingInstructions;
     }
 
-    function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
+    public function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
     {
         $convertedDsConfig = $this->getAndConvertDsForTo($allDs, $to, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes);
 
@@ -1071,13 +1077,14 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 'meta' => [
                     'name' => $to['title'],
                 ],
-                'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'], // Is empty string if no DS is needed
+                // Is empty string if no DS is needed
+                'combinedDataStructureIdentifier' => $convertedDsConfig['referencePath'],
                 'combinedTemplateConfigurationIdentifier' => $packageName . $convertedDsConfig['scopePath'] . '/TemplateConfiguration:' . $yamlFileName,
             ],
         ];
 
         /**
-         * @TODO in staticDS it was also possible that we had a filenamen with same name but with .html as ending which included the belayout
+         * @TODO in staticDS it was also possible that we had a filename with same name but with .html as ending which included the belayout
          * Add this to the getAllDsFromStatic function.
          * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
          */
@@ -1095,7 +1102,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         GeneralUtility::writeFile(
             $publicExtensionDirectory . $innerPathes['templateConfiguration'][$convertedDsConfig['scopeName']] . '/' . $yamlFileName,
-            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK) // No inline style please
+            // No inline style please
+            \Symfony\Component\Yaml\Yaml::dump($templateConfiguration, 100, 4, \Symfony\Component\Yaml\Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK)
         );
 
         return [$mappingConfiguration, $convertedDsConfig['scopeName'], $convertedDsConfig['scopePath']];
@@ -1118,7 +1126,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             } else {
                 // Or check every field config parameter
                 foreach ($parentFieldConfig as $parentFieldConfigParam => $parentFieldConfigValue) {
-                    if (isset($childFieldConfig[$parentFieldConfigParam])
+                    if (
+                        isset($childFieldConfig[$parentFieldConfigParam])
                         && $childFieldConfig[$parentFieldConfigParam] === $parentFieldConfigValue
                     ) {
                         unset($child['tvp-mapping']['mappingToTemplate'][$fieldName][$parentFieldConfigParam]);
@@ -1158,18 +1167,17 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         /** @TODO Check the errors if they are fatal
-        $errors = libxml_get_errors();
-        foreach ($errors as $error)
-        {
-        }*/
-
+         * $errors = libxml_get_errors();
+         * foreach ($errors as $error)
+         * {
+         * }*/
         libxml_clear_errors();
 
         /** @TODO Read error messages and write into a hint array for user output but do not break */
         $domXpath = new \DOMXPath($domDocument);
 
         foreach ($mappingInformation as $fieldName => $mappingField) {
-            list($xPath, $mappingType) = explode('/', $mappingField['MAP_EL']);
+            [$xPath, $mappingType] = explode('/', $mappingField['MAP_EL']);
 
             $convertedXPath = $this->convertXPath($xPath);
 
@@ -1182,10 +1190,12 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
             if ($result->count() === 0) {
                 $convertedXPath = '//' . $convertedXPath;
                 $result = $domXpath->query($convertedXPath, $baseNode);
+                //phpcs:disable
                 if ($result->count() === 0) {
                     /** @TODO Add to a hint array, what is wrong but do not stop converting */
 //                     throw new \Exception('The old mapping path "' . $xPath . '" converted to XPath "' . $convertedXPath . '" could not be found in template file "' . $templateFile . '"');
                 }
+                //phpcs:enable
             }
 
             // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
@@ -1251,9 +1261,11 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 ) {
                     $useHtmlValue = true;
                 }
+                //phpcs:disable
             } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
                 // Blind TypoScript element, nothing todo here, already done
             } else {
+                //phpcs:enable
                 // Respect EType_extra??
                 // Respect proc ?
                 $fieldConfig += [
@@ -1366,7 +1378,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 if (
                     empty($dataStructure['ROOT']['tx_templavoilaplus']['title'])
                     || $dataStructure['ROOT']['tx_templavoilaplus']['title'] === 'ROOT'
-                    && (empty($dataStructure['meta']['title'])
+                    && (
+                        empty($dataStructure['meta']['title'])
                         || $dataStructure['meta']['title'] === 'ROOT'
                     )
                 ) {
@@ -1413,7 +1426,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         return $convertedDS[$to['datastructure']];
     }
 
-
     /**
      * We are also updating the dsXml, as we remove TypoScript points!
      */
@@ -1421,7 +1433,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     {
         if (isset($dsRoot['el'])) {
             foreach ($dsRoot['el'] as $fieldName => $dsElement) {
-
                 if ($dsElement['tx_templavoilaplus']['eType'] === 'TypoScriptObject') {
                     unset($dsRoot['el'][$fieldName]);
                 } elseif ($dsElement['tx_templavoilaplus']['eType'] === 'none' && !isset($dsElement['TCEforms']['config'])) {
@@ -1449,7 +1460,8 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
     protected function saveNewDs(array &$convertedDs): void
     {
-        if (isset($convertedDs['dataStructureCleaned']['ROOT'])
+        if (
+            isset($convertedDs['dataStructureCleaned']['ROOT'])
             && isset($convertedDs['dataStructureCleaned']['ROOT']['el'])
             && count($convertedDs['dataStructureCleaned']['ROOT']['el']) > 0
         ) {
@@ -1503,7 +1515,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
 
         $copiedTemplateFiles[$source] = $filename;
 
-        return  $filename;
+        return $filename;
     }
 
     protected function createPaths(string $publicExtensionDirectory, array $innerSubPaths)
@@ -1628,7 +1640,6 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
     {
     }
 
-
     /**
      * Taken from TYPO3 Core ArrayUtility and expanded for our special object of non quoted string
      * Exports an array as string.
@@ -1638,6 +1649,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
      *
      * @param array $array Array to export
      * @param int $level Internal level used for recursion, do *not* set from outside!
+     *
      * @return string String representation of array
      * @throws \RuntimeException
      */
@@ -1683,7 +1695,7 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
                 $stringContent = str_replace('\'', '\\\'', $stringContent);
                 $lines .= '\'' . $stringContent . '\'' . ',' . LF;
             } elseif ($value instanceof UnquotedString) {
-                $lines .= (string) $value . ',' . LF;
+                $lines .= (string)$value . ',' . LF;
             } else {
                 throw new \RuntimeException('Objects are not supported', 1342294987);
             }
@@ -1754,18 +1766,5 @@ class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
         }
 
         return false;
-    }
-}
-
-class UnquotedString
-{
-    private $value = '';
-    public function __construct(string $value)
-    {
-        $this->value = $value;
-    }
-    public function __toString(): string
-    {
-        return $this->value;
     }
 }

@@ -15,25 +15,20 @@ namespace Tvp\TemplaVoilaPlus\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
-use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Public API class for proper handling of content elements and other useful TemplaVoila related functions
  */
 class ApiService
 {
-
     /**
-     * @var boolean
+     * @var bool
      */
     protected $includePreviewData;
 
@@ -43,7 +38,7 @@ class ApiService
     protected $rootTable;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $debug = false;
 
@@ -51,17 +46,17 @@ class ApiService
      * ->loadWebsiteLanguages() will set this to content of sys_language
      * @var array
      */
-    protected $allSystemWebsiteLanguages = array();
+    protected $allSystemWebsiteLanguages = [];
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $modifyReferencesInLiveWS = false;
 
     /**
      * @var array
      */
-    protected $cachedModWebTSconfig = array();
+    protected $cachedModWebTSconfig = [];
 
     /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
@@ -79,7 +74,7 @@ class ApiService
      ******************************************************/
 
     /**
-     * Creates a new content element record and sets the neccessary references to connect
+     * Creates a new content element record and sets the necessary references to connect
      * it to the parent element.
      *
      * @param array $destinationPointer Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
@@ -90,10 +85,11 @@ class ApiService
     public function insertElement($destinationPointer, $elementRow)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, array('destinationPointer' => $destinationPointer, 'elementRow' => $elementRow));
+            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
         }
 
-        if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
+        $destinationPointer = $this->flexform_getValidPointer($destinationPointer);
+        if (!$destinationPointer) {
             if ($this->debug) {
                 GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoilaplus', 0);
             }
@@ -130,10 +126,12 @@ class ApiService
      *
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function insertElement_createRecord($destinationPointer, $row)
     {
+        //phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, array('destinationPointer' => $destinationPointer, 'row' => $row));
+            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'row' => $row]);
         }
 
         $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoilaplus_flex');
@@ -141,12 +139,12 @@ class ApiService
         if ($destinationPointer['position'] > 0) {
             $currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationPointer);
             /**
-             * @todo: check why $currentReferencesArr isn't used
+             * @TODO check why $currentReferencesArr isn't used
              */
         }
         $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
 
-        $dataArr = array();
+        $dataArr = [];
         $dataArr['tt_content']['NEW'] = $row;
         $dataArr['tt_content']['NEW']['pid'] = $newRecordPid;
         unset($dataArr['tt_content']['NEW']['uid']);
@@ -178,20 +176,20 @@ class ApiService
         $this->setTCEmainRunningFlag(true);
 
         if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, array('dataArr' => $dataArr));
+            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, ['dataArr' => $dataArr]);
         }
 
-        $tce->start($dataArr, array());
+        $tce->start($dataArr, []);
         $tce->process_datamap();
         if ($this->debug && count($tce->errorLog)) {
-            GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoilaplus', 0, array('errorLog' => $tce->errorLog));
+            GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoilaplus', 0, ['errorLog' => $tce->errorLog]);
         }
         $newUid = $tce->substNEWwithIDs['NEW'];
         if (!$flagWasSet) {
             $this->setTCEmainRunningFlag(false);
         }
 
-        return ((int)$newUid ? (int)$newUid : false);
+        return (int)$newUid ? (int)$newUid : false;
     }
 
     /**
@@ -199,14 +197,16 @@ class ApiService
      * record.
      *
      * @param array $destinationPointer Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
-     * @param integer $uid UID of the tt_content record
+     * @param int $uid UID of the tt_content record
      *
-     * @return boolean
+     * @return bool
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function insertElement_setElementReferences($destinationPointer, $uid)
     {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoilaplus', 0, array('destinationPointer' => $destinationPointer, 'uid' => $uid));
+            GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'uid' => $uid]);
         }
 
         $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
@@ -228,12 +228,12 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
      * @param array $destinationPointer flexform pointer to the new location
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function moveElement($sourcePointer, $destinationPointer)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+            GeneralUtility::devLog('API: moveElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
         }
 
         return $this->process('move', $sourcePointer, $destinationPointer);
@@ -247,12 +247,14 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
      * @param array $destinationPointer flexform pointer to the new location
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function moveElement_setElementReferences($sourcePointer, $destinationPointer)
     {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+            GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
         }
 
         return $this->process('move', $sourcePointer, $destinationPointer, true);
@@ -260,19 +262,19 @@ class ApiService
 
     /**
      * Makes a true copy of an element specified by the source pointer to the location specified by
-     * destination pointer. By default also copies all sub elements but can be disabled so sub elements
+     * destination pointer. By default, it also copies all sub elements but can be disabled so sub elements
      * are not copied but referenced.
      *
      * @param array $sourcePointer flexform pointer pointing to the element which shall be copied
      * @param array $destinationPointer flexform pointer to the location for the copy
-     * @param boolean $copySubElements If set to TRUE, also all sub elements will be truly copied
+     * @param bool $copySubElements If set to TRUE, also all sub elements will be truly copied
      *
      * @return mixed UID of the created copy, otherwise FALSE
      */
     public function copyElement($sourcePointer, $destinationPointer, $copySubElements = true)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: copyElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements));
+            GeneralUtility::devLog('API: copyElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer, 'copySubElements' => $copySubElements]);
         }
 
         return $this->process($copySubElements ? 'copyrecursively' : 'copy', $sourcePointer, $destinationPointer);
@@ -294,7 +296,7 @@ class ApiService
     public function localizeElement($sourcePointer, $languageKey)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: localizeElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer, 'languageKey' => $languageKey));
+            GeneralUtility::devLog('API: localizeElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'languageKey' => $languageKey]);
         }
 
         $sourceElementRecord = $this->flexform_getRecordByPointer($sourcePointer);
@@ -331,12 +333,12 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the reference target
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function referenceElement($sourcePointer, $destinationPointer)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: referenceElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer));
+            GeneralUtility::devLog('API: referenceElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
         }
 
         return $this->process('reference', $sourcePointer, $destinationPointer);
@@ -349,20 +351,20 @@ class ApiService
      * Use this function in those situations when no flexform pointer exists, for example if
      * you want a reference an element which has not yet been referenced anywhere else.
      *
-     * @param integer $uid UID of the tt_content element which shall be referenced
+     * @param int $uid UID of the tt_content element which shall be referenced
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function referenceElementByUid($uid, $destinationPointer)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: referenceElementByUid()', 'templavoilaplus', 0, array('uid' => $uid, 'destinationPointer' => $destinationPointer));
+            GeneralUtility::devLog('API: referenceElementByUid()', 'templavoilaplus', 0, ['uid' => $uid, 'destinationPointer' => $destinationPointer]);
         }
-        $sourcePointer = array(
+        $sourcePointer = [
             'table' => 'tt_content',
-            'uid' => (int)$uid
-        );
+            'uid' => (int)$uid,
+        ];
 
         return $this->process('referencebyuid', $sourcePointer, $destinationPointer);
     }
@@ -372,12 +374,12 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function unlinkElement($sourcePointer)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: unlinkElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer));
+            GeneralUtility::devLog('API: unlinkElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
         }
 
         return $this->process('unlink', $sourcePointer);
@@ -389,12 +391,12 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the element which shall be deleted
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function deleteElement($sourcePointer)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: deleteElement()', 'templavoilaplus', 0, array('sourcePointer' => $sourcePointer));
+            GeneralUtility::devLog('API: deleteElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
         }
 
         return $this->process('delete', $sourcePointer);
@@ -411,18 +413,19 @@ class ApiService
      *
      * @param string $mode Kind of processing
      * @param array $sourcePointer flexform pointer pointing to the element which will be processed. If "sheet", "sLang" etc. are set, it describes the position by specifying the (future) parent. If not, it describes the element directly with "table" and "uid".
-     * @param mixed $destinationPointer flexform pointer to the destination location (if neccessary)
+     * @param mixed $destinationPointer flexform pointer to the destination location (if necessary)
      * @param boolean $onlyHandleReferences If set, the record itself won't be moved, deleted etc. but only the references are set correctly. Use this feature if you are sure that the record has been handled before (eg. by TCEmain)
      *
      * @return mixed TRUE or something else (depends on operation) if operation was successful, otherwise FALSE
      */
     public function process($mode, $sourcePointer, $destinationPointer = null, bool $onlyHandleReferences = false)
     {
-        $destinationReferencesArr = array();
-        $destinationParentRecord = array();
+        $destinationReferencesArr = [];
+        $destinationParentRecord = [];
 
         // Check and get all information about the source position:
-        if (!$sourcePointer = $this->flexform_getValidPointer($sourcePointer)) {
+        $sourcePointer = $this->flexform_getValidPointer($sourcePointer);
+        if (!$sourcePointer) {
             return false;
         }
         $sourceParentRecord = BackendUtility::getRecordWSOL($sourcePointer['table'], $sourcePointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
@@ -437,7 +440,8 @@ class ApiService
 
         // Check and get all information about the destination position:
         if (!is_null($destinationPointer)) {
-            if (!$destinationPointer = $this->flexform_getValidPointer($destinationPointer)) {
+            $destinationPointer = $this->flexform_getValidPointer($destinationPointer);
+            if (!$destinationPointer) {
                 return false;
             }
             $destinationParentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
@@ -447,7 +451,8 @@ class ApiService
                 }
 
                 return false;
-            } elseif ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
+            }
+            if ($destinationParentRecord['pid'] < 0 && $destinationPointer['table'] != 'pages') {
                 if ($this->debug) {
                     GeneralUtility::devLog('process: The destination pointer must always point to a live record, not an offline version!', 2, $destinationPointer);
                 }
@@ -508,10 +513,11 @@ class ApiService
      * @param array $sourceParentRecord Database record of the source location (either from table 'pages' or 'tt_content')
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
      * @param array $elementRecord The database record of the element to be moved
-     * @param boolean $onlyHandleReferences If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
+     * @param bool $onlyHandleReferences If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
      *
-     * @return boolean TRUE if operation was successfuly, otherwise false
+     * @return boolean TRUE if operation was successfully, otherwise false
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_move(
         array $sourcePointer,
         array $destinationPointer,
@@ -522,6 +528,7 @@ class ApiService
         array $elementRecord,
         bool $onlyHandleReferences
     ) {
+        // phpcs:enable
         $elementUid = $elementRecord['uid'];
 
         // Move the element within the same parent element:
@@ -562,7 +569,7 @@ class ApiService
                 $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
                 // Determine uids of all sub elements of the element to be moved:
-                $dummyArr = array();
+                $dummyArr = [];
                 $elementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $elementUid, $dummyArr);
                 $elementUids[] = $elementUid;
 
@@ -584,7 +591,7 @@ class ApiService
                     ->fetchAll();
 
                 if (!empty($localRecords) && is_array($localRecords)) {
-                    $cmdArray = array();
+                    $cmdArray = [];
                     foreach ($localRecords as $localRecord) {
                         $cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
                     }
@@ -593,7 +600,7 @@ class ApiService
                     $this->setTCEmainRunningFlag(true);
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->stripslashes_values = 0;
-                    $tce->start(array(), $cmdArray);
+                    $tce->start([], $cmdArray);
                     $tce->process_cmdmap();
                     if (!$flagWasSet) {
                         $this->setTCEmainRunningFlag(false);
@@ -608,27 +615,28 @@ class ApiService
     /**
      * Makes a copy of the specified element and only points to the sub elements with references.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Current list of the parent destination's element references
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
      *
      * @return mixed The UID of the newly created copy or FALSE if an error occurred.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_copy($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
     {
-
+        // phpcs:enable
         $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
 
         // Initialize TCEmain and create configuration for copying the specified record
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $cmdArray = array();
+        $cmdArray = [];
         $cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
         // Execute the copy process and finally insert the reference for the element to the destination:
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);
-        $tce->start(array(), $cmdArray);
+        $tce->start([], $cmdArray);
         $tce->process_cmdmap();
         $newElementUid = $tce->copyMappingArray_merged['tt_content'][$sourceElementUid];
         if (!$flagWasSet) {
@@ -645,24 +653,26 @@ class ApiService
      * Makes a true copy of the specified element and all sub elements and sets the element references of the parent element
      * accordingly.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Current list of the parent destination's element references
      * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
      *
      * @return mixed The UID of the newly created copy or FALSE if an error occurred.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_copyRecursively($sourceElementUid, $destinationPointer, $destinationReferencesArr, $destinationParentRecord)
     {
+        // phpcs:enable
 
         // Determine the PID of the new location and get uids of all sub elements of the element to be copied:
-        $dummyArr = array();
+        $dummyArr = [];
         $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
         $subElementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $sourceElementUid, $dummyArr);
 
         // Initialize TCEmain and create configuration for copying the specified record (the parent element) and all sub elements:
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $cmdArray = array();
+        $cmdArray = [];
         $cmdArray['tt_content'][$sourceElementUid]['copy'] = $destinationPID;
 
         foreach ($subElementUids as $subElementUid) {
@@ -672,7 +682,7 @@ class ApiService
         // Execute the copy process and finally insert the reference for the parent element to the paste destination:
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);
-        $tce->start(array(), $cmdArray);
+        $tce->start([], $cmdArray);
         $tce->process_cmdmap();
         if (!$flagWasSet) {
             $this->setTCEmainRunningFlag(false);
@@ -688,21 +698,23 @@ class ApiService
     /**
      * Localizes the specified element and only points to the sub elements with references.
      *
-     * @param integer $sourceElementUid UID of the element to be copied
+     * @param int $sourceElementUid UID of the element to be copied
      * @param array $destinationPointer flexform pointer to the destination location
      * @param array $destinationReferencesArr Database record of the destination location (either from table 'pages' or 'tt_content')
      *
      * @return mixed The UID of the newly created copy or FALSE if an error occurred.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_localize($sourceElementUid, $destinationPointer, $destinationReferencesArr)
     {
+        // phpcs:enable
 
         // Determine language record UID of the language we localize to:
         $staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', $destinationPointer['_languageKey']);
         if (is_array($staticLanguageRows) && isset($staticLanguageRows[0]['uid'])) {
             $languageRecords = BackendUtility::getRecordsByField('sys_language', 'static_lang_isocode', $staticLanguageRows[0]['uid']);
         } else {
-            $languageRecords = array();
+            $languageRecords = [];
         }
 
         if (is_array($languageRecords) && isset($languageRecords[0]['uid'])) {
@@ -717,13 +729,13 @@ class ApiService
 
         // Initialize TCEmain and create configuration for localizing the specified record
         $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $cmdArray = array();
+        $cmdArray = [];
         $cmdArray['tt_content'][$sourceElementUid]['localize'] = $destinationLanguageUid;
 
         // Execute the copy process and finally insert the reference for the element to the destination:
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);
-        $tce->start(array(), $cmdArray);
+        $tce->start([], $cmdArray);
         $tce->process_cmdmap();
         $newElementUid = $tce->copyMappingArray_merged['tt_content'][$sourceElementUid];
         if (!$flagWasSet) {
@@ -741,13 +753,14 @@ class ApiService
      *
      * @param array $destinationPointer flexform pointer to the location where the reference should be stored
      * @param array $destinationReferencesArr Current list of the parent destination's element references
-     * @param integer $elementUid UID of the tt_content element to be referenced
+     * @param int $elementUid UID of the tt_content element to be referenced
      *
-     * @return boolean TRUE if the operation was successful or FALSE if an error occurred.
+     * @return bool TRUE if the operation was successful or FALSE if an error occurred.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_reference($destinationPointer, $destinationReferencesArr, $elementUid)
     {
-
+        // phpcs:enable
         $newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList($destinationReferencesArr, $destinationPointer['position'], $elementUid);
         $this->flexform_storeElementReferencesListInRecord($newDestinationReferencesArr, $destinationPointer);
 
@@ -760,11 +773,12 @@ class ApiService
      * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
      * @param array $sourceReferencesArr Current list of the parent source's element references
      *
-     * @return boolean TRUE if the operation was successful, otherwise FALSE
+     * @return bool TRUE if the operation was successful, otherwise FALSE
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_unlink($sourcePointer, $sourceReferencesArr)
     {
-
+        // phpcs:enable
         $newSourceReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
         $this->flexform_storeElementReferencesListInRecord($newSourceReferencesArr, $sourcePointer);
 
@@ -776,26 +790,28 @@ class ApiService
      *
      * @param array $sourcePointer flexform pointer pointing to the element which will be the target of the reference
      * @param array $sourceReferencesArr Current list of the parent source's element references
-     * @param integer $elementUid UID of the tt_content element to be deleted
+     * @param int $elementUid UID of the tt_content element to be deleted
      *
-     * @return boolean TRUE if the operation was successful, otherwise FALSE
+     * @return bool TRUE if the operation was successful, otherwise FALSE
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function process_delete($sourcePointer, $sourceReferencesArr, $elementUid)
     {
-
+        // phpcs:enable
         if (!$this->process_unlink($sourcePointer, $sourceReferencesArr)) {
             return false;
         }
 
-        $cmdArray = array();
-        $cmdArray['tt_content'][$elementUid]['delete'] = 1; // Element UID should always be that of the online version here...
+        $cmdArray = [];
+        $cmdArray['tt_content'][$elementUid]['delete'] = 1;
+        // Element UID should always be that of the online version here...
 
         // Store:
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);
         $tce = GeneralUtility::makeInstance(DataHandler::class);
         $tce->stripslashes_values = 0;
-        $tce->start(array(), $cmdArray);
+        $tce->start([], $cmdArray);
         $tce->process_cmdmap();
         if (!$flagWasSet) {
             $this->setTCEmainRunningFlag(false);
@@ -824,8 +840,10 @@ class ApiService
      *
      * @return mixed The valid flexform pointer array or FALSE if it was not valid
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getValidPointer($flexformPointer)
     {
+        // phpcs:enable
         if (is_string($flexformPointer)) {
             $flexformPointer = $this->flexform_getPointerFromString($flexformPointer);
         }
@@ -837,8 +855,8 @@ class ApiService
 
             return false;
         }
-
-        if (!$destinationRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoilaplus_flex')) {
+        $destinationRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
+        if (!$destinationRecord) {
             if ($this->debug) {
                 GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoila API', 2, $flexformPointer);
             }
@@ -848,7 +866,7 @@ class ApiService
 
         if ($flexformPointer['position'] < 0) {
             if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: The position must be possitive!', 'TemplaVoila API', 2, $flexformPointer);
+                GeneralUtility::devLog('flexform_getValidPointer: The position must be positive!', 'TemplaVoila API', 2, $flexformPointer);
             }
 
             return false;
@@ -866,7 +884,7 @@ class ApiService
         }
         if (isset($flexformPointer['targetCheckUid']) && $elementReferencesArr[$flexformPointer['position']] != $flexformPointer['targetCheckUid']) {
             if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, array($flexformPointer, $elementReferencesArr));
+                GeneralUtility::devLog('flexform_getValidPointer: The target record uid does not match the targetCheckUid!', 'TemplaVoila API', 2, [$flexformPointer, $elementReferencesArr]);
             }
 
             return false;
@@ -885,9 +903,10 @@ class ApiService
      *
      * @return array A flexform pointer array which can be used with the functions in tx_templavoilaplus_api
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getPointerFromString($flexformPointerString)
     {
-
+        // phpcs:enable
         $tmpArr = explode('/', $flexformPointerString);
         $locationString = $tmpArr[0];
         $targetCheckString = $tmpArr[1];
@@ -896,12 +915,12 @@ class ApiService
         $targetCheckArr = explode(':', $targetCheckString);
 
         if (count($targetCheckArr) == 2) {
-            $flexformPointer = array(
+            $flexformPointer = [
                 'table' => $locationArr[0],
-                'uid' => $locationArr[1]
-            );
+                'uid' => $locationArr[1],
+            ];
         } else {
-            $flexformPointer = array(
+            $flexformPointer = [
                 'table' => $locationArr[0],
                 'uid' => $locationArr[1],
                 'sheet' => $locationArr[2],
@@ -910,7 +929,7 @@ class ApiService
                 'vLang' => $locationArr[5],
                 'position' => $locationArr[6],
                 'targetCheckUid' => $targetCheckArr[1],
-            );
+            ];
         }
 
         return $flexformPointer;
@@ -923,18 +942,18 @@ class ApiService
      *
      * @param array $flexformPointer A valid flexform pointer array
      *
-     * @return boolean|string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid" which is used to check the target record of the pointer. If an error occurs: FALSE
+     * @return boolean|string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid", which is used to check the target record of the pointer. If an error occurs: FALSE
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getStringFromPointer($flexformPointer)
     {
-
+        // phpcs:enable
         if (!is_array($flexformPointer)) {
             return false;
         }
 
         if (isset($flexformPointer['sheet'])) {
-            $flexformPointerString =
-                $flexformPointer['table'] . ':' .
+            $flexformPointerString = $flexformPointer['table'] . ':' .
                 $flexformPointer['uid'] . ':' .
                 $flexformPointer['sheet'] . ':' .
                 $flexformPointer['sLang'] . ':' .
@@ -957,47 +976,51 @@ class ApiService
      * specifies the record directly, but if sheet, sLang etc. are set, it specifies the location
      * from the perspective of the parent element.
      *
-     * @param mixed $flexformPointer A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string which will be converted automatically by flexform_getPointerFromString()
+     * @param mixed $flexformPointer A flexform pointer referring to the content element. Although an array is preferred, you may also pass a string, which will be converted automatically by flexform_getPointerFromString()
      *
      * @return mixed The record row or FALSE if not successful
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getRecordByPointer($flexformPointer)
     {
-
+        // phpcs:enable
         if (is_string($flexformPointer)) {
             $flexformPointer = $this->flexform_getPointerFromString($flexformPointer);
         }
-
-        if (!$flexformPointer = $this->flexform_getValidPointer($flexformPointer)) {
+        $flexformPointer = $this->flexform_getValidPointer($flexformPointer);
+        if (!$flexformPointer) {
             return false;
         }
 
         if (isset($flexformPointer['sheet'])) {
-            if (!$parentRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,tx_templavoilaplus_flex')) {
+            $parentRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], 'uid,tx_templavoilaplus_flex');
+            if (!$parentRecord) {
                 return false;
             }
-            $elementReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $flexformPointer); // This should work, because both flexFormPointer and tx_templavoilaplus_flex will be based on any workspace overlaid record.
+            $elementReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $flexformPointer);
+            // This should work, because both flexFormPointer and tx_templavoilaplus_flex will be based on any workspace overlaid record.
             return BackendUtility::getRecordWSOL('tt_content', $elementReferencesArr[$flexformPointer['position']]);
-        } else {
-            return BackendUtility::getRecordWSOL('tt_content', $flexformPointer['uid']);
         }
+        return BackendUtility::getRecordWSOL('tt_content', $flexformPointer['uid']);
     }
 
     /**
      * Returns an array of flexform pointers pointing to all occurrences of a tt_content record with uid $recordUid
      * on the page with uid $pageUid.
      *
-     * @param integer $elementUid UID of a tt_content record
-     * @param integer $pageUid UID of the page to search in
+     * @param int $elementUid UID of a tt_content record
+     * @param int $pageUid UID of the page to search in
      *
      * @return array Array of flexform pointers
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getPointersByRecord($elementUid, $pageUid)
     {
-        $dummyArr = array();
+        // phpcs:enable
+        $dummyArr = [];
         $flexformPointersArr = $this->flexform_getFlexformPointersToSubElementsRecursively('pages', $pageUid, $dummyArr);
 
-        $resultPointersArr = array();
+        $resultPointersArr = [];
         if (is_array($flexformPointersArr)) {
             foreach ($flexformPointersArr as $flexformPointerArr) {
                 if ($flexformPointerArr['targetCheckUid'] == $elementUid) {
@@ -1019,8 +1042,10 @@ class ApiService
      *
      * @return mixed Numerical array tt_content uids or FALSE if an error occurred (eg. flexformXML was no valid XML)
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getElementReferencesFromXML($flexformXML, $flexformPointer)
     {
+        // phpcs:enable
 
         // Getting value of the field containing the relations:
         $flexformXMLArr = GeneralUtility::xml2array($flexformXML);
@@ -1040,7 +1065,7 @@ class ApiService
         $dbAnalysis->start($listOfUIDs, 'tt_content');
         $dbAnalysis->getFromDB();
 
-        $elementReferencesArr = array();
+        $elementReferencesArr = [];
         $counter = 0;
         foreach ($arrayOfUIDs as $uid) {
             if (is_array($dbAnalysis->results['tt_content'][$uid])) {
@@ -1056,17 +1081,19 @@ class ApiService
      * Returns an array of uids of all sub elements of the element specified by $table and $uid.
      *
      * @param string $table Name of the table of the parent element ('pages' or 'tt_content')
-     * @param integer $uid UID of the parent element
+     * @param int $uid UID of the parent element
      * @param array $recordUids Array of record UIDs - used internally, don't touch (but pass an empty array)
-     * @param integer $recursionDepth Tracks the current level of recursion - used internall, don't touch.
+     * @param integer $recursionDepth Tracks the current level of recursion - used internally, don't touch.
      *
      * @return array Array of record UIDs
      */
+    // phpcs:disable Generic.Metrics.NestingLevel
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getListOfSubElementUidsRecursively($table, $uid, &$recordUids, $recursionDepth = 0)
     {
-
+        // phpcs:enable
         if (!is_array($recordUids)) {
-            $recordUids = array();
+            $recordUids = [];
         }
         $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_map,tx_templavoilaplus_flex');
 
@@ -1114,17 +1141,19 @@ class ApiService
      * Returns an array of flexform pointers to all sub elements of the element specified by $table and $uid.
      *
      * @param string $table Name of the table of the parent element ('pages' or 'tt_content')
-     * @param integer $uid UID of the parent element
+     * @param int $uid UID of the parent element
      * @param array $flexformPointers Array of flexform pointers - used internally, don't touch
-     * @param integer $recursionDepth Tracks the current level of recursion - used internall, don't touch.
+     * @param integer $recursionDepth Tracks the current level of recursion - used internally, don't touch.
      *
      * @return array Array of flexform pointers
      */
+    // phpcs:disable Generic.Metrics.NestingLevel
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getFlexformPointersToSubElementsRecursively($table, $uid, &$flexformPointers, $recursionDepth = 0)
     {
-
+        // phpcs:enable
         if (!is_array($flexformPointers)) {
-            $flexformPointers = array();
+            $flexformPointers = [];
         }
         $parentRecord = BackendUtility::getRecordWSOL($table, $uid, 'uid,pid,tx_templavoilaplus_flex,tx_templavoilaplus_map');
 
@@ -1149,7 +1178,7 @@ class ApiService
                                                 $position = 1;
                                                 foreach ($valueItems as $subElementUid) {
                                                     if ($subElementUid > 0) {
-                                                        $flexformPointers[] = array(
+                                                        $flexformPointers[] = [
                                                             'table' => $table,
                                                             'uid' => $uid,
                                                             'sheet' => $sheetKey,
@@ -1157,8 +1186,8 @@ class ApiService
                                                             'field' => $fieldName,
                                                             'vLang' => $valueName,
                                                             'position' => $position,
-                                                            'targetCheckUid' => $subElementUid
-                                                        );
+                                                            'targetCheckUid' => $subElementUid,
+                                                        ];
                                                         if ($recursionDepth < 100) {
                                                             $this->flexform_getFlexformPointersToSubElementsRecursively('tt_content', $subElementUid, $flexformPointers, $recursionDepth + 1);
                                                         }
@@ -1189,14 +1218,16 @@ class ApiService
      * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
      *
      * @param array $currentReferencesArr Array of tt_content uids from a current reference list
-     * @param integer $position Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
-     * @param integer $elementUid UID of a tt_content element
+     * @param int $position Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
+     * @param int $elementUid UID of a tt_content element
      *
      * @return array Array with an updated reference list
      * @see flexform_getElementReferencesFromXML(), flexform_removeElementReferenceFromList()
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_insertElementReferenceIntoList($currentReferencesArr, $position, $elementUid)
     {
+        // phpcs:enable
         array_splice($currentReferencesArr, $position, 0, [$elementUid]);
 
         return $currentReferencesArr;
@@ -1207,17 +1238,18 @@ class ApiService
      * the updated list. (the list is passed and return as an array)
      *
      * @param array $currentReferencesArr Array of tt_content uids from a current reference list
-     * @param integer $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
+     * @param int $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
      *
      * @return array Array with an updated reference list
      * @see flexform_getElementReferencesFromXML(), flexform_insertElementReferenceIntoList()
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_removeElementReferenceFromList($currentReferencesArr, $position)
     {
-
+        // phpcs:enable
         unset($currentReferencesArr[$position]);
 
-        $newReferencesArr = array();
+        $newReferencesArr = [];
         $counter = 1;
         foreach ($currentReferencesArr as $uid) {
             $newReferencesArr[$counter] = $uid;
@@ -1232,16 +1264,16 @@ class ApiService
      *
      * @param array $referencesArr The array of tt_content uids (references list) to store in the record
      * @param array $destinationPointer Flexform pointer to the location where the references list should be stored.
-     *
-     * @return void
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_storeElementReferencesListInRecord($referencesArr, $destinationPointer)
     {
+        // phpcs:enable
         if ($this->debug) {
-            GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoilaplus', 0, array('referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer));
+            GeneralUtility::devLog('API: flexform_storeElementReferencesListInRecord()', 'templavoilaplus', 0, ['referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer]);
         }
 
-        $dataArr = array();
+        $dataArr = [];
         $uid = BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
         $containerHasWorkspaceVersion = false;
         if ($uid != $destinationPointer['uid']) {
@@ -1291,15 +1323,17 @@ class ApiService
      *
      * If all that fails, this function returns FALSE.
      *
-     * @param integer $contextPageUid The (current) page uid, used to determine which page datastructure is selected
-     * @param integer $columnPosition Column number to search a field for
+     * @param int $contextPageUid The (current) page uid, used to determine which page datastructure is selected
+     * @param int $columnPosition Column number to search a field for
      *
      * @return mixed Either the field name relating to the given column number or FALSE if all fall back methods failed and no suitable field could be found.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function ds_getFieldNameByColumnPosition($contextPageUid, $columnPosition)
     {
+        // phpcs:enable
         $foundFieldName = false;
-        $columnsAndFieldNamesArr = array();
+        $columnsAndFieldNamesArr = [];
         $fieldNameOfFirstCEField = null;
 
         $pageRow = BackendUtility::getRecordWSOL('pages', $contextPageUid);
@@ -1350,13 +1384,15 @@ class ApiService
      *
      * Reverse function of ds_getFieldNameByColumnPosition()
      *
-     * @param integer $contextPageUid The (current) page uid, used to determine which page datastructure is selected
+     * @param int $contextPageUid The (current) page uid, used to determine which page datastructure is selected
      * @param string $fieldName Field name in the data structure we are searching the column number for
      *
-     * @return integer The column number as used in the "colpos" field in tt_content
+     * @return int The column number as used in the "colpos" field in tt_content
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function ds_getColumnPositionByFieldName($contextPageUid, $fieldName)
     {
+        // phpcs:enable
         $pageRow = BackendUtility::getRecordWSOL('pages', $contextPageUid);
         if (is_array($pageRow)) {
             $dataStructureArr = $this->ds_getExpandedDataStructure('pages', $pageRow);
@@ -1383,12 +1419,14 @@ class ApiService
      * be expanded, ie. you can be sure that it is structured by sheets even if only one sheet exists.
      *
      * @param string $table The table name, usually "pages" or "tt_content"
-     * @param array $row The data row (used to get DS if DS is dependant on the data in the record)
+     * @param array $row The data row (used to get DS if DS is dependent on the data in the record)
      *
      * @return array The data structure, expanded for all sheets inside.
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function ds_getExpandedDataStructure($table, array $row)
     {
+        // phpcs:enable
         $dataStructureArr = [];
 
         $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
@@ -1415,13 +1453,11 @@ class ApiService
      * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
      * avoid infinite loops and other bad effects.
      *
-     * @param boolean $flag If TRUE, our user functions will be omitted
-     *
-     * @return void
+     * @param bool $flag If TRUE, our user functions will be omitted
      */
     public function setTCEmainRunningFlag($flag)
     {
-        $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] = $flag;
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] = $flag;
     }
 
     /**
@@ -1429,17 +1465,15 @@ class ApiService
      * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
      * avoid infinite loops and other bad effects.
      *
-     * @return boolean TRUE if flag is set, otherwise FALSE;
+     * @return bool TRUE if flag is set, otherwise FALSE;
      */
     public function getTCEmainRunningFlag()
     {
-        return $GLOBALS ['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
+        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
     }
 
     /**
      * Reading all languages in sys_language and setting ->allSystemWebsiteLanguages with this information (with a little more as well)
-     *
-     * @return void
      */
     public function loadWebsiteLanguages()
     {
@@ -1481,9 +1515,7 @@ class ApiService
     }
 
     /**
-     * @param boolean $enable
-     *
-     * @return void
+     * @param bool $enable
      */
     public function modifyReferencesInLiveWS($enable = true)
     {
@@ -1495,7 +1527,7 @@ class ApiService
      * This function is e.g. used to determine, if localization is enabled for FCEs.
      * Since they can be stored on different pages, different modTSconfigs might be needed.
      *
-     * @param integer $pageId The page id to get the modTSconfig for
+     * @param int $pageId The page id to get the modTSconfig for
      *
      * @return array The fetched modTSconfig for the web module
      */
@@ -1535,9 +1567,12 @@ class ApiService
                 continue;
             }
 
-            if ($pageRecord['tx_templavoilaplus_next_map']) { // If there is a next-level MAP:
+            if ($pageRecord['tx_templavoilaplus_next_map']) {
+                // If there is a next-level MAP:
                 return $pageRecord['tx_templavoilaplus_next_map'];
-            } elseif ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) { // Otherwise try the NORMAL MAP as backup
+            }
+            if ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) {
+                // Otherwise try the NORMAL MAP as backup
                 $mapBackupIdentifier = $pageRecord['tx_templavoilaplus_map'];
             }
         }

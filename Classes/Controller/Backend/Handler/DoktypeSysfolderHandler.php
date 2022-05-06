@@ -17,12 +17,11 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DoktypeSysfolderHandler
 {
@@ -34,40 +33,32 @@ class DoktypeSysfolderHandler
      *
      * @return string HTML output from this submodule
      */
-    public function handle(PageLayoutController $controller, array $pageRecord)
+    public function handle(PageLayoutController $controller, array $pageRecord): string
     {
+        $listModuleUrl = '';
         if ($this->userHasAccessToListModule()) {
-            $listModuleURL = 'javascript:top.goToModule(\'web_list\',1);';
-            $listModuleLink = $this->getLinkButton($controller, $listModuleURL);
+            $listModuleUrl = 'javascript:top.goToModule(\'web_list\',1);';
         }
 
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeSysfolderCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSysfolder'),
-            FlashMessage::INFO
+            FlashMessage::INFO,
+            false,
+            [[
+                'url' => (string)$listModuleUrl,
+                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true),
+                'icon' => 'actions-system-list-open',
+            ]]
         );
 
-        return $listModuleLink;
-    }
-
-    /**
-     * @TODO Move into fluid
-     */
-    protected function getLinkButton(PageLayoutController $controller, $url)
-    {
-        return '<a href="' . $url . '"'
-            . ' class="btn btn-info"'
-            . '>'
-            . $controller->getView()->getModuleTemplate()->getIconFactory()->getIcon('actions-system-list-open', Icon::SIZE_SMALL)->render()
-            . ' ' . TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true)
-            . '</a>';
+        return '';
     }
 
     /**
      * Returns true if the logged in BE user has access to the list module.
      *
-     * @return boolean
-     * @access protected
+     * @return bool
      */
     protected function userHasAccessToListModule()
     {
