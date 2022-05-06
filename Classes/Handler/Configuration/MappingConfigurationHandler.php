@@ -18,64 +18,12 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class MappingConfigurationHandler implements ConfigurationHandlerInterface
+class MappingConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\MappingConfiguration';
 
-    /**
-     * @var Place
-     */
-    protected $place;
-
-    /**
-     * @var LoadSaveHandlerInterface
-     */
-    protected $loadSaveHandler;
-
-    public function setPlace(Place $place)
-    {
-        $this->place = $place;
-    }
-
-    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler)
-    {
-        $this->loadSaveHandler = $loadSaveHandler;
-    }
-
-    /** @TODO It may be possible that this could go into an abstract */
-    public function loadConfigurations()
-    {
-        $configurations = [];
-        $files = $this->loadSaveHandler->find();
-
-        /** @TODO No, we don't know if this are files, this may be something totally different! */
-        foreach ($files as $file) {
-            $content = $this->loadSaveHandler->load($file);
-
-            $identifier = $file->getRelativePath() . $file->getFilename();
-
-            try {
-                $mappingConfiguration = $this->createConfigurationFromConfigurationArray(
-                    $content,
-                    $identifier,
-                    pathinfo($file->getFilename(), PATHINFO_FILENAME)
-                );
-                $configurations[$identifier] = [
-                    'configuration' => $mappingConfiguration,
-                    'store' => ['file' => $file], /** @TODO Better place to save this information? */
-                ];
-            } catch (\Exception $e) {
-                /** @TODO Log error, that we can't read the configuration */
-            }
-        }
-
-        $this->place->setConfigurations($configurations);
-    }
-
-    public function createConfigurationFromConfigurationArray(array $configuration, $identifier, $possibleName): MappingConfiguration
+    public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): MappingConfiguration
     {
         $mappingConfiguration = new MappingConfiguration($this->place, $identifier);
         $mappingConfiguration->setName($possibleName);
