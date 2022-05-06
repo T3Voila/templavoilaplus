@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
  * Contains functions for manipulating flex form data
@@ -75,15 +75,16 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         // if there is a solution we can adapt it accordingly
         try {
             return parent::getDataStructureIdentifier($fieldTca, $tableName, $fieldName, $row);
+            // phpcs:disable
         } catch (InvalidParentRowException $e) {
         } catch (InvalidParentRowLoopException $e) {
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidIdentifierException $e) {
         }
+        // phpcs:enable
         return '';
     }
-
 
     /**
      * Parse a data structure identified by $identifier to the final data structure array.
@@ -128,9 +129,8 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     ],
                 ],
             ];
-        } else {
-            return parent::parseDataStructureByIdentifier($identifier);
         }
+        return parent::parseDataStructureByIdentifier($identifier);
     }
 
     /**
@@ -165,12 +165,14 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         try {
             $dataStructureIdentifier = $this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row);
             $dataStructureArray = $this->parseDataStructureByIdentifier($dataStructureIdentifier);
+            // phpcs:disable
         } catch (InvalidParentRowException $e) {
         } catch (InvalidParentRowLoopException $e) {
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidIdentifierException $e) {
         }
+        // phpcs:enable
 
         // Get flexform XML data
         $editData = GeneralUtility::xml2array($row[$field]);
@@ -229,7 +231,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         return true;
     }
 
-
     /**
      * The data structure is located in a record. This method resolves the record and
      * returns an array to identify that record.
@@ -281,7 +282,8 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      */
     protected function getDataStructureIdentifierFromRecord(array $fieldTca, string $tableName, string $fieldName, array $row): array
     {
-        $pointerFieldName = $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
+        $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
+        $pointerFieldName = $finalPointerFieldName;
         if (!array_key_exists($pointerFieldName, $row)) {
             // The user may not have rights to edit this field so set it to empty
             // Will validate later on, if there is a parent available which have something set
@@ -434,10 +436,11 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      * @param array $PA Additional configuration used in calling function
      * @param string $path Path of value in DS structure
      * @param FlexFormTools $pObj caller
-     * @return void
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
     {
+        // phpcs:enable
         // Just setting value in our own result array, basically replicating the structure:
         $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
         // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:

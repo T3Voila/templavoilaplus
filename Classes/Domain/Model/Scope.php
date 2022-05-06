@@ -7,17 +7,17 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
 abstract class Scope
 {
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_UNKNOWN = 0;
 
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_PAGE = 1;
 
     /**
-     * @var integer
+     * @var int
      */
     const SCOPE_FCE = 2;
 }

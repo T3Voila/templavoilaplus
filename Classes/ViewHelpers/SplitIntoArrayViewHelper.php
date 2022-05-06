@@ -15,9 +15,6 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
 {
     use CompileWithContentArgumentAndRenderStatic;
 
-    /**
-     * @return void
-     */
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to assign. If not in arguments then taken from tag content');
@@ -30,7 +27,6 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return null
      */
     public static function renderStatic(
         array $arguments,
@@ -39,7 +35,8 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
     ) {
         $pattern = $arguments['pattern'] ?? ($arguments['delimiterDecimal'] ? '\x' . dechex($arguments['delimiterDecimal']) : '');
         $value = $arguments['value'] ?? $renderChildrenClosure();
-        $limit = $arguments['limit'] ?? -1; // mb_split default is -1
+        $limit = $arguments['limit'] ?? -1;
+        // mb_split default is -1
 
         $result = mb_split($pattern, $value, $limit);
 

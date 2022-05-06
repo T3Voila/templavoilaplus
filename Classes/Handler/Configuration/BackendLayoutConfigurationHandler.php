@@ -19,9 +19,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 
 use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class BackendLayoutConfigurationHandler implements ConfigurationHandlerInterface
+class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 

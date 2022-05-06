@@ -17,11 +17,11 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Class to place data
@@ -29,7 +29,7 @@ use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 class Place
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $scope = 0;
 
@@ -61,7 +61,7 @@ class Place
     /**
      * @var array An array of the configurations with the identifier as key
      */
-    protected $configurations = null;
+    protected $configurations;
 
     /**
      * @param $identifier string The global name of this place it should be unique, take the PHP Namespace as an orientation.
@@ -74,7 +74,8 @@ class Place
     public function __construct(
         string $identifier,
         string $name,
-        /* @TODO */ $scope,
+        /* @TODO */
+        $scope,
         string $configurationHandlerIdentifier,
         string $loadSaveHandlerIdentifier,
         string $entryPoint

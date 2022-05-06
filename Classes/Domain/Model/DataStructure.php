@@ -15,9 +15,6 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
-
 /**
  * Class to provide unique configuration of datastructure
  */

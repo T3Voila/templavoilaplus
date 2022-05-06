@@ -49,4 +49,3 @@ class HtmlResponse extends \TYPO3\CMS\Core\Http\Response
         }
     }
 }
-

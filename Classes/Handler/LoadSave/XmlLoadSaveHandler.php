@@ -18,7 +18,6 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  */
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class XmlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {

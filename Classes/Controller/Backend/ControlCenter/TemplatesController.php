@@ -17,16 +17,13 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
-use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class TemplatesController extends ActionController
 {
@@ -71,13 +68,11 @@ class TemplatesController extends ActionController
         $this->view->assign('templatePlacesByScope', $templatePlacesByScope);
     }
 
-
     /**
      * Show information about one template configuration
      *
      * @param string $placeIdentifier Uuid of TemplatePlace
      * @param string $configurationIdentifier Identifier inside the dataStructurePlace
-     * @return void
      */
     public function infoAction($placeIdentifier, $configurationIdentifier)
     {

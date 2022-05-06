@@ -19,7 +19,6 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
 
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {

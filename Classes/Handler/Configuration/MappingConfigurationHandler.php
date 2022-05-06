@@ -18,10 +18,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
-class MappingConfigurationHandler implements ConfigurationHandlerInterface
+class MappingConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\MappingConfiguration';
 

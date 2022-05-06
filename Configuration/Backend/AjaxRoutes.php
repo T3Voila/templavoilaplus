@@ -1,7 +1,5 @@
 <?php
 
-use Tvp\TemplaVoilaPlus\Controller;
-
 $targetRecordTreeData = Tvp\TemplaVoilaPlus\Form\Controller\FormSelectTreeAjaxController::class . '::fetchDataAction';
 $targetRecordFlexContainerAdd = Tvp\TemplaVoilaPlus\Form\Controller\FormFlexAjaxController::class . '::containerAdd';
 if (version_compare(TYPO3_version, '9.0.0', '>=')) {

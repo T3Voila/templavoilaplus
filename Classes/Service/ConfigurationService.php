@@ -16,12 +16,9 @@ namespace Tvp\TemplaVoilaPlus\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class ConfigurationService implements SingletonInterface
 {
@@ -81,7 +78,6 @@ class ConfigurationService implements SingletonInterface
         return $settingsWithoutDots;
     }
 
-
     private function initialize()
     {
         if (!$this->isInitialized) {
@@ -110,7 +106,8 @@ class ConfigurationService implements SingletonInterface
     public function registerPlace(
         string $identifier,
         string $name,
-        /** @TODO */ $scope,
+        /** @TODO */
+        $scope,
         string $configurationHandlerIdentifier,
         string $loadSaveHandlerIdentifier,
         string $entryPoint
@@ -147,8 +144,6 @@ class ConfigurationService implements SingletonInterface
         ];
     }
 
-    /**
-     */
     public function getHandler(string $handlerIdentifier)
     {
         $this->initialize();

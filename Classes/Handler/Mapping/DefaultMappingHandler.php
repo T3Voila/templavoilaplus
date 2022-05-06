@@ -189,13 +189,13 @@ class DefaultMappingHandler
 
         // Step 3: set new parent record to register
         foreach ($row as $dkey => $dvalue) {
-            $restoreData['registerKeys'][] = $tkey = 'tx_templavoilaplus_pi1.parentRec.' . $dkey;
+            $tkey = 'tx_templavoilaplus_pi1.parentRec.' . $dkey;
+            $restoreData['registerKeys'][] = $tkey;
             $GLOBALS['TSFE']->register[$tkey] = $dvalue;
         }
 
         return $restoreData;
     }
-
 
     protected function restoreTypoScriptParentRec(array $restoreData)
     {

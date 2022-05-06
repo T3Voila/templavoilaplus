@@ -18,15 +18,14 @@ namespace Tvp\TemplaVoilaPlus\Updates;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 use TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite;
+use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Contains the update class for filling the basic repository record of the extension manager
  */
 class Typo3Lts9Update implements UpgradeWizardInterface
 {
-
     /**
      * holds the extconf configuration
      *
@@ -56,7 +55,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
             // If static DS is in use we need to migrate the file pointer
             $result = true;
         }
-            $result = true;
+        $result = true;
 
         return $result;
     }
@@ -64,7 +63,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class
+            DatabaseUpdatedPrerequisite::class,
         ];
     }
 

@@ -17,11 +17,10 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
-use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
+use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
-class TemplateConfigurationHandler implements ConfigurationHandlerInterface
+class TemplateConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\TemplateConfiguration';
 

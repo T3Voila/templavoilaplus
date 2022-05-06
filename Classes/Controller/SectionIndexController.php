@@ -22,7 +22,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class SectionIndexController
 {
-
     /**
      * Must be public, as it is set from the outside
      *
@@ -40,24 +39,23 @@ class SectionIndexController
      */
     public function mainAction($content, $conf)
     {
-
         $ceField = $this->cObj->stdWrap($conf['indexField'], $conf['indexField.']);
         $pids = isset($conf['select.']['pidInList.'])
             ? trim($this->cObj->stdWrap($conf['select.']['pidInList'], $conf['select.']['pidInList.']))
             : trim($conf['select.']['pidInList']);
-        $contentIds = array();
+        $contentIds = [];
         if ($pids) {
             $pageIds = GeneralUtility::trimExplode(',', $pids);
             foreach ($pageIds as $pageId) {
                 $page = $GLOBALS['TSFE']->sys_page->checkRecord('pages', $pageId);
                 if (isset($page) && isset($page['tx_templavoilaplus_flex'])) {
-                    $flex = array();
+                    $flex = [];
                     $this->cObj->readFlexformIntoConf($page['tx_templavoilaplus_flex'], $flex);
                     $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
                 }
             }
         } else {
-            $flex = array();
+            $flex = [];
             $this->cObj->readFlexformIntoConf($GLOBALS['TSFE']->page['tx_templavoilaplus_flex'], $flex);
             $contentIds = array_merge($contentIds, GeneralUtility::trimExplode(',', $flex[$ceField]));
         }
@@ -65,10 +63,10 @@ class SectionIndexController
         if (count($contentIds) > 0) {
             $conf['source'] = implode(',', $contentIds);
             $conf['tables'] = 'tt_content';
-            $conf['conf.'] = array(
+            $conf['conf.'] = [
                 'tt_content' => $conf['renderObj'],
                 'tt_content.' => $conf['renderObj.'],
-            );
+            ];
             $conf['dontCheckPid'] = 1;
             unset($conf['renderObj']);
             unset($conf['renderObj.']);

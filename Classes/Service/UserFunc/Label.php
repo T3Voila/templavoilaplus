@@ -22,14 +22,11 @@ use TYPO3\CMS\Core\SingletonInterface;
  */
 class Label implements SingletonInterface
 {
-
     /**
      * Retrive the label for TCEFORM title attribute.
      *
      * @param array $params Current record array
      * @param object
-     *
-     * @return void
      */
     public function getLabel(&$params, &$pObj)
     {

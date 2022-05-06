@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 class FrontendController extends AbstractPlugin
 {
@@ -99,7 +98,7 @@ class FrontendController extends AbstractPlugin
      * @param array $row Current data record, either a tt_content element or page record.
      * @param string $table Table name, either "pages" or "tt_content".
      *
-     * @throws \RuntimeException
+     * @throws \RuntimeException|\Exception
      *
      * @return string HTML output.
      */

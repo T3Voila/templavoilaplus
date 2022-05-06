@@ -17,16 +17,15 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
-use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class DoktypeShortcutHandler
 {
-
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Shortcut"
      *
@@ -46,9 +45,9 @@ class DoktypeShortcutHandler
             $pageRepositoryClass = \TYPO3\CMS\Frontend\Page\PageRepository;
         }
 
-
         switch ($shortcutMode) {
-            case $pageRepositoryClass::SHORTCUT_MODE_NONE: // Should be SHORTCUT_MODE_SELECT
+            // Should be SHORTCUT_MODE_SELECT
+            case $pageRepositoryClass::SHORTCUT_MODE_NONE:
                 // Use selected page
                 $targetUid = (int)$pageRecord['shortcut'];
                 break;
