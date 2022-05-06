@@ -16,6 +16,8 @@
     </div>
     <div id="moduleShadowing"></div>
 
+    <f:render section="FlashMessage" arguments="{_all}" />
+
     <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}" data-tvp-settings="{configuration -> f:format.json()}">
 
         <section id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
@@ -36,6 +38,38 @@
         </section>
 
     </div>
+
+<f:section name="FlashMessage">
+    <f:for each="{pageMessages}" as="message">
+        <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false" >
+            {message.message}
+            <f:if condition="{message.buttons}">
+                <br/>
+                <div class="btn-group mt-3">
+                    <f:for each="{message.buttons}" as="button">
+                        <f:if condition="{button.label}">
+                            <f:variable name="buttonstate">secondary</f:variable>
+                            <f:switch expression="{message.severity}">
+                                <f:case value="-2"><f:variable name="buttonstate">light</f:variable></f:case>
+                                <f:case value="-1"><f:variable name="buttonstate">primary</f:variable></f:case>
+                                <f:case value="0"><f:variable name="buttonstate">success</f:variable></f:case>
+                                <f:case value="1"><f:variable name="buttonstate">warning</f:variable></f:case>
+                                <f:case value="2"><f:variable name="buttonstate">danger</f:variable></f:case>
+                                <f:defaultCase></f:defaultCase>
+                            </f:switch>
+                            <a class="btn btn-{buttonstate}" href="{button.url}">
+                                <f:if condition="{button.icon}">
+                                    <core:icon identifier="{button.icon}" />
+                                </f:if>
+                                {button.label}
+                            </a>
+                        </f:if>
+                    </f:for>
+                </div>
+            </f:if>
+        </f:be.infobox>
+    </f:for>
+</f:section>
 
 <f:section name="Header">
 

@@ -1,22 +1,31 @@
-/node_modules
-/Resources/Private/Sass/.sass-cache
-
-### ide
 *.idea
 *.iml
-nbproject
-*.swp
 *.kdev4
-
-### os
+*.swp
 .DS_Store
-thumbs.db
-desktop.ini
 .directory
-
-### composer artifacts
+/*.idea
+/.Build/*
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+/Documentation-GENERATED-temp/
+/Resources/Private/Sass/.sass-cache
+/Resources/Private/node_modules/
+/Resources/Private/package-lock.json
+/Resources/Private/yarn-error.log
+/Resources/Private/yarn.lock
+/build
+/clover.xml
+/composer.lock
+/nbproject
+/node_modules
+/node_modules/
+/package-lock.json
 /public
+/var
 /vendor
-
-### locally rendered docs
-/*GENERATED*
+/yarn-error.log
+/yarn.lock
+desktop.ini
+nbproject
+thumbs.db

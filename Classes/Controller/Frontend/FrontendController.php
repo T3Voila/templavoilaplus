@@ -47,18 +47,40 @@ class FrontendController extends AbstractPlugin
 
         // Current page record which we MIGHT manipulate a little:
         $pageRecord = $GLOBALS['TSFE']->page;
+        $originalUid = $pageRecord['uid'];
 
-        // Replace record if content_from_pid is used. This might change the template/mapping, however
-        // it can't be expected that fields are the same between different templates, thus we need to use the
-        // other template anyway
+        // replace record and rootline if content_from_pid is used
         if ($pageRecord['content_from_pid']) {
+            $oldMap = $pageRecord['tx_templavoilaplus_map'];
+            // we only support direct content_from_pid not chained content_from_pid
             $pageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['content_from_pid']);
+
+            // restore the old map, as this eases lookup
+            // or perhaps we want a specific different map here
+            $pageRecord['tx_templavoilaplus_map'] = $oldMap;
         }
 
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
         if (!$pageRecord['tx_templavoilaplus_map']) {
             $pageRecord['tx_templavoilaplus_map'] = $apiService->getMapIdentifierFromRootline(
                 $GLOBALS['TSFE']->rootLine
+            );
+        }
+
+        if (!$pageRecord['tx_templavoilaplus_map']) {
+            $rootLine = [];
+            foreach ($GLOBALS['TSFE']->rootLine as $rootLineElement) {
+                $rootLine[] = $rootLineElement['uid'];
+            }
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Tried to render page %s%s, but neither this page nor the parents (%s) have an TemplaVoilà! Plus ' .
+                    'template set (tx_templavoilaplus_map is empty).',
+                    $pageRecord['uid'],
+                    $pageRecord['uid'] === $originalUid ? '' : ' (as page ' . $originalUid . ' defined this as content_from_pid)',
+                    implode(',', $rootLine)
+                ),
+                1651146497916
             );
         }
 

@@ -49,7 +49,7 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'])) {
+            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'])) {
                 $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
             }
         } else {

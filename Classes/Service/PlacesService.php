@@ -16,9 +16,11 @@ namespace Tvp\TemplaVoilaPlus\Service;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
+use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
@@ -47,13 +49,13 @@ class PlacesService implements SingletonInterface
     public function getPlace(string $placeIdentifier, string $configurationHandlerIdentifier): Place
     {
         if (!isset($this->availablePlaces[$placeIdentifier])) {
-            throw new \Exception('The Place with identifier "' . $placeIdentifier . '" is not available.');
+            throw new MissingPlacesException('The Place with identifier "' . $placeIdentifier . '" is not available.');
         }
 
         /** @var \Tvp\TemplaVoilaPlus\Domain\Model\Place */
         $place = $this->availablePlaces[$placeIdentifier];
         if ($place->getConfigurationHandlerIdentifier() !== $configurationHandlerIdentifier) {
-            throw new \Exception('The Place with identifier "' . $placeIdentifier . '" do not have the requested configuration handler "' . $configurationHandlerIdentifier . '"');
+            throw new InvalidIdentifierException('The Place with identifier "' . $placeIdentifier . '" do not have the requested configuration handler "' . $configurationHandlerIdentifier . '"');
         }
 
         return $place;
@@ -67,7 +69,7 @@ class PlacesService implements SingletonInterface
     public function registerPlace(Place $place): void
     {
         if (isset($this->availablePlaces[$place->getIdentifier()])) {
-            throw new \Exception('A place with identifier "' . $place->getIdentifier() . '" is already registered.');
+            throw new InvalidIdentifierException('A place with identifier "' . $place->getIdentifier() . '" is already registered.');
         }
 
         $this->availablePlaces[$place->getIdentifier()] = $place;
