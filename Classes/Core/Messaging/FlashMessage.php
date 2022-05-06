@@ -28,11 +28,11 @@ class FlashMessage extends CoreFlashMessage
 {
     /**
      * @var array Array of buttons to show in a button group under the flash message with subarray of
-     * [
-     *  'url' => (string)
-     *  'label' => (string)
-     *  'icon' => (string)
-     * ]
+     *            [
+     *            'url' => (string)
+     *            'label' => (string)
+     *            'icon' => (string)
+     *            ]
      */
     protected $buttons = [];
 

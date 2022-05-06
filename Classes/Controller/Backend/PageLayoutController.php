@@ -31,7 +31,7 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
-USE Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
+use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class PageLayoutController extends ActionController
@@ -280,7 +280,6 @@ class PageLayoutController extends ActionController
         $pages = $pageRepository->getPagesUsingContentFrom($this->pageInfo['uid']);
 
         if (count($pages)) {
-
             $titles = [];
             $buttons = [];
             foreach ($pages as $contentPage) {
@@ -288,7 +287,7 @@ class PageLayoutController extends ActionController
                 . ' [' . $contentPage['uid'] . ']';
                 $titles[] = $title;
                 $buttons[] = [
-                    'url' => $linkToPage = GeneralUtility::linkThisScript(['id' =>$contentPage['uid']]),
+                    'url' => $linkToPage = GeneralUtility::linkThisScript(['id' => $contentPage['uid']]),
                     'label' => $title,
                     'icon' => 'apps-pagetree-page-shortcut',
                 ];
