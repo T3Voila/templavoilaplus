@@ -6,7 +6,7 @@
                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarRightButtons" arguments="{configuration: configuration, node: node}" />
             </div>
             <div class="t3-page-ce-header-label">
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: node}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: node, is11orNewer: is11orNewer}" />
             </div>
         </div>
 
@@ -24,7 +24,7 @@
                 warning_containerSeparate => modTSconfig['properties']['disableContainerElementLocalizationWarning']
             </f:comment>
             <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{configuration: configuration, node: node}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/ChildNodes" arguments="{configuration: configuration, node: node, is11orNewer: is11orNewer}" />
             </f:if>
 
             <div class="tvp-edit-record">
@@ -42,7 +42,7 @@
                                 <f:if condition="{node.localization.{language.uid}}">
                                     <td class="tpm-language-info">
                                         <div class="t3-page-ce-header-icons">
-                                            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: '{node.localization.{language.uid}}'}" />
+                                            <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{configuration: configuration, node: '{node.localization.{language.uid}}', is11orNewer: is11orNewer}" />
                                             <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{configuration: configuration, node: '{node.localization.{language.uid}}'}" />
                                         </div>
                                     </td>

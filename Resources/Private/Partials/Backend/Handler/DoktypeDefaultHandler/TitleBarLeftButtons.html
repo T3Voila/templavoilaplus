@@ -4,9 +4,15 @@
     </span>
     <span class="tpm-buttonsLeft">
         <a href="#" class="t3js-contextmenutrigger" data-table="{node.raw.table}" data-uid="{node.raw.entity.uid}" data-context="1">
-            <span data-toggle="tooltip" data-title="{node.rendering.hintTitle}" data-html="true" data-placement="right" data-original-title="" title="">
-                <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
-            </span>
+            <f:if condition="{is11orNewer}"><f:then>
+                <span data-bs-toggle="tooltip" data-bs-title="{node.rendering.hintTitle}" data-bs-html="true" data-bs-placement="right" data-bs-original-title="" title="">
+                    <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
+                </span>
+            </f:then><f:else>
+                <span data-toggle="tooltip" data-title="{node.rendering.hintTitle}" data-html="true" data-placement="right">
+                    <core:iconForRecord table="{node.raw.table}" row="{node.raw.entity}" />
+                </span>
+            </f:else></f:if>
         </a>
     </span>
     <div class="nobr sortable_handle">
