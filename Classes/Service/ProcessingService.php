@@ -110,6 +110,7 @@ class ProcessingService
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
+                'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
                 'partial' => 'Backend/Handler/DoktypeDefaultHandler/' . ($table === 'pages' ? 'Page' : 'Content') . 'Element',
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']],

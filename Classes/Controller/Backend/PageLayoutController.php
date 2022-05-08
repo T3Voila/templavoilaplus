@@ -214,6 +214,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageId', $this->pageId);
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
+        $this->view->assign('pageDescription', $activePage[$GLOBALS['TCA']['pages']['ctrl']['descriptionColumn']] ?? '');
         $this->view->assign('pageDoktype', $activePage['doktype']);
         $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 

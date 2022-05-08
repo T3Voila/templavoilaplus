@@ -74,6 +74,9 @@
 <f:section name="Header">
 
     <h1 id="tvpPageTitle" data-identifier="tvpPageTitle">{pageTitle}</h1>
+    <f:if condition="{pageDescription}">
+        <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
+    </f:if>
 
 </f:section>
 

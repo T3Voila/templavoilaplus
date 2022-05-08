@@ -17,6 +17,9 @@
             <f:if condition="{node.rendering.countUsedOnPage} > 1">
                 <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{configuration.lllFile}:infoElementUsedMultipleTimes" arguments="{0: node.rendering.countUsedOnPage}" /></em></div>
             </f:if>
+            <f:if condition="{node.rendering.description}">
+                <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:format.nl2br>{node.rendering.description}</f:format.nl2br></em></div>
+            </f:if>
             <f:comment>
                 infoElementFromOtherPage => modTSconfig['properties']['disableReferencedElementNotification']
                 warning_elementusedmorethanonce => modTSconfig['properties']['disableElementMoreThanOnceWarning']
