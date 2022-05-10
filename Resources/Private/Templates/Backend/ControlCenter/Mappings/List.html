@@ -48,7 +48,13 @@
                                                     <table class="table table-striped table-hover">
                                                         <f:for each="{mappingPlace.configurations}" as="mappingConfiguration">
                                                             <tr>
-                                                                <td>{mappingConfiguration.configuration.name}<br/>{mappingConfiguration.configuration.identifier}</td>
+                                                                <td>
+                                                                    {mappingConfiguration.configuration.name}
+                                                                    <f:for each="{mappingConfiguration.configuration.childs}" as="child">
+                                                                        <br/><core:icon identifier="apps-filetree-folder-opened" /> {child.name}
+                                                                    </f:for>
+                                                                    <br/>{mappingConfiguration.configuration.identifier}
+                                                                </td>
                                                                 <td>
                                                                     Created: <f:format.date>{mappingConfiguration.store.file.CTime}</f:format.date><br/>
                                                                     Modified: <f:format.date>{mappingConfiguration.store.file.MTime}</f:format.date>

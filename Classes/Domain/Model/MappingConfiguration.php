@@ -43,62 +43,82 @@ class MappingConfiguration extends AbstractConfiguration
     protected $mappingToTemplate = [];
 
     /**
-     * Retrieve the DS configuration identifier
-     *
-     * @return string
+     * @var array
      */
-    public function getCombinedDataStructureIdentifier()
+    protected $childs = [];
+
+    /**
+     * Retrieve the DS configuration identifier
+     */
+    public function getCombinedDataStructureIdentifier(): string
     {
         return $this->combinedDataStructureIdentifier;
     }
 
-    public function setCombinedDataStructureIdentifier($combinedDataStructureIdentifier)
+    public function setCombinedDataStructureIdentifier($combinedDataStructureIdentifier): void
     {
         $this->combinedDataStructureIdentifier = $combinedDataStructureIdentifier;
     }
 
     /**
      * Retrieve the templateConfiguration identifier
-     *
-     * @return string
      */
-    public function getCombinedTemplateConfigurationIdentifier()
+    public function getCombinedTemplateConfigurationIdentifier(): string
     {
         return $this->combinedTemplateConfigurationIdentifier;
     }
 
-    public function setCombinedTemplateConfigurationIdentifier($combinedTemplateConfigurationIdentifier)
+    public function setCombinedTemplateConfigurationIdentifier($combinedTemplateConfigurationIdentifier): void
     {
         $this->combinedTemplateConfigurationIdentifier = $combinedTemplateConfigurationIdentifier;
     }
 
     /**
      * Retrieve the backendLayoutConfiguration identifier
-     *
-     * @return string
      */
-    public function getCombinedBackendLayoutConfigurationIdentifier()
+    public function getCombinedBackendLayoutConfigurationIdentifier(): string
     {
         return $this->combinedBackendLayoutConfigurationIdentifier;
     }
 
-    public function setCombinedBackendLayoutConfigurationIdentifier($combinedBackendLayoutConfigurationIdentifier)
+    public function setCombinedBackendLayoutConfigurationIdentifier($combinedBackendLayoutConfigurationIdentifier): void
     {
         $this->combinedBackendLayoutConfigurationIdentifier = $combinedBackendLayoutConfigurationIdentifier;
     }
 
     /**
      * Retrieve the mapping from ds/row to templateConfiguration
-     *
-     * @return string
      */
-    public function getMappingToTemplate()
+    public function getMappingToTemplate(): array
     {
         return $this->mappingToTemplate;
     }
 
-    public function setMappingToTemplate(array $mappingToTemplate)
+    public function setMappingToTemplate(array $mappingToTemplate): void
     {
         $this->mappingToTemplate = $mappingToTemplate;
+    }
+
+    /**
+     * Retrieve all child configurations
+     */
+    public function getChilds(): array
+    {
+        return $this->childs;
+    }
+
+    /**
+     * Retrieve a child configuration
+     */
+    public function getChild(string $childName): ?MappingConfiguration
+    {
+        return $this->childs[$childName] ?? null;
+    }
+    /**
+     * Adds or overwrites a child configuration
+     */
+    public function addChild(string $childName, MappingConfiguration $configuration): void
+    {
+        $this->childs[$childName] = $configuration;
     }
 }
