@@ -7,10 +7,14 @@ namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Exception\ContentElementWithoutMapException;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
@@ -30,6 +34,16 @@ class FrontendController extends AbstractPlugin
      * @var string
      */
     public $extKey = 'templavoilaplus';
+
+    /**
+     * @var Logger
+     */
+    public $logger;
+
+    public function __construct()
+    {
+        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
+    }
 
     /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
@@ -98,13 +112,27 @@ class FrontendController extends AbstractPlugin
      * @param array $row Current data record, either a tt_content element or page record.
      * @param string $table Table name, either "pages" or "tt_content".
      *
+     * @return string HTML output.
      * @throws \RuntimeException|\Exception
      *
-     * @return string HTML output.
      */
     public function renderElement($row, $table)
     {
         try {
+            // pages where checked for empty map already, but not tt_content
+            if (!$row['tx_templavoilaplus_map'] && $table == 'tt_content') {
+                throw new ContentElementWithoutMapException(
+                    sprintf(
+                        'Tried to render an element which has no TemplaVoilà! Plus ' .
+                        'template set (tx_templavoilaplus_map is empty):' .
+                        ' %s:%s (%s)',
+                        $table,
+                        $row['uid'],
+                        "'" . $row['header'] . "'"
+                    ),
+                    1652213570746
+                );
+            }
             $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
             // getDS from Mapping
             $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
@@ -141,10 +169,37 @@ class FrontendController extends AbstractPlugin
             // give TemplateData to renderer and return result
             return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
         } catch (\Exception $e) {
-            // Do not break FE rendering
-            // @TODO Logging
+            // only log if $table is tt_content and exception is for tt_content, because elso it will be logged twice
+            if ($e instanceof ContentElementWithoutMapException && $table == 'tt_content') {
+                $this->logger->warning(
+                    'Tried to render element {table}:{uid} on page {pid}, but something went wrong: #{exceptionCode}: {exceptionMessage}.',
+                    [
+                        'table' => $table,
+                        'uid' => $row['uid'],
+                        'pid' => $GLOBALS['TSFE']->id,
+                        'exceptionCode' => $e->getCode(),
+                        'exceptionMessage' => $e->getMessage()
+                    ]
+                );
+            }
+            if ($this->checkFeDebugging()) {
+                // if FE has debugging enabled throw the exception
+                throw $e;
+            }
+            // if FE has debugging disabled return nothing for the element to not break output.
             return '';
         }
+    }
+
+    public function checkFeDebugging(): bool
+    {
+        if (
+            (isset($GLOBALS['TYPO3_CONF_VARS']['FE']['debug']) && $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'])
+            || (isset($GLOBALS['TSFE']->tmpl->setup['config.']['debug']) && $GLOBALS['TSFE']->tmpl->setup['config.']['debug'])
+        ) {
+            return true;
+        }
+        return false;
     }
 
     public function getFlexformData(DataStructure $dataStructure, array $flexformData)
