@@ -107,14 +107,8 @@ class FrontendController extends AbstractPlugin
         try {
             $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
 
-            $childsSelection = $this->getChildsSelection($conf);
-            $mappingConfiguration = ApiHelperUtility::getOverloadedMappingConfiguration($mappingConfiguration, $childsSelection);
-
-            // getDS from Mapping
+            // First getDS from mapping configuration, there is no child overwrite here
             $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
-
-            // getTemplateConfiguration from MappingConfiguration
-            $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
 
             // getDSdata from flexform field with DS
             $flexformData = [];
@@ -126,11 +120,24 @@ class FrontendController extends AbstractPlugin
             }
             $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
+            /** @TODO
+             * $flexformValues vs. $flexformData? All followup functions use the $flexformData wording
+             * Also the function getFlexformData sounds like it would return data not value.
+             * Needs to be clarified and renamed/corrected also the getDSdata comment.
+             */
+
+            // Second Look for child selection and overload the base mappingConfiguration
+            $childsSelection = $this->getChildsSelection($conf, $mappingConfiguration, $flexformValues, $table, $row);
+            $mappingConfiguration = ApiHelperUtility::getOverloadedMappingConfiguration($mappingConfiguration, $childsSelection);
+
+            // getTemplateConfiguration from MappingConfiguration
+            $templateConfiguration = ApiHelperUtility::getTemplateConfiguration($mappingConfiguration->getCombinedTemplateConfigurationIdentifier());
+
             // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
             /** @TODO Do we need flexibility here? */
             /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
-            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $mappingConfiguration);
-            $processedValues = $mappingHandler->process($flexformValues, $table, $row);
+            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class);
+            $processedValues = $mappingHandler->process($mappingConfiguration, $flexformValues, $table, $row);
 
             // get renderer from templateConfiguration
             /** @var ConfigurationService */
@@ -197,7 +204,7 @@ class FrontendController extends AbstractPlugin
         return $processedDataValues;
     }
 
-    private function getChildsSelection(array $tsConf): array
+    private function getChildsSelection(array $tsConf, MappingConfiguration $mappingConfiguration, array $flexformData, string $table, array $row): array
     {
         $childSelection = [];
 
@@ -215,6 +222,20 @@ class FrontendController extends AbstractPlugin
         if (GeneralUtility::_GP('print')) {
             $childSelection[] = 'print';
         }
+
+        $childSelectors = $mappingConfiguration->getChildSelectors();
+        if (!empty($childSelectors)) {
+            /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
+            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class);
+
+            foreach ($childSelectors as $childSelectorConfig) {
+                $childSelectionValue = $mappingHandler->valueProcessing($childSelectorConfig, $flexformData, $table, $row);
+                if (!empty($childSelectionValue)) {
+                    $childSelection[] = $childSelectionValue;
+                }
+            }
+        }
+
 
         return $childSelection;
     }

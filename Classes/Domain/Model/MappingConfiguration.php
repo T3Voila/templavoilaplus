@@ -22,30 +22,23 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  */
 class MappingConfiguration extends AbstractConfiguration
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $combinedDataStructureIdentifier = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $combinedTemplateConfigurationIdentifier = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $combinedBackendLayoutConfigurationIdentifier = '';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $mappingToTemplate = [];
 
-    /**
-     * @var array
-     */
-    protected $childs = [];
+    /** @var array [string => MappingConfiguration] */
+    protected $childMappingConfigurations = [];
+
+    /** @var array [string => array] */
+    protected $childSelectors = [];
 
     /**
      * Retrieve the DS configuration identifier
@@ -100,25 +93,48 @@ class MappingConfiguration extends AbstractConfiguration
     }
 
     /**
-     * Retrieve all child configurations
+     * Retrieve all child mapping configurations
      */
-    public function getChilds(): array
+    public function getChildMappingConfigurations(): array
     {
-        return $this->childs;
+        return $this->childMappingConfigurations;
     }
 
     /**
-     * Retrieve a child configuration
+     * Retrieve a child mapping configuration
      */
-    public function getChild(string $childName): ?MappingConfiguration
+    public function getChildMappingConfiguration(string $childName): ?MappingConfiguration
     {
-        return $this->childs[$childName] ?? null;
+        return $this->childMappingConfigurations[$childName] ?? null;
     }
     /**
-     * Adds or overwrites a child configuration
+     * Adds or overwrites a child mapping configuration
      */
-    public function addChild(string $childName, MappingConfiguration $configuration): void
+    public function addChildMappingConfiguration(string $childName, MappingConfiguration $configuration): void
     {
-        $this->childs[$childName] = $configuration;
+        $this->childMappingConfigurations[$childName] = $configuration;
+    }
+
+    /**
+     * Retrieve all child mapping configurations
+     */
+    public function getChildSelectors(): array
+    {
+        return $this->childSelectors;
+    }
+
+    /**
+     * Retrieve a child mapping configuration
+     */
+    public function getChildSelector(string $childSelectorName): ?array
+    {
+        return $this->childSelectors[$childSelectorName] ?? null;
+    }
+    /**
+     * Adds or overwrites a child mapping configuration
+     */
+    public function addChildSelector(string $childSelectorName, array $configuration): void
+    {
+        $this->childSelectors[$childSelectorName] = $configuration;
     }
 }

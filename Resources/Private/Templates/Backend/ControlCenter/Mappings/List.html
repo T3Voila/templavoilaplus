@@ -50,7 +50,7 @@
                                                             <tr>
                                                                 <td>
                                                                     {mappingConfiguration.configuration.name}
-                                                                    <f:for each="{mappingConfiguration.configuration.childs}" as="child">
+                                                                    <f:for each="{mappingConfiguration.configuration.childMappingConfigurations}" as="child">
                                                                         <br/><core:icon identifier="apps-filetree-folder-opened" /> {child.name}
                                                                     </f:for>
                                                                     <br/>{mappingConfiguration.configuration.identifier}

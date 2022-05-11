@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Mapping;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -30,17 +31,11 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class DefaultMappingHandler
 {
-    protected $mappingConfiguration;
 
-    public function __construct($mappingConfiguration)
-    {
-        $this->mappingConfiguration = $mappingConfiguration;
-    }
-
-    public function process($flexformData, $table, $row): array
+    public function process(MappingConfiguration $mappingConfiguration, array $flexformData, string $table, array $row): array
     {
         $processedMapping = [];
-        $containerInstructions = $this->mappingConfiguration->getMappingToTemplate();
+        $containerInstructions = $mappingConfiguration->getMappingToTemplate();
 
         /** @TODO $table, $row are more global vars, they are given from function to function */
 
@@ -49,7 +44,7 @@ class DefaultMappingHandler
         return $processedMapping;
     }
 
-    protected function valueProcessing(array $instructions, array $flexformData, string $table, array $row)
+    public function valueProcessing(array $instructions, array $flexformData, string $table, array $row)
     {
         $processedValue = '';
 

@@ -39,7 +39,7 @@ class ApiHelperUtility
         $resultingMappingConfiguration = clone $mappingConfiguration;
 
         foreach ($childsSelection as $selectedChild) {
-            $childConfiguration = $mappingConfiguration->getChild($selectedChild);
+            $childConfiguration = $mappingConfiguration->getChildMappingConfiguration($selectedChild);
             if ($childConfiguration !== null) {
                 self::mergeMappingConfiguration($resultingMappingConfiguration, $childConfiguration);
             }

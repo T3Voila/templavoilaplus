@@ -50,10 +50,14 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
         if (isset($configuration['tvp-mapping']['childTemplate']) && is_array($configuration['tvp-mapping']['childTemplate'])) {
             foreach($configuration['tvp-mapping']['childTemplate'] as $childName => $childConfiguration) {
                 $childMappingConfiguration = $this->createConfigurationFromConfigurationArray(['tvp-mapping' => $childConfiguration], '', $childName, true);
-                $mappingConfiguration->addChild($childName, $childMappingConfiguration);
+                $mappingConfiguration->addChildMappingConfiguration($childName, $childMappingConfiguration);
             }
         }
-
+        if (isset($configuration['tvp-mapping']['childSelector']) && is_array($configuration['tvp-mapping']['childSelector'])) {
+            foreach($configuration['tvp-mapping']['childSelector'] as $childSelectorName => $childSelectorConfiguration) {
+                $mappingConfiguration->addChildSelector($childName, $childSelectorConfiguration);
+            }
+        }
         return $mappingConfiguration;
     }
 }
