@@ -64,6 +64,7 @@ class DefaultMappingHandler
                 }
                 break;
             case 'flexform':
+                $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] = $instructions['dataPath'];
                 if (isset($flexformData[$instructions['dataPath']])) {
                     $processedValue = $flexformData[$instructions['dataPath']] ?? '';
                 }
@@ -94,7 +95,7 @@ class DefaultMappingHandler
             default:
                 // No valueProcessing given, so no value manipulation
         }
-
+        unset($GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field']);
         return $processedValue;
     }
 
