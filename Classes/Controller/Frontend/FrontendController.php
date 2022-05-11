@@ -83,12 +83,12 @@ class FrontendController extends AbstractPlugin
             );
         }
 
-        return $this->renderElement($pageRecord, 'pages');
+        return $this->renderElement($pageRecord, 'pages', $conf);
     }
 
     public function renderContent($content, $conf)
     {
-        return $this->renderElement($this->cObj->data, 'tt_content');
+        return $this->renderElement($this->cObj->data, 'tt_content', $conf);
     }
 
     /**
@@ -102,10 +102,14 @@ class FrontendController extends AbstractPlugin
      *
      * @return string HTML output.
      */
-    public function renderElement($row, $table)
+    public function renderElement($row, $table, array $conf)
     {
         try {
             $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
+
+            $childsSelection = $this->getChildsSelection($conf);
+            $mappingConfiguration = ApiHelperUtility::getOverloadedMappingConfiguration($mappingConfiguration, $childsSelection);
+
             // getDS from Mapping
             $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
@@ -191,5 +195,27 @@ class FrontendController extends AbstractPlugin
         }
 
         return $processedDataValues;
+    }
+
+    private function getChildsSelection(array $tsConf): array
+    {
+        $childSelection = [];
+
+        if ($tsConf['childTemplate']) {
+            $renderType = $tsConf['childTemplate'];
+            if (substr($renderType, 0, 9) === 'USERFUNC:') {
+                $conf = [
+                    'conf' => is_array($tsConf['childTemplate.']) ? $tsConf['childTemplate.'] : [],
+                    'toRecord' => $row,
+                ];
+                $renderType = GeneralUtility::callUserFunction(substr($renderType, 9), $conf, $this);
+            }
+            $childSelection[] = $renderType;
+        }
+        if (GeneralUtility::_GP('print')) {
+            $childSelection[] = 'print';
+        }
+
+        return $childSelection;
     }
 }

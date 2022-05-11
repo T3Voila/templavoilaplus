@@ -34,6 +34,37 @@ class ApiHelperUtility
         );
     }
 
+    public static function getOverloadedMappingConfiguration(MappingConfiguration $mappingConfiguration, array $childsSelection): MappingConfiguration
+    {
+        $resultingMappingConfiguration = clone $mappingConfiguration;
+
+        foreach ($childsSelection as $selectedChild) {
+            $childConfiguration = $mappingConfiguration->getChild($selectedChild);
+            if ($childConfiguration !== null) {
+                self::mergeMappingConfiguration($resultingMappingConfiguration, $childConfiguration);
+            }
+        }
+
+        return $resultingMappingConfiguration;
+    }
+
+    public static function mergeMappingConfiguration(MappingConfiguration $mappingConfiguration, MappingConfiguration $mappingConfigurationOverwrite): void
+    {
+        // Overwrite combinedTemplateConfigurationIdentifier if set
+        $newCombinedTemplateIdentifier = $mappingConfigurationOverwrite->getCombinedTemplateConfigurationIdentifier();
+        if ($newCombinedTemplateIdentifier !== '') {
+            $mappingConfiguration->setCombinedTemplateConfigurationIdentifier($newCombinedTemplateIdentifier);
+        }
+
+        // Merge fieldConfiguration
+        $mappingConfiguration->setMappingToTemplate(
+            array_merge_recursive(
+                $mappingConfiguration->getMappingToTemplate(),
+                $mappingConfigurationOverwrite->getMappingToTemplate()
+            )
+        );
+    }
+
     public static function getTemplateConfiguration($combinedTemplateConfigurationIdentifier): TemplateConfiguration
     {
         return self::getConfiguration(
