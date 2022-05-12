@@ -1,7 +1,6 @@
----
 # This GitHub Actions workflow uses the same development tools that are also installed locally
 # via Composer or PHIVE and calls them using the Composer scripts.
-name: CI with Composer scripts
+name: Tests
 on:
   push:
     branches:
@@ -95,169 +94,28 @@ jobs:
         uses: actions/checkout@v3
       - name: "Run the xliff lint"
         uses: TYPO3-Continuous-Integration/TYPO3-CI-Xliff-Lint@v1
-  unit-tests:
-    name: "Unit tests"
+  tests:
+    name: "Tests"
     runs-on: ubuntu-20.04
     needs: php-lint
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-      - name: "Install PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "${{ matrix.php-version }}"
-          coverage: none
-          tools: composer:v2.3
-      - name: "Show Composer version"
-        run: composer --version
-      - name: "Cache dependencies installed with composer"
-        uses: actions/cache@v3
-        with:
-          key: "php${{ matrix.php-version }}-typo3${{ matrix.typo3-version }}-${{ matrix.composer-dependencies }}-composer-${{ hashFiles('**/composer.json') }}"
-          path: ~/.cache/composer
-          restore-keys: "php${{ matrix.php-version }}-typo3${{ matrix.typo3-version }}-${{ matrix.composer-dependencies }}-composer-\n"
-      - name: "Install TYPO3 Core"
-        env:
-          TYPO3: "${{ matrix.typo3-version }}"
-        run: |
-          composer require --no-ansi --no-interaction --no-progress --no-install typo3/minimal:"$TYPO3"
-          composer show
-      - name: "Install lowest dependencies with composer"
-        if: "matrix.composer-dependencies == 'lowest'"
-        run: |
-          composer update --no-ansi --no-interaction --no-progress --with-dependencies --prefer-lowest
-          composer show
-      - name: "Install highest dependencies with composer"
-        if: "matrix.composer-dependencies == 'highest'"
-        run: |
-          composer update --no-ansi --no-interaction --no-progress --with-dependencies
-          composer show
-      - name: "Run unit tests"
-        run: "composer ci:tests:unit"
     strategy:
-      fail-fast: false
       matrix:
-        include:
-          - typo3-version: ^10.4
-            php-version: 7.2
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.2
-            composer-dependencies: lowest
-          - typo3-version: ^10.4
-            php-version: 7.3
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.3
-            composer-dependencies: lowest
-          - typo3-version: ^10.4
-            php-version: 7.4
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.4
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 7.4
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 7.4
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: lowest
-  functional-tests:
-    name: "Functional tests"
-    runs-on: ubuntu-18.04
-    needs: php-lint
+        php: [ '7.4' ]
     steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-      - name: "Install PHP"
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: "${{ matrix.php-version }}"
-          tools: composer:v2.3
-          extensions: mysqli
-          coverage: none
-      - name: "Show Composer version"
-        run: composer --version
-      - name: "Cache dependencies installed with composer"
-        uses: actions/cache@v3
-        with:
-          key: "php${{ matrix.php-version }}-typo3${{ matrix.typo3-version }}-${{ matrix.composer-dependencies }}-composer-${{ hashFiles('**/composer.json') }}"
-          path: ~/.cache/composer
-          restore-keys: "php${{ matrix.php-version }}-typo3${{ matrix.typo3-version }}-${{ matrix.composer-dependencies }}-composer-\n"
-      - name: "Install TYPO3 Core"
-        env:
-          TYPO3: "${{ matrix.typo3-version }}"
-        run: |
-          composer require --no-ansi --no-interaction --no-progress --no-install typo3/minimal:"$TYPO3"
-          composer show
-      - name: "Install lowest dependencies with composer"
-        if: "matrix.composer-dependencies == 'lowest'"
-        run: |
-          composer update --no-ansi --no-interaction --no-progress --with-dependencies --prefer-lowest
-          composer show
-      - name: "Install highest dependencies with composer"
-        if: "matrix.composer-dependencies == 'highest'"
-        run: |
-          composer update --no-ansi --no-interaction --no-progress --with-dependencies
-          composer show
-      - name: "Start MySQL"
-        run: "sudo /etc/init.d/mysql start"
-      - name: "Run functional tests"
-        run: |
-          export typo3DatabaseName="typo3";
-          export typo3DatabaseHost="127.0.0.1";
-          export typo3DatabaseUsername="root";
-          export typo3DatabasePassword="root";
-          composer ci:tests:functional
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - typo3-version: ^10.4
-            php-version: 7.2
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.2
-            composer-dependencies: lowest
-          - typo3-version: ^10.4
-            php-version: 7.3
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.3
-            composer-dependencies: lowest
-          - typo3-version: ^10.4
-            php-version: 7.4
-            composer-dependencies: highest
-          - typo3-version: ^10.4
-            php-version: 7.4
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 7.4
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 7.4
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.0
-            composer-dependencies: lowest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: highest
-          - typo3-version: ^11.5
-            php-version: 8.1
-            composer-dependencies: lowest
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install testing system
+        run: tools/runTests.sh -p ${{ matrix.php }} -s composerUpdate
+
+      - name: Composer validate
+        run: tools/runTests.sh -p ${{ matrix.php }} -s composerValidate
+
+      - name: Unit Tests
+        run: tools/runTests.sh -p ${{ matrix.php }} -s unit
+
+      - name: Functional Tests
+        run: tools/runTests.sh -p ${{ matrix.php }} -s functional
+
+      - name: Acceptance Tests
+        run: tools/runTests.sh -p ${{ matrix.php }} -s acceptance
