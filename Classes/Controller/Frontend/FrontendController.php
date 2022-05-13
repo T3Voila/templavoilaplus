@@ -42,6 +42,7 @@ class FrontendController extends AbstractPlugin
 
     public function __construct()
     {
+        AbstractPlugin::__construct();
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
     }
 
