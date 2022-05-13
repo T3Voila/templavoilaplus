@@ -269,8 +269,8 @@ class ProcessingService
     protected function getParentPointerAsString(array $parentPointer): string
     {
         if (isset($parentPointer['sheet'])) {
-            $flexformPointerString =
-                $parentPointer['table'] . ':' .
+            $flexformPointerString
+                = $parentPointer['table'] . ':' .
                 $parentPointer['uid'] . ':' .
                 $parentPointer['sheet'] . ':' .
                 $parentPointer['sLang'] . ':' .

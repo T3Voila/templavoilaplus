@@ -52,6 +52,7 @@ class FrontendController extends AbstractPlugin
      * @param array $conf TypoScript array for the plugin.
      *
      * @return string HTML content for the Flexible Content elements.
+     * @throws \InvalidArgumentException
      */
     public function renderPage($content, $conf)
     {
