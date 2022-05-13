@@ -114,7 +114,8 @@ class FrontendController extends AbstractPlugin
      * @param string $table Table name, either "pages" or "tt_content".
      *
      * @return string HTML output.
-     * @throws \RuntimeException|\Exception
+     * @throws ContentElementWithoutMapException
+     * @throws \Exception
      *
      */
     public function renderElement($row, $table, array $conf)
