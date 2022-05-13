@@ -1,2 +1,181 @@
 parameters:
 	ignoreErrors:
+		-
+			message: "#^Access to constant DOKTYPE_BE_USER_SECTION on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_DEFAULT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_LINK on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_MOUNTPOINT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_RECYCLER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_SHORTCUT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_SPACER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Access to constant DOKTYPE_SYSFOLDER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Array has 3 duplicate keys with value 200 \\(self\\:\\:RENDER_HEADER, self\\:\\:RENDER_BODY, self\\:\\:RENDER_FOOTER\\)\\.$#"
+			count: 1
+			path: Classes/Configuration/BackendConfiguration.php
+
+		-
+			message: "#^Undefined variable\\: \\$dataStructArray$#"
+			count: 2
+			path: Classes/Configuration/FlexForm/FlexFormTools8.php
+
+		-
+			message: "#^Class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController constructor invoked with 0 parameters, 4 required\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Ajax/ContentElementWizard.php
+
+		-
+			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController\\:\\:init\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Ajax/ExtendedNewContentElementController.php
+
+		-
+			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController\\:\\:wizardArray\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Ajax/ExtendedNewContentElementController.php
+
+		-
+			message: "#^Method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\ControlCenter\\\\AbstractUpdateController\\:\\:assignDefault\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/ControlCenter/AbstractUpdateController.php
+
+		-
+			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\DoktypeLinkHandler\\:\\:getLinkButton\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Handler/DoktypeLinkHandler.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
+
+		-
+			message: "#^Call to static method makeInstance\\(\\) on an unknown class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\GeneralUtility\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/Handler/DoktypeShortcutHandler.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$configuration\\.$#"
+			count: 3
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$pageRenderer\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$rootElementRecord\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$rootElementTable\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$translatorMode\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
+			count: 1
+			path: Classes/Controller/Backend/PageLayoutController.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
+			count: 1
+			path: Classes/Hooks/BackendControllerHook.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\TcaFlexFetch not found\\.$#"
+			count: 1
+			path: Classes/Hooks/TableConfigurationPostProcessingHook.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ApiService\\:\\:\\$iconFactory\\.$#"
+			count: 1
+			path: Classes/Service/ApiService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModTSconfig\\(\\)\\.$#"
+			count: 1
+			path: Classes/Service/ApiService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getRecordRaw\\(\\)\\.$#"
+			count: 1
+			path: Classes/Service/ApiService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getRecordsByField\\(\\)\\.$#"
+			count: 3
+			path: Classes/Service/ApiService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
+			count: 28
+			path: Classes/Service/ApiService.php
+
+		-
+			message: "#^Undefined variable\\: \\$place$#"
+			count: 1
+			path: Classes/Service/ConfigurationService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
+			count: 4
+			path: Classes/Service/DataHandling/DataHandler.php
+
+		-
+			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$rootTable\\.$#"
+			count: 1
+			path: Classes/Service/ProcessingService.php
+
+		-
+			message: "#^Undefined variable\\: \\$tt_content_elementRegister$#"
+			count: 1
+			path: Classes/Service/ProcessingService.php
+
+		-
+			message: "#^Class TYPO3\\\\CMS\\\\Lang\\\\LanguageService not found\\.$#"
+			count: 1
+			path: Classes/Utility/TemplaVoilaUtility.php

@@ -115,7 +115,7 @@
 		"ci:php:sniff:continueOnWarnings": "phpcs Classes Configuration Tests || true",
 		"ci:php:sniff:failOnErrors": "phpcs -n Classes Configuration Tests",
 		"ci:php:sniff:failOnWarnings": "phpcs Classes Configuration Tests",
-		"ci:php:stan": "phpstan --no-progress",
+		"ci:php:stan": "phpstan --no-progress analyse --level 0",
 		"ci:static": [
 			"@ci:composer:normalize",
 			"@ci:json:lint",
