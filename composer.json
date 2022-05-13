@@ -105,7 +105,12 @@
 			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
-		"ci:php:copypaste": "@php ./tools/phpcpd Classes",
+		"ci:php:copypaste":[
+			"@ci:php:copypaste:baseline",
+			"@ci:php:copypaste:ignored"
+		],
+		"ci:php:copypaste:baseline": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates --exclude Classes/Controller/Backend/ControlCenter/MappingsController.php --exclude Classes/Utility/TemplaVoilaUtility.php Classes",
+		"ci:php:copypaste:ignored": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates Classes || true",
 		"ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff",
 		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
 		"ci:php:sniff": [
