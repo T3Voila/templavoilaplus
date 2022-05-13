@@ -78,7 +78,6 @@ jobs:
       matrix:
         command:
           - "style"
-          - "js"
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
