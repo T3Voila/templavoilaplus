@@ -339,6 +339,12 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    phpsniff)
+        setUpDockerComposeDotEnv
+        docker-compose run phpsniff
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     phpstan)
         setUpDockerComposeDotEnv
         docker-compose run phpstan
