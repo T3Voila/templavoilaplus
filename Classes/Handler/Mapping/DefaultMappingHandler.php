@@ -31,7 +31,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  */
 class DefaultMappingHandler
 {
-
     public function process(MappingConfiguration $mappingConfiguration, array $flexformData, string $table, array $row): array
     {
         $processedMapping = [];
