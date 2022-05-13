@@ -78,7 +78,7 @@ class ProcessingService
         $node['localization'] = $this->getLocalizationForNode($node);
 
         // Get node childs:
-        $node['childNodes']  = $this->getNodeChilds($node, $basePid, $usedElements);
+        $node['childNodes'] = $this->getNodeChilds($node, $basePid, $usedElements);
 
         // Return result:
         // contentElementUsage set to unset var??
@@ -269,15 +269,18 @@ class ProcessingService
     protected function getParentPointerAsString(array $parentPointer): string
     {
         if (isset($parentPointer['sheet'])) {
-            $flexformPointerString
-                = $parentPointer['table'] . ':' .
-                $parentPointer['uid'] . ':' .
-                $parentPointer['sheet'] . ':' .
-                $parentPointer['sLang'] . ':' .
-                $parentPointer['field'] . ':' .
-                $parentPointer['vLang'] . ':' .
-                $parentPointer['position'];
-            if (isset($parentPointer['targetCheckUid'])) { /** @TODO Whats that? */
+            $flexformPointerString = sprintf(
+                '%s:%s:%s:%s:%s:%s:%s',
+                $parentPointer['table'],
+                $parentPointer['uid'],
+                $parentPointer['sheet'],
+                $parentPointer['sLang'],
+                $parentPointer['field'],
+                $parentPointer['vLang'],
+                $parentPointer['position']
+            );
+            if (isset($parentPointer['targetCheckUid'])) {
+                /** @TODO Whats that? */
                 $flexformPointerString .= '/tt_content:' . $parentPointer['targetCheckUid'];
             }
         } else {
