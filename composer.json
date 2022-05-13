@@ -105,7 +105,7 @@
 			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
-		"ci:php:copypaste":[
+		"ci:php:copypaste": [
 			"@ci:php:copypaste:baseline",
 			"@ci:php:copypaste:ignored"
 		],
