@@ -161,11 +161,6 @@
 			"@ci:tests:functional:docker",
 			"@ci:tests:acceptance:docker"
 		],
-		"ci:tests:docker:phpall": [
-			"@ci:tests:docker:php74",
-			"@ci:tests:docker:php80",
-			"@ci:tests:docker:php81"
-		],
 		"ci:tests:docker:php74": [
 			"@ci:tests:unit:docker:php74",
 			"@ci:tests:functional:docker:php74",
@@ -180,6 +175,11 @@
 			"@ci:tests:unit:docker:php81",
 			"@ci:tests:functional:docker:php81",
 			"@ci:tests:acceptance:docker:php81"
+		],
+		"ci:tests:docker:phpall": [
+			"@ci:tests:docker:php74",
+			"@ci:tests:docker:php80",
+			"@ci:tests:docker:php81"
 		],
 		"ci:tests:functional": "@ci:tests:functional:local",
 		"ci:tests:functional:docker": "@ci:tests:functional:docker:php74",
