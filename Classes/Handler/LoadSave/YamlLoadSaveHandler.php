@@ -37,7 +37,7 @@ class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSav
         return $yamlContent;
     }
 
-    public function save()
+    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data)
     {
         throw new \Exception('Not Yet Implemented');
     }

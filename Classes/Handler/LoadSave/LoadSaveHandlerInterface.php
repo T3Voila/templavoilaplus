@@ -34,7 +34,7 @@ interface LoadSaveHandlerInterface
      */
     public function load(\Symfony\Component\Finder\SplFileInfo $file): array;
 
-    public function save();
+    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data);
 
     public function delete();
 }

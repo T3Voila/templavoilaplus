@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 /**
@@ -33,17 +34,22 @@ class AbstractConfiguration
     protected $place;
 
     /**
+     * @var ConfigurationHandlerInterface
+     */
+    protected $configurationHandler;
+
+    /**
      * @var string
      */
     protected $name = '';
 
     /**
-     * @param \TYPO3\CMS\Core\Resource\File $file
      */
-    public function __construct(Place $place, $identifier)
+    public function __construct($identifier, Place $place, ConfigurationHandlerInterface $configurationHandler)
     {
         $this->identifier = $identifier;
         $this->place = $place;
+        $this->configurationHandler = $configurationHandler;
     }
 
     public function getIdentifier(): string
@@ -54,6 +60,11 @@ class AbstractConfiguration
     public function getPlace(): Place
     {
         return $this->place;
+    }
+
+    public function getConfigurationHandler(): ConfigurationHandlerInterface
+    {
+        return $this->configurationHandler;
     }
 
     public function getName(): string

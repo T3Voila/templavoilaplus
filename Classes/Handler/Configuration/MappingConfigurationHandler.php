@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
 
 class MappingConfigurationHandler extends AbstractConfigurationHandler
@@ -25,7 +26,7 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
 
     public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): MappingConfiguration
     {
-        $mappingConfiguration = new MappingConfiguration($this->place, $identifier);
+        $mappingConfiguration = new MappingConfiguration($identifier, $this->place, $this);
         $mappingConfiguration->setName($possibleName);
 
         if (!isset($configuration['tvp-mapping'])) {
@@ -59,5 +60,10 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
             }
         }
         return $mappingConfiguration;
+    }
+
+    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    {
+        throw new \Exception('Not Yet Implemented');
     }
 }

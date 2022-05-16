@@ -51,5 +51,5 @@ abstract class AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 
     abstract public function load(\Symfony\Component\Finder\SplFileInfo $file): array;
 
-    abstract public function save();
+    abstract public function save(\Symfony\Component\Finder\SplFileInfo $store, $data);
 }

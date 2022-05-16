@@ -128,7 +128,7 @@ class Place
         $this->configurations = $configurations;
     }
 
-    public function getConfiguration(string $configurationIdentifier): object
+    public function getConfiguration(string $configurationIdentifier): AbstractConfiguration
     {
         $this->loadConfiguration();
         if (!isset($this->configurations[$configurationIdentifier])) {
@@ -136,6 +136,17 @@ class Place
         }
 
         return $this->configurations[$configurationIdentifier]['configuration'];
+    }
+
+    public function setConfiguration(string $configurationIdentifier, AbstractConfiguration $configuration): void
+    {
+        if (!isset($this->configurations[$configurationIdentifier])) {
+            throw new ConfigurationException('Configuration with identifer "' . $configurationIdentifier . '" not found');
+        }
+
+        $this->configurations[$configurationIdentifier]['configuration'] = $configuration;
+
+        $configuration->getConfigurationHandler()->saveConfiguration($this->configurations[$configurationIdentifier]['store']['file'], $configuration);
     }
 
     /**

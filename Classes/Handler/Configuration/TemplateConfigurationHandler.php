@@ -17,7 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
 
 class TemplateConfigurationHandler extends AbstractConfigurationHandler
@@ -26,7 +26,7 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
 
     public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): TemplateConfiguration
     {
-        $templateConfiguration = new TemplateConfiguration($this->place, $identifier);
+        $templateConfiguration = new TemplateConfiguration($identifier, $this->place, $this);
         $templateConfiguration->setName($possibleName);
 
         if (!isset($configuration['tvp-template'])) {
@@ -55,5 +55,10 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
         }
 
         return $templateConfiguration;
+    }
+
+    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    {
+        throw new \Exception('Not Yet Implemented');
     }
 }

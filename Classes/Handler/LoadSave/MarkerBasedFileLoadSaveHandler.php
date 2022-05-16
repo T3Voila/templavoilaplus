@@ -38,7 +38,7 @@ class MarkerBasedFileLoadSaveHandler extends AbstractFileLoadSaveHandler impleme
         return $configuration;
     }
 
-    public function save()
+    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data)
     {
         throw new \Exception('Not Yet Implemented');
     }

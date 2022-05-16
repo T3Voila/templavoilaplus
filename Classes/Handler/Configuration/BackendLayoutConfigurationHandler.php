@@ -17,8 +17,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 {
@@ -26,7 +26,7 @@ class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 
     public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): BackendLayoutConfiguration
     {
-        $templateConfiguration = new BackendLayoutConfiguration($this->place, $identifier);
+        $templateConfiguration = new BackendLayoutConfiguration($identifier, $this->place, $this);
         $templateConfiguration->setName($possibleName);
 
         if (!isset($configuration['tvp-beLayout'])) {
@@ -49,5 +49,10 @@ class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
         }
 
         return $templateConfiguration;
+    }
+
+    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    {
+        throw new \Exception('Not Yet Implemented');
     }
 }

@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
 
 class DataStructureConfigurationHandler extends AbstractConfigurationHandler
@@ -25,7 +26,7 @@ class DataStructureConfigurationHandler extends AbstractConfigurationHandler
 
     public function createConfigurationFromConfigurationArray($dataStructureArray, $identifier, $possibleName): DataStructure
     {
-        $dataStructure = new DataStructure($this->place, $identifier);
+        $dataStructure = new DataStructure($identifier, $this->place, $this);
         $dataStructure->setName($possibleName);
         // Read title from XML file and set, if not empty or ROOT
         if (
@@ -39,5 +40,14 @@ class DataStructureConfigurationHandler extends AbstractConfigurationHandler
         $dataStructure->setDataStructureArray($dataStructureArray);
 
         return $dataStructure;
+    }
+
+    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    {
+        if ($configuration instanceof DataStructure) {
+            $this->loadSaveHandler->save($store, $configuration->getDataStructureArray());
+        } else {
+            throw new \Exception('Configuration of wrong type');
+        }
     }
 }

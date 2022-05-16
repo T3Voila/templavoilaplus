@@ -17,14 +17,17 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
 interface ConfigurationHandlerInterface
 {
-    public function setPlace(Place $place);
+    public function setPlace(Place $place): void;
 
-    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler);
+    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler): void;
 
-    public function loadConfigurations();
+    public function loadConfigurations(): void;
+
+    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void;
 }

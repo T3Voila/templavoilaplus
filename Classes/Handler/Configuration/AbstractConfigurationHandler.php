@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 use TYPO3\CMS\Core\Log\Logger;
@@ -35,15 +36,6 @@ abstract class AbstractConfigurationHandler implements ConfigurationHandlerInter
      */
     protected $loadSaveHandler;
 
-    public function setPlace(Place $place): void
-    {
-        $this->place = $place;
-    }
-
-    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler): void
-    {
-        $this->loadSaveHandler = $loadSaveHandler;
-    }
     /**
      * @var Logger
      */
@@ -52,6 +44,16 @@ abstract class AbstractConfigurationHandler implements ConfigurationHandlerInter
     public function __construct()
     {
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
+    }
+
+    public function setPlace(Place $place): void
+    {
+        $this->place = $place;
+    }
+
+    public function setLoadSaveHandler(LoadSaveHandlerInterface $loadSaveHandler): void
+    {
+        $this->loadSaveHandler = $loadSaveHandler;
     }
 
     public function loadConfigurations(): void
@@ -66,13 +68,13 @@ abstract class AbstractConfigurationHandler implements ConfigurationHandlerInter
             $identifier = $file->getRelativePath() . $file->getFilename();
 
             try {
-                $mappingConfiguration = $this->createConfigurationFromConfigurationArray(
+                $abstractConfiguration = $this->createConfigurationFromConfigurationArray(
                     $content,
                     $identifier,
                     pathinfo($file->getFilename(), PATHINFO_FILENAME)
                 );
                 $configurations[$identifier] = [
-                    'configuration' => $mappingConfiguration,
+                    'configuration' => $abstractConfiguration,
                     'store' => ['file' => $file], /** @TODO Better place to save this information? */
                 ];
             } catch (\Exception $e) {
@@ -83,5 +85,7 @@ abstract class AbstractConfigurationHandler implements ConfigurationHandlerInter
         $this->place->setConfigurations($configurations);
     }
 
-    abstract public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName);
+    abstract public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void;
+
+    abstract public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): AbstractConfiguration;
 }
