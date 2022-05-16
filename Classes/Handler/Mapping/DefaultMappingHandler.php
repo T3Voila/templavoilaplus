@@ -52,6 +52,10 @@ class DefaultMappingHandler
             $processedValue = $instructions['value'];
         }
 
+        if (isset($instructions['dataPath'])) {
+            $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] = $instructions['dataPath'];
+        }
+
         switch ($instructions['dataType']) {
             case 'row':
                 if (isset($row[$instructions['dataPath']])) {
@@ -64,7 +68,7 @@ class DefaultMappingHandler
                 }
                 break;
             case 'typoscriptObjectPath':
-                list($name, $conf) = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
+                [$name, $conf] = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
                 $processedValue = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
                 break;
             default:
@@ -89,7 +93,7 @@ class DefaultMappingHandler
             default:
                 // No valueProcessing given, so no value manipulation
         }
-
+        unset($GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field']);
         return $processedValue;
     }
 
