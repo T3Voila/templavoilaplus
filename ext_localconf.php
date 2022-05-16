@@ -30,7 +30,7 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
         ['allowed_classes' => false]
     );
 }
-if (isset($backendConfiguration['enable.']['renderFCEHeader']) && $backendConfiguration['enable.']['renderFCEHeader']) {
+if (isset($backendConfiguration['enable']['renderFCEHeader']) && $backendConfiguration['enable']['renderFCEHeader']) {
     $renderFceHeader = '
     10 < lib.stdheader';
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid_styled_content')) {
@@ -119,5 +119,7 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
 
 if (TYPO3_MODE === 'BE') {
     // Hook to enrich tt_content form flex element with finisher settings and form list drop down
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][\Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
+        \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
+    ] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
 }
