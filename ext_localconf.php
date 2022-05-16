@@ -2,7 +2,6 @@
 
 defined('TYPO3_MODE') or die();
 // Unserializing the configuration so we can use it here
-$_EXTCONF = unserialize($_EXTCONF);
 
 // Register "XCLASS" of FlexFormTools for language parsing
 // Done also in TableConfigurationPostProcessingHook!
@@ -13,7 +12,25 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\Flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
 $renderFceHeader = '';
-if ($_EXTCONF['enable.']['renderFCEHeader']) {
+
+if (version_compare(TYPO3_version, '9.5.0', '>=')) {
+    try {
+        $backendConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+        )->get('templavoilaplus');
+    } catch (
+    \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+    |\TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException $e
+    ) {
+        $backendConfiguration = [];
+    }
+} else {
+    $backendConfiguration = unserialize(
+        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'],
+        ['allowed_classes' => false]
+    );
+}
+if (isset($backendConfiguration['enable.']['renderFCEHeader']) && $backendConfiguration['enable.']['renderFCEHeader']) {
     $renderFceHeader = '
     10 < lib.stdheader';
     if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('fluid_styled_content')) {
@@ -102,7 +119,5 @@ if (version_compare(TYPO3_version, '9.5.0', '>=')) {
 
 if (TYPO3_MODE === 'BE') {
     // Hook to enrich tt_content form flex element with finisher settings and form list drop down
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
-        \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
-    ] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][\Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
 }
