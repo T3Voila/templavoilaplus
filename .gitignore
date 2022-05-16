@@ -22,6 +22,7 @@
 /node_modules/
 /package-lock.json
 /public
+/tools/testing-docker/.env
 /var
 /vendor
 /yarn-error.log

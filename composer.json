@@ -25,20 +25,29 @@
 		"typo3/cms-core": "^8.7.0 || ^9.5.0 || ^10.4.0 || ^11.5.0"
 	},
 	"require-dev": {
+		"codeception/codeception": "^4.1",
+		"codeception/module-asserts": "^2",
+		"codeception/module-cli": "^2",
+		"codeception/module-webdriver": "^2",
 		"ergebnis/composer-normalize": "^2.19.0",
 		"friendsofphp/php-cs-fixer": "^3.4.0",
+		"helhum/typo3-console": "^v6.7.2 || ^v7.1.1",
 		"helmich/typo3-typoscript-lint": "^2.5.2",
 		"jangregor/phpstan-prophecy": "^1.0.0",
+		"jpmschuler/tvplus_test_theme": "*@dev",
 		"php-coveralls/php-coveralls": "^2.5.2",
 		"phpstan/extension-installer": "^1.1.0",
 		"phpstan/phpstan": "^1.6.2",
 		"phpstan/phpstan-phpunit": "^1.1.1",
-		"phpunit/phpunit": "^8.5.26",
+		"phpunit/phpunit": "^9.5.20",
 		"saschaegerer/phpstan-typo3": "^1.1.2",
 		"seld/jsonlint": "^1.9.0",
 		"squizlabs/php_codesniffer": "^3.6.2",
 		"symfony/yaml": "^4.4.29 || ^5.3.6 || ^6.0",
+		"typo3/cms-impexp": "^10.4.28 || ^11.5.10",
+		"typo3/cms-lowlevel": "^10.4.28 || ^11.5.10",
 		"typo3/coding-standards": "^0.5.2",
+		"typo3/minimal": "v10.4.0 || v11.5.0",
 		"typo3/testing-framework": "^6.15.3"
 	},
 	"replace": {
@@ -81,7 +90,8 @@
 	},
 	"scripts": {
 		"post-autoload-dump": [
-			"@link-extension"
+			"@link-extension",
+			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
 		],
 		"ci": [
 			"@ci:static"
@@ -95,11 +105,27 @@
 			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
-		"ci:php:copypaste": "@php ./tools/phpcpd Classes",
+		"ci:php:copypaste": [
+			"@ci:php:copypaste:baseline",
+			"@ci:php:copypaste:ignored"
+		],
+		"ci:php:copypaste:baseline": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates --exclude Classes/Controller/Backend/ControlCenter/MappingsController.php --exclude Classes/Utility/TemplaVoilaUtility.php Classes",
+		"ci:php:copypaste:ignored": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates Classes || true",
 		"ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff",
-		"ci:php:lint": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
-		"ci:php:sniff": "phpcs Classes Configuration Tests",
-		"ci:php:stan": "phpstan --no-progress",
+		"ci:php:lint": "@ci:php:lint:local",
+		"ci:php:lint:docker:php74": "tools/runTests.sh -s lint -p 7.4",
+		"ci:php:lint:docker:php80": "tools/runTests.sh -s lint -p 8.0",
+		"ci:php:lint:docker:php81": "tools/runTests.sh -s lint -p 8.1",
+		"ci:php:lint:local": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+		"ci:php:sniff": [
+			"@ci:php:sniff:failOnErrors",
+			"@ci:php:sniff:continueOnWarnings"
+		],
+		"ci:php:sniff:continueOnWarnings": "phpcs Classes Configuration Tests || true",
+		"ci:php:sniff:docker:php74": "phpcs Classes Configuration Tests",
+		"ci:php:sniff:failOnErrors": "phpcs -n Classes Configuration Tests",
+		"ci:php:sniff:failOnWarnings": "phpcs Classes Configuration Tests",
+		"ci:php:stan": "phpstan --no-progress analyse --level 0",
 		"ci:static": [
 			"@ci:composer:normalize",
 			"@ci:json:lint",
@@ -111,12 +137,26 @@
 			"@ci:ts:lint",
 			"@ci:yaml:lint"
 		],
-		"ci:tests": [
-			"@ci:tests:unit",
-			"@ci:tests:functional"
+		"ci:tests": "@ci:tests:local",
+		"ci:tests:acceptance": "@ci:tests:acceptance:docker",
+		"ci:tests:acceptance:docker": "tools/runTests.sh -s acceptance -p 7.4",
+		"ci:tests:acceptance:local": "echo \"acceptance tests can't be run locally\"",
+		"ci:tests:docker": [
+			"@ci:tests:unit:docker",
+			"@ci:tests:functional:docker",
+			"@ci:tests:acceptance:docker"
 		],
-		"ci:tests:functional": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
-		"ci:tests:unit": ".Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit",
+		"ci:tests:functional": "@ci:tests:functional:local",
+		"ci:tests:functional:docker": "tools/runTests.sh -s functional -p 7.4",
+		"ci:tests:functional:local": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
+		"ci:tests:local": [
+			"@ci:tests:unit:local",
+			"@ci:tests:functional:local",
+			"@ci:tests:acceptance:local"
+		],
+		"ci:tests:unit": "@ci:tests:unit:local",
+		"ci:tests:unit:docker": "tools/runTests.sh -s unit -p 7.4",
+		"ci:tests:unit:local": ".Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit",
 		"ci:ts:lint": "typoscript-lint -c Configuration/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration/TypoScript",
 		"ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.yml' | xargs -r php ./.Build/vendor/bin/yaml-lint",
 		"composer:init": [

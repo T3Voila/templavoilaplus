@@ -2,6 +2,7 @@
 
 module.exports = {
   extends: "stylelint-config-recommended",
+  ignoreFiles: ["Resources/Public/StyleSheet/Tooltipster.css"],
   rules: {
     "at-rule-empty-line-before": [
       "always",
@@ -113,6 +114,8 @@ module.exports = {
     "media-query-list-comma-newline-after": "always-multi-line",
     "media-query-list-comma-space-after": "always-single-line",
     "media-query-list-comma-space-before": "never",
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null,
     "no-empty-source": true,
     "no-eol-whitespace": true,
     "no-extra-semicolons": true,

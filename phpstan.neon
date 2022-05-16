@@ -20,5 +20,8 @@ parameters:
     - Configuration
 
   excludePaths:
-    - Tests/Acceptance/
-    - Classes/Form/
+    - Tests/Acceptance/**/*
+    - Classes/Form/**/*
+    - Configuration/Backend/AjaxRoutes.php
+    - Classes/Updates/Typo3Lts8Update.php
+    - Classes/Controller/Backend/Update/*
