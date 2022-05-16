@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,9 +15,9 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Repository\DataStructureRepository;
-use Tvp\TemplaVoilaPlus\Domain\Repository\TemplateRepository;
-use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
+use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -31,68 +31,39 @@ class DataStructureUpdateHandler
     {
         $count = 0;
 
-        $dsRepo = GeneralUtility::makeInstance(DataStructureRepository::class);
-        foreach ($dsRepo->getAll() as $ds) {
-            if ($this->updateDs($ds, $rootCallbacks, $elementCallbacks)) {
-                $count++;
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $placesService = $configurationService->getPlacesService();
+
+        $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+        );
+        $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
+
+
+        foreach ($dataStructurePlaces as $idenmtifier => $dataStructurePlace) {
+            foreach ($dataStructurePlace->getConfigurations() as $dataStructureConfiguration) {
+                if ($this->updateDs($dataStructureConfiguration, $dataStructurePlace, $rootCallbacks, $elementCallbacks)) {
+                    $count++;
+                }
             }
         }
 
         return $count;
     }
 
-    public function updateAllToLocals(array $rootCallbacks, array $elementCallbacks)
+    public function updateDs(array $dataStructureConfiguration, Place $dataStructurePlace, array $rootCallbacks, array $elementCallbacks): bool
     {
-        $count = 0;
-
-        $tsRepo = GeneralUtility::makeInstance(TemplateRepository::class);
-        foreach ($tsRepo->getAll() as $to) {
-            if ($this->updateTo($to, $rootCallbacks, $elementCallbacks)) {
-                $count++;
-            }
-        }
-
-        return $count;
-    }
-
-    public function updateDs(
-        \Tvp\TemplaVoilaPlus\Domain\Model\AbstractDataStructure $ds,
-        array $rootCallbacks,
-        array $elementCallbacks
-    ) {
-        $data = $ds->getDataStructureArray();
+        /** @var DataStructure */
+        $dataStructure = $dataStructureConfiguration['configuration'];
+        $data = $dataStructure->getDataStructureArray();
 
         $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
-
+        $changed = true;
         if ($changed) {
-            $this->saveChange(
-                $ds->getKey(),
-                'tx_templavoilaplus_datastructure',
-                'dataprot',
-                DataStructureUtility::array2xml($data),
-                $ds->isFilebased()
-            );
-            return true;
-        }
-        return false;
-    }
+            $dataStructure->setDataStructureArray($data);
+            $dataStructurePlace->setConfiguration($dataStructure->getIdentifier(), $dataStructure);
 
-    public function updateTo(
-        \Tvp\TemplaVoilaPlus\Domain\Model\Template $to,
-        array $rootCallbacks,
-        array $elementCallbacks
-    ) {
-        $data = $to->getLocalDataprotArray(true);
-
-        $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
-
-        if ($changed) {
-            $this->saveChange(
-                $to->getKey(),
-                'tx_templavoilaplus_tmplobj',
-                'localprocessing',
-                DataStructureUtility::array2xml($data)
-            );
             return true;
         }
         return false;
@@ -124,22 +95,9 @@ class DataStructureUpdateHandler
         return $changed;
     }
 
-    protected function saveChange($key, $table, $field, $dataProtXML, $filebased = false)
+    protected function saveChange(array $dataStructureConfiguration, array $data)
     {
-        if ($filebased) {
-            $path = PATH_site . $key;
-            GeneralUtility::writeFile($path, $dataProtXML);
-        } else {
-            $tce = GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
-            $tce->stripslashes_values = 0;
 
-            $dataArr = [];
-            $dataArr[$table][$key][$field] = $dataProtXML;
-
-            // process data
-            $tce->start($dataArr, []);
-            $tce->process_datamap();
-        }
     }
 
     protected function fixPerElement(array &$element, array $elementCallbacks)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\Update;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -25,15 +25,15 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class DataStructureV8UpdateController extends StepUpdateController
+class DataStructureV8Controller extends AbstractUpdateController
 {
     protected $errors = [];
 
-    protected function stepStart()
+    protected function stepStartAction()
     {
     }
 
-    protected function stepFinal()
+    protected function stepFinalAction()
     {
         if ($this->extConf['staticDS.']['enable']) {
             // If static DS is in use we need to migrate the file pointer
@@ -50,7 +50,7 @@ class DataStructureV8UpdateController extends StepUpdateController
             ]
         );
 
-        $this->fluid->assignMultiple([
+        $this->view->assignMultiple([
             'countStatic' => $countStatic,
             'count' => $count,
             'errors' => $this->errors,

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.

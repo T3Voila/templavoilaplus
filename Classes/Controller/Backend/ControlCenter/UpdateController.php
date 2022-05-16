@@ -20,7 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class UpdateController extends AbstractUpdateController
+class UpdateController extends Update\AbstractUpdateController
 {
     /**
      * List all available configurations for templates

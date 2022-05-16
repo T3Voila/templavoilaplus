@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -29,7 +29,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @author Alexander Opitz <opitz.alexander@pluspol-interactive.de>
  */
-class TemplaVoilaPlus8UpdateController extends AbstractUpdateController
+class TemplaVoilaPlus8Controller extends AbstractUpdateController
 {
     protected $errors = [];
 
