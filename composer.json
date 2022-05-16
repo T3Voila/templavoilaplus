@@ -150,6 +150,7 @@
 		],
 		"ci:tests": "@ci:tests:local",
 		"ci:tests:acceptance": "@ci:tests:acceptance:docker",
+		"ci:tests:acceptance:clean": "rm -rf .Build/public/typo3temp/var/tests/AcceptanceReports",
 		"ci:tests:acceptance:docker": "@ci:tests:acceptance:docker:php74",
 		"ci:tests:acceptance:docker:php74": "tools/runTests.sh -s acceptance -p 7.4",
 		"ci:tests:acceptance:docker:php80": "tools/runTests.sh -s acceptance -p 8.0",
