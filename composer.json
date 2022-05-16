@@ -117,6 +117,7 @@
 		"ci:php:lint:docker:php80": "tools/runTests.sh -s lint -p 8.0",
 		"ci:php:lint:docker:php81": "tools/runTests.sh -s lint -p 8.1",
 		"ci:php:lint:local": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+		"ci:php:singleFile": "tools/codeStyleCheckSingleFile.sh",
 		"ci:php:sniff": [
 			"@ci:php:sniff:failOnErrors",
 			"@ci:php:sniff:continueOnWarnings"
