@@ -17,17 +17,17 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Symfony\Component\Finder\SplFileInfo;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 
 class TemplateConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\TemplateConfiguration';
 
-    public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): TemplateConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): TemplateConfiguration
     {
-        $templateConfiguration = new TemplateConfiguration($identifier, $this->place, $this);
-        $templateConfiguration->setName($possibleName);
+        $templateConfiguration = new TemplateConfiguration($identifier, $this->place, $this, $file);
 
         if (!isset($configuration['tvp-template'])) {
             throw new \Exception('No TemplaVoilà! Plus template configuration');
@@ -35,6 +35,8 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
 
         if (isset($configuration['tvp-template']['meta']['name'])) {
             $templateConfiguration->setName($configuration['tvp-template']['meta']['name']);
+        } else {
+            $templateConfiguration->setName($file->getFilename());
         }
         if (isset($configuration['tvp-template']['meta']['renderer'])) {
             /** @TODO Check before setting */
@@ -57,7 +59,7 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
         return $templateConfiguration;
     }
 
-    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    public function saveConfiguration(AbstractConfiguration $configuration): void
     {
         throw new \Exception('Not Yet Implemented');
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.

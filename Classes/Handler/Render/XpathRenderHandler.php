@@ -16,7 +16,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  *
  * The TYPO3 project - inspiring people to share!
  */
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class XpathRenderHandler implements RenderHandlerInterface

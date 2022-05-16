@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Exception\ContentElementWithoutMapException;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
@@ -216,7 +216,7 @@ class FrontendController extends AbstractPlugin
         return false;
     }
 
-    public function getFlexformData(DataStructure $dataStructure, array $flexformData)
+    public function getFlexformData(DataConfiguration $dataStructure, array $flexformData)
     {
         $flexformValues = [];
 
@@ -225,7 +225,7 @@ class FrontendController extends AbstractPlugin
 
         /** @TODO This is only correct, if there are no sheets defined */
         /** We should look forward to define at minimum the sDEF default sheet */
-        $dataStruct = $dataStructure->getDataStructureArray();
+        $dataStruct = $dataStructure->getDataStructure();
 
         /** @TODO Language selection */
         $lKey = 'lDEF';

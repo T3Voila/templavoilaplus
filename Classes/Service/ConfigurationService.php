@@ -110,7 +110,8 @@ class ConfigurationService implements SingletonInterface
         $scope,
         string $configurationHandlerIdentifier,
         string $loadSaveHandlerIdentifier,
-        string $entryPoint
+        string $entryPoint,
+        int $indentation
     ) {
         /** @var PlacesService */
         $placesService = GeneralUtility::makeInstance(PlacesService::class);
@@ -122,7 +123,7 @@ class ConfigurationService implements SingletonInterface
         // $this->checkHandler $loadSaveHandlerIdentifier
 
         $placesService->registerPlace(
-            new Place($identifier, $name, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint)
+            new Place($identifier, $name, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint, $indentation)
         );
     }
 

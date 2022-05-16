@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -15,6 +15,8 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
+use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\Configuration\ConfigurationHandlerInterface;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
@@ -23,33 +25,29 @@ use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
  */
 class AbstractConfiguration
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $identifier = '';
 
-    /**
-     * @var Place
-     */
+    /** @var Place */
     protected $place;
 
-    /**
-     * @var ConfigurationHandlerInterface
-     */
+    /** @var ConfigurationHandlerInterface */
     protected $configurationHandler;
 
-    /**
-     * @var string
-     */
+    /** @var SplFileInfo */
+    protected $file;
+
+    /** @var string */
     protected $name = '';
 
     /**
      */
-    public function __construct($identifier, Place $place, ConfigurationHandlerInterface $configurationHandler)
+    public function __construct(string $identifier, Place $place, ConfigurationHandlerInterface $configurationHandler, SplFileInfo $file)
     {
         $this->identifier = $identifier;
         $this->place = $place;
         $this->configurationHandler = $configurationHandler;
+        $this->file = $file;
     }
 
     public function getIdentifier(): string
@@ -65,6 +63,11 @@ class AbstractConfiguration
     public function getConfigurationHandler(): ConfigurationHandlerInterface
     {
         return $this->configurationHandler;
+    }
+
+    public function getFile(): SplFileInfo
+    {
+        return $this->file;
     }
 
     public function getName(): string

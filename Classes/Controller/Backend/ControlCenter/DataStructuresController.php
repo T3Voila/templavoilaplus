@@ -67,7 +67,7 @@ class DataStructuresController extends ActionController
         $placesService = $configurationService->getPlacesService();
 
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
         $dataStructurePlacesByScope = $placesService->reorderPlacesByScope($dataStructurePlaces);
@@ -113,7 +113,7 @@ class DataStructuresController extends ActionController
 
         $dataStructurePlace = $placesService->getPlace(
             $placeIdentifier,
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlace($dataStructurePlace);
         // get the LoadSave Handler

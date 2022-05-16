@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tvp\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -22,78 +22,66 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  */
 class TemplateConfiguration extends AbstractConfiguration
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $renderHandlerIdentifier = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $templateFileName = '';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $header = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $mapping = [];
 
     /**
      * Retrieve the identifier of the RenderHandler for this template
-     *
-     * @return string
      */
     public function getRenderHandlerIdentifier(): string
     {
         return $this->renderHandlerIdentifier;
     }
 
-    public function setRenderHandlerIdentifier(string $renderHandlerIdentifier)
+    public function setRenderHandlerIdentifier(string $renderHandlerIdentifier): void
     {
         $this->renderHandlerIdentifier = $renderHandlerIdentifier;
     }
 
-    /** @TODO Support non file? Containing the HTML on request? */
+    /**
+     * Retrieve the filename of the template
+     */
     public function getTemplateFileName(): string
     {
         return $this->templateFileName;
     }
 
-    public function setTemplateFileName(string $templateFileName)
+    public function setTemplateFileName(string $templateFileName): void
     {
         $this->templateFileName = $templateFileName;
     }
 
     /**
      * Retrieve the header of the template
-     *
-     * @return string
      */
     public function getHeader()
     {
         return $this->header;
     }
 
-    public function setHeader(array $header)
+    public function setHeader(array $header): void
     {
         $this->header = $header;
     }
 
     /**
      * Retrieve the mapping of the template
-     *
-     * @return string
      */
-    public function getMapping()
+    public function getMapping(): array
     {
         return $this->mapping;
     }
 
-    public function setMapping(array $mapping)
+    public function setMapping(array $mapping):void
     {
         $this->mapping = $mapping;
     }

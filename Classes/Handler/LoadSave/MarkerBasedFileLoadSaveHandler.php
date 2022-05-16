@@ -17,13 +17,15 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
+
 class MarkerBasedFileLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
     public static $identifier = 'TVP\LoadSaveHandler\MarkerBasedFile';
 
     protected $fileExtension = '.html';
 
-    public function load(\Symfony\Component\Finder\SplFileInfo $file): array
+    public function load(SplFileInfo $file): array
     {
         $configuration = [
             'tvp-beLayout' => [
@@ -38,12 +40,12 @@ class MarkerBasedFileLoadSaveHandler extends AbstractFileLoadSaveHandler impleme
         return $configuration;
     }
 
-    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data)
+    public function save(SplFileInfo $store, array $data): void
     {
         throw new \Exception('Not Yet Implemented');
     }
 
-    public function delete()
+    public function delete(SplFileInfo $store): void
     {
         throw new \Exception('Not Yet Implemented');
     }

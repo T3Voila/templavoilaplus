@@ -27,15 +27,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 final class DataStructureUtility
 {
-    public static function array2xml(array $dataStructure)
+    public static function array2xml(array $dataStructure, int $indentation = -1)
     {
-        $indentation = 0;
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $conf = $configurationService->getExtensionConfig();
 
-        if (isset($conf['ds']['indentation'])) {
+        if ($indentation = -1 && isset($conf['ds']['indentation'])) {
             $indentation = (int)$conf['ds']['indentation'];
         }
 
@@ -48,6 +46,7 @@ final class DataStructureUtility
             'T3DataStructure',
             $indentation,
             ['useCDATA' => 1]
-        );
+        )
+        . LF;
     }
 }

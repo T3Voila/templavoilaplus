@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Utility;
 
-use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
-use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\BackendLayoutConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -18,11 +18,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ApiHelperUtility
 {
-    public static function getDataStructure($combinedDataStructureIdentifier): DataStructure
+    public static function getDataStructure($combinedDataConfigurationIdentifier): DataConfiguration
     {
         return self::getConfiguration(
-            $combinedDataStructureIdentifier,
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            $combinedDataConfigurationIdentifier,
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
     }
 

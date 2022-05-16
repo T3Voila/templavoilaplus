@@ -15,7 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\DataStructure;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -36,14 +36,14 @@ class DataStructureUpdateHandler
         $placesService = $configurationService->getPlacesService();
 
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
         $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
 
 
         foreach ($dataStructurePlaces as $idenmtifier => $dataStructurePlace) {
-            foreach ($dataStructurePlace->getConfigurations() as $dataStructureConfiguration) {
-                if ($this->updateDs($dataStructureConfiguration, $dataStructurePlace, $rootCallbacks, $elementCallbacks)) {
+            foreach ($dataStructurePlace->getConfigurations() as $dataConfiguration) {
+                if ($this->updateDs($dataConfiguration, $dataStructurePlace, $rootCallbacks, $elementCallbacks)) {
                     $count++;
                 }
             }
@@ -52,17 +52,16 @@ class DataStructureUpdateHandler
         return $count;
     }
 
-    public function updateDs(array $dataStructureConfiguration, Place $dataStructurePlace, array $rootCallbacks, array $elementCallbacks): bool
+    public function updateDs(DataConfiguration $dataConfiguration, Place $dataStructurePlace, array $rootCallbacks, array $elementCallbacks): bool
     {
         /** @var DataStructure */
-        $dataStructure = $dataStructureConfiguration['configuration'];
-        $data = $dataStructure->getDataStructureArray();
+        $dataStructure = $dataConfiguration->getDataStructure();
 
-        $changed = $this->processUpdate($data, $rootCallbacks, $elementCallbacks);
+        $changed = $this->processUpdate($dataStructure, $rootCallbacks, $elementCallbacks);
         $changed = true;
         if ($changed) {
-            $dataStructure->setDataStructureArray($data);
-            $dataStructurePlace->setConfiguration($dataStructure->getIdentifier(), $dataStructure);
+            $dataConfiguration->setDataStructure($dataStructure);
+            $dataStructurePlace->setConfiguration($dataConfiguration->getIdentifier(), $dataConfiguration);
 
             return true;
         }

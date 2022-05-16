@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
 use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,7 +27,7 @@ class XmlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSave
 
     protected $fileExtension = '.xml';
 
-    public function load(\Symfony\Component\Finder\SplFileInfo $file): array
+    public function load(SplFileInfo $file): array
     {
         $configuration = [];
 
@@ -44,13 +45,13 @@ class XmlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSave
         return $configuration;
     }
 
-    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data)
+    public function save(SplFileInfo $file, array $data): void
     {
         $xmlContent = DataStructureUtility::array2xml($data);
-        GeneralUtility::writeFile($store->getPathname(), $xmlContent);
+        GeneralUtility::writeFile($file->getPathname(), $xmlContent);
     }
 
-    public function delete()
+    public function delete(SplFileInfo $file): void
     {
         throw new \Exception('Not Yet Implemented');
     }

@@ -17,7 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\TemplateConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 
 interface RenderHandlerInterface
 {

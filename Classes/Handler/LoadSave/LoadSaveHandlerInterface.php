@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 
 interface LoadSaveHandlerInterface
@@ -28,13 +29,11 @@ interface LoadSaveHandlerInterface
     public function find();
 
     /**
-     * @TODO This is wrong, we only can give an identifier for the handler, we do not know,
-     * if these are files. The finder should only return an array of identifier for more
-     * operations.
+     * @TODO The identifier inside place would be more cool, so we get filepath from place for more secure handling
      */
-    public function load(\Symfony\Component\Finder\SplFileInfo $file): array;
+    public function load(SplFileInfo $file): array;
 
-    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data);
+    public function save(SplFileInfo $file, array $data): void;
 
-    public function delete();
+    public function delete(SplFileInfo $file): void;
 }

@@ -86,7 +86,7 @@ class ControlCenterController extends ActionController
         $placesService = $configurationService->getPlacesService();
 
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
         $mappingPlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
             \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier

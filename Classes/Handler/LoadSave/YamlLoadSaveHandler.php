@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -26,7 +27,7 @@ class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSav
 
     protected $fileExtension = '.tvp.yaml';
 
-    public function load(\Symfony\Component\Finder\SplFileInfo $file): array
+    public function load(SplFileInfo $file): array
     {
         $configuration = [];
 
@@ -37,12 +38,12 @@ class YamlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSav
         return $yamlContent;
     }
 
-    public function save(\Symfony\Component\Finder\SplFileInfo $store, $data)
+    public function save(SplFileInfo $file, array $data): void
     {
         throw new \Exception('Not Yet Implemented');
     }
 
-    public function delete()
+    public function delete(SplFileInfo $file): void
     {
         throw new \Exception('Not Yet Implemented');
     }

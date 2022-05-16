@@ -17,41 +17,43 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\BackendLayoutConfiguration;
+use Symfony\Component\Finder\SplFileInfo;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\BackendLayoutConfiguration;
 
 class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 
-    public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): BackendLayoutConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): BackendLayoutConfiguration
     {
-        $templateConfiguration = new BackendLayoutConfiguration($identifier, $this->place, $this);
-        $templateConfiguration->setName($possibleName);
+        $backendLayoutConfiguration = new BackendLayoutConfiguration($identifier, $this->place, $this, $file);
 
         if (!isset($configuration['tvp-beLayout'])) {
             throw new \Exception('No TemplaVoilà! Plus BackendLayout configuration');
         }
 
         if (isset($configuration['tvp-beLayout']['meta']['name'])) {
-            $templateConfiguration->setName($configuration['tvp-beLayout']['meta']['name']);
+            $backendLayoutConfiguration->setName($configuration['tvp-beLayout']['meta']['name']);
+        } else {
+            $backendLayoutConfiguration->setName($file->getFilename());
         }
         if (isset($configuration['tvp-beLayout']['meta']['renderer'])) {
             /** @TODO Check before setting */
-            $templateConfiguration->setRenderHandlerIdentifier($configuration['tvp-beLayout']['meta']['renderer']);
+            $backendLayoutConfiguration->setRenderHandlerIdentifier($configuration['tvp-beLayout']['meta']['renderer']);
         }
         if (isset($configuration['tvp-beLayout']['meta']['template'])) {
             /**
              * @TODO Check before setting
              * @TODO Relative to Place or configuration file? Support Absolute or 'EXT:' (insecure?)
              */
-            $templateConfiguration->setTemplateFileName($configuration['tvp-beLayout']['meta']['template']);
+            $backendLayoutConfiguration->setTemplateFileName($configuration['tvp-beLayout']['meta']['template']);
         }
 
-        return $templateConfiguration;
+        return $backendLayoutConfiguration;
     }
 
-    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    public function saveConfiguration(AbstractConfiguration $configuration): void
     {
         throw new \Exception('Not Yet Implemented');
     }

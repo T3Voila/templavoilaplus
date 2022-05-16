@@ -17,7 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Mapping;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;

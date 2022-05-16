@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -28,40 +29,29 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class Place
 {
-    /**
-     * @var int
-     */
+    /** @var int */
     protected $scope = 0;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $identifier = '';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $name = '';
 
-    /**
-     * @var string Identifier of the handler to manage coverting between configuration object and configuration array
-     */
+    /** @var string Identifier of the handler to manage coverting between configuration object and configuration array */
     protected $configurationHandlerIdentifier = '';
 
-    /**
-     * @var string Identifier of the handler to manage the loading and saving of configuration array
-     */
+    /** @var string Identifier of the handler to manage the loading and saving of configuration array */
     protected $loadSaveHandlerIdentifier = '';
 
-    /**
-     * @var string An entryPoint may be the path to the directory or a table or anything else
-     */
+    /** @var string An entryPoint may be the path to the directory or a table or anything else */
     protected $entryPoint = '';
 
-    /**
-     * @var array An array of the configurations with the identifier as key
-     */
+    /** @var array An array of the configurations with the identifier as key */
     protected $configurations;
+
+    /** @var int Indentation no/tabs/spaces for writing files */
+    protected $indentation = 0;
 
     /**
      * @param $identifier string The global name of this place it should be unique, take the PHP Namespace as an orientation.
@@ -70,6 +60,7 @@ class Place
      * @param $configurationHandlerIdentifier string The identifier of the class which will handle the conversation between the array and object @TODO better naming, will this class do more
      * @param $loadSaveHandlerIdentifier string Identifier of the class which will handle the searching, loading and saving of the configurations (Yaml, XML, ...)
      * @param $entryPoint string An entry point for this place, mostly a path to the files but may have also other meanings (f.e. a pid for core beLayouts)
+     * @param $indentation int Number smaller than zero means no indentation, zero means using tabs and number larger than zero means number of space chars
      */
     public function __construct(
         string $identifier,
@@ -78,7 +69,8 @@ class Place
         $scope,
         string $configurationHandlerIdentifier,
         string $loadSaveHandlerIdentifier,
-        string $entryPoint
+        string $entryPoint,
+        int $indentation
     ) {
         $this->identifier = $identifier;
         $this->name = $name;
@@ -86,6 +78,7 @@ class Place
         $this->configurationHandlerIdentifier = $configurationHandlerIdentifier;
         $this->loadSaveHandlerIdentifier = $loadSaveHandlerIdentifier;
         $this->entryPoint = $entryPoint;
+        $this->indentation = $indentation;
     }
 
     public function getScope()
@@ -123,9 +116,19 @@ class Place
         return $this->configurations;
     }
 
-    public function setConfigurations(array $configurations)
+    public function setConfigurations(array $configurations): void
     {
         $this->configurations = $configurations;
+    }
+
+    public function getIndentation(): int
+    {
+        return $this->indentation;
+    }
+
+    public function setIndentation(int $indentation): void
+    {
+        $this->indentation = $indentation;
     }
 
     public function getConfiguration(string $configurationIdentifier): AbstractConfiguration
@@ -135,7 +138,7 @@ class Place
             throw new ConfigurationException('Configuration with identifer "' . $configurationIdentifier . '" not found');
         }
 
-        return $this->configurations[$configurationIdentifier]['configuration'];
+        return $this->configurations[$configurationIdentifier];
     }
 
     public function setConfiguration(string $configurationIdentifier, AbstractConfiguration $configuration): void
@@ -144,9 +147,9 @@ class Place
             throw new ConfigurationException('Configuration with identifer "' . $configurationIdentifier . '" not found');
         }
 
-        $this->configurations[$configurationIdentifier]['configuration'] = $configuration;
+        $this->configurations[$configurationIdentifier] = $configuration;
 
-        $configuration->getConfigurationHandler()->saveConfiguration($this->configurations[$configurationIdentifier]['store']['file'], $configuration);
+        $configuration->getConfigurationHandler()->saveConfiguration($configuration);
     }
 
     /**

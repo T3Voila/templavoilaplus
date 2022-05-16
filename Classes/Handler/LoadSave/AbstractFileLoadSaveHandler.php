@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\LoadSave;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Finder\Finder;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,9 +26,7 @@ abstract class AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
 {
     public static $identifier = 'TVP\LoadSaveHandler\AbstractFile';
 
-    /**
-     * @var Place
-     */
+    /** @var Place */
     protected $place;
 
     protected $fileExtension = '.txt';
@@ -49,7 +48,9 @@ abstract class AbstractFileLoadSaveHandler implements LoadSaveHandlerInterface
             ->getIterator();
     }
 
-    abstract public function load(\Symfony\Component\Finder\SplFileInfo $file): array;
+    abstract public function load(SplFileInfo $file): array;
 
-    abstract public function save(\Symfony\Component\Finder\SplFileInfo $store, $data);
+    abstract public function save(SplFileInfo $file, array $data): void;
+
+    abstract public function delete(SplFileInfo $file): void;
 }

@@ -2,9 +2,9 @@
 
 return [
     'configurationHandler' => [
-        Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier => [
+        Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating DataStructure configurations',
-            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::class,
+            'handlerClass' => Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::class,
         ],
         Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier => [
             'name' => 'Handler for creating/validating Mapping configurations',

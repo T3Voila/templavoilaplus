@@ -17,7 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Handler\LoadSave\LoadSaveHandlerInterface;
 
@@ -29,5 +29,5 @@ interface ConfigurationHandlerInterface
 
     public function loadConfigurations(): void;
 
-    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void;
+    public function saveConfiguration(AbstractConfiguration $configuration): void;
 }

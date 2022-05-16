@@ -17,17 +17,17 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  * The TYPO3 project - inspiring people to share!
  */
 
-use Tvp\TemplaVoilaPlus\Domain\Model\AbstractConfiguration;
-use Tvp\TemplaVoilaPlus\Domain\Model\MappingConfiguration;
+use Symfony\Component\Finder\SplFileInfo;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 
 class MappingConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\MappingConfiguration';
 
-    public function createConfigurationFromConfigurationArray($configuration, $identifier, $possibleName): MappingConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): MappingConfiguration
     {
-        $mappingConfiguration = new MappingConfiguration($identifier, $this->place, $this);
-        $mappingConfiguration->setName($possibleName);
+        $mappingConfiguration = new MappingConfiguration($identifier, $this->place, $this, $file);
 
         if (!isset($configuration['tvp-mapping'])) {
             throw new \Exception('No TemplaVoilà! Plus mapping configuration');
@@ -35,6 +35,8 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
 
         if (isset($configuration['tvp-mapping']['meta']['name'])) {
             $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['name']);
+        } else {
+            $mappingConfiguration->setName($file->getFilename());
         }
         if (isset($configuration['tvp-mapping']['combinedDataStructureIdentifier'])) {
             $mappingConfiguration->setCombinedDataStructureIdentifier($configuration['tvp-mapping']['combinedDataStructureIdentifier']);
@@ -50,7 +52,7 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
         }
         if (isset($configuration['tvp-mapping']['childTemplate']) && is_array($configuration['tvp-mapping']['childTemplate'])) {
             foreach ($configuration['tvp-mapping']['childTemplate'] as $childName => $childConfiguration) {
-                $childMappingConfiguration = $this->createConfigurationFromConfigurationArray(['tvp-mapping' => $childConfiguration], '', $childName, true);
+                $childMappingConfiguration = $this->createConfigurationFromConfigurationArray(['tvp-mapping' => $childConfiguration], '', $file);
                 $mappingConfiguration->addChildMappingConfiguration($childName, $childMappingConfiguration);
             }
         }
@@ -62,7 +64,7 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
         return $mappingConfiguration;
     }
 
-    public function saveConfiguration(\Symfony\Component\Finder\SplFileInfo $store, AbstractConfiguration $configuration): void
+    public function saveConfiguration(AbstractConfiguration $configuration): void
     {
         throw new \Exception('Not Yet Implemented');
     }

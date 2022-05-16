@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Domain\Model;
+namespace Tvp\TemplaVoilaPlus\Domain\Model\Configuration;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -18,20 +18,18 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model;
 /**
  * Class to provide unique configuration of datastructure
  */
-class DataStructure extends AbstractConfiguration
+class DataConfiguration extends AbstractConfiguration
 {
-    /**
-     * @var array
-     */
-    protected $dataStructureArray = [];
+    /** @var array */
+    protected $dataStructure = [];
 
-    public function getDataStructureArray(): array
+    public function getDataStructure(): array
     {
-        return $this->dataStructureArray;
+        return $this->dataStructure;
     }
 
-    public function setDataStructureArray(array $dataStructureArray)
+    public function setDataStructure(array $dataStructure): void
     {
-        $this->dataStructureArray = $dataStructureArray;
+        $this->dataStructure = $dataStructure;
     }
 }

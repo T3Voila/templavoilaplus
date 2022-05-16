@@ -72,7 +72,7 @@ class ExtensionUtility implements SingletonInterface
     {
         static::loadPlaces(
             $path . '/DataStructurePlaces.php',
-            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataStructureConfigurationHandler::$identifier
+            \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
     }
 
@@ -131,7 +131,8 @@ class ExtensionUtility implements SingletonInterface
                 $placeConfiguration['scope'],
                 $placeConfiguration['configurationHandler'] ?: $defaultConfigurationHandlerIdentifier,
                 $placeConfiguration['loadSaveHandler'],
-                $placeConfiguration['path']
+                $placeConfiguration['path'],
+                (int)$placeConfiguration['indentation'] ?: 4
             );
         }
     }
