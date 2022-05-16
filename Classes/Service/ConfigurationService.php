@@ -46,13 +46,20 @@ class ConfigurationService implements SingletonInterface
     public function __construct()
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus']) && is_array($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'])) {
-                $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+            try {
+                $this->extConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                    \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+                )->get('templavoilaplus');
+            } catch (
+                \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+                | \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException $e
+            ) {
+                $this->extConfig = [];
             }
         } else {
             if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])) {
                 $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
-                    unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])
+                    unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'], ['allowed_classes' => false])
                 );
                 if (!is_array($this->extConfig)) {
                     $this->extConfig = [];

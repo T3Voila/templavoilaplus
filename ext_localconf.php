@@ -13,23 +13,8 @@ $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
 
 $renderFceHeader = '';
 
-if (version_compare(TYPO3_version, '9.5.0', '>=')) {
-    try {
-        $backendConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-            \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
-        )->get('templavoilaplus');
-    } catch (
-    \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-    |\TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException $e
-    ) {
-        $backendConfiguration = [];
-    }
-} else {
-    $backendConfiguration = unserialize(
-        $GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'],
-        ['allowed_classes' => false]
-    );
-}
+$backendConfiguration = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ConfigurationService::class)->getExtensionConfig();
+
 if (isset($backendConfiguration['enable']['renderFCEHeader']) && $backendConfiguration['enable']['renderFCEHeader']) {
     $renderFceHeader = '
     10 < lib.stdheader';
