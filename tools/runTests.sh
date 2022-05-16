@@ -147,6 +147,13 @@ if ! type "docker-compose" > /dev/null; then
   exit 1
 fi
 
+# Test is docker is running
+docker ps -f name=NOTEXISTING > /dev/null
+if [ $? -ne 0 ]; then
+  echo "This script relies on docker running, please start it" >&2
+  exit 1
+fi
+
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
