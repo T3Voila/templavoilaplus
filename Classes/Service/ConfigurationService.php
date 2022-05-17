@@ -105,7 +105,6 @@ class ConfigurationService implements SingletonInterface
 
     public function getExtensionConfig(): array
     {
-        $this->initialize();
         return $this->extConfig;
     }
 
