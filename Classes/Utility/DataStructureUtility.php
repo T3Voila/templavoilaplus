@@ -33,7 +33,7 @@ final class DataStructureUtility
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $conf = $configurationService->getExtensionConfig();
 
-        if ($indentation = -1 && isset($conf['ds']['indentation'])) {
+        if ($indentation === -1 && isset($conf['ds']['indentation'])) {
             $indentation = (int)$conf['ds']['indentation'];
         }
 
