@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -35,7 +36,9 @@ class Typo3Lts9Update implements UpgradeWizardInterface
 
     public function __construct()
     {
-        $this->extConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['templavoilaplus'];
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->extConf = $configurationService->getExtensionConfig();
     }
 
     public function getIdentifier(): string
@@ -47,6 +50,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
     {
         return 'Updates TemplaVoilà! Plus for using with TYPO3 v9 LTS or newer';
     }
+
     public function updateNecessary(): bool
     {
         $result = false;

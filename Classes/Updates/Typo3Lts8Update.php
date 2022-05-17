@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Updates;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -39,7 +40,9 @@ class Typo3Lts8Update extends AbstractUpdate
 
     public function __construct()
     {
-        $this->extConf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus']);
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->extConf = $configurationService->getExtensionConfig();
     }
 
     /**
@@ -62,7 +65,7 @@ class Typo3Lts8Update extends AbstractUpdate
         $result = false;
         $description = 'Changes needed for DataStructures to work with TYPO3 v8 LTS or newer';
 
-        if ($this->extConf['staticDS.']['enable']) {
+        if ($this->extConf['staticDS']['enable']) {
             // If static DS is in use we need to migrate the file pointer
             $description .= '<br />Need to migrate the file pointer for Static Data Structures';
             $result = true;
@@ -80,7 +83,7 @@ class Typo3Lts8Update extends AbstractUpdate
      */
     public function performUpdate(array &$dbQueries, &$customMessage)
     {
-        if ($this->extConf['staticDS.']['enable']) {
+        if ($this->extConf['staticDS']['enable']) {
             $this->migrateStaticDsFilePointer($dbQueries);
             $customMessage .= 'Migrated file pointer for Static Data Structures';
         }

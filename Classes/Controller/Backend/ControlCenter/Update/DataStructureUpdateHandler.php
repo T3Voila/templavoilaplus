@@ -94,11 +94,6 @@ class DataStructureUpdateHandler
         return $changed;
     }
 
-    protected function saveChange(array $dataStructureConfiguration, array $data)
-    {
-
-    }
-
     protected function fixPerElement(array &$element, array $elementCallbacks)
     {
         $changed = false;

@@ -35,11 +35,6 @@ class DataStructureV8Controller extends AbstractUpdateController
 
     protected function stepFinalAction()
     {
-        if ($this->extConf['staticDS.']['enable']) {
-            // If static DS is in use we need to migrate the file pointer
-            $countStatic = $this->migrateStaticDsFilePointer();
-        }
-
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
         $count = $handler->updateAllDs(
             [],
@@ -153,80 +148,5 @@ class DataStructureV8Controller extends AbstractUpdateController
         }
 
         return $changed;
-    }
-
-    public function migrateStaticDsFilePointer()
-    {
-        // Pages
-        $toFix = [];
-        $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoilaplus_ds,tx_templavoilaplus_next_ds',
-            'pages',
-            'tx_templavoilaplus_ds != "" OR tx_templavoilaplus_next_ds != ""',
-            'tx_templavoilaplus_ds,tx_templavoilaplus_next_ds'
-        );
-
-        foreach ($rows as $row) {
-            if (
-                !empty($row['tx_templavoilaplus_ds'])
-                && !isset($toFix[$row['tx_templavoilaplus_ds']])
-                && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
-            ) {
-                $toFix[$row['tx_templavoilaplus_ds']] = 'FILE:' . $row['tx_templavoilaplus_ds'];
-            }
-            if (
-                !empty($row['tx_templavoilaplus_next_ds'])
-                && !isset($toFix[$row['tx_templavoilaplus_next_ds']])
-                && !StringUtility::beginsWith($row['tx_templavoilaplus_next_ds'], 'FILE:')
-            ) {
-                $toFix[$row['tx_templavoilaplus_next_ds']] = 'FILE:' . $row['tx_templavoilaplus_next_ds'];
-            }
-        }
-
-        foreach ($toFix as $from => $to) {
-            TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
-                'pages',
-                'tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'pages'),
-                ['tx_templavoilaplus_ds' => $to]
-            );
-            TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
-                'pages',
-                'tx_templavoilaplus_next_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'pages'),
-                ['tx_templavoilaplus_next_ds' => $to]
-            );
-        }
-
-        $count = count($toFix);
-
-        // tt_content
-        $toFix = [];
-        $rows = TemplaVoilaUtility::getDatabaseConnection()->exec_SELECTgetRows(
-            'tx_templavoilaplus_ds',
-            'tt_content',
-            'tx_templavoilaplus_ds != ""',
-            'tx_templavoilaplus_ds'
-        );
-
-        foreach ($rows as $row) {
-            if (
-                !empty($row['tx_templavoilaplus_ds'])
-                && !isset($toFix[$row['tx_templavoilaplus_ds']])
-                && !StringUtility::beginsWith($row['tx_templavoilaplus_ds'], 'FILE:')
-            ) {
-                $toFix[$row['tx_templavoilaplus_ds']] = 'FILE:' . $row['tx_templavoilaplus_ds'];
-            }
-        }
-
-        foreach ($toFix as $from => $to) {
-            TemplaVoilaUtility::getDatabaseConnection()->exec_UPDATEquery(
-                'tt_content',
-                'tx_templavoilaplus_ds=' . TemplaVoilaUtility::getDatabaseConnection()->fullQuoteStr($from, 'tt_content'),
-                ['tx_templavoilaplus_ds' => $to]
-            );
-        }
-
-        $count += count($toFix);
-
-        return $count;
     }
 }

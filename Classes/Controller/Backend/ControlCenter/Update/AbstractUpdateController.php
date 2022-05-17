@@ -46,10 +46,20 @@ class AbstractUpdateController extends ActionController
      */
     protected $view;
 
-    /**
-     * @var int the id of current page
-     */
+    /** @var int the id of current page */
     protected $pageId = 0;
+
+
+    /** @var array holds the extconf configuration */
+    protected $extConf = [];
+
+
+    public function __construct()
+    {
+        /** @var ConfigurationService */
+        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
+        $this->extConf = $configurationService->getExtensionConfig();
+    }
 
     /**
      * Initialize action
@@ -67,20 +77,6 @@ class AbstractUpdateController extends ActionController
             $this->view->getModuleTemplate()->getDocHeaderComponent()->disable();
         }
         $this->assignDefault();
-    }
-
-    /**
-     * holds the extconf configuration
-     *
-     * @var array
-     */
-    protected $extConf;
-
-    public function __construct()
-    {
-        /** @var ConfigurationService */
-        $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->extConf = $configurationService->getExtensionConfig();
     }
 
     /**
