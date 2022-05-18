@@ -39,9 +39,6 @@ class DataStructureV11Controller extends AbstractUpdateController
         $count = $handler->updateAllDs(
             [],
             [
-                [$this, 'migrateColumnsConfig'],
-                [$this, 'migrateLocalizeChildrenAtParentLocalization'],
-                [$this, 'removeEnableMultiSelectFilterTextfieldConfiguration'],
                 [$this, 'migrateSpecialLanguagesToTcaTypeLanguage'],
                 [$this, 'removeShowRemovedLocalizationRecords'],
                 [$this, 'migrateFileFolderConfiguration'],
@@ -55,49 +52,6 @@ class DataStructureV11Controller extends AbstractUpdateController
             'count' => $count,
             'errors' => $this->errors,
         ]);
-    }
-
-    /**
-     * Find columns fields that don't have a 'config' section at all, add
-     * ['config']['type'] = 'none'; for those to enforce config
-     */
-    public function migrateColumnsConfig(array &$element): bool
-    {
-        $changed = false;
-        if ((!isset($element['TCEforms']['config']) || !is_array($element['TCEforms']['config'])) && !isset($element['TCEforms']['type'])) {
-            $element['TCEforms']['config'] = [
-                'type' => 'none',
-            ];
-            $changed = true;
-        }
-        return $changed;
-    }
-
-    /**
-     * Option $TCA[$table]['columns'][$columnName]['config']['behaviour']['localizeChildrenAtParentLocalization']
-     * is always on, so this option can be removed.
-     */
-    public function migrateLocalizeChildrenAtParentLocalization(array &$element): bool
-    {
-        $changed = false;
-        if (isset($element['TCEforms']['config']['behaviour']['localizeChildrenAtParentLocalization'])) {
-            unset($element['TCEforms']['config']['behaviour']['localizeChildrenAtParentLocalization']);
-            $changed = true;
-        }
-        return $changed;
-    }
-
-    /**
-     * Removes configuration removeEnableMultiSelectFilterTextfield
-     */
-    public function removeEnableMultiSelectFilterTextfieldConfiguration(array &$element): bool
-    {
-        $changed = false;
-        if (isset($element['TCEforms']['config']['enableMultiSelectFilterTextfield'])) {
-            unset($element['TCEforms']['config']['enableMultiSelectFilterTextfield']);
-            $changed = true;
-        }
-        return $changed;
     }
 
     /**
