@@ -13,16 +13,26 @@
         <f:if condition="{is8orNewer} && !{is9orNewer}">
             <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but please see the message box below.</span>
         </f:if>
-        <f:if condition="{is9orNewer} && !{is12orNewer}">
-            <span class="text-success">Your TYPO3 Version is supported by TV+ 8.</span>
+        <f:if condition="{is9orNewer} && !{is10orNewer}">
+            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but please see the message box below.</span>
+        </f:if>
+        <f:if condition="{is10orNewer} && !{is12orNewer}">
+            <span class="text-success mark">Your TYPO3 Version is supported by TV+ 8.</span>
         </f:if>
     </p>
 
-    <f:if condition="!{is9orNewer}">
-        <f:be.infobox title="You are using a TYPO3 v8 release" state="1">
+    <f:if condition="!{is12orNewer}">
+        <f:be.infobox title="You are using TYPO3 version {typo3Version}" state="1">
             <ul>
-                <li>Your version of TYPO3 is out of normal maintenance support as of March 31, 2020. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
-                <li>However, even if you upgrade to TYPO3 v8, it still doesn't have the "Site Management" feature since it was introduced in "TYPO3 v9". So, unfortunately this feature isn't usable together with TemplaVoilà! Plus 8.</li>
+                <li>Your version of TYPO3 is out of normal maintenance support as of {f:if(condition: '!{is9orNewer}', then: 'March 31, 2020', else: 'September 31, 2021')}. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
+                <f:if condition="!{is9orNewer}">
+                    <f:then>
+                        <li>Your TYPO3 v8, is missing the "Site Management" feature since it was introduced in "TYPO3 v9". So, unfortunately this feature isn't usable together with TemplaVoilà! Plus 8.</li>
+                    </f:then>
+                    <f:else>
+                        <li>TemplaVoilà! Plus v8 will work, but there may be some features which will only work with newer TYPO3 versions.</li>
+                    </f:else>
+                </f:if>
             </ul>
         </f:be.infobox>
     </f:if>
