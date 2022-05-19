@@ -52,8 +52,8 @@ class ItemsProcFunc
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $params['items'][] = [
-                        $mappingConfiguration['configuration']->getName(),
-                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier(),
+                        $mappingConfiguration->getName(),
+                        $mappingPlace->getIdentifier() . ':' . $mappingConfiguration->getIdentifier(),
                         // @TODO Icon file
                     ];
                 }
