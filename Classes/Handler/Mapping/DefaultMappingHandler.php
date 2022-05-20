@@ -21,6 +21,7 @@ use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
 
 /**
  * @TODO
@@ -79,6 +80,9 @@ class DefaultMappingHandler
             case 'typoScript':
                 $processedValue = $this->processTypoScript($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.typoScript'] ?? '');
                 break;
+            case 'dataProcessing':
+                $processedValue = $this->processDataProcessing($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.dataProcessing'] ?? '');
+                break;
             case 'typoScriptConstants':
                 break;
             case 'repeatable':
@@ -127,6 +131,24 @@ class DefaultMappingHandler
         }
 
         return $processedValue;
+    }
+
+    protected function processDataProcessing(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript): array
+    {
+        /** @var TypoScriptParser $tsparserObj */
+        $tsparserObj = $this->getTypoScriptParser();
+        /** @var ContentObjectRenderer $cObj */
+        $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
+
+        $tsparserObj->parse($theTypoScript);
+        $dataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
+        $processedValue = $dataProcessor->process($cObj, ['dataProcessing.' => $tsparserObj->setup], $flexformData + $row);
+
+        if (isset($processedValue['_processedValue_']) && is_array($processedValue['_processedValue_'])) {
+            return $processedValue['_processedValue_'];
+        }
+
+        return [];
     }
 
     protected function processRepeatable(array $flexformData, string $table, array $row, array $containerInstructions): array
