@@ -37,7 +37,7 @@ abstract class AbstractResponse
         $view->setPartialRootPaths([
             10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Partials/',
         ]);
-        $view->getLayoutRootPaths([
+        $view->setLayoutRootPaths([
             10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Layouts/',
         ]);
 
