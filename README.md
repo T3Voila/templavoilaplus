@@ -38,8 +38,8 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
 * Please help with documentation.
 * Not tested with PHP 8.0/8.1 but bugreports are welcome. See https://github.com/T3Voila/templavoilaplus/issues/346
 
-### Extensions as WIP for TV+ 8
-* https://github.com/extrameile/em_tvplus_theme_demo/
+### Theme Extensions as WIP for TV+ 8
+* https://github.com/extrameile/em_tvplus_theme_demo/ - Demo theme using XPath Renderer
 
 ### What works:
 
@@ -64,7 +64,9 @@ The word "DataStructure" will be renamed to DataConfiguration to match the wordi
     * Subtemplates/Rendertypes not supported yet
 * Extending
     * You could extend TV+ 8 with new Places types with their own handler to load data
-    * You could add new renderer (~~TYPO3 marker based,~~ Smarty, Twig, Fluid, ...)
+    * You could add new renderer (for example Smarty, Twig)
+    * A TYPO3 marker based renderer is included
+    * TYPO3 Fluid renderer can be found on https://github.com/T3Voila/tvplus_fluid
     * You can work on own themes
 * Update Script
     * There is an Update Script which already works quite extensive
