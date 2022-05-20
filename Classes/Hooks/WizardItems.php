@@ -39,11 +39,11 @@ class WizardItems implements NewContentElementWizardHookInterface
                 $mappingConfigurations = $mappingPlace->getConfigurations();
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
-                    $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration['configuration']->getIdentifier();
+                    $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration->getIdentifier();
                     $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
                         'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
-                        'description' => /** @TODO $mappingConfiguration['configuration']->getDescription() ?? */TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
-                        'title' => $mappingConfiguration['configuration']->getName(),
+                        'description' => /** @TODO $mappingConfiguration->getDescription() ?? */TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                        'title' => $mappingConfiguration->getName(),
                         'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
                     ];
                 }

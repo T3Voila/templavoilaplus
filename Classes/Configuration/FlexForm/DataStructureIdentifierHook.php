@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
  */
 
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
+use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -60,8 +61,11 @@ class DataStructureIdentifierHook
                 $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
                 $dataStructure = $dataStructure->getDataStructure();
-            } catch (ConfigurationException | \TypeError $e) {
-                $dataStructure = ['error' => $e->getMessage()];
+            } catch (ConfigurationException | MissingPlacesException | \TypeError $e) {
+                $dataStructure = [
+                    'error' => $e->getMessage(),
+                    'sheets' => [],
+                ];
                 /** @TODO Do logging, if we cannot found the Mapping or DS? */
             }
         }
