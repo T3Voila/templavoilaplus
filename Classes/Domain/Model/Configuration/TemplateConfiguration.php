@@ -28,6 +28,9 @@ class TemplateConfiguration extends AbstractConfiguration
     /** @var string */
     protected $templateFileName = '';
 
+    /** @var array Options depending on used RenderHandler */
+    protected $options = [];
+
     /** @var array */
     protected $header = [];
 
@@ -58,6 +61,19 @@ class TemplateConfiguration extends AbstractConfiguration
     public function setTemplateFileName(string $templateFileName): void
     {
         $this->templateFileName = $templateFileName;
+    }
+
+    /**
+     * Retrieve the options of the RenderHandler for this template
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+    public function setOptions(array $options): void
+    {
+        $this->options = $options;
     }
 
     /**

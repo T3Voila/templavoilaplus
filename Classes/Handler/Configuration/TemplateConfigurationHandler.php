@@ -49,6 +49,9 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
              */
             $templateConfiguration->setTemplateFileName($configuration['tvp-template']['meta']['template']);
         }
+        if (isset($configuration['tvp-template']['options']) && is_array($configuration['tvp-template']['options'])) {
+            $templateConfiguration->setOptions($configuration['tvp-template']['options']);
+        }
         if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
             $templateConfiguration->setHeader($configuration['tvp-template']['header']);
         }
