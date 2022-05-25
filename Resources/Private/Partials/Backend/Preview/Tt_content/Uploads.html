@@ -1,10 +1,5 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
-<f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}" />
-<f:if condition="{labelFromItemlist}">
-    <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
-</f:if>
-
 <f:if condition="{node.raw.entity.subheader}">
     <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'subheader')}" />
     <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>: {node.raw.entity.subheader}<br />

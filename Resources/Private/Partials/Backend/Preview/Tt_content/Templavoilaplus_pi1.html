@@ -18,7 +18,7 @@
     <f:for each="{fieldsDs}" key="fieldName" as="fieldConfig">
         <f:if condition="{fieldConfig.TCEforms.label}">
             <strong>
-                <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>
+                <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>:
             </strong>
         </f:if>
         <f:if condition="{fieldConfig.type} == 'array' && {fieldConfig.title}">
