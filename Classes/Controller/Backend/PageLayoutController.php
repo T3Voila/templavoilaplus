@@ -145,6 +145,22 @@ class PageLayoutController extends ActionController
 
         // if pageId is available the row will be inside pageInfo
         $this->setPageInfo();
+
+        /** @TODO better handle this with an configuration object */
+        $this->settings['configuration'] =  [
+            'allAvailableLanguages' => $this->allAvailableLanguages,
+            // If we have more then "all-languages" and 1 editors language available
+            'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
+            'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
+            'clipboard' => $this->clipboard2fluid(),
+            'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
+            'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
+            'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+            'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+            'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+            'TCA' => $GLOBALS['TCA'],
+        ];
     }
 
     /**
@@ -221,33 +237,12 @@ class PageLayoutController extends ActionController
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
 
-        /** @TODO better handle this with an configuration object */
-        $this->view->assign(
-            'configuration',
-            [
-                'allAvailableLanguages' => $this->allAvailableLanguages,
-                // If we have more then "all-languages" and 1 editors language available
-                'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
-                'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
-                'clipboard' => $this->clipboard2fluid(),
-                'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-            ]
-        );
-
         $this->view->assign('contentPartials', $this->contentPartials);
         // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
         // Or use these hooks so they can add Partials?
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
-
-        $this->view->assignMultiple([
-            'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
-            'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
-            'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
-            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-            'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-        ]);
     }
 
     protected function checkContentFromPid()
