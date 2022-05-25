@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  *
  * @author Alexander Opitz <opitz@extrameile-gehen.de>
  */
-class DataStructureV11Controller extends AbstractUpdateController
+class DataStructureV10Controller extends AbstractUpdateController
 {
     protected $errors = [];
 
