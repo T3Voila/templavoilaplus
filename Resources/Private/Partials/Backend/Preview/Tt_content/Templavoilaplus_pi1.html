@@ -6,7 +6,7 @@
 <!--f:debug maxDepth="20">{_all}</f:debug-->
 <f:if condition="{node.raw.entity.tx_templavoilaplus_map}">
     <f:then>
-        <f:render section="elements" arguments="{fieldsDs: node.datastructure.sheets.sDEF.ROOT.el, fieldsData: node.flexform.data.sDEF.lDEF}" />
+        <f:render section="elements" arguments="{fieldsDs: node.datastructure.sheets.sDEF.ROOT.el, fieldsData: node.flexform.data.sDEF.lDEF, node: node}" />
     </f:then>
     <f:else>
         <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:error.fce.noMapping"/>
@@ -16,35 +16,37 @@
 
 <f:section name="elements">
     <f:for each="{fieldsDs}" key="fieldName" as="fieldConfig">
-        <f:if condition="{fieldConfig.TCEforms.label}">
-            <strong>
-                <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>:
-            </strong>
-        </f:if>
-        <f:if condition="{fieldConfig.type} == 'array' && {fieldConfig.title}">
-            <strong>
-                <f:translate key="{fieldConfig.title}" default="{fieldConfig.title}"/><br>
-            </strong>
-        </f:if>
-        <f:if condition="{fieldConfig.type} == 'array'">
-            <f:then>
-                <f:if condition="{fieldConfig.section}">
-                    <f:then>
-                        <f:render section="section" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
-                    </f:then>
-                    <f:else>
-                        <f:render section="elements" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
-                    </f:else>
-                </f:if>
-            </f:then>
-            <f:else>
-                <f:format.crop maxCharacters="2000">
-                    <tvp:format.wordLength maxCharacters="75">
-                        <tvp:format.stripTags whitespace="true">{fieldsData.{fieldName}.vDEF}</tvp:format.stripTags>
-                    </tvp:format.wordLength>
-                </f:format.crop>
-                <br>
-            </f:else>
+        <f:if condition="!{node.childNodes.sDEF.lDEF.{fieldName}.vDEF}">
+            <f:if condition="{fieldConfig.TCEforms.label}">
+                <strong>
+                    <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>:
+                </strong>
+            </f:if>
+            <f:if condition="{fieldConfig.type} == 'array' && {fieldConfig.title}">
+                <strong>
+                    <f:translate key="{fieldConfig.title}" default="{fieldConfig.title}"/><br>
+                </strong>
+            </f:if>
+            <f:if condition="{fieldConfig.type} == 'array'">
+                <f:then>
+                    <f:if condition="{fieldConfig.section}">
+                        <f:then>
+                            <f:render section="section" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
+                        </f:then>
+                        <f:else>
+                            <f:render section="elements" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
+                        </f:else>
+                    </f:if>
+                </f:then>
+                <f:else>
+                    <f:format.crop maxCharacters="2000">
+                        <tvp:format.wordLength maxCharacters="75">
+                            <tvp:format.stripTags whitespace="true">{fieldsData.{fieldName}.vDEF}</tvp:format.stripTags>
+                        </tvp:format.wordLength>
+                    </f:format.crop>
+                    <br>
+                </f:else>
+            </f:if>
         </f:if>
     </f:for>
 </f:section>
