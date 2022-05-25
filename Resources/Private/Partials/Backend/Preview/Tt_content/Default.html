@@ -1,11 +1,5 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
-<f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'CType')}" />
-<f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}" />
-<f:if condition="{labelFromItemlist}">
-    <strong><f:translate key="{labelFromItemlist}" default="{labelFromItemlist}" /></strong><br />
-</f:if>
-
 <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldName" as="fieldConfig">
     <f:if condition="{fieldConfig.TCEforms.label}">
         <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}" /></strong>

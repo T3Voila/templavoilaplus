@@ -1,5 +1,15 @@
-<div class="tpm-preview">
-    <f:render partial="Backend/Preview/{node.raw.entity.CType -> f:format.case(mode:'capital')}" optional="1" arguments="{configuration: configuration, node: node}">
-        <f:render partial="Backend/Preview/Default" arguments="{configuration: configuration, node: node}" />
+<f:variable name="previewTyped" value="Default" />
+<f:variable name="previewTable" value="{node.raw.table -> f:format.case(mode:'capital')}" />
+
+<f:if condition="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}">
+    <f:variable name="typeColumn" value="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}"/>
+    <f:variable name="previewTyped" value="{node.raw.entity.{typeColumn} -> f:format.case(mode:'capital')}"/>
+</f:if>
+
+<div class="tvp-preview">
+    <f:render partial="Backend/Preview/{previewTable}/{previewTyped}" optional="1" arguments="{node: node}">
+        <f:render partial="Backend/Preview/{previewTable}" optional="1" arguments="{node: node}">
+            <f:render partial="Backend/Preview/Default" arguments="{node: node}" />
+        </f:render>
     </f:render>
 </div>

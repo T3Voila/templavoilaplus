@@ -18,7 +18,7 @@
 
     <f:render section="FlashMessage" arguments="{_all}" />
 
-    <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}" data-tvp-settings="{configuration -> f:format.json()}">
+    <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}" data-tvp-settings="{settings.configuration -> f:format.json()}">
 
         <section id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
             <f:render section="SidebarContentTree" />
@@ -106,7 +106,7 @@
                 <ul class="sidenav-menu">
                     <li class="sidenav-item disabled" id="navbarContentElementWizard">
                         <div>
-                            <f:if condition="{is10orNewer}">
+                            <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
                                     <core:icon identifier="actions-document-add" size="default" />
                                 </f:then>
@@ -116,7 +116,7 @@
                             </f:if>
                         </div>
                     </li>
-                    <f:if condition="{configuration.moreThenOneLanguageAvailable}">
+                    <f:if condition="{settings.configuration.moreThenOneLanguageAvailable}">
                         <li class="sidenav-item disabled" id="navbarLanguages">
                             <div>
                                 <core:icon identifier="flags-multiple" size="default" />
@@ -125,7 +125,7 @@
                     </f:if>
                     <li class="sidenav-item disabled" id="navbarClipboard">
                         <div>
-                            <f:if condition="{is10orNewer}">
+                            <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
                                     <core:icon identifier="actions-clipboard" size="default" />
                                 </f:then>
@@ -142,7 +142,7 @@
                     </li>
                     <li class="sidenav-item disabled">
                         <div>
-                            <f:if condition="{is10orNewer}">
+                            <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
                                     <core:icon identifier="actions-message-add" size="default" />
                                 </f:then>
@@ -159,7 +159,7 @@
                     </li>
                     <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">
                         <div>
-                            <f:if condition="{is10orNewer}">
+                            <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
                                     <core:icon identifier="actions-cog-alt" size="default" />
                                 </f:then>

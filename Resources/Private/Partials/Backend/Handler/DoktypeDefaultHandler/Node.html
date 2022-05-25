@@ -1,0 +1,58 @@
+<div class="tvp-node card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
+    <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
+    <div class="card-header">
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: node}" />
+        <f:if condition="!{node.rendering.belongsToCurrentPage}">
+            <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{settings.configuration.lllFile}:infoElementFromOtherPage" arguments="{0: node.raw.entity.uid, 1: node.raw.entity.pid}" /></em></div>
+        </f:if>
+        <f:if condition="{node.rendering.countUsedOnPage} > 1">
+            <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{settings.configuration.lllFile}:infoElementUsedMultipleTimes" arguments="{0: node.rendering.countUsedOnPage}" /></em></div>
+        </f:if>
+        <f:if condition="{node.rendering.description}">
+            <div class="bg-info">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:format.nl2br>{node.rendering.description}</f:format.nl2br></em></div>
+        </f:if>
+        <f:comment>@TODO
+            infoElementFromOtherPage => modTSconfig['properties']['disableReferencedElementNotification']
+            warning_elementusedmorethanonce => modTSconfig['properties']['disableElementMoreThanOnceWarning']
+            warning_containerInheritance ??
+            warning_containerSeparate => modTSconfig['properties']['disableContainerElementLocalizationWarning']
+        </f:comment>
+    </div>
+    <div class="card-body">
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
+        <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/Childs" arguments="{node: node, beLayout: beLayout}" />
+        </f:if>
+        <div class="tvp-edit-record">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: node}" />
+        </div>
+
+    </div>
+
+
+    <div class="card-footer"><f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
+
+        <f:if condition="{f:count(subject: node.localization)} > 0">
+            <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
+                <tr class="bgColor4-20">
+                    <td><f:translate key="{configuration.lllFile}:labelLocalizations" />:</td>
+                </tr>
+                <f:for each="{configuration.allAvailableLanguages}" as="language">
+                    <f:if condition="{language.uid} > 0">
+                        <tr class="tpm-language-row">
+                            <f:if condition="{node.localization.{language.uid}}">
+                                <td class="tpm-language-info">
+                                    <div class="t3-page-ce-header-icons">
+                                        <f:render partial="Backend/Handler/DoktypeDefaultHandler/TitleBarLeftButtons" arguments="{node: '{node.localization.{language.uid}}'}" />
+                                        <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: '{node.localization.{language.uid}}'}" />
+                                    </div>
+                                </td>
+                            </f:if>
+                        </tr>
+                    </f:if>
+                </f:for>
+            </table>
+        </f:if>
+
+    </div>
+</div>

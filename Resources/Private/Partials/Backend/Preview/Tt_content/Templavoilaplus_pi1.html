@@ -1,38 +1,58 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 <f:if condition="{node.datastructure.error}">
-  <f:be.infobox state="2">{node.datastructure.error}</f:be.infobox>
+    <f:be.infobox state="2">{node.datastructure.error}</f:be.infobox>
 </f:if>
+<!--f:debug>{node.datastructure.sheets}</f:debug-->
+<!--f:debug maxDepth="20">{_all}</f:debug-->
 <f:if condition="{node.raw.entity.tx_templavoilaplus_map}">
-  <f:then>
-    <f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'CType', key:'{node.raw.entity.CType}')}"/>
-    <f:variable name="nameMappingConfiguration" value="{tvp:backend.labelFromMappingConfiguration(identifier:'{node.raw.entity.tx_templavoilaplus_map}')}"/>
-    <f:if condition="{labelFromItemlist} || {nameMappingConfiguration}">
-      <strong>
-        <f:if condition="{labelFromItemlist}">
-          <f:translate key="{labelFromItemlist}" default="{labelFromItemlist}"/>
-        </f:if>
-        <f:if condition="{nameMappingConfiguration}">
-          <f:translate key="{nameMappingConfiguration}" default="{nameMappingConfiguration}"/>
-        </f:if>
-      </strong>
-      <br/>
-    </f:if>
-
-    <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldName" as="fieldConfig">
-      <f:if condition="{fieldConfig.TCEforms.label}">
-        <strong>
-          <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>
-        </strong>
-      </f:if>
-      <f:format.crop maxCharacters="2000">
-        <tvp:format.wordLength maxCharacters="75">
-          <tvp:format.stripTags whitespace="true">{node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}</tvp:format.stripTags>
-        </tvp:format.wordLength>
-      </f:format.crop>
-      <br>
-    </f:for>
-  </f:then>
-  <f:else>
-    <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:error.fce.noMapping"/>
-  </f:else>
+    <f:then>
+        <f:render section="elements" arguments="{fieldsDs: node.datastructure.sheets.sDEF.ROOT.el, fieldsData: node.flexform.data.sDEF.lDEF}" />
+    </f:then>
+    <f:else>
+        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:error.fce.noMapping"/>
+    </f:else>
 </f:if>
+
+
+<f:section name="elements">
+    <f:for each="{fieldsDs}" key="fieldName" as="fieldConfig">
+        <f:if condition="{fieldConfig.TCEforms.label}">
+            <strong>
+                <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>
+            </strong>
+        </f:if>
+        <f:if condition="{fieldConfig.type} == 'array' && {fieldConfig.title}">
+            <strong>
+                <f:translate key="{fieldConfig.title}" default="{fieldConfig.title}"/><br>
+            </strong>
+        </f:if>
+        <f:if condition="{fieldConfig.type} == 'array'">
+            <f:then>
+                <f:if condition="{fieldConfig.section}">
+                    <f:then>
+                        <f:render section="section" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
+                    </f:then>
+                    <f:else>
+                        <f:render section="elements" arguments="{fieldsDs: fieldConfig.el, fieldsData: '{fieldsData.{fieldName}.el}'}" />
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:format.crop maxCharacters="2000">
+                    <tvp:format.wordLength maxCharacters="75">
+                        <tvp:format.stripTags whitespace="true">{fieldsData.{fieldName}.vDEF}</tvp:format.stripTags>
+                    </tvp:format.wordLength>
+                </f:format.crop>
+                <br>
+            </f:else>
+        </f:if>
+    </f:for>
+</f:section>
+
+<f:section name="section">
+    <ul>
+    <f:for each="{fieldsData}" as="fieldData">
+        <li><f:render section="elements" arguments="{fieldsDs: fieldsDs, fieldsData: fieldData}" /></li>
+    </f:for>
+    </ul>
+</f:section>

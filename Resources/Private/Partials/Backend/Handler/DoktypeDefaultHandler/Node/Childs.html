@@ -9,7 +9,7 @@
 
             <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
                 <f:for each="{node.childNodes.sDEF.lDEF.{fieldKey}.vDEF}" as="element">
-                    <f:render partial="{element.node.rendering.partial}" arguments="{configuration: configuration, node: element.node, is11orNewer: is11orNewer}" />
+                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: element.node}" />
                 </f:for>
             </tvp:arrayVariable>
         </f:if>
@@ -31,15 +31,15 @@
     <f:else>
         {f:variable(name: 'count', value: '{f:count(subject: layoutHeaders)}')}
         {f:variable(name: 'cellWidth', value: '{100 / count}')}
-        <table border="0" cellpadding="2" cellspacing="2" width="100%" class="tpm-subelement-table">
+        <table class="tvp-childs-table">
             <tr>
                 <f:for each="{layoutHeaders}" as="layoutHeader">
-                    <td width="{cellWidth}%" class="tpm-title-cell"><f:format.raw>{layoutHeader}</f:format.raw></td>
+                    <td width="{cellWidth}%"><f:format.raw>{layoutHeader}</f:format.raw></td>
                 </f:for>
             </tr>
             <tr>
                 <f:for each="{layoutFields}" key="layoutKey" as="layoutField">
-                    <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%" class="tpm-content-cell tvjs-dropzone" data-parent-pointer="{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:{layoutKey}:vDEF"><f:format.raw>{layoutField}</f:format.raw></td>
+                    <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%" data-parent-pointer="{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:{layoutKey}:vDEF"><f:format.raw>{layoutField}</f:format.raw></td>
                 </f:for>
             </tr>
         </table>

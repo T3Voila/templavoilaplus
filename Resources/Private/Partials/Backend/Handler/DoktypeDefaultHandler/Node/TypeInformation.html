@@ -1,0 +1,27 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+
+<f:variable name="title" value=""/>
+<f:comment>Get title from TCA ctrl section</f:comment>
+<f:if condition="{settings.configuration.TCA.{node.raw.table}.ctrl.title}">
+    <f:variable name="title" value="{settings.configuration.TCA.{node.raw.table}.ctrl.title}"/>
+</f:if>
+
+
+<f:comment>Get title from TCA typeColumn</f:comment>
+<f:if condition="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}">
+    <f:variable name="typeColumn" value="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}"/>
+    <f:variable name="title" value="{tvp:backend.labelFromItemlist(table:'{node.raw.table}', fieldName:'{typeColumn}', key:'{node.raw.entity.{typeColumn}}')}"/>
+</f:if>
+
+
+<f:comment>Get title from TV+ mapping if it is such an element</f:comment>
+<f:if condition="{node.raw.entity.tx_templavoilaplus_map}">
+    <f:variable name="title" value="{tvp:backend.labelFromMappingConfiguration(identifier:'{node.raw.entity.tx_templavoilaplus_map}')}"/>
+</f:if>
+
+<f:if condition="{title}">
+    <strong>
+            <f:translate key="{title}" default="{title}"/>
+    </strong><br/>
+</f:if>

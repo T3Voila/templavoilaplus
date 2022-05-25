@@ -1,43 +1,60 @@
-<div class="t3-page-ce-header-icons-right">
-    <f:if condition="{node.raw.entity.hidden}">
-        <f:then>
-            <core:icon identifier="actions-edit-unhide" />
-        </f:then>
-        <f:else>
-            <core:icon identifier="actions-edit-hide" />
-        </f:else>
-    </f:if>
-    <f:if condition="{node.rendering.belongsToCurrentPage}">
-        <core:icon identifier="actions-document-open" />
-    </f:if>
+<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+    <div class="btn-group" role="group" aria-label="First group">
+        <button type="button" class="btn btn-default btn-sm">
+            <f:if condition="{node.raw.entity.hidden}">
+                <f:then>
+                    <core:icon identifier="actions-edit-unhide" />
+                </f:then>
+                <f:else>
+                    <core:icon identifier="actions-edit-hide" />
+                </f:else>
+            </f:if>
+        </button>
+        <f:if condition="{node.rendering.belongsToCurrentPage}">
+            <button type="button" class="btn btn-default btn-sm">
+                <core:icon identifier="actions-document-open" />
+            </button>
+        </f:if>
+    </div>
     <f:if condition="{node.raw.table} == 'tt_content'">
         <f:then>
-            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                <f:then>
-                    <core:icon identifier="actions-edit-copy-release" />
-                </f:then>
-                <f:else>
-                    <core:icon identifier="actions-edit-copy" />
-                </f:else>
-            </f:if>
-            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'ref' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                <f:then>
-                    <core:icon identifier="extensions-templavoila-clip_ref-release" />
-                </f:then>
-                <f:else>
-                    <core:icon identifier="extensions-templavoila-clip_ref" />
-                </f:else>
-            </f:if>
-            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == '' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                <f:then>
-                    <core:icon identifier="actions-edit-cut-release" />
-                </f:then>
-                <f:else>
-                    <core:icon identifier="actions-edit-cut" />
-                </f:else>
-            </f:if>
+            <button type="button" class="btn btn-default btn-sm">
+                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                    <f:then>
+                        <core:icon identifier="actions-edit-copy-release" />
+                    </f:then>
+                    <f:else>
+                        <core:icon identifier="actions-edit-copy" />
+                    </f:else>
+                </f:if>
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm">
+                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'ref' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                    <f:then>
+                        <core:icon identifier="extensions-templavoila-clip_ref-release" />
+                    </f:then>
+                    <f:else>
+                        <core:icon identifier="extensions-templavoila-clip_ref" />
+                    </f:else>
+                </f:if>
+            </button>
+
+            <button type="button" class="btn btn-default btn-sm">
+                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == '' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                    <f:then>
+                        <core:icon identifier="actions-edit-cut-release" />
+                    </f:then>
+                    <f:else>
+                        <core:icon identifier="actions-edit-cut" />
+                    </f:else>
+                </f:if>
+            </button>
+
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
-                <core:icon identifier="extensions-templavoila-makelocalcopy" />
+                <button type="button" class="btn btn-default btn-sm">
+                    <core:icon identifier="extensions-templavoila-makelocalcopy" />
+                </button>
             </f:if>
         </f:then>
     </f:if>
