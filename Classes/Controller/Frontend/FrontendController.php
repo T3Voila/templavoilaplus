@@ -47,6 +47,19 @@ class FrontendController extends AbstractPlugin
     }
 
     /**
+     * @param string $content Standard content input. Ignore.
+     * @param array $conf TypoScript array for the plugin.
+     *
+     * @return string HTML content for the Flexible Content elements.
+     * @deprecated Starting with v8 you should call renderPage directly via TypoScript
+     *             page.10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
+     */
+    public function main_page($content, $conf)
+    {
+        return $this->renderPage($content, $conf);
+    }
+
+    /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
      *
      * @param string $content Standard content input. Ignore.

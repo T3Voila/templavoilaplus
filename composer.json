@@ -82,6 +82,11 @@
 		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
+		"typo3/class-alias-loader": {
+			"class-alias-maps": [
+				"Migrations/Code/ClassAliasMap.php"
+			]
+		},
 		"typo3/cms": {
 			"app-dir": ".Build",
 			"extension-key": "templavoilaplus",
