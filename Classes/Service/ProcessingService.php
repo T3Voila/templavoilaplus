@@ -221,13 +221,13 @@ class ProcessingService
                     $childs[$fieldKey] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
                 }
             } else {
-            // If the current field points to other content elements, process them:
-            if (
-                $fieldConfig['TCEforms']['config']['type'] == 'group' &&
-                $fieldConfig['TCEforms']['config']['internal_type'] == 'db'
-            ) {
-                /** @TODO allowed can be multiple tables */
-                $table = $fieldConfig['TCEforms']['config']['allowed'];
+                // If the current field points to another table, process it if not sys_file or sys_file_reference:
+                if (
+                    $fieldConfig['TCEforms']['config']['type'] === 'group'
+                    && $fieldConfig['TCEforms']['config']['internal_type'] === 'db'
+                ) {
+                    /** @TODO allowed can be multiple tables */
+                    $table = $fieldConfig['TCEforms']['config']['allowed'];
                     foreach ($vKeys as $vKey) {
                         $listOfSubElementUids = $values[$fieldKey][$vKey];
                         if ($listOfSubElementUids) {
