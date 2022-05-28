@@ -1,3 +1,18 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
+
+<f:if condition="{node.raw.table} == sys_file">
+    <f:then>
+        <be:thumbnail src="{node.raw.entity.uid}" height="64" width="64" />
+    </f:then>
+    <f:else>
+        <f:render section="TableNode" arguments="{_all}" />
+    </f:else>
+</f:if>
+
+
+<f:section name="TableNode">
 <div class="tvp-node card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
     <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
     <div class="card-header">
@@ -29,7 +44,6 @@
 
     </div>
 
-
     <div class="card-footer"><f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
 
         <f:if condition="{f:count(subject: node.localization)} > 0">
@@ -56,3 +70,4 @@
 
     </div>
 </div>
+</f:section>
