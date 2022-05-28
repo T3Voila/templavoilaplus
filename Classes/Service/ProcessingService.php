@@ -224,15 +224,16 @@ class ProcessingService
             // If the current field points to other content elements, process them:
             if (
                 $fieldConfig['TCEforms']['config']['type'] == 'group' &&
-                $fieldConfig['TCEforms']['config']['internal_type'] == 'db' &&
-                $fieldConfig['TCEforms']['config']['allowed'] == 'tt_content'
+                $fieldConfig['TCEforms']['config']['internal_type'] == 'db'
             ) {
+                /** @TODO allowed can be multiple tables */
+                $table = $fieldConfig['TCEforms']['config']['allowed'];
                     foreach ($vKeys as $vKey) {
                         $listOfSubElementUids = $values[$fieldKey][$vKey];
                         if ($listOfSubElementUids) {
 //                             $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
                             $parentPointer = [];
-                            $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $usedElements);
+                            $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
                         } else {
                             $childs[$fieldKey][$vKey] = [];
                         }
@@ -250,7 +251,7 @@ class ProcessingService
         return $childs;
     }
 
-    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, array &$usedElements): array
+    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, string $table, array &$usedElements): array
     {
         $nodes = [];
 
@@ -258,21 +259,21 @@ class ProcessingService
         /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 
-        $dbAnalysis->start($listOfNodes, 'tt_content');
+        $dbAnalysis->start($listOfNodes, $table);
 
         // Traverse records:
         // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
         $counter = 1;
         foreach ($dbAnalysis->itemArray as $position => $recIdent) {
-            $idStr = 'tt_content:' . $recIdent['id'];
+            $idStr = $table . ':' . $recIdent['id'];
 
-            $contentRow = BackendUtility::getRecordWSOL('tt_content', $recIdent['id']);
+            $contentRow = BackendUtility::getRecordWSOL($table, $recIdent['id']);
 
             $parentPointer['position'] = $position;
 
             // Only do it if the element referenced was not deleted! - or hidden :-)
             if (is_array($contentRow)) {
-                $nodes[$idStr] = $this->getNodeWithTree('tt_content', $contentRow, $parentPointer, $basePid, $usedElements);
+                $nodes[$idStr] = $this->getNodeWithTree($table, $contentRow, $parentPointer, $basePid, $usedElements);
             }
         }
 
