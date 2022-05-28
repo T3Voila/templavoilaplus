@@ -16,7 +16,7 @@
 
 <f:section name="elements">
     <f:for each="{fieldsDs}" key="fieldName" as="fieldConfig">
-        <f:if condition="!{node.childNodes.sDEF.lDEF.{fieldName}.vDEF}">
+        <f:if condition="!{node.childNodes.sDEF.lDEF.{fieldName}}">
             <f:if condition="{fieldConfig.TCEforms.label}">
                 <strong>
                     <f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}"/>:

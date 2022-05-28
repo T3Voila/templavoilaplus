@@ -81,7 +81,6 @@ class ProcessingService
         $node['childNodes'] = $this->getNodeChilds($node, $basePid, $usedElements);
 
         // Return result:
-        // contentElementUsage set to unset var??
         return [
             'node' => $node,
             'contentElementUsage' => $tt_content_elementRegister
@@ -111,7 +110,6 @@ class ProcessingService
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
                 'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
-                'partial' => 'Backend/Handler/DoktypeDefaultHandler/' . ($table === 'pages' ? 'Page' : 'Content') . 'Element',
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']],
                 'parentPointer' => $parentPointerString,
@@ -185,44 +183,68 @@ class ProcessingService
     public function getNodeChilds(array $node, int $basePid, array &$usedElements): array
     {
         $childs = [];
+        $lKeys = ['lDEF'];
 
         if (
             !isset($node['datastructure']['sheets'])
             || !is_array($node['datastructure']['sheets'])
+            || !isset($node['flexform']['data'])
         ) {
             return $childs;
         }
 
-        $lKeys = ['lDEF'];
-        $vKeys = ['vDEF'];
         // Traverse each sheet in the FlexForm Structure:
         foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
             // Traverse the sheet's elements:
             if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
-                foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldData) {
-                    // If the current field points to other content elements, process them:
-                    if (
-                        $fieldData['TCEforms']['config']['type'] == 'group' &&
-                        $fieldData['TCEforms']['config']['internal_type'] == 'db' &&
-                        $fieldData['TCEforms']['config']['allowed'] == 'tt_content'
-                    ) {
-                        foreach ($lKeys as $lKey) {
-                            foreach ($vKeys as $vKey) {
-                                $listOfSubElementUids = $node['flexform']['data'][$sheetKey][$lKey][$fieldKey][$vKey];
-                                if ($listOfSubElementUids) {
-                                    $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
-                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $usedElements);
-                                } else {
-                                    $childs[$sheetKey][$lKey][$fieldKey][$vKey] = [];
-                                }
-                            }
-                        }
-                    } elseif ($fieldData['type'] != 'array' && $fieldData['TCEforms']['config']) {
-                        // If generally there are non-container fields, register them:
-                        $childs['contentFields'][$sheetKey][$fieldKey] = $fieldKey;
-                    }
+                foreach ($lKeys as $lKey) {
+                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                 }
             }
+        }
+
+        return $childs;
+    }
+
+    protected function getNodeChildsFromElements(array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
+    {
+        $childs = [];
+        $vKeys = ['vDEF'];
+
+        foreach ($elements as $fieldKey => $fieldConfig) {
+            if ($fieldConfig['type'] == 'array') {
+                if ($fieldConfig['section']) {
+                    foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
+                        $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
+                    }
+                } else {
+                    $childs[$fieldKey] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
+                }
+            } else {
+            // If the current field points to other content elements, process them:
+            if (
+                $fieldConfig['TCEforms']['config']['type'] == 'group' &&
+                $fieldConfig['TCEforms']['config']['internal_type'] == 'db' &&
+                $fieldConfig['TCEforms']['config']['allowed'] == 'tt_content'
+            ) {
+                    foreach ($vKeys as $vKey) {
+                        $listOfSubElementUids = $values[$fieldKey][$vKey];
+                        if ($listOfSubElementUids) {
+//                             $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
+                            $parentPointer = [];
+                            $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $usedElements);
+                        } else {
+                            $childs[$fieldKey][$vKey] = [];
+                        }
+                    }
+            }
+            }
+            /** @TODO What does this do?
+            elseif ($fieldConfig['type'] !== 'array' && $fieldConfig['TCEforms']['config']) {
+                // If generally there are non-container fields, register them:
+                $childs['contentFields'][$sheetKey][$fieldKey] = $fieldKey;
+            }
+            */
         }
 
         return $childs;
@@ -235,6 +257,7 @@ class ProcessingService
         // Get records:
         /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+
         $dbAnalysis->start($listOfNodes, 'tt_content');
 
         // Traverse records:
