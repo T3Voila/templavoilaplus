@@ -54,8 +54,16 @@ class FrontendController extends AbstractPlugin
      * @deprecated Starting with v8 you should call renderPage directly via TypoScript
      *             page.10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
      */
+    // phpcs:disable
     public function main_page($content, $conf)
     {
+        // phpcs:enable
+        trigger_error(
+            'Deprecated TypoScript page userFunc for EXT:templavoilaplus ' .
+            '"Ppi\\TemplaVoilaPlus\\Controller|\FrontendController->main_page" was found, ' .
+            'please change to "Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage"',
+            E_USER_DEPRECATED
+        );
         return $this->renderPage($content, $conf);
     }
 
