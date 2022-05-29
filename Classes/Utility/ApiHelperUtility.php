@@ -26,7 +26,7 @@ class ApiHelperUtility
         );
     }
 
-    public static function getMappingConfiguration($combinedMappingConfigurationIdentifier): MappingConfiguration
+    public static function getMappingConfiguration(string $combinedMappingConfigurationIdentifier): MappingConfiguration
     {
         return self::getConfiguration(
             $combinedMappingConfigurationIdentifier,

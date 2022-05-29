@@ -17,8 +17,13 @@ namespace Tvp\TemplaVoilaPlus\Service;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
+use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
+use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
+use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException as CoreInvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,6 +99,8 @@ class ProcessingService
         $onPid = ($table === 'pages' ? (int)$row['uid'] : (int)$row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
 
+        $mappingConfiguration = $this->getMappingConfiguration($row);
+
         if (isset($usedElements[$table][$row['uid']])) {
             $usedElements[$table][$row['uid']]++;
         } else {
@@ -113,11 +120,26 @@ class ProcessingService
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']],
                 'parentPointer' => $parentPointerString,
+                'beLayout' => ($mappingConfiguration ? $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier() : ''),
                 'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
             ],
         ];
 
         return $node;
+    }
+
+    public function getMappingConfiguration(array $row): ?MappingConfiguration
+    {
+        $mappingConfiguration = null;
+
+        if (isset($row['tx_templavoilaplus_map'])) {
+            try {
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
+            } catch (ConfigurationException | MissingPlacesException | InvalidIdentifierException | \TypeError $e) {
+                // Empty is correct
+            }
+        }
+        return $mappingConfiguration;
     }
 
     public function getDatastructureForNode(array $node): array
@@ -139,7 +161,7 @@ class ProcessingService
             /** @TODO Runtime Cache? */
             try {
                 $rawDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
-            } catch (InvalidIdentifierException $e) {
+            } catch (CoreInvalidIdentifierException $e) {
                 $rawDataStructure = ['error' => $e->getMessage()];
             } catch (\RuntimeException $e) {
                 $rawDataStructure = ['error' => $e->getMessage()];
