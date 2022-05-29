@@ -62,7 +62,7 @@ class ContentElements extends AbstractResponse
 
         /** @TODO $parameters['table'] */
         return new JsonResponse([
-            'nodeHtml' => $this->record2html('tt_content', (int)$parameters['uid']),
+            'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid']),
         ]);
     }
 
@@ -74,19 +74,24 @@ class ContentElements extends AbstractResponse
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
         $nodeTree = $processingService->getNodeWithTree($table, $row);
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html');
-        $view->assign('nodeTree', $nodeTree);
-
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
-        $view->assign(
-            'configuration',
-            [
+        $settings = [
+            'configuration' => [
                 'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-            ]
-        );
+                'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
+                'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+                'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+                'TCA' => $GLOBALS['TCA'],
+            ],
+        ];
+
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $settings);
+        $view->assign('nodeTree', $nodeTree);
 
         return $view->render();
     }

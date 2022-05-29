@@ -63,15 +63,15 @@ table.tvp-childs-table td:last-child {
     height: 10px;
 }
 
-.t3-page-ce .t3-page-ce-header.toYellow {
+nav.toYellow {
     animation: toYellow 0.5s linear forwards;
 }
 
-.t3-page-ce .t3-page-ce-header.flashGreen {
+nav.flashGreen {
     animation: flashGreen 2s linear;
 }
 
-.t3-page-ce .t3-page-ce-header.flashRed {
+nav.flashRed {
     animation: flashRed 2s linear;
 }
 

@@ -27,7 +27,7 @@ abstract class AbstractResponse
      * @return StandaloneView
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    protected function getFluidTemplateObject(string $templateFile): StandaloneView
+    protected function getFluidTemplateObject(string $templateFile, array $settings = []): StandaloneView
     {
         /** @var StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -40,6 +40,8 @@ abstract class AbstractResponse
         $view->setLayoutRootPaths([
             10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Layouts/',
         ]);
+
+        $view->assign('settings', $settings);
 
         return $view;
     }

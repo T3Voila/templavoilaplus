@@ -264,11 +264,12 @@ console.log('onAdd');
     }
 
     PageLayout.initEditRecordListener = function(base) {
-        var allItems = base.querySelectorAll('.sortableItem .tvp-edit-record');
+console.log(base);
+        var allItems = base.querySelectorAll('div.tvp-edit-record');
 
         for (const item of allItems) {
             item.addEventListener('click', function(event) {
-                var origItem = item.parentNode.parentNode.parentNode;
+                var origItem = item.parentNode.parentNode;
                 PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }
@@ -327,8 +328,8 @@ console.log('onAdd');
     }
 
     PageLayout.reloadRecord = function(table, uid) {
-        var items = $('.sortableItem[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
-        PageLayout.showInProgress(items[0]);
+        var items = $('div.tvp-node[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
+        PageLayout.showInProgress(items);
 
         $.ajax({
             type: 'POST',
@@ -340,41 +341,47 @@ console.log('onAdd');
             success: function(data) {
                 var div = document.createElement('div');
                 div.innerHTML = data.nodeHtml;
-                PageLayout.showSuccess(div.firstChild);
-                PageLayout.initEditRecordListener(div.firstChild);
-                items[0].parentNode.replaceChild(div.firstChild, items[0]);
+                for (var item of items) {
+                    var newItem = div.firstElementChild.cloneNode(true)
+                    PageLayout.initEditRecordListener(newItem);
+                    PageLayout.showSuccess(newItem);
+                    item.parentNode.replaceChild(newItem, item);
+                }
 
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
-                PageLayout.showError(items[0]);
+                PageLayout.showError(items);
             }
         });
     }
 
-    PageLayout.showInProgress = function(item)
+    PageLayout.showInProgress = function(items)
     {
-        $('.tpm-titlebar', item)
-            .addClass("toYellow");
+        $('nav.navbar', items)
+            .addClass("toYellow")
+            .removeClass("bg-light");
     }
 
-    PageLayout.showSuccess = function(item)
+    PageLayout.showSuccess = function(items)
     {
         // flash green
-        $('.tpm-titlebar', item)
+        $('nav.navbar', items)
             .off()
             .addClass("flashGreen")
+            .removeClass("bg-light")
             .removeClass("toYellow")
-            .one("animationend webkitAnimationEnd", function(){ $('.tpm-titlebar', item).removeClass("flashGreen"); });
+            .one("animationend webkitAnimationEnd", function(){ $('nav.navbar', items).addClass("bg-light").removeClass("flashGreen"); });
     }
 
-    PageLayout.showError = function(item)
+    PageLayout.showError = function(items)
     {
         // flash red
-        $('.tpm-titlebar', item)
+        $('nav.navbar', items)
             .off()
             .addClass("flashRed")
+            .removeClass("bg-light")
             .removeClass("toYellow")
-            .one("animationend webkitAnimationEnd", function(){ $('.tpm-titlebar', item).removeClass("flashRed"); });
+            .one("animationend webkitAnimationEnd", function(){ $('nav.navbar', items).addClass("bg-light").removeClass("flashRed"); });
     }
 
 

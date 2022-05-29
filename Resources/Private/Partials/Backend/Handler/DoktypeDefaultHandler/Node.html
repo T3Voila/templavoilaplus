@@ -1,7 +1,6 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 {namespace be=TYPO3\CMS\Backend\ViewHelpers}
 
-
 <f:if condition="{node.raw.table} == sys_file">
     <f:then>
         <be:thumbnail src="{node.raw.entity.uid}" height="64" width="64" />
@@ -34,7 +33,9 @@
         </f:comment>
     </div>
     <div class="card-body">
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
+        <div class="tvp-edit-record">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
+        </div>
         <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
             <f:if condition="{node.rendering.beLayout}">
                 <f:variable name="beLayout" value="{node.rendering.beLayout}" />
