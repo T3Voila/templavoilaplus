@@ -36,6 +36,9 @@
     <div class="card-body">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
         <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
+            <f:if condition="{node.rendering.beLayout}">
+                <f:variable name="beLayout" value="{node.rendering.beLayout}" />
+            </f:if>
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/Childs" arguments="{node: node, beLayout: beLayout}" />
         </f:if>
         <div class="tvp-edit-record">

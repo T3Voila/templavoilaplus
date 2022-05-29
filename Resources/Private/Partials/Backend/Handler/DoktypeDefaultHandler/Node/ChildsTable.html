@@ -1,0 +1,104 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:section name="renderSubFields">
+    <f:for each="{fieldConfig}" key="fieldKey" as="subFieldConfig">
+        <f:if condition="!{childElements.{fieldKey}}">
+            <f:then>
+                <strong>
+                    <f:if condition="{subFieldConfig.TCEforms.label}">
+                        <f:then>
+                            <f:translate key="{subFieldConfig.TCEforms.label}" default="{subFieldConfig.TCEforms.label}" />
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{subFieldConfig.title}">
+                                <f:translate key="{subFieldConfig.title}" default="{subFieldConfig.title}" />
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </strong>
+                <f:format.crop maxCharacters="2000">
+                    <tvp:format.wordLength maxCharacters="75">
+                        <tvp:format.stripTags whitespace="true">{childFlexformData.{fieldKey}.vDEF}</tvp:format.stripTags>
+                    </tvp:format.wordLength>
+                </f:format.crop><br/>
+            </f:then>>
+        </f:if>
+    </f:for>
+</f:section>
+
+<f:section name="renderChildElements">
+    <f:for each="{fieldConfig}" key="fieldKey" as="subFieldConfig">
+
+        <f:if condition="{childElements.{fieldKey}}">
+            <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
+                <strong>
+                    <f:if condition="{subFieldConfig.TCEforms.label}">
+                        <f:then>
+                            <f:translate key="{subFieldConfig.TCEforms.label}" default="{subFieldConfig.TCEforms.label}" />
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{subFieldConfig.title}">
+                                <f:translate key="{subFieldConfig.title}" default="{subFieldConfig.title}" />
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </strong>
+            </tvp:arrayVariable>
+        </f:if>
+        <f:if condition="{subFieldConfig.type} == 'array'">
+            <f:then>
+                <f:if condition="{subFieldConfig.section}">
+                    <f:then>
+                        <f:variable name="subFlexFormData" value="{childFlexformData.{fieldKey}.el}" />
+                        <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+                            {f:variable(name: 'countWhat', value: '{childElements.{fieldKey}}')}
+                            {f:variable(name: 'count', value: '{f:count(subject: countWhat)}')}
+                            {f:variable(name: 'cellWidth', value: '{100 / count}')}
+                            <table class="table tvp-childs-table table-secondary">
+                                <tr>
+                                    <f:for each="{childElements.{fieldKey}}" key="dataKey" as="sectionFieldElements">
+                                        <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%">
+                                            <f:render section="renderChildElements"  arguments="{fieldConfig: subFieldConfig.el, childElements: sectionFieldElements, childFlexformData: '{subFlexFormData.{dataKey}}', beLayout: beLayout, subpart: '{subpart}.{fieldKey}'}" />
+                                        </td>
+                                    </f:for>
+                                </tr>
+                            </table>
+                        </tvp:arrayVariable>
+                    </f:then>
+                    <f:else>
+                        <f:variable name="subFlexFormData" value="{childFlexformData.{fieldKey}.el}" />
+                        <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+                            <f:render section="renderChildElements" arguments="{fieldConfig: subFieldConfig.el, childElements: '{childElements.{fieldKey}}', childFlexformData: '{childFlexformData.{fieldKey}.el}', beLayout: beLayout, subpart: '{subpart}.{fieldKey}'}" />
+                            <f:render section="renderSubFields" arguments="{fieldConfig: subFieldConfig.el, childElements: '{childElements.{fieldKey}}', childFlexformData: '{childFlexformData.{fieldKey}.el}'}" />
+                        </tvp:arrayVariable>
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:if condition="{childElements.{fieldKey}}">
+                    <f:then>
+                        <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+                            <f:for each="{childElements.{fieldKey}.vDEF}" as="element">
+                                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: element.node}" />
+                            </f:for>
+                        </tvp:arrayVariable>
+                    </f:then>
+                </f:if>
+            </f:else>
+        </f:if>
+    </f:for>
+    {f:variable(name: 'count', value: '{f:count(subject: layoutHeaders)}')}
+    {f:variable(name: 'cellWidth', value: '{100 / count}')}
+    <table class="tvp-childs-table">
+        <tr>
+            <f:for each="{layoutHeaders}" as="layoutHeader">
+                <td width="{cellWidth}%"><f:format.raw>{layoutHeader}</f:format.raw></td>
+            </f:for>
+        </tr>
+        <tr>
+            <f:for each="{layoutFields}" key="layoutKey" as="layoutField">
+                <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%" data-parent-pointer="{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:{layoutKey}:vDEF"><f:format.raw>{layoutField}</f:format.raw></td>
+            </f:for>
+        </tr>
+    </table>
+</f:section>
