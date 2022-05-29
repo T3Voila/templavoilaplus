@@ -45,7 +45,7 @@ class DataStructureIdentifierHook
             }
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($identifier['tableName']);
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            $dataStructure = $queryBuilder
+            $mappingIdentifier = $queryBuilder
                 ->select($identifier['fieldName'])
                 ->from($identifier['tableName'])
                 ->where(
@@ -57,7 +57,7 @@ class DataStructureIdentifierHook
                 ->execute()
                 ->fetchColumn(0);
             try {
-                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($dataStructure);
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($mappingIdentifier);
                 $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());
 
                 $dataStructure = $dataStructure->getDataStructure();
