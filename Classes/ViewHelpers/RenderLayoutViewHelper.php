@@ -28,6 +28,7 @@ class RenderLayoutViewHelper extends AbstractViewHelper
         parent::initializeArguments();
         $this->registerArgument('combinedConfigurationIdentifier', 'string', '');
         $this->registerArgument('arguments', 'array', 'Array of variables to be transferred. Use {_all} for all variables', false, []);
+        $this->registerArgument('subpart', 'string', 'Subpart to process', false, '');
     }
 
     /**
@@ -42,6 +43,8 @@ class RenderLayoutViewHelper extends AbstractViewHelper
     ) {
         $combinedConfigurationIdentifier = $arguments['combinedConfigurationIdentifier'];
         $variables = (array)$arguments['arguments'];
+        $subpart = (string)$arguments['subpart'];
+        $variables['__SUBPART__'] = $subpart;
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);

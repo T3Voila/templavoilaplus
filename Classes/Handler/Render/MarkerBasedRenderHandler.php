@@ -33,7 +33,13 @@ class MarkerBasedRenderHandler implements RenderHandlerInterface
         $path = GeneralUtility::getFileAbsFileName($templateConfiguration->getPlace()->getEntryPoint());
         $content = file_get_contents($path . '/' . $templateConfiguration->getTemplateFileName());
 
-        $content = $markerBasedTemplateService->substituteMarkerArray($content, $processedValues, '###|###', false, false);
+        if ($processedValues['__SUBPART__']) {
+            $subPartContent = $markerBasedTemplateService->getSubpart($content, '###' . $processedValues['__SUBPART__'] . '###');
+            if ($subPartContent !== '') {
+                $content = $subPartContent;
+            }
+        }
+        $content = $markerBasedTemplateService->substituteMarkerArray($content, $processedValues, '###|###', false, true);
 
         return $content;
     }
