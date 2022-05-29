@@ -60,7 +60,7 @@ class FrontendController extends AbstractPlugin
         // phpcs:enable
         trigger_error(
             'Deprecated TypoScript page userFunc for EXT:templavoilaplus ' .
-            '"Ppi\\TemplaVoilaPlus\\Controller|\FrontendController->main_page" was found, ' .
+            '"Ppi\\TemplaVoilaPlus\\Controller\\FrontendController->main_page" was found, ' .
             'please change to "Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage"',
             E_USER_DEPRECATED
         );
