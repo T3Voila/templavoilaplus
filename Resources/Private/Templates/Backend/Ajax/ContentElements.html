@@ -11,7 +11,7 @@
         <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
             <div class="tab-pane tvjs-drag" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
                 <f:for each="{section.contentElements}" as="contentElement" key="contentElementKey">
-                    <div class="row" data-elementRow="{contentElement.element-row -> f:format.json()}">
+                    <div class="row" data-record-table="tt_content" data-elementRow="{contentElement.element-row -> f:format.json()}">
                         <div class="col-1 dragHandle"><core:icon identifier="{contentElement.iconIdentifier}" size="default" /></div>
                         <div class="col-11">
                             <div><b>{contentElement.title}</b></div>

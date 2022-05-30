@@ -118,10 +118,9 @@ define([
             new Sortable(allDropzones[i], {
                 revertOnSpill: true,
                 group: {
-                    name: 'dropzones',
-                    pull: function (to, from, evt, dragEvent) {
-// console.log(evt);
-console.log(dragEvent.ctrlKey);
+                    name: 'dropzones_' + allDropzones[i].dataset.childAllowed,
+                    pull: function (to, from, el, evt) {
+console.log(evt);
 //                         to.el.addClass('green');
                         if (to.el.id === 'navbarClipboard') {
                             return 'clone';
@@ -131,8 +130,8 @@ console.log(dragEvent.ctrlKey);
                         }
                         return true;
                     },
-                    put: function (to, from, el, evt, dragEvent) {
-console.log(evt.ctrlKey);
+                    put: function (to, from, el, evt) {
+console.log(evt);
 //                         console.log(el);
 //                         $(to.el).addClass('green');
                     },
@@ -191,11 +190,7 @@ console.log('onEnd');
                 },
                 onMove: function (/**Event*/evt, /**Event*/originalEvent) {
 console.log('onMove');
-                    if (evt.dragged.dataset.recordTable === evt.to.dataset.childAllowed) {
-                        $('.iAmGhost').addClass('blue');
-                        return true;
-                    }
-                    return false;
+                    $('.iAmGhost').addClass('blue');
                 },
                 onAdd: function (/**Event*/evt) {
 console.log('onAdd');
@@ -302,7 +297,7 @@ console.log('onAdd');
         for (var i = 0; i < allDragzones.length; i++) {
             new Sortable(allDragzones[i], {
                 group: {
-                    name: 'dropzones',
+                    name: 'dropzones_tt_content',
                     pull: 'clone',
                     put: false
                 },
