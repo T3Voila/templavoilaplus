@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException a
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -430,9 +431,7 @@ class ProcessingService
         ];
         $sLangPart = [];
 
-        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-        $flexFormTools->setArrayValueByPath(explode('#', $destinationPointer['field']), $sLangPart, $fieldPart);
+        $sLangPart = ArrayUtility::setValueByPath($sLangPart, $destinationPointer['field'], $fieldPart, '#');
         $dataArr[$destinationPointer['table']][$uid]['tx_templavoilaplus_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']] = $sLangPart;
 
         $flagWasSet = $this->getTCEmainRunningFlag();
@@ -583,9 +582,7 @@ class ProcessingService
         $listOfUIDs = '';
         if (is_array($flexform) && is_array($flexform['data'])) {
             $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
-            /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $fieldPart = $flexFormTools->getArrayValueByPath($fieldPointerPath, $sLangPart);
+            $fieldPart = ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath);
             $listOfUIDs = $fieldPart[$flexformPointer['vLang']];
         }
 

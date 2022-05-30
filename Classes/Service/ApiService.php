@@ -20,6 +20,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -899,9 +900,7 @@ class ApiService
         $listOfUIDs = '';
         if (is_array($flexformXMLArr) && is_array($flexformXMLArr['data'])) {
             $sLangPart = $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
-            /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-            $fieldPart = $flexFormTools->getArrayValueByPath(explode('#', $flexformPointer['field']), $sLangPart);
+            $fieldPart = ArrayUtility::getValueByPath($sLangPart, $flexformPointer['field'], '#');
             $listOfUIDs = $fieldPart[$flexformPointer['vLang']];
         }
 
@@ -1134,9 +1133,7 @@ class ApiService
         ];
         $sLangPart = [];
 
-        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
-        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
-        $flexFormTools->setArrayValueByPath(explode('#', $destinationPointer['field']), $sLangPart, $fieldPart);
+        $sLangPart = ArrayUtility::setValueByPath($sLangPart, $destinationPointer['field'], $fieldPart, '#');
         $dataArr[$destinationPointer['table']][$uid]['tx_templavoilaplus_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']] = $sLangPart;
 
         $flagWasSet = $this->getTCEmainRunningFlag();
