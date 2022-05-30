@@ -28,11 +28,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ApiService
 {
     /**
-     * @var bool
-     */
-    protected $includePreviewData;
-
-    /**
      * @var string
      */
     protected $rootTable;
@@ -222,45 +217,6 @@ class ApiService
     }
 
     /**
-     * Moves an element specified by the source pointer to the location specified by
-     * destination pointer.
-     *
-     * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
-     * @param array $destinationPointer flexform pointer to the new location
-     *
-     * @return boolean TRUE if operation was successfully, otherwise false
-     */
-    public function moveElement($sourcePointer, $destinationPointer)
-    {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
-        }
-
-        return $this->process('move', $sourcePointer, $destinationPointer);
-    }
-
-    /**
-     * Sets all references for moving an element specified by the source pointer to the location specified by
-     * destination pointer. The record itself won't be modified and therefore setting the PID etc. must be
-     * handled elsewhere.
-     *
-     * @param array $sourcePointer flexform pointer pointing to the element which shall be moved
-     * @param array $destinationPointer flexform pointer to the new location
-     *
-     * @return boolean TRUE if operation was successfully, otherwise false
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function moveElement_setElementReferences($sourcePointer, $destinationPointer)
-    {
-        // phpcs:enable
-        if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement_setElementReferences()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer, 'destinationPointer' => $destinationPointer]);
-        }
-
-        return $this->process('move', $sourcePointer, $destinationPointer, true);
-    }
-
-    /**
      * Makes a true copy of an element specified by the source pointer to the location specified by
      * destination pointer. By default, it also copies all sub elements but can be disabled so sub elements
      * are not copied but referenced.
@@ -436,6 +392,7 @@ class ApiService
 
             return false;
         }
+
         $sourceReferencesArr = $this->flexform_getElementReferencesFromXML($sourceParentRecord['tx_templavoilaplus_flex'], $sourcePointer);
 
         // Check and get all information about the destination position:
@@ -470,9 +427,6 @@ class ApiService
         }
 
         switch ($mode) {
-            case 'move':
-                $result = $this->process_move($sourcePointer, $destinationPointer, $sourceReferencesArr, $destinationReferencesArr, $sourceParentRecord, $destinationParentRecord, $sourceElementRecord, $onlyHandleReferences);
-                break;
             case 'copy':
                 $result = $this->process_copy($sourceElementRecord['uid'], $destinationPointer, $destinationReferencesArr, $destinationParentRecord);
                 break;
@@ -500,116 +454,6 @@ class ApiService
         }
 
         return $result;
-    }
-
-    /**
-     * Actually moves the specified element and sets the element references of the parent element
-     * accordingly.
-     *
-     * @param array $sourcePointer flexform pointer pointing to the element which will be moved
-     * @param array $destinationPointer flexform pointer to the destination location
-     * @param array $sourceReferencesArr Current list of the parent source's element references
-     * @param array $destinationReferencesArr Current list of the parent destination's element references
-     * @param array $sourceParentRecord Database record of the source location (either from table 'pages' or 'tt_content')
-     * @param array $destinationParentRecord Database record of the destination location (either from table 'pages' or 'tt_content')
-     * @param array $elementRecord The database record of the element to be moved
-     * @param bool $onlyHandleReferences If TRUE, only the references will be set, the record itself will not be moved (because that happens elsewhere)
-     *
-     * @return boolean TRUE if operation was successfully, otherwise false
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function process_move(
-        array $sourcePointer,
-        array $destinationPointer,
-        array $sourceReferencesArr,
-        array $destinationReferencesArr,
-        array $sourceParentRecord,
-        array $destinationParentRecord,
-        array $elementRecord,
-        bool $onlyHandleReferences
-    ) {
-        // phpcs:enable
-        $elementUid = $elementRecord['uid'];
-
-        // Move the element within the same parent element:
-        $elementsAreWithinTheSameParentElement = (
-            $sourcePointer['table'] == $destinationPointer['table'] &&
-            $sourcePointer['uid'] == $destinationPointer['uid']
-        );
-        if ($elementsAreWithinTheSameParentElement) {
-            $elementsAreWithinTheSameParentField = (
-                $sourcePointer['sheet'] == $destinationPointer['sheet'] &&
-                $sourcePointer['sLang'] == $destinationPointer['sLang'] &&
-                $sourcePointer['field'] == $destinationPointer['field'] &&
-                $sourcePointer['vLang'] == $destinationPointer['vLang']
-            );
-
-            if ($elementsAreWithinTheSameParentField) {
-                $newPosition = ($sourcePointer['position'] < $destinationPointer['position']) ? $destinationPointer['position'] - 1 : $destinationPointer['position'];
-                $newReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
-                $newReferencesArr = $this->flexform_insertElementReferenceIntoList($newReferencesArr, $newPosition, $elementUid);
-                $this->flexform_storeElementReferencesListInRecord($newReferencesArr, $destinationPointer);
-            } else {
-                $sourceParentReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
-                $this->flexform_storeElementReferencesListInRecord($sourceParentReferencesArr, $sourcePointer);
-                $destinationParentReferencesArr = $this->flexform_insertElementReferenceIntoList($destinationReferencesArr, $destinationPointer['position'], $elementUid);
-                $this->flexform_storeElementReferencesListInRecord($destinationParentReferencesArr, $destinationPointer);
-            }
-        } else {
-            // Move the element to a different parent element:
-            $newSourceReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
-            $newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList($destinationReferencesArr, $destinationPointer['position'], $elementUid);
-
-            $this->flexform_storeElementReferencesListInRecord($newSourceReferencesArr, $sourcePointer);
-            $this->flexform_storeElementReferencesListInRecord($newDestinationReferencesArr, $destinationPointer);
-
-            // Move the records to the new page as well
-            if (!$onlyHandleReferences) {
-                $sourcePID = $sourcePointer['table'] == 'pages' ? $sourceParentRecord['uid'] : $sourceParentRecord['pid'];
-                $destinationPID = $destinationPointer['table'] == 'pages' ? $destinationParentRecord['uid'] : $destinationParentRecord['pid'];
-
-                // Determine uids of all sub elements of the element to be moved:
-                $dummyArr = [];
-                $elementUids = $this->flexform_getListOfSubElementUidsRecursively('tt_content', $elementUid, $dummyArr);
-                $elementUids[] = $elementUid;
-
-                // Reduce the list to local elements to make sure that references are kept instead of moving the referenced record
-                $queryBuilder = TemplaVoilaUtility::getQueryBuilderForTable('tt_content');
-                $queryBuilder->getRestrictions()
-                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction::class)
-                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction::class)
-                    ->removeByType(\TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction::class);
-
-                $localRecords = $queryBuilder
-                    ->select('uid', 'pid')
-                    ->from('tt_content')
-                    ->where(
-                        $queryBuilder->expr()->in('uid', $elementUids),
-                        $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($sourcePID, \PDO::PARAM_INT))
-                    )
-                    ->execute()
-                    ->fetchAll();
-
-                if (!empty($localRecords) && is_array($localRecords)) {
-                    $cmdArray = [];
-                    foreach ($localRecords as $localRecord) {
-                        $cmdArray['tt_content'][$localRecord['uid']]['move'] = $destinationPID;
-                    }
-
-                    $flagWasSet = $this->getTCEmainRunningFlag();
-                    $this->setTCEmainRunningFlag(true);
-                    $tce = GeneralUtility::makeInstance(DataHandler::class);
-                    $tce->stripslashes_values = 0;
-                    $tce->start([], $cmdArray);
-                    $tce->process_cmdmap();
-                    if (!$flagWasSet) {
-                        $this->setTCEmainRunningFlag(false);
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -899,7 +743,7 @@ class ApiService
      *
      * NOTE: "targettable" currently must be tt_content
      *
-     * @param string $flexformPointerString A string of the format "table:uid:sheet:sLang:field:vLang:position". The string may additionally contain "/table:uid" which is used to check the target record of the pointer
+     * @param string $flexformPointerString A string of the format "table:uid:sheet:sLang:#field:vLang:position". The string may additionally contain "/table:uid" which is used to check the target record of the pointer
      *
      * @return array A flexform pointer array which can be used with the functions in tx_templavoilaplus_api
      */
@@ -925,7 +769,7 @@ class ApiService
                 'uid' => $locationArr[1],
                 'sheet' => $locationArr[2],
                 'sLang' => $locationArr[3],
-                'field' => $locationArr[4],
+                'field' => substr($locationArr[4], 1), // Remove first "#" char
                 'vLang' => $locationArr[5],
                 'position' => $locationArr[6],
                 'targetCheckUid' => $targetCheckArr[1],
@@ -942,7 +786,7 @@ class ApiService
      *
      * @param array $flexformPointer A valid flexform pointer array
      *
-     * @return boolean|string A string of the format "table:uid:sheet:sLang:field:vLang:position". The string might additionally contain "/table:uid", which is used to check the target record of the pointer. If an error occurs: FALSE
+     * @return boolean|string A string of the format "table:uid:sheet:sLang:#field:vLang:position". The string might additionally contain "/table:uid", which is used to check the target record of the pointer. If an error occurs: FALSE
      */
     // phpcs:disable PSR1.Methods.CamelCapsMethodName
     public function flexform_getStringFromPointer($flexformPointer)
@@ -953,13 +797,14 @@ class ApiService
         }
 
         if (isset($flexformPointer['sheet'])) {
-            $flexformPointerString = $flexformPointer['table'] . ':' .
-                $flexformPointer['uid'] . ':' .
-                $flexformPointer['sheet'] . ':' .
-                $flexformPointer['sLang'] . ':' .
-                $flexformPointer['field'] . ':' .
-                $flexformPointer['vLang'] . ':' .
-                $flexformPointer['position'];
+            $flexformPointerString
+                = $flexformPointer['table']
+                . ':' . $flexformPointer['uid']
+                . ':' . $flexformPointer['sheet']
+                . ':' . $flexformPointer['sLang']
+                . ':#' . $flexformPointer['field'] // Add "#" on first
+                . ':' . $flexformPointer['vLang']
+                . ':' . $flexformPointer['position'];
             if (isset($flexformPointer['targetCheckUid'])) {
                 $flexformPointerString .= '/tt_content:' . $flexformPointer['targetCheckUid'];
             }
@@ -1057,11 +902,21 @@ class ApiService
             return false;
         }
 
-        $listOfUIDs = is_array($flexformXMLArr) && is_array($flexformXMLArr['data']) ? $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']][$flexformPointer['field']][$flexformPointer['vLang']] : '';
+        $listOfUIDs = '';
+        if (is_array($flexformXMLArr) && is_array($flexformXMLArr['data'])) {
+            $sLangPart = $flexformXMLArr['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
+            /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $fieldPart = $flexFormTools->getArrayValueByPath(explode('#', $flexformPointer['field']), $sLangPart);
+            $listOfUIDs = $fieldPart[$flexformPointer['vLang']];
+        }
+
         $arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
 
         // Getting the relation uids out and use only tt_content records which are not deleted:
         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+
+        /** @TODO tt_content? No, we do not know this here, need to look inside group config */
         $dbAnalysis->start($listOfUIDs, 'tt_content');
         $dbAnalysis->getFromDB();
 
@@ -1172,7 +1027,7 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $valueName => $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') {
+                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') { /** @TODO What the hell? */
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 $position = 1;
@@ -1183,7 +1038,7 @@ class ApiService
                                                             'uid' => $uid,
                                                             'sheet' => $sheetKey,
                                                             'sLang' => $languageKey,
-                                                            'field' => $fieldName,
+                                                            'field' => $fieldName, /** @TODO What is with sections/arrays? */
                                                             'vLang' => $valueName,
                                                             'position' => $position,
                                                             'targetCheckUid' => $subElementUid,
@@ -1280,7 +1135,15 @@ class ApiService
             $containerHasWorkspaceVersion = true;
         }
 
-        $dataArr[$destinationPointer['table']][$uid]['tx_templavoilaplus_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']][$destinationPointer['field']][$destinationPointer['vLang']] = implode(',', $referencesArr);
+        $fieldPart = [
+            $destinationPointer['vLang'] => implode(',', $referencesArr)
+        ];
+        $sLangPart = [];
+
+        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+        $flexFormTools->setArrayValueByPath(explode('#', $destinationPointer['field']), $sLangPart, $fieldPart);
+        $dataArr[$destinationPointer['table']][$uid]['tx_templavoilaplus_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']] = $sLangPart;
 
         $flagWasSet = $this->getTCEmainRunningFlag();
         $this->setTCEmainRunningFlag(true);

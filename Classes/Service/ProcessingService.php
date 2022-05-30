@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException as CoreInvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -173,6 +174,16 @@ class ProcessingService
         return $rawDataStructure;
     }
 
+    public function getDatastructureForPointer(array $pointer): array
+    {
+        return $this->getDatastructureForNode([
+            'raw' => [
+                'table' => $pointer['table'],
+                'entity' => $pointer['foundRecord'],
+            ]
+        ]);
+    }
+
     public function getFlexformForNode(array $node): array
     {
         $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
@@ -303,6 +314,334 @@ class ProcessingService
     }
 
     /**
+     * Moves an element specified by the source pointer to the location specified by destination pointer.
+     * @TODO Only pointers to TCEform of type groups allowed, move inside sections should also be done
+     *
+     * @param string $sourcePointer flexform pointer pointing to the element which shall be moved
+     * @param string $destinationPointer flexform pointer to the new location
+     * @return boolean TRUE if operation was successfully, otherwise false
+     */
+    public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: moveElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointerString, 'destinationPointer' => $destinationPointerString]);
+        }
+
+        // Check and get all information about the source position:
+        $sourcePointer = $this->getValidPointer($sourcePointerString);
+        // Check and get all information about the destination position:
+        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
+        if (!$sourcePointer || !$destinationPointer) {
+            return false;
+        }
+        $elementsAreWithinTheSameParentElement = (
+            $sourcePointer['table'] == $destinationPointer['table'] &&
+            $sourcePointer['uid'] == $destinationPointer['uid']
+        );
+
+        $elementUid = $sourcePointer['foundFieldReferences'][$sourcePointer['position']];
+
+        // Move the element within the same parent element:
+        if ($elementsAreWithinTheSameParentElement) {
+            $elementsAreWithinTheSameParentField = (
+                $sourcePointer['sheet'] == $destinationPointer['sheet'] &&
+                $sourcePointer['sLang'] == $destinationPointer['sLang'] &&
+                $sourcePointer['field'] == $destinationPointer['field'] &&
+                $sourcePointer['vLang'] == $destinationPointer['vLang']
+            );
+            if ($elementsAreWithinTheSameParentField) {
+                $newPosition = $destinationPointer['position'];
+                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+                $newReferences = $this->insertElementReferenceIntoList($newReferences, $newPosition, $elementUid);
+                $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+            } else {
+                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+                $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
+                $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+                $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+            }
+        } else {
+            // Move the element to a different parent element:
+            $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+            $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
+            $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+            $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+
+            /** @TODO Move over pages should reset the PID of the element (only for tt_content?) */
+        }
+
+        return true;
+    }
+
+
+    /**
+     * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
+     *
+     * @param array $currentReferencesArr Array of tt_content uids from a current reference list
+     * @param int $position Position where the new reference should be inserted: 0 = before the first element, 1 = after the first, 2 = after the second etc., -1 = insert as last element
+     * @param int $elementUid UID of a tt_content element
+     *
+     * @return array Array with an updated reference list
+     */
+    public function insertElementReferenceIntoList(array $currentReferencesArr, int $position, int $elementUid): array
+    {
+        array_splice($currentReferencesArr, $position, 0, [$elementUid]);
+
+        return $currentReferencesArr;
+    }
+
+    /**
+     * Removes the element specified by $position from the given list of references and returns
+     * the updated list. (the list is passed and return as an array)
+     *
+     * @param array $currentReferencesArr Array of tt_content uids from a current reference list
+     * @param int $position Position of the element reference which should be removed. 1 = first element, 2 = second element etc.
+     *
+     * @return array Array with an updated reference list
+     */
+    public function removeElementReferenceFromList(array $currentReferencesArr, int $position): array
+    {
+        array_splice($currentReferencesArr, $position, 1);
+
+        return $currentReferencesArr;
+    }
+
+    /**
+     * Updates the XML structure with the new list of references to records.
+     *
+     * @param array $referencesArr The array of uids (references list) to store in the record
+     * @param array $destinationPointer Flexform pointer to the location where the references list should be stored.
+     */
+    public function storeElementReferencesListInRecord(array $referencesArr, array $destinationPointer)
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: storeElementReferencesListInRecord()', 'templavoilaplus', 0, ['referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer]);
+        }
+
+        $dataArr = [];
+        $uid = BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
+        $containerHasWorkspaceVersion = false;
+        if ($uid != $destinationPointer['uid']) {
+            $containerHasWorkspaceVersion = true;
+        }
+
+        $fieldPart = [
+            $destinationPointer['vLang'] => implode(',', $referencesArr)
+        ];
+        $sLangPart = [];
+
+        /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+        $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+        $flexFormTools->setArrayValueByPath(explode('#', $destinationPointer['field']), $sLangPart, $fieldPart);
+        $dataArr[$destinationPointer['table']][$uid]['tx_templavoilaplus_flex']['data'][$destinationPointer['sheet']][$destinationPointer['sLang']] = $sLangPart;
+
+        $flagWasSet = $this->getTCEmainRunningFlag();
+        $this->setTCEmainRunningFlag(true);
+        /** @var DataHandler $tce */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->start($dataArr, []);
+
+        /**
+         * Set workspace to 0 because:
+         * 1) we want shadow-records to be placed in the Live-Workspace
+         * 2) there's no need to create a new version of the parent-record
+         * 3) try to avoid issues if the same list is modified in different workspaces at the same time
+         */
+        if ($this->modifyReferencesInLiveWS && !$containerHasWorkspaceVersion) {
+            if ($tce->BE_USER->groupData['allowed_languages']) {
+                //force access to default language - since references needs to be stored in default langauage always
+                $tce->BE_USER->groupData['allowed_languages'] .= ',0';
+            }
+            $tce->BE_USER->workspace = 0;
+        }
+        $tce->process_datamap();
+        if (!$flagWasSet) {
+            $this->setTCEmainRunningFlag(false);
+        }
+    }
+
+    /**
+     * Checks if a flexform pointer points to a valid location, ie. the sheets,  fields etc. exist in the target data
+     * structure. If it is valid, the pointer array will be returned.
+     *
+     * This method take workspaces into account (by using workspace flexform data if available) but it does NOT (and should not!) remap UIDs!
+     *
+     * @param string $pointerString A flexform pointer referring to the record or flexform part.
+     * @return array|null The valid flexform pointer array or NULL if it was not valid
+     */
+    protected function getValidPointer(string $pointerString, bool $newPositionPossible = false): ?array
+    {
+        $flexformPointer = $this->getPointerFromString($pointerString);
+        if (!isset($GLOBALS['TCA'][$flexformPointer['table']])) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoilà!+ API', 2);
+            }
+
+            return null;
+        }
+        /** @TODO Does it have a flex field and which one is it? */
+        //getMapIdentifierFromRootline ?
+        $minimumFields = 'uid,pid,tx_templavoilaplus_next_map,tx_templavoilaplus_map,tx_templavoilaplus_flex';
+        if ($flexformPointer['table'] === 'tt_content') {
+            $minimumFields = 'uid,pid,tx_templavoilaplus_map,tx_templavoilaplus_flex,CType';
+        }
+
+        $pointerRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], $minimumFields);
+        if (!$pointerRecord) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoilà!+ API', 2, $flexformPointer);
+            }
+
+            return null;
+        }
+        $flexformPointer['foundRecord'] = $pointerRecord;
+
+        if ($flexformPointer['position'] < 0) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: The position must be positive!', 'TemplaVoilà!+ API', 2, $flexformPointer);
+            }
+
+            return null;
+        }
+
+        // Now we need the DS from record
+        $dataStructure = $this->getDatastructureForPointer($flexformPointer);
+        $flexformPointer['foundDataStructure'] = $dataStructure;
+
+        /** @TODO Does it have a flex field and which one is it? */
+        $elementReferences = $this->getElementReferencesFromXml($pointerRecord['tx_templavoilaplus_flex'], $flexformPointer);
+
+        // position should between 0 and count of existing elements for possible adding elements
+        $maxPosition = count($elementReferences);
+        if (!$newPositionPossible) {
+            // We are starting from 0, so max is count elements - 1
+            $maxPosition--;
+        }
+        if ($flexformPointer['position'] > $maxPosition) {
+            if ($this->debug) {
+                GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
+            }
+
+            return null;
+        }
+        $flexformPointer['foundFieldReferences'] = $elementReferences;
+
+        /** @TODO Check md5 of flexform/record? Move may not a Flexform field*/
+
+        return $flexformPointer;
+    }
+
+    /**
+     * Takes FlexForm XML content in and based on the flexform pointer it will find a list of references, parse them
+     * and return them as an array of uids of the table. This function automatically checks if the records
+     * really exist and are not marked as deleted - those who are will be filtered out.
+     *
+     * @param string $flexformXml XML content of a flexform field
+     * @param array $flexformPointer Pointing to a field in the XML structure to get the list of element references from.
+     *
+     * @return array|null Numerical array tt_content uids or NULL if an error occurred (eg. flexformXML was no valid XML)
+     */
+    public function getElementReferencesFromXml($flexformXml, $flexformPointer): ?array
+    {
+        // Getting value of the field containing the relations:
+        $flexform = GeneralUtility::xml2array($flexformXml);
+        if (!is_array($flexform) && strlen($flexformXml) > 0) {
+            if ($this->debug) {
+                GeneralUtility::devLog('getElementReferencesFromXml: flexformXML seems to be no valid XML. Parser error message: ' . $flexform, 'TemplaVoila API', 2, $flexformXml);
+            }
+
+            return null;
+        }
+
+        $fieldPointerPath = explode('#', $flexformPointer['field']);
+
+        $baseDataStructure = $flexformPointer['foundDataStructure']['sheets'][$flexformPointer['sheet']]['ROOT']['el'];
+
+        // Find field config
+        $lastWasSection = false;
+        foreach ($fieldPointerPath as $fieldName) {
+            if ($lastWasSection) {
+                $lastWasSection = false;
+                continue;
+            }
+            if ($fieldName !== 'el' || $baseDataStructure['type'] === 'array') {
+                if ($baseDataStructure['section']) {
+                    $lastWasSection = true;
+                }
+                $baseDataStructure = $baseDataStructure[$fieldName];
+            }
+        }
+        if (!is_array($baseDataStructure) && !is_array($baseDataStructure['TCEforms']) && !is_array($baseDataStructure['TCEforms']['config']) && $baseDataStructure['TCEforms']['config']['type'] === 'group') {
+            if ($this->debug) {
+                GeneralUtility::devLog('getElementReferencesFromXml: Field has no group configuration: ', 'TemplaVoila API', 2);
+            }
+
+            return null;
+        }
+        $innerTable = $baseDataStructure['TCEforms']['config']['allowed'];
+
+        $listOfUIDs = '';
+        if (is_array($flexform) && is_array($flexform['data'])) {
+            $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
+            /** @var \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools */
+            $flexFormTools = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class);
+            $fieldPart = $flexFormTools->getArrayValueByPath($fieldPointerPath, $sLangPart);
+            $listOfUIDs = $fieldPart[$flexformPointer['vLang']];
+        }
+
+        $arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
+
+        // Getting the relation uids out and use only tt_content records which are not deleted:
+        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+
+        $dbAnalysis->start($listOfUIDs, $innerTable);
+        $dbAnalysis->getFromDB();
+
+        $elementReferencesArr = [];
+        $counter = 0;
+        foreach ($arrayOfUIDs as $uid) {
+            if (is_array($dbAnalysis->results[$innerTable][$uid])) {
+                $elementReferencesArr[$counter] = $uid;
+                $counter++;
+            }
+        }
+
+        return $elementReferencesArr;
+    }
+
+    /**
+     * Converts a string of the format "table:uid:sheet:sLang:#field:vLang:position" into a flexform pointer array.
+     *
+     * FUTURE Versions will use another pointer string here, more like table:uid:dbRowField:sheet:sLang:#flexformfield:vLang:position:md5
+     *
+     * @param string $pointer A string of the format "table:uid:sheet:sLang:#field:vLang:position:md5".
+     * @return array A flexform pointer array which can be used with the functions in tx_templavoilaplus_api
+     */
+    public function getPointerFromString(string $pointerString): array
+    {
+        $locationArr = explode(':', $pointerString);
+
+        if (count($locationArr) == 2) {
+            $flexformPointer = [
+                'table' => $locationArr[0],
+                'uid' => $locationArr[1],
+            ];
+        } else {
+            $flexformPointer = [
+                'table' => $locationArr[0],
+                'uid' => $locationArr[1],
+                'sheet' => $locationArr[2],
+                'sLang' => $locationArr[3],
+                'field' => substr($locationArr[4], 1), // Remove first "#" char
+                'vLang' => $locationArr[5],
+                'position' => (int)$locationArr[6],
+            ];
+        }
+
+        return $flexformPointer;
+    }
+
+    /**
      * Converts a flexform pointer array to a string of the format "table:uid:sheet:sLang:field:vLang:position/targettable:targetuid"
      *
      * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see flexform_getPointerFromString flexform_getStringFromPointer in ApiService
@@ -347,5 +686,35 @@ class ProcessingService
             'vLang' => $vKey,
             'position' => 0,
         ];
+    }
+
+    /******************************************************
+     *
+     * Miscellaneous functions (protected)
+     *
+     ******************************************************/
+
+    /**
+     * Sets a flag to tell the TemplaVoila TCEmain userfunctions if this API has called a TCEmain
+     * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
+     * avoid infinite loops and other bad effects.
+     *
+     * @param bool $flag If TRUE, our user functions will be omitted
+     */
+    protected function setTCEmainRunningFlag(bool $flag): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] = $flag;
+    }
+
+    /**
+     * Returns the current flag which tells TemplaVoila TCEmain userfunctions if this API has called a TCEmain
+     * function. If this flag is set, the TemplaVoila TCEmain userfunctions will be skipped to
+     * avoid infinite loops and other bad effects.
+     *
+     * @return bool TRUE if flag is set, otherwise FALSE;
+     */
+    public function getTCEmainRunningFlag(): bool
+    {
+        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
     }
 }

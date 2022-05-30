@@ -144,6 +144,24 @@ console.log(evt.ctrlKey);
                 swapThreshold: 0.65,
                 onUpdate: function (/**Event*/evt) {
 console.log('onUpdate');
+                    // Move inside field
+                    PageLayout.showInProgress(evt.item);
+                    $.ajax({
+                      type: 'POST',
+                      data: {
+                          sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
+                          destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
+                      },
+                      url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
+                      success: function(data) {
+                          // @TODO Elements need to update their parenPointer after move
+                          PageLayout.showSuccess(evt.item);
+                      },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) {
+                          PageLayout.showError(evt.item);
+                          return false;
+                      }
+                    });
                 },
                 onSort: function (/**Event*/evt) {
 console.log('onSort');
@@ -173,7 +191,11 @@ console.log('onEnd');
                 },
                 onMove: function (/**Event*/evt, /**Event*/originalEvent) {
 console.log('onMove');
-                    $('.iAmGhost').addClass('blue');
+                    if (evt.dragged.dataset.recordTable === evt.to.dataset.childAllowed) {
+                        $('.iAmGhost').addClass('blue');
+                        return true;
+                    }
+                    return false;
                 },
                 onAdd: function (/**Event*/evt) {
 console.log('onAdd');
@@ -190,9 +212,9 @@ console.log('onAdd');
                             success: function(data) {
                                 var div = document.createElement('div');
                                 div.innerHTML = data.nodeHtml;
-                                PageLayout.showSuccess(div.firstChild);
-                                PageLayout.initEditRecordListener(div.firstChild);
-                                evt.item.parentNode.replaceChild(div.firstChild, evt.item);
+                                PageLayout.showSuccess(div.firstElementChild);
+                                PageLayout.initEditRecordListener(div.firstElementChild);
+                                evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
                             },
                             error: function(XMLHttpRequest, textStatus, errorThrown) {
                                 var el = evt.item;
@@ -264,7 +286,6 @@ console.log('onAdd');
     }
 
     PageLayout.initEditRecordListener = function(base) {
-console.log(base);
         var allItems = base.querySelectorAll('div.tvp-edit-record');
 
         for (const item of allItems) {

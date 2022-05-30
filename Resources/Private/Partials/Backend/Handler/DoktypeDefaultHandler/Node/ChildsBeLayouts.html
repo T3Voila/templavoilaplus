@@ -35,14 +35,14 @@
                         <f:variable name="subFlexFormData" value="{childFlexformData.{fieldKey}.el}" />
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
                             <f:for each="{childElements.{fieldKey}}" key="dataKey" as="sectionFieldElements">
-                                <f:render section="renderChildElements"  arguments="{fieldConfig: subFieldConfig.el, childElements: sectionFieldElements, childFlexformData: '{subFlexFormData.{dataKey}}', beLayout: beLayout, subpart: '{subpart}.{fieldKey}', addIdentKey: '{dataKey}'}" />
+                                <f:render section="renderChildElements"  arguments="{fieldConfig: subFieldConfig.el, childElements: sectionFieldElements, childFlexformData: '{subFlexFormData.{dataKey}}', beLayout: beLayout, parentPointer: '{parentPointer}#{fieldKey}#el#{dataKey}', subpart: '{subpart}.{fieldKey}', addIdentKey: '{dataKey}'}" />
                             </f:for>
                         </tvp:arrayVariable>
                     </f:then>
                     <f:else>
                         <f:variable name="subFlexFormData" value="{childFlexformData.{fieldKey}.el}" />
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
-                            <f:render section="renderChildElements" arguments="{fieldConfig: subFieldConfig.el, childElements: '{childElements.{fieldKey}}', childFlexformData: '{childFlexformData.{fieldKey}.el}', beLayout: beLayout, subpart: '{subpart}.{fieldKey}', addIdentKey: '{addIdentKey}'}" />
+                            <f:render section="renderChildElements" arguments="{fieldConfig: subFieldConfig.el, childElements: '{childElements.{fieldKey}}', childFlexformData: '{childFlexformData.{fieldKey}.el}', beLayout: beLayout, parentPointer: '{parentPointer}#{fieldKey}#el', subpart: '{subpart}.{fieldKey}', addIdentKey: '{addIdentKey}'}" />
                         </tvp:arrayVariable>
                     </f:else>
                 </f:if>
@@ -51,9 +51,11 @@
                 <f:if condition="{childElements.{fieldKey}}">
                     <f:then>
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
+                            <div class="tvjs-dropzone" data-parent-pointer="{parentPointer}#{fieldKey}:vDEF" data-child-allowed="{subFieldConfig.TCEforms.config.allowed}">
                             <f:for each="{childElements.{fieldKey}.vDEF}" as="element">
                                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: element.node}" />
                             </f:for>
+                            </div>
                         </tvp:arrayVariable>
                     </f:then>
                     <f:else>

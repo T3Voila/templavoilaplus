@@ -46,10 +46,19 @@ class ContentElements extends AbstractResponse
             $parameters['elementRow'] ?? []
         );
 
-        return new JsonResponse([
-            'uid' => $result,
-            'nodeHtml' => $this->record2html('tt_content', $result),
-        ]);
+        if ($result) {
+            return new JsonResponse([
+                'uid' => $result,
+                'nodeHtml' => $this->record2html('tt_content', $result),
+            ]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => $result
+                ],
+                400 // Bad request
+            );
+        }
     }
 
     /**
@@ -102,17 +111,26 @@ class ContentElements extends AbstractResponse
      */
     public function move(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var ApiService */
-        $apiService = GeneralUtility::makeInstance(ApiService::class);
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
 
-        $result = $apiService->moveElement(
+        $result = $processingService->moveElement(
             $parameters['sourcePointer'] ?? '',
             $parameters['destinationPointer'] ?? ''
         );
 
-        return new JsonResponse([$result]);
+        if ($result) {
+            return new JsonResponse([$result]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => $result
+                ],
+                400 // Bad request
+            );
+        }
     }
 
     /**
