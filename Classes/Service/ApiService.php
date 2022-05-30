@@ -38,12 +38,6 @@ class ApiService
     public $debug = false;
 
     /**
-     * ->loadWebsiteLanguages() will set this to content of sys_language
-     * @var array
-     */
-    protected $allSystemWebsiteLanguages = [];
-
-    /**
      * @var bool
      */
     protected $modifyReferencesInLiveWS = false;
@@ -1333,48 +1327,6 @@ class ApiService
     public function getTCEmainRunningFlag()
     {
         return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
-    }
-
-    /**
-     * Reading all languages in sys_language and setting ->allSystemWebsiteLanguages with this information (with a little more as well)
-     */
-    public function loadWebsiteLanguages()
-    {
-        $languages = TemplaVoilaUtility::getAvailableLanguages();
-
-        foreach ($languages as $language) {
-            $this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $language['ISOcode'];
-            $this->allSystemWebsiteLanguages['all_vKeys'][] = 'v' . $language['ISOcode'];
-        }
-        // @TODO We have a better and static_lang fixed version in the TemplaVoilaUtility
-        // We do not need 2 versions of this, get both together in one place
-        // Empty while rework
-//         $this->allSystemWebsiteLanguages = array();
-//         $this->allSystemWebsiteLanguages['all_lKeys'][] = 'lDEF';
-//         $this->allSystemWebsiteLanguages['all_vKeys'][] = 'vDEF';
-//
-//         // Select all website languages:
-//         $this->allSystemWebsiteLanguages['rows'] = $this->getDatabaseConnection()->exec_SELECTgetRows(
-//             'sys_language.*',
-//             'sys_language',
-//             '1=1' . BackendUtility::deleteClause('sys_language'),
-//             '',
-//             'uid',
-//             '',
-//             'uid'
-//         );
-//
-//         // Traverse and set ISO codes if found:
-//         foreach ($this->allSystemWebsiteLanguages['rows'] as $row) {
-//             if ($row['static_lang_isocode']) {
-//                 $staticLangRow = BackendUtility::getRecord('static_languages', $row['static_lang_isocode'], 'lg_iso_2');
-//                 if ($staticLangRow['lg_iso_2']) {
-//                     $this->allSystemWebsiteLanguages['rows'][$row['uid']]['_ISOcode'] = $staticLangRow['lg_iso_2'];
-//                     $this->allSystemWebsiteLanguages['all_lKeys'][] = 'l' . $staticLangRow['lg_iso_2'];
-//                     $this->allSystemWebsiteLanguages['all_vKeys'][] = 'v' . $staticLangRow['lg_iso_2'];
-//                 }
-//             }
-//         }
     }
 
     /**
