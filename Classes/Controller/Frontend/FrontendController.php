@@ -47,6 +47,27 @@ class FrontendController extends AbstractPlugin
     }
 
     /**
+     * @param string $content Standard content input. Ignore.
+     * @param array $conf TypoScript array for the plugin.
+     *
+     * @return string HTML content for the Flexible Content elements.
+     * @deprecated Starting with v8 you should call renderPage directly via TypoScript
+     *             page.10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
+     */
+    // phpcs:disable
+    public function main_page($content, $conf)
+    {
+        // phpcs:enable
+        trigger_error(
+            'Deprecated TypoScript page userFunc for EXT:templavoilaplus ' .
+            '"Ppi\\TemplaVoilaPlus\\Controller\\FrontendController->main_page" was found, ' .
+            'please change to "Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage"',
+            E_USER_DEPRECATED
+        );
+        return $this->renderPage($content, $conf);
+    }
+
+    /**
      * Main function for rendering of Flexible Content elements of TemplaVoila
      *
      * @param string $content Standard content input. Ignore.
