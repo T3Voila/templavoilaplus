@@ -37,6 +37,10 @@ div.tvp-node.card .card-header {
     padding: 0;
 }
 
+div.tvjs-dropzone {
+    min-height: 30px;
+}
+
 table.tvp-childs-table {
     width: 100%;
 }
@@ -320,7 +324,7 @@ nav.flashRed {
 }
 
 .blue {
-    background-color: #0000a0;
+    background-color: #98c3ff;
 }
 
 /** DARK MODE **/

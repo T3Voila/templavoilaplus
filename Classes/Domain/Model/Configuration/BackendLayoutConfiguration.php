@@ -22,4 +22,16 @@ namespace Tvp\TemplaVoilaPlus\Domain\Model\Configuration;
  */
 class BackendLayoutConfiguration extends TemplateConfiguration
 {
+    /** @var bool $isDesign Tells Backend that this is a complete design of the node */
+    protected $isDesign = false;
+
+    public function isDesign(): bool
+    {
+        return $this->isDesign;
+    }
+
+    public function setDesign(bool $isDesign): void
+    {
+        $this->isDesign = $isDesign;
+    }
 }

@@ -100,8 +100,15 @@ class ProcessingService
 
         $onPid = ($table === 'pages' ? (int)$row['uid'] : (int)$row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
+        $combinedBackendLayoutConfigurationIdentifier = '';
 
         $mappingConfiguration = $this->getMappingConfiguration($row);
+        if ($mappingConfiguration) {
+            $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
+            if ($combinedBackendLayoutConfigurationIdentifier !== '') {
+                $backendLayoutConfiguration = ApiHelperUtility::getBackendLayoutConfiguration($combinedBackendLayoutConfigurationIdentifier);
+            }
+        }
 
         if (isset($usedElements[$table][$row['uid']])) {
             $usedElements[$table][$row['uid']]++;
@@ -122,7 +129,8 @@ class ProcessingService
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']],
                 'parentPointer' => $parentPointerString,
-                'beLayout' => ($mappingConfiguration ? $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier() : ''),
+                'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
+                'beLayoutDesign' => ($backendLayoutConfiguration ? $backendLayoutConfiguration->isDesign() : false),
                 'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
             ],
         ];

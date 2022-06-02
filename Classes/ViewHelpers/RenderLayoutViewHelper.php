@@ -44,7 +44,13 @@ class RenderLayoutViewHelper extends AbstractViewHelper
         $combinedConfigurationIdentifier = $arguments['combinedConfigurationIdentifier'];
         $variables = (array)$arguments['arguments'];
         $subpart = (string)$arguments['subpart'];
-        $variables['__SUBPART__'] = $subpart;
+
+        if ($subpart) {
+            $variables['__SUBPART__'] = $subpart;
+        }
+
+        /** Add scoped variables ('settings') to container */
+        $variables = $renderingContext->getVariableProvider()->getScopeCopy($variables)->getAll();
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);

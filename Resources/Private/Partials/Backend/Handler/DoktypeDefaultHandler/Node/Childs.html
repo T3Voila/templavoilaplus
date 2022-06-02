@@ -1,7 +1,18 @@
 <f:if condition="{node.childNodes.sDEF.lDEF}">
-    <f:if condition="{beLayout}">
+    <f:if condition="{node.rendering.beLayout}">
         <f:then>
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsBeLayouts" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', beLayout: beLayout, subpart: 'CHILD'}" />
+            <f:if condition="{node.rendering.beLayoutDesign}">
+                <f:then>
+                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsDesign" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', node: node}" />
+                </f:then>
+                <f:else>
+                    <f:render
+                        partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsBeLayouts"
+                        section="renderChildElements"
+                        arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', beLayout: '{node.rendering.beLayout}', subpart: 'CHILD'}"
+                    />
+                </f:else>
+            </f:if>
         </f:then>
         <f:else>
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsTable" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', subpart: 'CHILD'}" />

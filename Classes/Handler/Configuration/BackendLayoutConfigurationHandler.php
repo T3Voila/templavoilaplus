@@ -49,6 +49,12 @@ class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
              */
             $backendLayoutConfiguration->setTemplateFileName($configuration['tvp-beLayout']['meta']['template']);
         }
+        if (isset($configuration['tvp-beLayout']['meta']['design'])) {
+            $backendLayoutConfiguration->setDesign($configuration['tvp-beLayout']['meta']['design']);
+        }
+        if (isset($configuration['tvp-beLayout']['options']) && is_array($configuration['tvp-beLayout']['options'])) {
+            $backendLayoutConfiguration->setOptions($configuration['tvp-beLayout']['options']);
+        }
 
         return $backendLayoutConfiguration;
     }
