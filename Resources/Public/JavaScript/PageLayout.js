@@ -120,7 +120,6 @@ define([
                 group: {
                     name: 'dropzones_' + allDropzones[i].dataset.childAllowed,
                     pull: function (to, from, el, evt) {
-console.log(evt);
 //                         to.el.addClass('green');
                         if (to.el.id === 'navbarClipboard') {
                             return 'clone';
@@ -131,7 +130,6 @@ console.log(evt);
                         return true;
                     },
                     put: function (to, from, el, evt) {
-console.log(evt);
 //                         console.log(el);
 //                         $(to.el).addClass('green');
                     },
@@ -141,7 +139,7 @@ console.log(evt);
                 dragable: '.sortableItem',
                 animation: 150,
                 swapThreshold: 0.65,
-                emptyInsertThreshold: 10,
+                emptyInsertThreshold: 30,
                 onUpdate: function (/**Event*/evt) {
 console.log('onUpdate');
                     // Move inside field
