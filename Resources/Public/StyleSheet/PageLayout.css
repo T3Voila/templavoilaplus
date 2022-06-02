@@ -347,7 +347,7 @@ nav.flashRed {
 }
 
 /** TYPO3 Module Elements **/
-.dark-mode-on .module-body {
+.dark-mode-on .module {
     background-color: #666;
 }
 
@@ -369,10 +369,38 @@ nav.flashRed {
 }
 
 .dark-mode-on .btn-default,
-.dark-mode-on .btn-light {
+.dark-mode-on .btn-light,
+.dark-mode-on .icon-status-dialog-notification {
     background-color: #393939;
     border-color: #999;
     color: #999;
+}
+
+.dark-mode-on .card,
+.dark-mode-on .panel {
+    background-color: #393939;
+    border-color: #999;
+    color: #999;
+}
+
+.dark-mode-on .bg-light {
+    background-color: rgba(128,128,128,var(--bs-bg-opacity)) !important;
+}
+.dark-mode-on .nav-tabs,
+.dark-mode-on .panel .panel-heading {
+    background-color: #808080;
+    color: #000;
+}
+
+.dark-mode-on .nav-tabs > li > a.nav-link.active,
+.dark-mode-on .nav.nav-tabs > li:not(.nav-item) > a.active:not(.nav-link) {
+    background-color: #393939;
+    color: #DDD;
+    border-bottom-color: #393939;
+}
+
+.dark-mode-on .bg-info {
+  background-color: rgba(35, 40, 90, var(--bs-bg-opacity)) !important;
 }
 
 /** Tooltipster own dark mode */
