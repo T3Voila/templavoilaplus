@@ -764,7 +764,8 @@ class ApiService
                 'uid' => $locationArr[1],
                 'sheet' => $locationArr[2],
                 'sLang' => $locationArr[3],
-                'field' => substr($locationArr[4], 1), // Remove first "#" char
+                'field' => substr($locationArr[4], 1),
+// Remove first "#" char
                 'vLang' => $locationArr[5],
                 'position' => $locationArr[6],
                 'targetCheckUid' => $targetCheckArr[1],
@@ -797,7 +798,8 @@ class ApiService
                 . ':' . $flexformPointer['uid']
                 . ':' . $flexformPointer['sheet']
                 . ':' . $flexformPointer['sLang']
-                . ':#' . $flexformPointer['field'] // Add "#" on first
+                . ':#' . $flexformPointer['field']
+// Add "#" on first
                 . ':' . $flexformPointer['vLang']
                 . ':' . $flexformPointer['position'];
             if (isset($flexformPointer['targetCheckUid'])) {

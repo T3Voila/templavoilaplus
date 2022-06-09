@@ -280,7 +280,7 @@ class ProcessingService
                             $childs[$fieldKey][$vKey] = [];
                         }
                     }
-            }
+                }
             }
             /** @TODO What does this do?
             elseif ($fieldConfig['type'] !== 'array' && $fieldConfig['TCEforms']['config']) {
@@ -637,7 +637,8 @@ class ProcessingService
                 'uid' => $locationArr[1],
                 'sheet' => $locationArr[2],
                 'sLang' => $locationArr[3],
-                'field' => substr($locationArr[4], 1), // Remove first "#" char
+                'field' => substr($locationArr[4], 1),
+// Remove first "#" char
                 'vLang' => $locationArr[5],
                 'position' => (int)$locationArr[6],
             ];

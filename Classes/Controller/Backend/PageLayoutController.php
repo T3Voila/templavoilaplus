@@ -147,7 +147,7 @@ class PageLayoutController extends ActionController
         $this->setPageInfo();
 
         /** @TODO better handle this with an configuration object */
-        $this->settings['configuration'] =  [
+        $this->settings['configuration'] = [
             'allAvailableLanguages' => $this->allAvailableLanguages,
             // If we have more then "all-languages" and 1 editors language available
             'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
