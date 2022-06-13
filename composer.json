@@ -36,6 +36,7 @@
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"jpmschuler/tvplus_test_theme": "*@dev",
 		"php-coveralls/php-coveralls": "^2.5.2",
+		"phpspec/prophecy-phpunit": "^2.0",
 		"phpstan/extension-installer": "^1.1.0",
 		"phpstan/phpstan": "^1.6.2",
 		"phpstan/phpstan-phpunit": "^1.1.1",
