@@ -146,7 +146,7 @@ class ProcessingService
             try {
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
             } catch (ConfigurationException | MissingPlacesException | InvalidIdentifierException | \TypeError $e) {
-                // Empty is correct
+                $mappingConfiguration = null;
             }
         }
         return $mappingConfiguration;
