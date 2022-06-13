@@ -79,9 +79,6 @@ class AbstractUpdateController extends ActionController
         $this->assignDefault();
     }
 
-    /**
-     * @return string The HTML to be shown.
-     */
     public function assignDefault()
     {
         $this->view->assignMultiple([

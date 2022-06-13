@@ -66,11 +66,6 @@ parameters:
 			path: Classes/Controller/Backend/Ajax/ExtendedNewContentElementController.php
 
 		-
-			message: "#^Method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\ControlCenter\\\\AbstractUpdateController\\:\\:assignDefault\\(\\) should return string but return statement is missing\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/ControlCenter/AbstractUpdateController.php
-
-		-
 			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\DoktypeLinkHandler\\:\\:getLinkButton\\(\\)\\.$#"
 			count: 1
 			path: Classes/Controller/Backend/Handler/DoktypeLinkHandler.php
