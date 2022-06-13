@@ -1,0 +1,7 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+<f:if condition="{node.raw.entity.records}">
+    <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'records')}"/>
+    <strong>
+        <f:translate key="{itemLabel}" default="{itemLabel}"/>
+    </strong>{node.raw.entity.records}<br/>
+</f:if>
