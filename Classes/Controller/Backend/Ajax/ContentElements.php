@@ -56,7 +56,7 @@ class ContentElements extends AbstractResponse
                 [
                     'error' => $result
                 ],
-                400 // Bad request
+                400 /* Bad request */
             );
         }
     }
@@ -128,7 +128,7 @@ class ContentElements extends AbstractResponse
                 [
                     'error' => $result
                 ],
-                400 // Bad request
+                400 /* Bad request */
             );
         }
     }

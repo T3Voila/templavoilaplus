@@ -97,7 +97,7 @@ class TemplateConfiguration extends AbstractConfiguration
         return $this->mapping;
     }
 
-    public function setMapping(array $mapping):void
+    public function setMapping(array $mapping): void
     {
         $this->mapping = $mapping;
     }

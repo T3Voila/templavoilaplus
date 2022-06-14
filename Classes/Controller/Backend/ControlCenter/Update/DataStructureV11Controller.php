@@ -61,7 +61,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     public function migrateSpecialLanguagesToTcaTypeLanguage(array &$element): bool
     {
         $changed = false;
-        if ((string)($element['TCEforms']['config']['type']) === 'select'
+        if (
+            (string)($element['TCEforms']['config']['type']) === 'select'
             && (string)($element['TCEforms']['config']['special']) === 'languages'
         ) {
             $element['TCEforms']['config'] = [
@@ -75,7 +76,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     public function removeShowRemovedLocalizationRecords(array &$element): bool
     {
         $changed = false;
-        if ((string)($element['TCEforms']['config']['type']) === 'inline'
+        if (
+            (string)($element['TCEforms']['config']['type']) === 'inline'
             && isset($element['TCEforms']['config']['appearance']['showRemovedLocalizationRecords'])
         ) {
             unset($element['TCEforms']['config']['appearance']['showRemovedLocalizationRecords']);
@@ -91,7 +93,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     public function migrateFileFolderConfiguration(array &$element): bool
     {
         $changed = false;
-        if ((string)($element['TCEforms']['config']['type']) === 'select'
+        if (
+            (string)($element['TCEforms']['config']['type']) === 'select'
             && isset($element['TCEforms']['config']['fileFolder'])
         ) {
             $element['TCEforms']['config']['fileFolderConfig'] = [
@@ -124,7 +127,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     public function migrateLevelLinksPosition(array &$element): bool
     {
         $changed = false;
-        if ((string)($element['TCEforms']['config']['type']) === 'inline'
+        if (
+            (string)($element['TCEforms']['config']['type']) === 'inline'
             && (string)($element['TCEforms']['config']['appearance']['levelLinksPosition']) === 'none'
         ) {
             unset($element['TCEforms']['config']['appearance']['levelLinksPosition']);
@@ -143,7 +147,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     public function migrateRootUidToStartingPoints(array &$element): bool
     {
         $changed = false;
-        if ((int)($element['TCEforms']['config']['treeConfig']['rootUid'] ?? 0) !== 0
+        if (
+            (int)($element['TCEforms']['config']['treeConfig']['rootUid'] ?? 0) !== 0
             && in_array((string)($element['TCEforms']['config']['type']), ['select', 'category'], true)
         ) {
             $element['TCEforms']['config']['treeConfig']['startingPoints'] = (string)(int)($element['TCEforms']['config']['treeConfig']['rootUid']);

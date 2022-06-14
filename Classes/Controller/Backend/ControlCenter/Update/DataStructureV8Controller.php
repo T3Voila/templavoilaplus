@@ -235,11 +235,11 @@ class DataStructureV8Controller extends AbstractUpdateController
         $changed = false;
 
         // Only handle select fields.
-        if (!empty($element['TCEforms']['config']['type'])
+        if (
+            !empty($element['TCEforms']['config']['type'])
             && $element['TCEforms']['config']['type'] === 'select'
             && empty($element['TCEforms']['config']['renderType'])
         ) {
-
             if (!empty($element['TCEforms']['config']['renderMode'])) {
                 switch ($element['TCEforms']['config']['renderMode']) {
                     case 'tree':
@@ -277,7 +277,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if (!empty($element['TCEforms']['config']['renderType'])
+        if (
+            !empty($element['TCEforms']['config']['renderType'])
             && $element['TCEforms']['config']['renderType'] !== 'selectSingle'
         ) {
             if (isset($element['TCEforms']['config']['noIconsBelowSelect'])) {
@@ -371,7 +372,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if (isset($element['TCEforms']['config']['renderType'])
+        if (
+            isset($element['TCEforms']['config']['renderType'])
             && $element['TCEforms']['config']['renderType'] === 'selectTree'
         ) {
             if (isset($element['TCEforms']['config']['treeConfig']['appearance']['width'])) {
@@ -435,7 +437,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if (isset($element['TCEforms']['config'])
+        if (
+            isset($element['TCEforms']['config'])
             && $element['TCEforms']['config']['type'] === 'check'
         ) {
             if (isset($element['TCEforms']['config']['showIfRTE'])) {
@@ -456,12 +459,14 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'input'
+        if (
+            $element['TCEforms']['config']['type'] === 'input'
             && !isset($element['TCEforms']['config']['renderType'])
         ) {
             $eval = $element['TCEforms']['config']['eval'] ?? '';
             $eval = GeneralUtility::trimExplode(',', $eval, true);
-            if (in_array('date', $eval, true)
+            if (
+                in_array('date', $eval, true)
                 || in_array('datetime', $eval, true)
                 || in_array('time', $eval, true)
                 || in_array('timesec', $eval, true)
@@ -483,7 +488,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if (isset($element['TCEforms']['config'])
+        if (
+            isset($element['TCEforms']['config'])
             && empty($element['TCEforms']['config']['renderType'])
         ) {
             if ($element['TCEforms']['config']['type'] === 'input') {
@@ -511,18 +517,21 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'input'
+        if (
+            $element['TCEforms']['config']['type'] === 'input'
             || $element['TCEforms']['config']['type'] === 'text'
         ) {
             if (isset($element['TCEforms']['config']['wizards']) && is_array($element['TCEforms']['config']['wizards'])) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'select'
                         && isset($wizardConfig['items'])
                         && is_array($wizardConfig['items'])
                     ) {
                         $element['TCEforms']['config']['valuePicker']['items'] = $wizardConfig['items'];
-                        if (isset($wizardConfig['mode'])
+                        if (
+                            isset($wizardConfig['mode'])
                             && is_string($wizardConfig['mode'])
                             && in_array($wizardConfig['mode'], ['append', 'prepend', ''])
                         ) {
@@ -548,7 +557,8 @@ class DataStructureV8Controller extends AbstractUpdateController
         $changed = false;
 
         if ($element['TCEforms']['config']['type'] === 'input') {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
@@ -579,14 +589,17 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'input'
+        if (
+            $element['TCEforms']['config']['type'] === 'input'
             && !isset($element['TCEforms']['config']['renderType'])
         ) {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'popup'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_link'
@@ -626,14 +639,17 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'group'
+        if (
+            $element['TCEforms']['config']['type'] === 'group'
             || $element['TCEforms']['config']['type'] === 'select'
         ) {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'popup'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_edit'
@@ -665,14 +681,17 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'group'
+        if (
+            $element['TCEforms']['config']['type'] === 'group'
             || $element['TCEforms']['config']['type'] === 'select'
         ) {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'script'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_add'
@@ -710,14 +729,17 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
 
-        if ($element['TCEforms']['config']['type'] === 'group'
+        if (
+            $element['TCEforms']['config']['type'] === 'group'
             || $element['TCEforms']['config']['type'] === 'select'
         ) {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'script'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_list'
@@ -790,11 +812,13 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
         if ($element['TCEforms']['config']['type'] === 'text') {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'script'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_table'
@@ -830,11 +854,13 @@ class DataStructureV8Controller extends AbstractUpdateController
     {
         $changed = false;
         if ($element['TCEforms']['config']['type'] === 'text') {
-            if (isset($element['TCEforms']['config']['wizards'])
+            if (
+                isset($element['TCEforms']['config']['wizards'])
                 && is_array($element['TCEforms']['config']['wizards'])
             ) {
                 foreach ($element['TCEforms']['config']['wizards'] as $wizardName => $wizardConfig) {
-                    if (isset($wizardConfig['type'])
+                    if (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'script'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_rte'
@@ -849,7 +875,8 @@ class DataStructureV8Controller extends AbstractUpdateController
                         }
                         unset($element['TCEforms']['config']['wizards'][$wizardName]);
                         $changed = true;
-                    } elseif (isset($wizardConfig['type'])
+                    } elseif (
+                        isset($wizardConfig['type'])
                         && $wizardConfig['type'] === 'script'
                         && isset($wizardConfig['module']['name'])
                         && $wizardConfig['module']['name'] === 'wizard_rte'
@@ -878,7 +905,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     public function migrateSuggestWizardTypeGroup(array &$element): bool
     {
         $changed = false;
-        if ($element['TCEforms']['config']['type'] === 'group'
+        if (
+            $element['TCEforms']['config']['type'] === 'group'
             && isset($element['TCEforms']['config']['internal_type'])
             && $element['TCEforms']['config']['internal_type'] === 'db'
         ) {
@@ -952,7 +980,8 @@ class DataStructureV8Controller extends AbstractUpdateController
     public function migrateSelectShowIconTable(array &$element): bool
     {
         $changed = false;
-        if ($element['TCEforms']['config']['type'] === 'select'
+        if (
+            $element['TCEforms']['config']['type'] === 'select'
             && isset($element['TCEforms']['config']['renderType'])
             && $element['TCEforms']['config']['renderType'] === 'selectSingle'
         ) {
@@ -1049,7 +1078,8 @@ class DataStructureV8Controller extends AbstractUpdateController
 
         if ($element['TCEforms']['config']['type'] === 'inline') {
             if (isset($element['TCEforms']['config']['foreign_types']) && is_array($element['TCEforms']['config']['foreign_types'])) {
-                if (isset($element['TCEforms']['config']['overrideChildTca']['types'])
+                if (
+                    isset($element['TCEforms']['config']['overrideChildTca']['types'])
                     && is_array($element['TCEforms']['config']['overrideChildTca']['types'])
                 ) {
                     $element['TCEforms']['config']['overrideChildTca']['types'] = array_replace_recursive(
@@ -1063,7 +1093,8 @@ class DataStructureV8Controller extends AbstractUpdateController
             }
             if (isset($element['TCEforms']['config']['foreign_selector'], $element['TCEforms']['config']['foreign_selector_fieldTcaOverride']) && is_string($element['TCEforms']['config']['foreign_selector']) && is_array($element['TCEforms']['config']['foreign_selector_fieldTcaOverride'])) {
                 $foreignSelectorFieldName = $element['TCEforms']['config']['foreign_selector'];
-                if (isset($element['TCEforms']['config']['overrideChildTca']['columns'][$foreignSelectorFieldName])
+                if (
+                    isset($element['TCEforms']['config']['overrideChildTca']['columns'][$foreignSelectorFieldName])
                     && is_array($element['TCEforms']['config']['overrideChildTca']['columns'][$foreignSelectorFieldName])
                 ) {
                     $element['TCEforms']['config']['overrideChildTca']['columns'][$foreignSelectorFieldName] = array_replace_recursive(
@@ -1096,7 +1127,8 @@ class DataStructureV8Controller extends AbstractUpdateController
         $changed = false;
 
         // If no wizard is left after migration, unset the whole sub array
-        if (isset($element['TCEforms']['config']['wizards'])
+        if (
+            isset($element['TCEforms']['config']['wizards'])
             && empty($element['TCEforms']['config']['wizards'])
         ) {
             unset($element['TCEforms']['config']['wizards']);
