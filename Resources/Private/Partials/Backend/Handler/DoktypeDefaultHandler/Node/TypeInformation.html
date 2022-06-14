@@ -9,9 +9,12 @@
 
 
 <f:comment>Get title from TCA typeColumn</f:comment>
-<f:if condition="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}">
-    <f:variable name="typeColumn" value="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_column}"/>
+<f:if condition="{settings.configuration.TCA.{node.raw.table}.ctrl.type}">
+    <f:variable name="typeColumn" value="{settings.configuration.TCA.{node.raw.table}.ctrl.type}"/>
+    <f:variable name="type" value="{node.raw.entity.{typeColumn}}"/>
     <f:variable name="title" value="{tvp:backend.labelFromItemlist(table:'{node.raw.table}', fieldName:'{typeColumn}', key:'{node.raw.entity.{typeColumn}}')}"/>
+    <f:variable name="iconList" value="{settings.configuration.TCA.{node.raw.table}.ctrl.typeicon_classes}"/>
+    <f:variable name="typeIcon" value="{iconList.{type}}"/>
 </f:if>
 
 
@@ -22,6 +25,7 @@
 
 <f:if condition="{title}">
     <strong>
+        <f:if condition="{typeIcon}"><core:icon identifier="{typeIcon}" size="small" /></f:if>
             <f:translate key="{title}" default="{title}"/>
     </strong><br/>
 </f:if>
