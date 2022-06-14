@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 /**
  * ONLY FOR TEMPORARY USE
@@ -102,7 +103,7 @@ class ProcessingService
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
         $combinedBackendLayoutConfigurationIdentifier = '';
 
-        $mappingConfiguration = $this->getMappingConfiguration($row);
+        $mappingConfiguration = $this->getMappingConfiguration($table, $row);
         if ($mappingConfiguration) {
             $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
             if ($combinedBackendLayoutConfigurationIdentifier !== '') {
@@ -138,13 +139,20 @@ class ProcessingService
         return $node;
     }
 
-    public function getMappingConfiguration(array $row): ?MappingConfiguration
+    public function getMappingConfiguration(string $table, array $row): ?MappingConfiguration
     {
+        $map = $row['tx_templavoilaplus_map'];
         $mappingConfiguration = null;
 
-        if (isset($row['tx_templavoilaplus_map'])) {
+        // find mappingConfiguration in root line if current page doesn't have one
+        if (!$map && $table === 'pages') {
+            $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
+            $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $row['uid'])->get();
+            $map = $apiService->getMapIdentifierFromRootline($rootLine);
+        }
+        if ($map) {
             try {
-                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($row['tx_templavoilaplus_map']);
+                $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($map);
             } catch (ConfigurationException | MissingPlacesException | InvalidIdentifierException | \TypeError $e) {
                 $mappingConfiguration = null;
             }
