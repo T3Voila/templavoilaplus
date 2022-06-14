@@ -46,6 +46,7 @@ class DefaultMappingHandler
 
     public function valueProcessing(array $instructions, array $flexformData, string $table, array $row)
     {
+        $oldCurrentFieldRegister = $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] ?? null;
         $processedValue = '';
 
         if (isset($instructions['value'])) {
@@ -96,7 +97,11 @@ class DefaultMappingHandler
             default:
                 // No valueProcessing given, so no value manipulation
         }
-        unset($GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field']);
+        if ($oldCurrentFieldRegister) {
+            $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] = $oldCurrentFieldRegister;
+        } else {
+            unset($GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field']);
+        }
         return $processedValue;
     }
 
