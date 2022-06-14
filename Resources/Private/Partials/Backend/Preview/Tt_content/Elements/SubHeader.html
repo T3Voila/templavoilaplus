@@ -1,0 +1,6 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+
+<f:if condition="{node.raw.entity.subheader}">
+    <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'subheader')}" />
+    <strong><f:translate key="{itemLabel}" default="{itemLabel}" /></strong>: {node.raw.entity.subheader}<br />
+</f:if>
