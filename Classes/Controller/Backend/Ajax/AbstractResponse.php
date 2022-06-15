@@ -35,10 +35,10 @@ abstract class AbstractResponse
         $view->getRequest()->setControllerExtensionName('Backend');
 
         $view->setPartialRootPaths([
-            10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Partials/',
+            10 => 'EXT:templavoilaplus/Resources/Private/Partials/',
         ]);
         $view->setLayoutRootPaths([
-            10 => '/var/www/html/typo3conf/ext/templavoilaplus/Resources/Private/Layouts/',
+            10 => 'EXT:templavoilaplus/Resources/Private/Layouts/',
         ]);
 
         $view->assign('settings', $settings);
