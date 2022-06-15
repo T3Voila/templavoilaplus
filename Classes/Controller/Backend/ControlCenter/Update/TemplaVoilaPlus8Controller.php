@@ -1174,7 +1174,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
             // Check for read errors
             foreach (libxml_get_errors() as $libxmlError) {
                 $errorMessage = 'The template file "' . $templateFile . '" has following libxml error: "' . $libxmlError->message . '" on line ' . $libxmlError->line;
-                if ($libxmlError->level ===  LIBXML_ERR_FATAL) {
+                if ($libxmlError->level === LIBXML_ERR_FATAL) {
                     throw new \Exception('Fatal: ' . $errorMessage);
                 }
                 $warnings[] = $errorMessage;

@@ -23,12 +23,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-    class CorePageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository{}
-} else {
-    class CorePageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository{}
-}
-
 /**
  * Repository for record localizations
  */
@@ -52,5 +46,15 @@ class PageRepository extends CorePageRepository
             ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
 
         return $queryBuilder->execute()->fetchAll();
+    }
+}
+
+if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+    class CorePageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
+    {
+    }
+} else {
+    class CorePageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
+    {
     }
 }

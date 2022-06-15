@@ -28,7 +28,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  */
 class ThumbnailViewHelper extends ImageViewHelper
 {
-
     /**
      * Initialize arguments.
      */
