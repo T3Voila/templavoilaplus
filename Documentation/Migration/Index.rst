@@ -30,7 +30,7 @@ Steps to do for migration
     page {
         typeNum = 0
         10 = USER
-        10.userFunc = Tvp\TemplaVoilaPlus\Controller\FrontendController->renderPage
+        10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
     }
 
 Now your system should be ready. If all works you can remove the old TemplaVoilà! Plus database tables from your system.
