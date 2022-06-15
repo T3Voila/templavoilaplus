@@ -12,7 +12,7 @@
 
 
 <f:section name="TableNode">
-<div class="tvp-node sortableItem card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
+<div class="tvp-node sortableItem {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
     <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
     <div class="card-header">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: node}" />
@@ -32,7 +32,7 @@
             warning_containerSeparate => modTSconfig['properties']['disableContainerElementLocalizationWarning']
         </f:comment>
     </div>
-    <div class="card-body">
+    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-body')} card-body">
         <div class="tvp-edit-record">
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
         </div>
@@ -48,9 +48,8 @@
 
     </div>
 
-    <div class="card-footer"><f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
-
-        <f:if condition="{f:count(subject: node.localization)} > 0">
+    <f:if condition="{f:count(subject: node.localization)} > 0">
+        <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-footer')} card-footer"><f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
             <table border="0" cellpadding="0" cellspacing="1" width="100%" class="lrPadding tpm-localisation-info-table">
                 <tr class="bgColor4-20">
                     <td><f:translate key="{configuration.lllFile}:labelLocalizations" />:</td>
@@ -70,8 +69,8 @@
                     </f:if>
                 </f:for>
             </table>
-        </f:if>
+        </div>
+    </f:if>
 
-    </div>
 </div>
 </f:section>

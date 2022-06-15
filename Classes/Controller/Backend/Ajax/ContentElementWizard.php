@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -41,7 +42,23 @@ class ContentElementWizard extends AbstractResponse
         $contentElementsConfig = $this->modifyContentElementsConfig($contentElementsConfig);
         $contentElementsConfig = $this->convertParamsValue($contentElementsConfig);
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html');
+        /** @TODO better handle this with an configuration object */
+        /** @TODO Duplicated more or less from PageLayoutController */
+        $settings = [
+            'configuration' => [
+                'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
+                'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
+                'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
+                'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
+                'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+                'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+                'TCA' => $GLOBALS['TCA'],
+            ],
+        ];
+
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html', $settings);
         $view->assign('contentElementsConfig', $contentElementsConfig);
 
         return new HtmlResponse($view->render());

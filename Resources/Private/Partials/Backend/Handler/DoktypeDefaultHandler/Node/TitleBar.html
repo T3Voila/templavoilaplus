@@ -1,7 +1,7 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light sortable_handle">
+<nav class="navbar navbar-expand-lg {f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'navbar-default')} navbar-light bg-light sortable_handle">
     <div class="container-fluid">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBarLeftButtons" arguments="{node: node}" />
-        <ul class="navbar-nav me-auto">
+        <ul class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'nav')} navbar-nav me-auto">
             <li class="navbar-brand ms-2">
                 <f:if condition="!{node.rendering.belongsToCurrentPage}"><em></f:if>
                 <f:format.crop maxCharacters="20" respectWordBoundaries="false">{node.rendering.fullTitle}</f:format.crop>
