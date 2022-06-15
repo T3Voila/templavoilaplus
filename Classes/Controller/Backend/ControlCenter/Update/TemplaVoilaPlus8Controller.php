@@ -716,6 +716,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
     protected function step4Action()
     {
         $errors = [];
+        $warnings = [];
 
         /** @var PackageManager */
         $packageManager = GeneralUtility::makeInstance(PackageManager::class);
@@ -921,13 +922,15 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
             $to = $this->getAllToFromDB();
 
             // Read old data, convert and write to new places
-            $covertingInstructions = $this->convertAllDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes);
+            $covertingInstructions = $this->convertAllDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes, $warnings);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
         }
         $this->view->assignMultiple([
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
+            'warnings' => $errors,
+            'hasWarning' => (count($warnings) ? true : false),
             'newExtensionKey' => $newExtensionKey,
             'selection' => $selection,
             'vendorName' => $vendorName,
@@ -939,7 +942,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         ]);
     }
 
-    protected function convertAllDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes): array
+    protected function convertAllDsTo(array $allDs, array $allTos, string $packageName, string $publicExtensionDirectory, array $innerPathes, array &$warnings): array
     {
         $systemPath = $this->getSystemPath();
         $covertingInstructions = [];
@@ -981,7 +984,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 $filenameUsed[$yamlFileName] = 1;
             }
 
-            [$mappingConfiguration, $scopeName, $scopePath] = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName);
+            [$mappingConfiguration, $scopeName, $scopePath] = $this->convertDsToForOneTo($allDs, $to, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlFileName, $warnings);
 
             if (isset($to['childTO'])) {
                 foreach ($to['childTO'] as $childTo) {
@@ -999,7 +1002,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                         $childTo['datastructure'] = $to['datastructure'];
                     }
                     // No scopePath/Name from child convert call used
-                    [$childMappingConfiguration] = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName);
+                    [$childMappingConfiguration] = $this->convertDsToForOneTo($allDs, $childTo, $copiedBackendLayoutFiles, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes, $resultingFileName, $yamlChildFileName, $warnings);
                     $this->cleanupChildMappingConfiguration($mappingConfiguration, $childMappingConfiguration);
                     $mappingConfiguration['tvp-mapping']['childTemplate'][$childTo['rendertype']] = $childMappingConfiguration['tvp-mapping'];
                 }
@@ -1031,13 +1034,14 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         return $covertingInstructions;
     }
 
-    public function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName): array
+    public function convertDsToForOneTo(array $allDs, array $to, array &$copiedBackendLayoutFiles, array &$convertedDS, string $packageName, string $publicExtensionDirectory, array $innerPathes, string $templateFileName, string $yamlFileName, array &$warnings): array
     {
         $convertedDsConfig = $this->getAndConvertDsForTo($allDs, $to, $convertedDS, $packageName, $publicExtensionDirectory, $innerPathes);
 
         $templateMappingInfo = $this->convertTemplateMappingInformation(
             unserialize($to['templatemapping'])['MappingInfo'],
-            $publicExtensionDirectory . $innerPathes['templates'] . '/' . $templateFileName
+            $publicExtensionDirectory . $innerPathes['templates'] . '/' . $templateFileName,
+            $warnings
         );
 
         // We need everytime the original to create $mappingToTemplateInfo correctly
@@ -1154,7 +1158,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         );
     }
 
-    protected function convertTemplateMappingInformation(array $mappingInformation, string $templateFile, $domDocument = null, $baseNode = null): array
+    protected function convertTemplateMappingInformation(array $mappingInformation, string $templateFile, array &$warnings, $domDocument = null, $baseNode = null): array
     {
         $converted = [];
 
@@ -1162,40 +1166,55 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         $libXmlConfig = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOENT | LIBXML_NONET;
 
         if ($domDocument === null) {
+            libxml_clear_errors();
+
             $domDocument = new \DOMDocument();
             $domDocument->loadHTMLFile($templateFile, $libXmlConfig);
+
+            // Check for read errors
+            foreach (libxml_get_errors() as $libxmlError) {
+                $errorMessage = 'The template file "' . $templateFile . '" has following libxml error: "' . $libxmlError->message . '" on line ' . $libxmlError->line;
+                if ($libxmlError->level ===  LIBXML_ERR_FATAL) {
+                    throw new \Exception('Fatal: ' . $errorMessage);
+                }
+                $warnings[] = $errorMessage;
+            }
+            libxml_clear_errors();
         }
 
-        /** @TODO Check the errors if they are fatal
-         * $errors = libxml_get_errors();
-         * foreach ($errors as $error)
-         * {
-         * }*/
-        libxml_clear_errors();
-
-        /** @TODO Read error messages and write into a hint array for user output but do not break */
         $domXpath = new \DOMXPath($domDocument);
 
         foreach ($mappingInformation as $fieldName => $mappingField) {
+            // Check if mapping is empty
+            if (!isset($mappingField['MAP_EL']) || empty($mappingField['MAP_EL'])) {
+                $warnings[] = 'The field named "' . $fieldName . '" was defined but never mapped into template.';
+                continue;
+            }
+
             [$xPath, $mappingType] = explode('/', $mappingField['MAP_EL']);
 
+            // Check if xPath part is empty
+            if ($xPath === '') {
+                $warnings[] = 'The field named "' . $fieldName . '" was defined but mapping into template was empty.';
+                continue;
+            }
             $convertedXPath = $this->convertXPath($xPath);
 
             $result = $domXpath->query($convertedXPath, $baseNode);
 
+            // Check if generated XPath was useable
             if ($result === false) {
-                throw new \Exception('The old mapping path "' . $xPath . '" could not be converted');
+                $warnings[] = 'The old mapping path "' . $xPath . '" could not be converted to new XPath for field named "' . $fieldName . '".';
+                continue;
             }
 
+            // Check if generated XPath found match inside template
             if ($result->count() === 0) {
                 $convertedXPath = '//' . $convertedXPath;
                 $result = $domXpath->query($convertedXPath, $baseNode);
-                //phpcs:disable
                 if ($result->count() === 0) {
-                    /** @TODO Add to a hint array, what is wrong but do not stop converting */
-//                     throw new \Exception('The old mapping path "' . $xPath . '" converted to XPath "' . $convertedXPath . '" could not be found in template file "' . $templateFile . '"');
+                    $warnings[] = 'The old mapping path "' . $xPath . '" converted to XPath "' . $convertedXPath . '" for field named "' . $fieldName . '" could not be found in template file "' . $templateFile . '" but was migrated.';
                 }
-                //phpcs:enable
             }
 
             // Convert ATTRIB:HTMLElementsAttributeName (fe: ATTR:id)
@@ -1218,7 +1237,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 if ($mappingType === 'inner') {
                     $innerBaseNode = $result->item(0);
                 }
-                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $domDocument, $innerBaseNode);
+                $converted[$fieldName]['container'] = $this->convertTemplateMappingInformation($mappingField['el'], $templateFile, $warnings, $domDocument, $innerBaseNode);
             }
         }
 

@@ -19,12 +19,24 @@
         <f:if condition="{hasError}">
             <f:be.infobox title="Error" state="2">
                 <ul class="list-group">
-                    <f:for each="{errors}" as="validationError">
-                        <li class="list-group-item list-group-item-danger">{validationError}</li>
+                    <f:for each="{errors}" as="convertError">
+                        <li class="list-group-item list-group-item-danger">{convertError}</li>
                     </f:for>
                 </ul>
             </f:be.infobox>
+        </f:if>
 
+        <f:if condition="{hasWarning}">
+            <f:be.infobox title="Warnings" state="1">
+                <ul class="list-group">
+                    <f:for each="{warnings}" as="convertWarning">
+                        <li class="list-group-item list-group-item-warning">{convertWarning}</li>
+                    </f:for>
+                </ul>
+            </f:be.infobox>
+        </f:if>
+
+        <f:if condition="{hasError} || {hasWarning}">
             <p><input type="checkbox" name="overwrite" value="true"> Remove data or overwrite on rerun.</p>
         </f:if>
 
@@ -44,7 +56,7 @@
                 </button>
             </div>
             <div class="col-sm-4">
-                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError}', then='disabled')}" type="{f:if(condition='{hasError}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\TemplaVoilaPlus8Update\', action: \'step5\')}'}">
+                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\TemplaVoilaPlus8Update\', action: \'step5\')}'}">
                     <core:icon identifier="actions-view-go-forward" /> Continue with step 5
                 </f:form.button>
             </div>
