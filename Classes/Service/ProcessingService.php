@@ -203,12 +203,45 @@ class ProcessingService
 
     public function getFlexformForNode(array $node): array
     {
-        $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
-        if (!is_array($flexform)) {
-            return [];
+        $emptyFlexform = $this->getEmptyFlexformForNode($node);
+        if ($node['raw']['entity']['tx_templavoilaplus_flex'] === null) {
+            return $emptyFlexform;
         }
 
+        $flexform = GeneralUtility::xml2array($node['raw']['entity']['tx_templavoilaplus_flex']);
+        if (!is_array($flexform)) {
+            return $emptyFlexform;
+        }
+
+        $flexform = array_replace_recursive($emptyFlexform, $flexform);
+
         return $flexform;
+    }
+
+    public function getEmptyFlexformForNode(array $node): array
+    {
+        /** @TODO We need this dynamically */
+        $lKeys = ['lDEF'];
+        $vKeys = ['vDEF'];
+
+        $emptyFlexform = ['data' => []];
+
+        foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
+            foreach ($lKeys as $lKey) {
+                foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldConfig) {
+                    foreach ($vKeys as $vKey) {
+                        // Sections and repeatables shouldn't be deep filled
+                        if ($fieldConfig['type'] == 'array') {
+                            $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = [];
+                        } else {
+                            $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = '';
+                        }
+                    }
+                }
+            }
+        }
+
+        return $emptyFlexform;
     }
 
     public function getLocalizationForNode(array $node): array
@@ -233,6 +266,7 @@ class ProcessingService
     public function getNodeChilds(array $node, int $basePid, array &$usedElements): array
     {
         $childs = [];
+        /** @TODO We need this dynamically */
         $lKeys = ['lDEF'];
 
         if (
@@ -259,6 +293,7 @@ class ProcessingService
     protected function getNodeChildsFromElements(array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
     {
         $childs = [];
+        /** @TODO We need this dynamically */
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
