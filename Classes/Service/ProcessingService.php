@@ -226,15 +226,20 @@ class ProcessingService
 
         $emptyFlexform = ['data' => []];
 
-        foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
-            foreach ($lKeys as $lKey) {
-                foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldConfig) {
-                    foreach ($vKeys as $vKey) {
-                        // Sections and repeatables shouldn't be deep filled
-                        if ($fieldConfig['type'] == 'array') {
-                            $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = [];
-                        } else {
-                            $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = '';
+        if (
+            isset($node['datastructure']['sheets'])
+            && is_array($node['datastructure']['sheets'])
+        ) {
+            foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
+                foreach ($lKeys as $lKey) {
+                    foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldConfig) {
+                        foreach ($vKeys as $vKey) {
+                            // Sections and repeatables shouldn't be deep filled
+                            if ($fieldConfig['type'] == 'array') {
+                                $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = [];
+                            } else {
+                                $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = '';
+                            }
                         }
                     }
                 }
