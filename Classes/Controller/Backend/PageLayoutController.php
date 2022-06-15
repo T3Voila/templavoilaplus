@@ -272,7 +272,7 @@ class PageLayoutController extends ActionController
 
         /** @var PageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $pages = $pageRepository->getPagesUsingContentFrom($this->pageInfo['uid']);
+        $pages = $pageRepository->getPagesUsingContentFrom((int)$this->pageInfo['uid']);
 
         if (count($pages)) {
             $titles = [];

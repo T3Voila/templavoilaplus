@@ -221,7 +221,7 @@ class ProcessingService
 
         $localizationRepository = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository::class);
 
-        $records = $localizationRepository->fetchRecordLocalizations($table, $row['uid']);
+        $records = $localizationRepository->fetchRecordLocalizations($table, (int)$row['uid']);
         /** @TODO WSOL? */
         foreach ($records as $record) {
             $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);
