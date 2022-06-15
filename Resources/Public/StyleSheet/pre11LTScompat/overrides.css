@@ -1,0 +1,24 @@
+:root {
+    --bs-body-font-size: 12px;
+}
+
+table {
+    font-size: inherit;
+}
+
+.module-docheader .module-docheader-bar {
+    margin: 0 0 4px;
+}
+
+.module-docheader .module-docheader-bar:first-child {
+    margin: 4px 0 0;
+}
+
+.module-docheader + .module-body {
+    padding-top: 24px !important;
+}
+
+.module-body {
+    height: auto;
+    overflow-y: revert;
+}
