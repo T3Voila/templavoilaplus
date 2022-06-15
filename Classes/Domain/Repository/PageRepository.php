@@ -49,6 +49,7 @@ class PageRepository extends CorePageRepository
     }
 }
 
+// phpcs:disable
 if (version_compare(TYPO3_version, '9.0.0', '>=')) {
     class CorePageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
     {
@@ -58,3 +59,4 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
     {
     }
 }
+// phpcs:enable
