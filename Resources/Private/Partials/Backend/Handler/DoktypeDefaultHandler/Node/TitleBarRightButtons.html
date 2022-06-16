@@ -18,35 +18,13 @@
     </div>
     <f:if condition="{node.raw.table} == 'tt_content'">
         <f:then>
-            <button type="button" class="btn btn-default btn-sm">
+            <button type="button" class="btn btn-default btn-sm disabled">
                 <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
                     <f:then>
                         <core:icon identifier="actions-edit-copy-release" />
                     </f:then>
                     <f:else>
                         <core:icon identifier="actions-edit-copy" />
-                    </f:else>
-                </f:if>
-            </button>
-
-            <button type="button" class="btn btn-default btn-sm">
-                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'ref' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                    <f:then>
-                        <core:icon identifier="extensions-templavoila-clip_ref-release" />
-                    </f:then>
-                    <f:else>
-                        <core:icon identifier="extensions-templavoila-clip_ref" />
-                    </f:else>
-                </f:if>
-            </button>
-
-            <button type="button" class="btn btn-default btn-sm">
-                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == '' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                    <f:then>
-                        <core:icon identifier="actions-edit-cut-release" />
-                    </f:then>
-                    <f:else>
-                        <core:icon identifier="actions-edit-cut" />
                     </f:else>
                 </f:if>
             </button>
