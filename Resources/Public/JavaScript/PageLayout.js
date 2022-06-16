@@ -280,18 +280,18 @@ console.log('onAdd');
     }
 
     PageLayout.initEditRecordListener = function(base) {
-        var allItems = base.querySelectorAll('div.tvp-edit-record');
+        var allItems = base.querySelectorAll('div.tvp-node .tvp-record-edit');
 
         for (const item of allItems) {
             item.addEventListener('click', function(event) {
-                var origItem = item.parentNode.parentNode;
+                var origItem = item.closest('.tvp-node');
                 PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }
     }
 
     PageLayout.initSwitchVisibilityListener = function(base) {
-        var allItems = base.querySelectorAll('button.tvp-record-switch-visibility');
+        var allItems = base.querySelectorAll('div.tvp-node  button.tvp-record-switch-visibility');
 
         for (const item of allItems) {
             item.addEventListener('click', function(event) {
