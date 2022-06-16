@@ -42,6 +42,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElementWizard::class . '::wizardAction',
     ],
+    'templavoilaplus_record_switch_visibility' => [
+        'path' => '/templavoilaplus/record/switchvisibility',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::switchVisibility',
+    ],
     'templavoilaplus_record_edit' => [
         'path' => '/templavoilaplus/record/editform',
         'access' => 'user,group',

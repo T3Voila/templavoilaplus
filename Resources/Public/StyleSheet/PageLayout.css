@@ -72,7 +72,7 @@ nav.toYellow {
 }
 
 nav.flashGreen {
-    animation: flashGreen 2s linear;
+    animation: flashGreen 1s linear;
 }
 
 nav.flashRed {

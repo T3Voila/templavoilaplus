@@ -20,10 +20,63 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
+use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class Record extends AbstractResponse
 {
+    /**
+     */
+    public function switchVisibility(ServerRequestInterface $request): ResponseInterface
+    {
+        $parameters = $request->getParsedBody();
+        $table = $parameters['table'];
+        $uid = (int)$parameters['uid'];
+
+        // Check if record type have a visibility field
+        if (!isset($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
+            return new JsonResponse(
+                [
+                    'error' => 'Visibility not changeable',
+                ],
+                400 /* Bad request */
+            );
+        }
+
+        // Check if record exists
+        $record = BackendUtility::getRecord($table, (int)$uid);
+        if (!$record) {
+            return new JsonResponse(
+                [
+                    'error' => 'Record not found',
+                ],
+                400 /* Bad request */
+            );
+        }
+
+        $visibilityField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
+
+        $dataHandlerData = [
+            $table => [
+                $uid => [
+                    $visibilityField => (int)(!(bool)$record[$visibilityField]),
+                ],
+            ],
+        ];
+
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start($dataHandlerData, []);
+        $dataHandler->process_datamap();
+
+        return new JsonResponse([
+            'uid' => $uid,
+            'nodeHtml' => '',
+        ]);
+    }
+
     /**
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content

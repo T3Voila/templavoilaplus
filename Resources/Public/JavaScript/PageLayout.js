@@ -276,7 +276,7 @@ console.log('onAdd');
         $('#moduleShadowing').addClass('hidden');
 
         PageLayout.initEditRecordListener(document);
-
+        PageLayout.initSwitchVisibilityListener(document);
     }
 
     PageLayout.initEditRecordListener = function(base) {
@@ -286,6 +286,17 @@ console.log('onAdd');
             item.addEventListener('click', function(event) {
                 var origItem = item.parentNode.parentNode;
                 PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
+    PageLayout.initSwitchVisibilityListener = function(base) {
+        var allItems = base.querySelectorAll('button.tvp-record-switch-visibility');
+
+        for (const item of allItems) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node');
+                PageLayout.recordSwitchVisibility(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }
     }
@@ -342,6 +353,26 @@ console.log('onAdd');
         });
     }
 
+    PageLayout.recordSwitchVisibility = function(table, uid) {
+        var items = $('div.tvp-node[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
+        PageLayout.showInProgress(items);
+
+        $.ajax({
+            type: 'POST',
+            data: {
+                table: table,
+                uid: uid,
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_record_switch_visibility'],
+            success: function(data) {
+                PageLayout.reloadRecord(table, uid);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(items);
+            }
+        });
+    }
+
     PageLayout.reloadRecord = function(table, uid) {
         var items = $('div.tvp-node[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
         PageLayout.showInProgress(items);
@@ -359,6 +390,7 @@ console.log('onAdd');
                 for (var item of items) {
                     var newItem = div.firstElementChild.cloneNode(true)
                     PageLayout.initEditRecordListener(newItem);
+                    PageLayout.initSwitchVisibilityListener(newItem);
                     PageLayout.showSuccess(newItem);
                     item.parentNode.replaceChild(newItem, item);
                 }
