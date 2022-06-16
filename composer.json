@@ -214,7 +214,6 @@
 			"rm .prettierrc.js",
 			"rm package.json",
 			"rm stylelint.config.js",
-			"rm codeception.yml",
 			"rm phive.xml",
 			"rm phpstan-baseline.neon",
 			"rm phpstan.neon",
