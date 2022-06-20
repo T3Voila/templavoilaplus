@@ -358,7 +358,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 (!empty($to['datastructure']) && isset($validatedDs[$to['datastructure']]))
                 || $to['parent'] > 0
             ) {
-                if ($to['parent'] === 0) {
+                if ((int)$to['parent'] === 0) {
                     $validatedDs[$to['datastructure']]['countUsage']++;
                 }
 
