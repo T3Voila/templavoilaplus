@@ -1090,15 +1090,19 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         /**
          * @TODO in staticDS it was also possible that we had a filename with same name but with .html as ending which included the belayout
          * Add this to the getAllDsFromStatic function.
-         * No Support for beLayout content inside DS-XML or TO-Table only filenames (as this is what only worked in TV+).
+         * No Support for beLayout content inside DS- or TO-Table only filenames (as this is what only worked in TV+).
          */
-        if (!empty($to['belayout']) || !empty($convertedDsConfig['data']['belayout'])) {
+        if (!empty($to['belayout'])) {
+            // Support for beLayout as file inside TO-Table
             $beLayout = $to['belayout'];
-            if (empty($beLayout)) {
-                // Old, in nonStaticDS time this was in the DS record
-                $beLayout = $convertedDsConfig['data']['belayout'];
-            }
             $backendLayoutFileName = $this->copyFile($beLayout, $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
+            $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
+        } elseif (!empty($convertedDsConfig['datastructureOriginal']['meta']['beLayout'])) {
+            // Support for beLayout inside DS-XML (static and non-static)
+            $filenameInfo = pathinfo($convertedDsConfig['savePath']);
+            $filename = $filenameInfo['filename'] . '.html';
+
+            $backendLayoutFileName = $this->createFile($filename, $convertedDsConfig['datastructureOriginal']['meta']['beLayout'], $copiedBackendLayoutFiles, $publicExtensionDirectory, $innerPathes['backendLayout']);
             $mappingConfiguration['tvp-mapping']['combinedBackendLayoutConfigurationIdentifier'] = $packageName . '/BackendLayoutConfiguration:' . $backendLayoutFileName;
         }
 
@@ -1422,6 +1426,9 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
             $dataStructureCleaned = $dataStructure;
             $dataStructureCleaned['ROOT'] = $this->cleanupDataStructureRoot($dataStructure['ROOT']);
+            if (isset($dataStructureCleaned['meta']['beLayout'])) {
+                unset($dataStructureCleaned['meta']['beLayout']);
+            }
 
             /**
              * There is a cleanup of DS inside convertDsTo2mappingInformation
@@ -1528,6 +1535,40 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         }
 
         $result = @copy($source, $destination . $filename);
+        if ($result) {
+            GeneralUtility::fixPermissions($destination . $filename);
+        }
+
+        $copiedTemplateFiles[$source] = $filename;
+
+        return $filename;
+    }
+
+    protected function createFile(string $readPathAndFilename, string $content, array &$copiedTemplateFiles, string $publicExtensionDirectory, string $subPath, string $extraPart = ''): string
+    {
+        // Here we have no real path, as the file do not exists yet, its only for preventing multiple writes into target
+        $source = GeneralUtility::getFileAbsFileName($readPathAndFilename);
+
+        if (isset($copiedTemplateFiles[$source])) {
+            return $copiedTemplateFiles[$source];
+        }
+
+        $filename = basename($readPathAndFilename);
+
+        if ($extraPart) {
+            $filenameInfo = pathinfo($filename);
+            $filename = $filenameInfo['filename'] . '_' . $extraPart . '.' . $filenameInfo['extension'];
+        }
+
+        $destination = $publicExtensionDirectory . $subPath . '/';
+
+        if (file_exists($destination . $filename)) {
+            /** @TODO Implement me */
+//             $destination = $this->getUniqueFilename($destination, $filename);
+            throw new \Exception('Doubled file names arent implemented yet: "' . $destination . $filename . '"');
+        }
+
+        $result = @file_put_contents($destination . $filename, $content);
         if ($result) {
             GeneralUtility::fixPermissions($destination . $filename);
         }
