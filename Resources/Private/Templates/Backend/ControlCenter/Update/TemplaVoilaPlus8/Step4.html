@@ -56,7 +56,7 @@
                 </button>
             </div>
             <div class="col-sm-4">
-                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\TemplaVoilaPlus8Update\', action: \'step5\')}'}">
+                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\Update\\TemplaVoilaPlus8\', action: \'step5\')}'}">
                     <core:icon identifier="actions-view-go-forward" /> Continue with step 5
                 </f:form.button>
             </div>

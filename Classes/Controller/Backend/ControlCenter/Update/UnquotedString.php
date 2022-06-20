@@ -1,6 +1,6 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
+namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 
 class UnquotedString
 {
