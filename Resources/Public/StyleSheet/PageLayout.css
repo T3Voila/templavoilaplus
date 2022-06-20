@@ -169,6 +169,11 @@ nav.flashRed {
     opacity: 0.6;
 }
 
+/** Fix BS3 navbar margin */
+.tvp-node .card-header .navbar {
+    margin-bottom: 0;
+}
+
 /** @TODO default transition only while switching theme? */
 .animationTransition {
     transition: all 0.5s linear 0s;
