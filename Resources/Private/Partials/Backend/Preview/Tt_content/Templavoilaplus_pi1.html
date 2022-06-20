@@ -39,7 +39,7 @@
                     </f:if>
                 </f:then>
                 <f:else>
-                    <f:format.crop maxCharacters="2000">
+                    <f:format.crop maxCharacters="2000" respectHtml="false">
                         <tvp:format.wordLength maxCharacters="75">
                             <tvp:format.stripTags whitespace="true">{fieldsData.{fieldName}.vDEF}</tvp:format.stripTags>
                         </tvp:format.wordLength>

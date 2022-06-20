@@ -1,6 +1,6 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
-<f:format.crop maxCharacters="2000">
+<f:format.crop maxCharacters="2000" respectHtml="false">
     <tvp:format.wordLength maxCharacters="75">
         <f:format.htmlentities>{node.raw.entity.bodytext}</f:format.htmlentities>
     </tvp:format.wordLength>

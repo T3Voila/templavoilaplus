@@ -4,7 +4,7 @@
 <f:render partial="Backend/Preview/Tt_content/Elements/SubHeader" arguments="{node: node}" />
 
 <f:if condition="{node.raw.entity.bodytext}">
-    <f:format.crop maxCharacters="2000">
+    <f:format.crop maxCharacters="2000" respectHtml="false">
         <tvp:format.wordLength maxCharacters="75">
             <tvp:format.stripTags whitespace="true">{node.raw.entity.bodytext}</tvp:format.stripTags>
         </tvp:format.wordLength>

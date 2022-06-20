@@ -5,7 +5,7 @@
         <f:if condition="{fieldConfig.TCEforms.label}">
             <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}" /></strong>
         </f:if>
-        <f:format.crop maxCharacters="2000">
+        <f:format.crop maxCharacters="2000" respectHtml="false">
             <tvp:format.wordLength maxCharacters="75">
                 <tvp:format.stripTags whitespace="true">{node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}</tvp:format.stripTags>
             </tvp:format.wordLength>

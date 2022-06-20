@@ -16,7 +16,7 @@
                         </f:else>
                     </f:if>
                 </strong>
-                <f:format.crop maxCharacters="2000">
+                <f:format.crop maxCharacters="2000" respectHtml="false">
                     <tvp:format.wordLength maxCharacters="75">
                         <tvp:format.stripTags whitespace="true">{childFlexformData.{fieldKey}.vDEF}</tvp:format.stripTags>
                     </tvp:format.wordLength>
