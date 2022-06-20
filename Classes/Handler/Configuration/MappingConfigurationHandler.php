@@ -25,7 +25,7 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\MappingConfiguration';
 
-    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): MappingConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): AbstractConfiguration
     {
         $mappingConfiguration = new MappingConfiguration($identifier, $this->place, $this, $file);
 

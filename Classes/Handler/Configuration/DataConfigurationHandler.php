@@ -25,7 +25,7 @@ class DataConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\DataConfiguration';
 
-    public function createConfigurationFromConfigurationArray(array $dataStructure, string $identifier, SplFileInfo $file): DataConfiguration
+    public function createConfigurationFromConfigurationArray(array $dataStructure, string $identifier, SplFileInfo $file): AbstractConfiguration
     {
         $dataConfiguration = new DataConfiguration($identifier, $this->place, $this, $file);
 

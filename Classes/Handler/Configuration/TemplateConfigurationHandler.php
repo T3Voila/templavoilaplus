@@ -25,7 +25,7 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\TemplateConfiguration';
 
-    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): TemplateConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): AbstractConfiguration
     {
         $templateConfiguration = new TemplateConfiguration($identifier, $this->place, $this, $file);
 

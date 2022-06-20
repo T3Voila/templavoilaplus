@@ -25,7 +25,7 @@ class BackendLayoutConfigurationHandler extends AbstractConfigurationHandler
 {
     public static $identifier = 'TVP\ConfigurationHandler\BackendLayoutConfiguration';
 
-    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): BackendLayoutConfiguration
+    public function createConfigurationFromConfigurationArray(array $configuration, string $identifier, SplFileInfo $file): AbstractConfiguration
     {
         $backendLayoutConfiguration = new BackendLayoutConfiguration($identifier, $this->place, $this, $file);
 
