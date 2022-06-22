@@ -145,7 +145,7 @@
                             </div>
                         </li>
                     </f:if>
-                    <li class="sidenav-item disabled" id="navbarClipboard">
+                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} " id="navbarClipboard" data-clipboard-count="{clipboard.tt_content.count}">
                         <div>
                             <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
@@ -155,6 +155,7 @@
                                     <core:icon identifier="actions-edit-copy" size="default" />
                                 </f:else>
                             </f:if>
+                            <span class="position-absolute translate-middle badge rounded-pill bg-danger">{clipboard.tt_content.count}</span>
                         </div>
                     </li>
                     <li class="sidenav-item disabled sidenav-item-blue">

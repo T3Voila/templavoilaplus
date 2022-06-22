@@ -152,7 +152,6 @@ class PageLayoutController extends ActionController
             // If we have more then "all-languages" and 1 editors language available
             'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
             'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
-            'clipboard' => $this->clipboard2fluid(),
             'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
             'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
             'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
@@ -236,6 +235,8 @@ class PageLayoutController extends ActionController
 
         $this->view->assign('calcPerms', $this->calcPerms);
         $this->view->assign('basicEditRights', $this->hasBasicEditRights());
+        $this->view->assign('clipboard', $this->clipboard2fluid());
+
 
         $this->view->assign('contentPartials', $this->contentPartials);
         // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
@@ -311,18 +312,24 @@ class PageLayoutController extends ActionController
 
     protected function clipboard2fluid(): array
     {
-        $clipboard = [
-            'hasContent' => (isset($this->typo3Clipboard->clipData['normal']['el'])),
-            'object' => $this->typo3Clipboard,
+        $clipBoard = [
+            '__totalCount__' => 0,
         ];
 
-        if ($clipboard['hasContent']) {
-            $element = key($this->typo3Clipboard->clipData['normal']['el']);
-            [$clipboard['table'], $clipboard['uid']] = explode('|', $element);
-            $clipboard['mode'] = $this->typo3Clipboard->clipData['normal']['mode'];
+        foreach ($this->typo3Clipboard->clipData as $clipBoardName => $clipBoardData) {
+            if (isset($clipBoardData['el'])) {
+                foreach ($clipBoardData['el'] as $clipBoardElement => $value) {
+                    [$table, $uid] = explode('|', $clipBoardElement);
+                    if (!isset($clipBoard[$table])) {
+                        $clipBoard[$table] = ['count' => 0];
+                    }
+                    $clipBoard['__totalCount__']++;
+                    $clipBoard[$table]['count']++;
+                }
+            }
         }
 
-        return $clipboard;
+        return $clipBoard;
     }
 
     /**

@@ -183,7 +183,7 @@ console.log('onStart');
                 },
                 onEnd: function (/**Event*/evt) {
 console.log('onEnd');
-                    $('#navbarClipboard').addClass('disabled');
+                    PageLayout.disableEmptyClipboard();
                     PageLayout.disableEmptyTrash();
                     $(evt.item).removeClass('blue');
                 },
@@ -277,7 +277,15 @@ console.log('onAdd');
 
         PageLayout.initEditRecordListener(document);
         PageLayout.initSwitchVisibilityListener(document);
+        PageLayout.disableEmptyClipboard();
         PageLayout.disableEmptyTrash();
+    }
+
+    PageLayout.disableEmptyClipboard = function() {
+        var clipboard = $('#navbarClipboard');
+        if (!clipboard[0].dataset.clipboardCount) {
+            clipboard.addClass('disabled');
+        }
     }
 
     PageLayout.disableEmptyTrash = function() {
