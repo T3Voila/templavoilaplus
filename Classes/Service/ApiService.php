@@ -167,22 +167,6 @@ class ApiService
         return $this->process('referencebyuid', $sourcePointer, $destinationPointer);
     }
 
-    /**
-     * Removes a reference to the element (= unlinks) specified by the source pointer.
-     *
-     * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
-     *
-     * @return boolean TRUE if operation was successfully, otherwise false
-     */
-    public function unlinkElement($sourcePointer)
-    {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: unlinkElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
-        }
-
-        return $this->process('unlink', $sourcePointer);
-    }
-
     /******************************************************
      *
      * Processing functions (protected)
@@ -266,9 +250,6 @@ class ApiService
                 break;
             case 'referencebyuid':
                 $result = $this->process_reference($destinationPointer, $destinationReferencesArr, $sourcePointer['uid']);
-                break;
-            case 'unlink':
-                $result = $this->process_unlink($sourcePointer, $sourceReferencesArr);
                 break;
             default:
                 $result = false;
@@ -429,24 +410,6 @@ class ApiService
         // phpcs:enable
         $newDestinationReferencesArr = $this->flexform_insertElementReferenceIntoList($destinationReferencesArr, $destinationPointer['position'], $elementUid);
         $this->flexform_storeElementReferencesListInRecord($newDestinationReferencesArr, $destinationPointer);
-
-        return true;
-    }
-
-    /**
-     * Removes the specified reference
-     *
-     * @param array $sourcePointer flexform pointer pointing to the reference which shall be removed
-     * @param array $sourceReferencesArr Current list of the parent source's element references
-     *
-     * @return bool TRUE if the operation was successful, otherwise FALSE
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function process_unlink($sourcePointer, $sourceReferencesArr)
-    {
-        // phpcs:enable
-        $newSourceReferencesArr = $this->flexform_removeElementReferenceFromList($sourceReferencesArr, $sourcePointer['position']);
-        $this->flexform_storeElementReferencesListInRecord($newSourceReferencesArr, $sourcePointer);
 
         return true;
     }

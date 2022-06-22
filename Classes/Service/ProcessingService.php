@@ -516,6 +516,31 @@ class ProcessingService
     }
 
     /**
+     * Removes a reference to the element (= unlinks) specified by the source pointer.
+     *
+     * @param string $sourcePointerString flexform pointer pointing to the reference which shall be removed
+     * @return boolean TRUE if operation was successfully, otherwise false
+     */
+    public function unlinkElement(string $sourcePointerString): bool
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: unlinkElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
+        }
+
+        // Check and get all information about the source position:
+        $sourcePointer = $this->getValidPointer($sourcePointerString);
+        if (!$sourcePointer) {
+            return false;
+        }
+
+        // Unlink
+        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+        $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
+
+        return true;
+    }
+
+    /**
      * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
      *
      * @param array $currentReferencesArr Array of tt_content uids from a current reference list
