@@ -45,10 +45,6 @@ class DoktypeDefaultHandler
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
-        if (isset($controller->getModSharedTSconfig()['properties']['useLiveWorkspaceForReferenceListUpdates'])) {
-            $apiService->modifyReferencesInLiveWS(true);
-        }
-
         /** @TODO This loading will be later done again for the FlexFormTools::getDataStructureIdentifierFromRecord() which is stupid IMHO */
         $combinedMappingConfigurationIdentifier = $pageRecord['tx_templavoilaplus_map'];
         // Find DS and Template in root line IF there is no Data Structure set for the current page:
