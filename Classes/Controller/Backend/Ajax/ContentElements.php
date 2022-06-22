@@ -34,14 +34,14 @@ class ContentElements extends AbstractResponse
      */
     public function insert(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var ApiService */
-        $apiService = GeneralUtility::makeInstance(ApiService::class);
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
 
         /** @TODO LanguageHandling! */
         /** @TODO Should we hide every element on insert as it isn't configured yet? */
-        $result = $apiService->insertElement(
+        $result = $processingService->insertElement(
             $parameters['destinationPointer'] ?? '',
             $parameters['elementRow'] ?? []
         );
@@ -139,6 +139,7 @@ class ContentElements extends AbstractResponse
      */
     public function remove(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class);
 
         $parameters = $request->getParsedBody();

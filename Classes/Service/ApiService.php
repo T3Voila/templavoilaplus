@@ -39,11 +39,6 @@ class ApiService
     public $debug = false;
 
     /**
-     * @var bool
-     */
-    protected $modifyReferencesInLiveWS = false;
-
-    /**
      * @var array
      */
     protected $cachedModWebTSconfig = [];
@@ -62,154 +57,6 @@ class ApiService
      * Element manipulation functions (public)
      *
      ******************************************************/
-
-    /**
-     * Creates a new content element record and sets the necessary references to connect
-     * it to the parent element.
-     *
-     * @param array $destinationPointer Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
-     * @param array $elementRow Array of field keys and values for the new content element record
-     *
-     * @return mixed The UID of the newly created record or FALSE if operation was not successful
-     */
-    public function insertElement($destinationPointer, $elementRow)
-    {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
-        }
-
-        $destinationPointer = $this->flexform_getValidPointer($destinationPointer);
-        if (!$destinationPointer) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: flexform_getValidPointer() failed', 'templavoilaplus', 0);
-            }
-
-            return false;
-        }
-
-        $newRecordUid = $this->insertElement_createRecord($destinationPointer, $elementRow);
-        if ($newRecordUid === false) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: insertElement_createRecord() failed', 'templavoilaplus', 0);
-            }
-
-            return false;
-        }
-
-        $result = $this->insertElement_setElementReferences($destinationPointer, $newRecordUid);
-        if ($result === false) {
-            if ($this->debug) {
-                GeneralUtility::devLog('API#insertElement: insertElement_setElementReferences() failed', 'templavoilaplus', 0);
-            }
-
-            return false;
-        }
-
-        return $newRecordUid;
-    }
-
-    /**
-     * Sub function of insertElement: creates a new tt_content record in the database.
-     *
-     * @param array $destinationPointer flexform pointer to the parent element of the new record
-     * @param array $row The record data to insert into the database
-     *
-     * @return mixed The UID of the newly created record or FALSE if operation was not successful
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function insertElement_createRecord($destinationPointer, $row)
-    {
-        //phpcs:enable
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'row' => $row]);
-        }
-
-        $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,t3ver_oid,tx_templavoilaplus_flex');
-
-        if ($destinationPointer['position'] > 0) {
-            $currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationPointer);
-            /**
-             * @TODO check why $currentReferencesArr isn't used
-             */
-        }
-        $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($parentRecord['pid'] == -1 ? $parentRecord['t3ver_oid'] : $parentRecord['uid']) : $parentRecord['pid']);
-
-        $dataArr = [];
-        $dataArr['tt_content']['NEW'] = $row;
-        $dataArr['tt_content']['NEW']['pid'] = $newRecordPid;
-        unset($dataArr['tt_content']['NEW']['uid']);
-
-        // If the destination is not the default language, try to set the old-style sys_language_uid field accordingly
-        if ($destinationPointer['sLang'] != 'lDEF' || $destinationPointer['vLang'] != 'vDEF') {
-            $languageKey = $destinationPointer['vLang'] != 'vDEF' ? $destinationPointer['vLang'] : $destinationPointer['sLang'];
-            $staticLanguageRows = BackendUtility::getRecordsByField('static_languages', 'lg_iso_2', substr($languageKey, 1));
-            if (isset($staticLanguageRows[0]['uid'])) {
-                $languageRecord = BackendUtility::getRecordRaw('sys_language', 'static_lang_isocode=' . (int)$staticLanguageRows[0]['uid']);
-                if (isset($languageRecord['uid'])) {
-                    $dataArr['tt_content']['NEW']['sys_language_uid'] = $languageRecord['uid'];
-                }
-            }
-        }
-
-        // Instantiate TCEmain and create the record:
-        $tce = GeneralUtility::makeInstance(DataHandler::class);
-        /* @var $tce DataHandler */
-
-        // set default TCA values specific for the page and user
-        $TCAdefaultOverride['properties'] = BackendUtility::getPagesTSconfig($newRecordPid)['TCAdefaults'] ?? [];
-        if (is_array($TCAdefaultOverride['properties'])) {
-            $tce->setDefaultsFromUserTS($TCAdefaultOverride['properties']);
-        }
-
-        $tce->stripslashes_values = 0;
-        $flagWasSet = $this->getTCEmainRunningFlag();
-        $this->setTCEmainRunningFlag(true);
-
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_createRecord()', 'templavoilaplus', 0, ['dataArr' => $dataArr]);
-        }
-
-        $tce->start($dataArr, []);
-        $tce->process_datamap();
-        if ($this->debug && count($tce->errorLog)) {
-            GeneralUtility::devLog('API: insertElement_createRecord(): tcemain failed', 'templavoilaplus', 0, ['errorLog' => $tce->errorLog]);
-        }
-        $newUid = $tce->substNEWwithIDs['NEW'];
-        if (!$flagWasSet) {
-            $this->setTCEmainRunningFlag(false);
-        }
-
-        return (int)$newUid ? (int)$newUid : false;
-    }
-
-    /**
-     * Sub function of insertElement: sets the references in the parent element for a newly created tt_content
-     * record.
-     *
-     * @param array $destinationPointer Flexform pointer defining the parent element of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
-     * @param int $uid UID of the tt_content record
-     *
-     * @return bool
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function insertElement_setElementReferences($destinationPointer, $uid)
-    {
-        // phpcs:enable
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement_setElementReferences()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'uid' => $uid]);
-        }
-
-        $parentRecord = BackendUtility::getRecordWSOL($destinationPointer['table'], $destinationPointer['uid'], 'uid,pid,tx_templavoilaplus_flex');
-        if (!is_array($parentRecord)) {
-            return false;
-        }
-
-        $currentReferencesArr = $this->flexform_getElementReferencesFromXML($parentRecord['tx_templavoilaplus_flex'], $destinationPointer);
-        $newReferencesArr = $this->flexform_insertElementReferenceIntoList($currentReferencesArr, $destinationPointer['position'], $uid);
-        $this->flexform_storeElementReferencesListInRecord($newReferencesArr, $destinationPointer);
-
-        return true;
-    }
 
     /**
      * Makes a true copy of an element specified by the source pointer to the location specified by
@@ -1324,14 +1171,6 @@ class ApiService
     public function getTCEmainRunningFlag()
     {
         return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
-    }
-
-    /**
-     * @param bool $enable
-     */
-    public function modifyReferencesInLiveWS($enable = true)
-    {
-        $this->modifyReferencesInLiveWS = $enable;
     }
 
     /**

@@ -304,8 +304,10 @@ class ProcessingService
         foreach ($elements as $fieldKey => $fieldConfig) {
             if ($fieldConfig['type'] == 'array') {
                 if ($fieldConfig['section']) {
-                    foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
-                        $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
+                    if (isset($values[$fieldKey]['el'])) {
+                        foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
+                            $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
+                        }
                     }
                 } else {
                     $childs[$fieldKey] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
@@ -369,6 +371,54 @@ class ProcessingService
 
         return $nodes;
     }
+
+    /**
+     * Creates a new content element record and sets the necessary references to connect it to the parent element.
+     * @TODO Also for non tt_content elements?
+     *
+     * @param array $destinationPointer Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
+     * @param array $elementRow Array of field keys and values for the new content element record
+     *
+     * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     */
+    public function insertElement(string $destinationPointerString, array $elementRow)
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
+        }
+
+        // Check and get all information about the destination position:
+        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
+        if (!$destinationPointer) {
+            return false;
+        }
+
+        // Create record
+        $destinationRecord = $destinationPointer['foundRecord'];
+        $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($destinationRecord['pid'] == -1 ? $destinationRecord['t3ver_oid'] : $destinationRecord['uid']) : $destinationRecord['pid']);
+
+        $dataArr = [];
+        $dataArr['tt_content']['NEW'] = $elementRow;
+        $dataArr['tt_content']['NEW']['pid'] = $newRecordPid;
+        unset($dataArr['tt_content']['NEW']['uid']);
+
+        /** @var DataHandler */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->start($dataArr, []);
+        $tce->process_datamap();
+        $elementUid = $tce->substNEWwithIDs['NEW'];
+
+        if (!$elementUid) {
+            return false;
+        }
+
+        // insert record into destination
+        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+        $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+
+        return $elementUid;
+    }
+
 
     /**
      * Moves an element specified by the source pointer to the location specified by destination pointer.
@@ -564,6 +614,9 @@ class ProcessingService
         $flexformPointer['foundDataStructure'] = $dataStructure;
 
         /** @TODO Does it have a flex field and which one is it? */
+        if ($pointerRecord['tx_templavoilaplus_flex'] === null) {
+            $pointerRecord['tx_templavoilaplus_flex'] = '';
+        }
         $elementReferences = $this->getElementReferencesFromXml($pointerRecord['tx_templavoilaplus_flex'], $flexformPointer);
 
         // position should between 0 and count of existing elements for possible adding elements
