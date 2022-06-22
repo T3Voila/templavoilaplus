@@ -202,6 +202,11 @@ nav.flashRed {
     border: 1px solid #9c9c9c;
 }
 
+.sidenav-item .badge {
+    font-size: 10px;
+    font-weight: 400;
+}
+
 .sidenav-item.disabled {
     background-color: #9c9c9c;
 }
