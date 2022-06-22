@@ -183,23 +183,6 @@ class ApiService
         return $this->process('unlink', $sourcePointer);
     }
 
-    /**
-     * Removes a reference to the element (= unlinks) specified by the source pointer AND deletes the
-     * record.
-     *
-     * @param array $sourcePointer flexform pointer pointing to the element which shall be deleted
-     *
-     * @return boolean TRUE if operation was successfully, otherwise false
-     */
-    public function deleteElement($sourcePointer)
-    {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: deleteElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
-        }
-
-        return $this->process('delete', $sourcePointer);
-    }
-
     /******************************************************
      *
      * Processing functions (protected)
@@ -286,9 +269,6 @@ class ApiService
                 break;
             case 'unlink':
                 $result = $this->process_unlink($sourcePointer, $sourceReferencesArr);
-                break;
-            case 'delete':
-                $result = $this->process_delete($sourcePointer, $sourceReferencesArr, $sourceElementRecord['uid']);
                 break;
             default:
                 $result = false;
@@ -471,40 +451,6 @@ class ApiService
         return true;
     }
 
-    /**
-     * Removes the specified reference and truly deletes the record
-     *
-     * @param array $sourcePointer flexform pointer pointing to the element which will be the target of the reference
-     * @param array $sourceReferencesArr Current list of the parent source's element references
-     * @param int $elementUid UID of the tt_content element to be deleted
-     *
-     * @return bool TRUE if the operation was successful, otherwise FALSE
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function process_delete($sourcePointer, $sourceReferencesArr, $elementUid)
-    {
-        // phpcs:enable
-        if (!$this->process_unlink($sourcePointer, $sourceReferencesArr)) {
-            return false;
-        }
-
-        $cmdArray = [];
-        $cmdArray['tt_content'][$elementUid]['delete'] = 1;
-        // Element UID should always be that of the online version here...
-
-        // Store:
-        $flagWasSet = $this->getTCEmainRunningFlag();
-        $this->setTCEmainRunningFlag(true);
-        $tce = GeneralUtility::makeInstance(DataHandler::class);
-        $tce->stripslashes_values = 0;
-        $tce->start([], $cmdArray);
-        $tce->process_cmdmap();
-        if (!$flagWasSet) {
-            $this->setTCEmainRunningFlag(false);
-        }
-
-        return true;
-    }
 
     /******************************************************
      *

@@ -20,7 +20,6 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
-use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -139,12 +138,12 @@ class ContentElements extends AbstractResponse
      */
     public function remove(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var ApiService */
-        $apiService = GeneralUtility::makeInstance(ApiService::class);
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
 
-        $result = $apiService->deleteElement(
+        $result = $processingService->deleteElement(
             $parameters['sourcePointer'] ?? ''
         );
 

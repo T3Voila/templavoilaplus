@@ -376,15 +376,14 @@ class ProcessingService
      * Creates a new content element record and sets the necessary references to connect it to the parent element.
      * @TODO Also for non tt_content elements?
      *
-     * @param array $destinationPointer Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
+     * @param string $destinationPointerString Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
      * @param array $elementRow Array of field keys and values for the new content element record
-     *
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
      */
     public function insertElement(string $destinationPointerString, array $elementRow)
     {
         if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointer, 'elementRow' => $elementRow]);
+            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString, 'elementRow' => $elementRow]);
         }
 
         // Check and get all information about the destination position:
@@ -419,13 +418,12 @@ class ProcessingService
         return $elementUid;
     }
 
-
     /**
      * Moves an element specified by the source pointer to the location specified by destination pointer.
      * @TODO Only pointers to TCEform of type groups allowed, move inside sections should also be done
      *
-     * @param string $sourcePointer flexform pointer pointing to the element which shall be moved
-     * @param string $destinationPointer flexform pointer to the new location
+     * @param string $sourcePointerString flexform pointer pointing to the element which shall be moved
+     * @param string $destinationPointerString flexform pointer to the new location
      * @return boolean TRUE if operation was successfully, otherwise false
      */
     public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
@@ -480,6 +478,42 @@ class ProcessingService
         return true;
     }
 
+    /**
+     * Removes a reference to the element (= unlinks) specified by the source pointer AND deletes the
+     * record.
+     *
+     * @param string $sourcePointerString flexform pointer pointing to the element which shall be deleted
+     * @return boolean TRUE if operation was successfully, otherwise false
+     */
+    public function deleteElement(string $sourcePointerString): bool
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: deleteElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointerString]);
+        }
+
+        // Check and get all information about the source position:
+        $sourcePointer = $this->getValidPointer($sourcePointerString);
+        if (!$sourcePointer) {
+            return false;
+        }
+
+        // Unlink
+        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+        $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
+
+        // Delete
+        $cmdArray = [];
+        $cmdArray['tt_content'][$sourcePointer['foundRecord']['uid']]['delete'] = 1;
+        // Element UID should always be that of the online version here...
+
+        /** @var DataHandler */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+
+        $tce->start([], $cmdArray);
+        $tce->process_cmdmap();
+
+        return true;
+    }
 
     /**
      * Creates a new reference list (as an array) with the $elementUid inserted into the given reference list
