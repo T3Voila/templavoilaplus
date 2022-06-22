@@ -184,7 +184,7 @@ console.log('onStart');
                 onEnd: function (/**Event*/evt) {
 console.log('onEnd');
                     $('#navbarClipboard').addClass('disabled');
-                    $('#navbarTrash').addClass('disabled');
+                    PageLayout.disableEmptyTrash();
                     $(evt.item).removeClass('blue');
                 },
                 onMove: function (/**Event*/evt, /**Event*/originalEvent) {
@@ -277,6 +277,14 @@ console.log('onAdd');
 
         PageLayout.initEditRecordListener(document);
         PageLayout.initSwitchVisibilityListener(document);
+        PageLayout.disableEmptyTrash();
+    }
+
+    PageLayout.disableEmptyTrash = function() {
+        var trash = $('#navbarTrash');
+        if (!trash[0].dataset.unusedCount) {
+            trash.addClass('disabled');
+        }
     }
 
     PageLayout.initEditRecordListener = function(base) {

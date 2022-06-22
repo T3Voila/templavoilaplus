@@ -25,6 +25,9 @@ use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException as CoreInvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -91,8 +94,35 @@ class ProcessingService
         // Return result:
         return [
             'node' => $node,
-            'contentElementUsage' => $tt_content_elementRegister
+            'usedElements' => $usedElements
         ];
+    }
+
+    public function getUnusedElements(array $pageRow, array $usedElements): array
+    {
+        $table = 'tt_content';
+
+        // Get all page elements not in usedElements
+        $usedUids = array_keys($usedElements[$table]);
+
+        /** @TODO Move into Repository? */
+        /** @var QueryBuilder */
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+        // set table and where clause
+        $queryBuilder
+            ->select('*')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->notIn('uid', $usedUids),
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT))
+            );
+
+        $row = $queryBuilder->execute()->fetchAllAssociative();
+
+        return $row;
     }
 
     public function getNodeFromRow(string $table, array $row, array $parentPointer = [], int $basePid = 0, array &$usedElements = [])

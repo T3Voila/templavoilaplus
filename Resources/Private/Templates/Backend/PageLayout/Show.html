@@ -174,9 +174,9 @@
                             </f:if>
                         </div>
                     </li>
-                    <li class="sidenav-item disabled sidenav-item-trash" id="navbarTrash">
+                    <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash" id="navbarTrash" data-unused-count="{unused.tt_content.count}">
                         <div>
-                            <core:icon identifier="actions-delete" size="default" />
+                            <core:icon identifier="actions-delete" size="default" /><span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
                         </div>
                     </li>
                     <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">

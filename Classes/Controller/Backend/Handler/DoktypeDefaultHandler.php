@@ -78,11 +78,23 @@ class DoktypeDefaultHandler
 //                 $combinedBackendLayoutConfigurationIdentifier = 'TVP\BackendLayout:DefaultPage.tvp.yaml';
 //             }
 
+                $nodeTree = $processingService->getNodeWithTree('pages', $pageRecord);
+                $unusedElements = $processingService->getUnusedElements($pageRecord, $nodeTree['usedElements']);
+
                 $controller->getView()->assign(
                     'doktypeDefault',
                     [
-                        'nodeTree' => $processingService->getNodeWithTree('pages', $pageRecord),
+                        'nodeTree' => $nodeTree,
                         'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
+                    ]
+                );
+                $controller->getView()->assign(
+                    'unused',
+                    [
+                        'tt_content' => [
+                            'count' => count($unusedElements),
+                            'elements' => $unusedElements,
+                        ],
                     ]
                 );
                 $controller->addContentPartial('body', 'Backend/Handler/DoktypeDefaultHandler');
