@@ -34,7 +34,7 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
         RenderingContextInterface $renderingContext
     ) {
         $pattern = $arguments['pattern'] ?? ($arguments['delimiterDecimal'] ? '\x' . dechex($arguments['delimiterDecimal']) : '');
-        $value = $arguments['value'] ?? $renderChildrenClosure();
+        $value = $arguments['value'] ?? $renderChildrenClosure() ?? '';
         $limit = $arguments['limit'] ?? -1;
         // mb_split default is -1
 
