@@ -1,0 +1,30 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<div>
+    <nav>
+        <ul class="nav nav-tabs t3js-tabs" id="nav-tab" role="tablist">
+            <f:for each="{clipboardData}" as="tableElements" key="tableName">
+                <f:if condition="{tableName} !== '__totalCount__'">
+                    <li role="presentation" class="t3js-tabmenu-item nav-item">
+                        <a class="nav-link active" id="nav-{tableName}-tab" data-toggle="tab" data-bs-toggle="tab" href="#nav-{tableName}" role="tab" aria-controls="nav-{tableName}" aria-selected="false"><f:translate key="{tableElements.label}" default="{tableElements.label}" /></a>
+                    </li>
+                </f:if>
+            </f:for>
+        </ul>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+        <f:for each="{clipboardData}" as="tableElements" key="tableName">
+            <f:if condition="{tableName} !== '__totalCount__'">
+                <div class="tab-pane active tvjs-drag" id="nav-{tableName}" role="tabpanel" aria-labelledby="nav-{tableName}-tab">
+                    <f:for each="{tableElements.elements}" as="contentElement" key="contentElementKey">
+                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="tt_content" data-elementRow="{contentElement.element-row -> f:format.json()}">
+                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><f:format.raw>{contentElement.icon}</f:format.raw></div>
+                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
+                                <div><b>{contentElement.title}</b></div>
+                            </div>
+                        </div>
+                    </f:for>
+                </div>
+            </f:if>
+        </f:for>
+    </div>
+</div>

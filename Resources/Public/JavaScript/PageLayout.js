@@ -77,6 +77,40 @@ define([
                 $('#moduleShadowing').addClass('hidden');
             },
         });
+        $('#navbarClipboard:not(.disabled)').tooltipster({
+            updateAnimation: false,
+            side: 'left',
+            interactive: true,
+            trackTooltip: true,
+            trigger: 'click',
+            content: 'Loading...',
+            contentAsHTML: true,
+            functionBefore: function(instance, helper) {
+                $('#moduleShadowing').removeClass('hidden');
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        id: $('#moduleWrapper').data('tvpPageId')
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_load'],
+                    success: function(data) {
+                        // Add data to content
+                        instance.content(data);
+                        PageLayout.initWizardDrag(instance);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        instance.content('Request failed because of error: ' + textStatus);
+                        $('#moduleWrapper').data('loadedContentElementWizard', false);
+                    }
+                });
+            },
+            functionReady: function(instance, helper) {
+                 PageLayout.initWizardDrag(instance);
+            },
+            functionAfter: function(instance, helper) {
+                $('#moduleShadowing').addClass('hidden');
+            },
+        });
         $('#navbarConfig').tooltipster({
             side: 'left',
             interactive: true,
