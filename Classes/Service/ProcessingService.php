@@ -120,7 +120,7 @@ class ProcessingService
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT))
             );
 
-        $row = $queryBuilder->execute()->fetchAllAssociative();
+        $row = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
 
         return $row;
     }
