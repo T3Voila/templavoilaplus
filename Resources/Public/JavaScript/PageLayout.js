@@ -154,7 +154,6 @@ define([
                 group: {
                     name: 'dropzones_' + allDropzones[i].dataset.childAllowed,
                     pull: function (to, from, el, evt) {
-//                         to.el.addClass('green');
                         if (to.el.id === 'navbarClipboard') {
                             return 'clone';
                         }
@@ -229,26 +228,56 @@ console.log('onMove');
 console.log('onAdd');
                     if (evt.pullMode === 'clone') {
                         // Insert from NewContentElementWizard (later also clipboard/trash)
-                        // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
-                        $.ajax({
-                            type: 'POST',
-                            data: {
-                                destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
-                                elementRow: JSON.parse(evt.item.dataset.elementrow)
-                            },
-                            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
-                            success: function(data) {
-                                var div = document.createElement('div');
-                                div.innerHTML = data.nodeHtml;
-                                PageLayout.showSuccess(div.firstElementChild);
-                                PageLayout.initEditRecordListener(div.firstElementChild);
-                                evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                var el = evt.item;
-                                el.parentNode.removeChild(el);
-                            }
-                        });
+                        switch (evt.item.dataset.panel) {
+                            case 'newcontent':
+                                // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+                                $.ajax({
+                                    type: 'POST',
+                                    data: {
+                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                                        elementRow: JSON.parse(evt.item.dataset.elementRow)
+                                    },
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
+                                    success: function(data) {
+                                        var div = document.createElement('div');
+                                        div.innerHTML = data.nodeHtml;
+                                        PageLayout.initEditRecordListener(div.firstElementChild);
+                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
+                                        PageLayout.showSuccess(div.firstElementChild);
+                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+                                    },
+                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                        var el = evt.item;
+                                        el.parentNode.removeChild(el);
+                                    }
+                                });
+                                break;
+                            case 'clipboard':
+                                // Check clipboard mode copy/move/reference
+                                // Non tt_content can only be referenced (if target allows them!
+                                $.ajax({
+                                    type: 'POST',
+                                    data: {
+                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                                        sourceTable: evt.item.dataset.recordTable,
+                                        sourceUid: evt.item.dataset.recordUid
+                                    },
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_copy'],
+                                    success: function(data) {
+                                        var div = document.createElement('div');
+                                        div.innerHTML = data.nodeHtml;
+                                        PageLayout.initEditRecordListener(div.firstElementChild);
+                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
+                                        PageLayout.showSuccess(div.firstElementChild);
+                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+                                    },
+                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                        var el = evt.item;
+                                        el.parentNode.removeChild(el);
+                                    }
+                                });
+
+                        }
                     } else {
                         // Move from another field
                         // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1

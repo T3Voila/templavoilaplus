@@ -16,13 +16,16 @@
             <f:if condition="{tableName} !== '__totalCount__'">
                 <div class="tab-pane active tvjs-drag" id="nav-{tableName}" role="tabpanel" aria-labelledby="nav-{tableName}-tab">
                     <f:for each="{tableElements.elements}" as="contentElement" key="contentElementKey">
-                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="tt_content" data-elementRow="{contentElement.element-row -> f:format.json()}">
+                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
                             <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><f:format.raw>{contentElement.icon}</f:format.raw></div>
                             <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
                                 <div><b>{contentElement.title}</b></div>
                             </div>
                         </div>
                     </f:for>
+                    <h3>Clipboardmode</h3>
+                    <div><input type="radio" checked> Copy element</input></div>
+                    <div><input type="radio" disabled> Move element</input></div>
                 </div>
             </f:if>
         </f:for>

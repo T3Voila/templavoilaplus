@@ -17,6 +17,9 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ProcessingService;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
@@ -44,5 +47,35 @@ abstract class AbstractResponse
         $view->assign('settings', $settings);
 
         return $view;
+    }
+
+    protected function record2html(string $table, int $uid): string
+    {
+        $row = BackendUtility::getRecord($table, $uid);
+
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        $nodeTree = $processingService->getNodeWithTree($table, $row);
+
+        /** @TODO better handle this with an configuration object */
+        /** @TODO Duplicated more or less from PageLayoutController */
+        $settings = [
+            'configuration' => [
+                'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
+                'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
+                'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
+                'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
+                'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
+                'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
+                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
+                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+                'TCA' => $GLOBALS['TCA'],
+            ],
+        ];
+
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $settings);
+        $view->assign('nodeTree', $nodeTree);
+
+        return $view->render();
     }
 }

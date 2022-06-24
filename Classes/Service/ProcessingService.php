@@ -546,6 +546,51 @@ class ProcessingService
     }
 
     /**
+     * Copy an element into given location
+     *
+     * @param string $destinationPointerString flexform pointer to the new location
+     * @param string $table The table from which we copy, should be tt_content!
+     * @param int $sourceElementUid The elements uid which should be copied
+     * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     */
+    public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: copyElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString]);
+        }
+
+        // Check and get all information about the source position:
+        $destinationPointer = $this->getValidPointer($destinationPointerString);
+        if (!$destinationPointer) {
+            return false;
+        }
+        // Only tt_content yet
+        if ($sourceElementTable !== 'tt_content') {
+            return false;
+        }
+
+        $destinationRecord = $destinationPointer['foundRecord'];
+        $newRecordPid = ($destinationPointer['table'] == 'pages' ? ($destinationRecord['pid'] == -1 ? $destinationRecord['t3ver_oid'] : $destinationRecord['uid']) : $destinationRecord['pid']);
+
+        // Copy
+        $cmdArray = [];
+        $cmdArray[$sourceElementTable][$sourceElementUid]['copy'] = $newRecordPid;
+
+        /** @var DataHandler */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->start([], $cmdArray);
+        $tce->process_cmdmap();
+
+        $newElementUid = $tce->copyMappingArray_merged[$sourceElementTable][$sourceElementUid];
+
+        // Insert new uid into reference
+        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $newElementUid);
+        $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+
+        return $newElementUid;
+    }
+
+    /**
      * Removes a reference to the element (= unlinks) specified by the source pointer.
      *
      * @param string $sourcePointerString flexform pointer pointing to the reference which shall be removed

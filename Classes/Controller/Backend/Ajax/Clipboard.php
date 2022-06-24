@@ -50,6 +50,7 @@ class Clipboard extends AbstractResponse
      */
     public function load(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var array */
         $parameters = $request->getParsedBody();
 
         /**
@@ -71,6 +72,38 @@ class Clipboard extends AbstractResponse
         $view->assign('clipboardData', $clipboardData);
 
         return new HtmlResponse($view->render());
+    }
+
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function copy(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        /** @var array */
+        $parameters = $request->getParsedBody();
+
+        $result = $processingService->copyElement(
+            $parameters['destinationPointer'] ?? '',
+            $parameters['sourceTable'] ?? '',
+            (int) $parameters['sourceUid'] ?? 0
+        );
+
+        if ($result) {
+            return new JsonResponse([
+                'uid' => $result,
+                'nodeHtml' => $this->record2html('tt_content', $result),
+            ]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => $result
+                ],
+                400 /* Bad request */
+            );
+        }
     }
 
     protected function clipboard2fluid(): array
@@ -96,7 +129,7 @@ class Clipboard extends AbstractResponse
                         $clipBoard['__totalCount__']++;
                         $clipBoard[$table]['count']++;
                         $clipBoard[$table]['elements'][] = [
-                            'identifier' => $table . '|' . $uid,
+                            'uid' => $uid,
                             'icon' => $this->iconFactory->getIconForRecord($table, $record, Icon::SIZE_DEFAULT)->render(),
                             'title' => GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), 50),
                         ];
