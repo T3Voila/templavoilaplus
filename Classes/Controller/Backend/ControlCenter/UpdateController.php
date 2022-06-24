@@ -15,6 +15,9 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /**
  * Controller to show the switch dialog.
  *
@@ -31,5 +34,33 @@ class UpdateController extends Update\AbstractUpdateController
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
 
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
+        $this->view->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
+        $this->view->assign('isMigrationPossible', $this->isMigrationPossible());
+    }
+
+    protected function hasServerMigrationFile(): bool
+    {
+        $registeredExtensions = \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::getRegisteredExtensions();
+        foreach ($registeredExtensions as $extensionKey => $path) {
+            if (is_file($path . '/ServerMigration.json')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Only basic check, more inside TemplaVoilaPlus8Controller
+     */
+    protected function isMigrationPossible(): bool
+    {
+        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable('tx_templavoilaplus_datastructure')
+            ->getSchemaManager()
+            ->listTableColumns('tx_templavoilaplus_datastructure');
+        if (count($columns) !== 0) {
+            return true;
+        }
+        return false;
     }
 }

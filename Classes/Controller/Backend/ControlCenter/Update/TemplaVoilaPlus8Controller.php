@@ -923,6 +923,12 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
             // Read old data, convert and write to new places
             $covertingInstructions = $this->convertAllDsTo($ds, $to, $packageName, $publicExtensionDirectory, $innerPathes, $warnings);
+
+            $covertingInstructionsFile = "#This file is only for migrating a server system after deploying this theme extension on \n"
+                . "#This file can be removed afterwards. \n"
+                . json_encode($covertingInstructions, JSON_PRETTY_PRINT)
+                . "\n";
+            GeneralUtility::writeFile($publicExtensionDirectory . $innerPathes['configuration'] . '/ServerMigration.json', $covertingInstructionsFile, true);
         } catch (\Exception $e) {
             $errors[] = $e->getMessage();
         }

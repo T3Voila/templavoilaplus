@@ -44,6 +44,14 @@ class ExtensionUtility implements SingletonInterface
     /**
      * @internal
      */
+    public static function getRegisteredExtensions(): array
+    {
+        return self::$registeredExtensions;
+    }
+
+    /**
+     * @internal
+     */
     public static function handleAllExtensions()
     {
         foreach (self::$registeredExtensions as $extensionKey => $path) {
