@@ -1,0 +1,58 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<div class="callout">
+    <h2 class="text-primary">Update configuration on Server System</h2>
+
+    <form action="#" method="POST">
+        <input type="hidden" name="update" value="TemplaVoilaPlus8">
+        <input type="hidden" name="extensionAlreadyInstalled" value="1">
+        <input type="hidden" name="covertingInstructionsJson" value="{covertingInstructionsJson}">
+
+        <p class="lead">TV+ checked your database for compatibility.</p>
+
+        <f:if condition="!{allOldDatabaseElementsFound}">
+            <f:be.infobox title="Error" state="2">
+                <p class="lead">It seems you have deleted database tables and/or fields that are necessary for the Update Script.<br>Process stopped.</p>
+            </f:be.infobox>
+        </f:if>
+
+        <f:if condition="!{allNewDatabaseElementsFound}">
+            <f:be.infobox title="Error" state="2">
+                <p class="lead">The new fields on table pages and tt_content do not exist, please run the "Analyze Database Structure" tool and add that fields (but do not remove any tables or fields) and then try again.<br>Process stopped.</p>
+            </f:be.infobox>
+        </f:if>
+
+        <f:if condition="!{convertInstructionsLoaded}">
+            <f:be.infobox title="Error" state="2">
+                <p class="lead">The migration instructions couldn't be loaded.<br>Process stopped.</p>
+            </f:be.infobox>
+        </f:if>
+
+        <f:if condition="!{allChecksAreFine}">
+            <p class="lead">Please fix the errors before you can continue this Server Migration Script. After fixing all issues you can rerun this step. Please note that it may be also be possible for other errors to crop up after you make your changes.</p>
+        </f:if>
+
+        <f:if condition="{allChecksAreFine}">
+            <p class="lead">It seems all your server system may be migrateable. So we can continue with Step 5 from the Update configuration to TemplaVoilà! Plus 8 Script.</p>
+            <f:be.infobox title="Warning" state="2">Please backup your database/files before step into the "Update configuration to TemplaVoilà! Plus 8" script.</f:be.infobox>
+        </f:if>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <f:link.action controller="Backend\ControlCenter\Update" action="info" class="btn btn-default btn-block btn-lg">
+                    <core:icon identifier="actions-view-go-back" /> Back to TV+ Update Script collection
+                </f:link.action>
+            </div>
+            <div class="col-sm-4">
+                <f:link.action action="step1" class="btn {f:if(condition='{allChecksAreFine}', then='btn-default', else='btn-success')} btn-block btn-lg">
+                    <core:icon identifier="actions-system-refresh" /> Rerun start
+                </f:link.action>
+            </div>
+            <div class="col-sm-4">
+                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\Update\\TemplaVoilaPlus8\', action: \'step5\')}'}">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 5 of "Update configuration to TemplaVoilà! Plus 8"
+                </f:form.button>
+            </div>
+        </div>
+    </form>
+</div>

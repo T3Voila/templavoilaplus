@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -1637,61 +1638,71 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
     protected function step5Action()
     {
         $errors = [];
+        $extensionAlreadyInstalled = false;
 
         $selection = $_POST['selection'];
 
-        // Register extensions
-        /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
-        $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
-        /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
-        $installUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
-
-        try {
-            $installUtility->install($selection);
-        } catch (\UnexpectedValueException $e) {
-            $errors[] = 'Error while installing Extension. Please do this by your own. Original message from extension manager is: "' . $e->getMessage() . '"';
+        if (isset($_POST['extensionAlreadyInstalled'])) {
+            $extensionAlreadyInstalled = (bool)$_POST['extensionAlreadyInstalled'];
         }
 
-        // Read mapping information from json
-        $covertingInstructions = json_decode($_POST['covertingInstructionsJson'], true);
-        // Update pages
-        // Update tt_content
+        // If we come from ServerMigration to step5 the extension is already installed
+        if (!$extensionAlreadyInstalled) {
+            // Register extensions
+            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
+            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+            /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
+            $installUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
 
-        // Also updating deleted ones, so history function should work
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
-        $queryBuilderPages = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-        $queryBuilderPages->getRestrictions()->removeAll();
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
-        $queryBuilderContent = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
-        $queryBuilderContent->getRestrictions()->removeAll();
+            try {
+                $installUtility->install($selection);
+            } catch (\UnexpectedValueException | UnknownPackageException $e) {
+                $errors[] = 'Error while installing Extension. Please do this by your own. Original message from extension manager is: "' . $e->getMessage() . '"';
+            }
+        }
 
-        foreach ($covertingInstructions as $instruction) {
-            $queryBuilderPagesClone = clone $queryBuilderPages;
-            $result = $queryBuilderPagesClone
-                ->update('pages')
-                ->where(
-                    $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
-                )
-                ->set('tx_templavoilaplus_map', $instruction['toMap'])
-                ->execute();
+        if (empty($errors)) {
+            // Read mapping information from json
+            $covertingInstructions = json_decode($_POST['covertingInstructionsJson'], true);
+            // Update pages
+            // Update tt_content
 
-            $queryBuilderPagesClone = clone $queryBuilderPages;
-            $result = $queryBuilderPagesClone
-                ->update('pages')
-                ->where(
-                    $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_next_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
-                )
-                ->set('tx_templavoilaplus_next_map', $instruction['toMap'])
-                ->execute();
+            // Also updating deleted ones, so history function should work
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+            $queryBuilderPages = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilderPages->getRestrictions()->removeAll();
+            /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder */
+            $queryBuilderContent = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
+            $queryBuilderContent->getRestrictions()->removeAll();
 
-            $queryBuilderContentClone = clone $queryBuilderContent;
-            $result = $queryBuilderContentClone
-                ->update('tt_content')
-                ->where(
-                    $queryBuilderContentClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderContentClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
-                )
-                ->set('tx_templavoilaplus_map', $instruction['toMap'])
-                ->execute();
+            foreach ($covertingInstructions as $instruction) {
+                $queryBuilderPagesClone = clone $queryBuilderPages;
+                $result = $queryBuilderPagesClone
+                    ->update('pages')
+                    ->where(
+                        $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                    )
+                    ->set('tx_templavoilaplus_map', $instruction['toMap'])
+                    ->execute();
+
+                $queryBuilderPagesClone = clone $queryBuilderPages;
+                $result = $queryBuilderPagesClone
+                    ->update('pages')
+                    ->where(
+                        $queryBuilderPagesClone->expr()->eq('tx_templavoilaplus_next_to', $queryBuilderPagesClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                    )
+                    ->set('tx_templavoilaplus_next_map', $instruction['toMap'])
+                    ->execute();
+
+                $queryBuilderContentClone = clone $queryBuilderContent;
+                $result = $queryBuilderContentClone
+                    ->update('tt_content')
+                    ->where(
+                        $queryBuilderContentClone->expr()->eq('tx_templavoilaplus_to', $queryBuilderContentClone->createNamedParameter($instruction['fromTo'], \PDO::PARAM_INT))
+                    )
+                    ->set('tx_templavoilaplus_map', $instruction['toMap'])
+                    ->execute();
+            }
         }
 
         $this->view->assignMultiple([

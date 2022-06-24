@@ -52,6 +52,7 @@ if (TYPO3_MODE === 'BE') {
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Templates' . $classPostfixForRegisterModule => 'list,info',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update' . $classPostfixForRegisterModule => 'info',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\TemplaVoilaPlus8' . $classPostfixForRegisterModule => 'stepStart,step1,step2,step3,step3NewExtension,step3ExistingExtension,step4,step5,stepFinal',
+            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\ServerMigration' . $classPostfixForRegisterModule => 'stepStart',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV8' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV10' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
             $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV11' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
