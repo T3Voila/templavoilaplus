@@ -52,10 +52,10 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::load',
     ],
-    'templavoilaplus_clipboard_copy' => [
-        'path' => '/templavoilaplus/clipboard/copy',
+    'templavoilaplus_clipboard_action' => [
+        'path' => '/templavoilaplus/clipboard/action',
         'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::copy',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::action',
     ],
     'templavoilaplus_record_switch_visibility' => [
         'path' => '/templavoilaplus/record/switchvisibility',
@@ -71,6 +71,11 @@ return [
         'path' => '/templavoilaplus/usersettings/enableDarkMode',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\UserSettings::class . '::enableDarkMode',
+    ],
+    'templavoilaplus_usersettings_setClipboardMode' => [
+        'path' => '/templavoilaplus/usersettings/setClipboardMode',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\UserSettings::class . '::setClipboardMode',
     ],
 
     // Overwrite from core

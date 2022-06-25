@@ -97,6 +97,7 @@ define([
                         // Add data to content
                         instance.content(data);
                         PageLayout.initWizardDrag(instance);
+                        PageLayout.initClipboardModeListener(instance);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         instance.content('Request failed because of error: ' + textStatus);
@@ -255,14 +256,17 @@ console.log('onAdd');
                             case 'clipboard':
                                 // Check clipboard mode copy/move/reference
                                 // Non tt_content can only be referenced (if target allows them!
+                                console.log(evt);
+                                var mode = evt.from.parentNode.querySelector('input[name="clipboardMode"]:checked').value;
                                 $.ajax({
                                     type: 'POST',
                                     data: {
                                         destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                                        mode: mode,
                                         sourceTable: evt.item.dataset.recordTable,
                                         sourceUid: evt.item.dataset.recordUid
                                     },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_copy'],
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_action'],
                                     success: function(data) {
                                         var div = document.createElement('div');
                                         div.innerHTML = data.nodeHtml;
@@ -270,6 +274,14 @@ console.log('onAdd');
                                         PageLayout.initSwitchVisibilityListener(div.firstElementChild);
                                         PageLayout.showSuccess(div.firstElementChild);
                                         evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+                                        if (data.clipboard.tt_content) {
+                                            $('#navbarClipboard')[0].dataset.clipboardCount = data.clipboard.tt_content.count;
+                                            $('#navbarClipboard .badge').html(data.clipboard.tt_content.count);
+                                        } else {
+                                            $('#navbarClipboard')[0].dataset.clipboardCount = 0;
+                                            $('#navbarClipboard .badge').html(0);
+                                            PageLayout.disableEmptyClipboard();
+                                        }
                                     },
                                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                                         var el = evt.item;
@@ -346,7 +358,10 @@ console.log('onAdd');
 
     PageLayout.disableEmptyClipboard = function() {
         var clipboard = $('#navbarClipboard');
-        if (!clipboard[0].dataset.clipboardCount) {
+        if (
+          !clipboard[0].dataset.clipboardCount
+          || clipboard[0].dataset.clipboardCount == 0
+        ) {
             clipboard.addClass('disabled');
         }
     }
@@ -397,6 +412,16 @@ console.log('onAdd');
                     instance.close();
                 }
             });
+        }
+    }
+
+    PageLayout.initClipboardModeListener = function(instance) {
+        var allRadios = [].slice.call(instance.elementTooltip().querySelectorAll('input[type="radio"]'))
+
+        for (const item of allRadios) {
+            item.addEventListener('click', function(event) {
+                $.get(TYPO3.settings.ajaxUrls['templavoilaplus_usersettings_setClipboardMode'], {mode: event.originalTarget.value});
+            })
         }
     }
 

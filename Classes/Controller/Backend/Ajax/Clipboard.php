@@ -58,17 +58,7 @@ class Clipboard extends AbstractResponse
          */
         $clipboardData = $this->clipboard2fluid();
 
-        $settings = [
-            'configuration' => [
-                'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
-                'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
-                'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
-                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-            ],
-        ];
-
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Clipboard.html', $settings);
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Clipboard.html', $this->getSettings());
         $view->assign('clipboardData', $clipboardData);
 
         return new HtmlResponse($view->render());
@@ -78,23 +68,29 @@ class Clipboard extends AbstractResponse
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
-    public function copy(ServerRequestInterface $request): ResponseInterface
+    public function action(ServerRequestInterface $request): ResponseInterface
     {
-        /** @var ProcessingService */
-        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
         /** @var array */
         $parameters = $request->getParsedBody();
+        $result = null;
 
-        $result = $processingService->copyElement(
-            $parameters['destinationPointer'] ?? '',
-            $parameters['sourceTable'] ?? '',
-            (int) $parameters['sourceUid'] ?? 0
-        );
+        switch ($parameters['mode']) {
+            case 'copy':
+                $result = $this->copy($parameters);
+                break;
+            case 'move':
+                $result = $this->move($parameters);
+                break;
+            default:
+                // Empty by design
+                break;
+        }
 
         if ($result) {
             return new JsonResponse([
                 'uid' => $result,
                 'nodeHtml' => $this->record2html('tt_content', $result),
+                'clipboard' => $this->clipboard2fluid(),
             ]);
         } else {
             return new JsonResponse(
@@ -104,6 +100,114 @@ class Clipboard extends AbstractResponse
                 400 /* Bad request */
             );
         }
+    }
+
+    /**
+     * @param array $parameters the current request
+     * @return int|bool The new uid or FALSE
+     */
+    protected function copy(array $parameters)
+    {
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+
+        return $processingService->copyElement(
+            $parameters['destinationPointer'] ?? '',
+            $parameters['sourceTable'] ?? '',
+            (int) $parameters['sourceUid'] ?? 0
+        );
+    }
+
+    /**
+     * @param array $parameters the current request
+     * @return int The uid or FALSE
+     */
+    protected function move(array $parameters)
+    {
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        $sourceUid = (int) $parameters['sourceUid'] ?? 0;
+        $sourceTable = $parameters['sourceTable'] ?? '';
+
+        if ($sourceUid <= 0) {
+            return false;
+        }
+        if (!isset($GLOBALS['TCA'][$sourceTable])) {
+            return false;
+        }
+
+        // We should only move tt_content IMHO
+        if ($sourceTable !== 'tt_content') {
+            return false;
+        }
+
+        // Find in clipboard
+        $dataInClipboard = $this->findInClipboard($sourceTable, $sourceUid);
+        if ($dataInClipboard === 0) {
+            return false;
+        }
+
+        // Find record
+        $record = BackendUtility::getRecordWSOL($sourceTable, $sourceUid);
+        if (!$record) {
+            return false;
+        }
+
+        // Find orig position (copied by ListMode?)
+        $sourcePointer = $processingService->findRecordsSourcePointer($record);
+
+        $result = $processingService->moveElement(
+            $sourcePointer,
+            $parameters['destinationPointer'] ?? ''
+        );
+
+        if ($result) {
+            $this->removeFromClipboard($sourceTable, $sourceUid);
+            return (int) $parameters['sourceUid'];
+        }
+
+        return false;
+    }
+
+    protected function removeFromClipboard(string $table, int $uid)
+    {
+        $key = $table . '|' . $uid;
+
+        foreach ($this->typo3Clipboard->clipData as $clipBoardName => $clipBoardData) {
+            if (isset($clipBoardData['el'])) {
+                foreach ($clipBoardData['el'] as $clipBoardElement => $value) {
+                    if ($clipBoardElement === $key) {
+                        $this->typo3Clipboard->setCmd(
+                            [
+                                'setP' => $clipBoardName,
+                                'remove' => $key,
+                            ]
+                        );
+                        $this->typo3Clipboard->endClipboard();
+                        return;
+                    }
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    protected function findInClipboard(string $table, int $uid)
+    {
+        $key = $table . '|' . $uid;
+
+        foreach ($this->typo3Clipboard->clipData as $clipBoardName => $clipBoardData) {
+            if (isset($clipBoardData['el'])) {
+                foreach ($clipBoardData['el'] as $clipBoardElement => $value) {
+                    if ($clipBoardElement === $key) {
+                        return $value;
+                    }
+                }
+            }
+        }
+
+        return 0;
     }
 
     protected function clipboard2fluid(): array
@@ -118,7 +222,7 @@ class Clipboard extends AbstractResponse
                     [$table, $uid] = explode('|', $clipBoardElement);
                     if (!isset($clipBoard[$table])) {
                         $clipBoard[$table] = [
-                            'label' => $GLOBALS['TCA']['tt_content']['ctrl']['title'],
+                            'label' => $GLOBALS['TCA'][$table]['ctrl']['title'],
                             'count' => 0,
                             'elements' => [],
                         ];

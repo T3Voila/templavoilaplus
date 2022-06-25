@@ -34,4 +34,15 @@ class UserSettings
         $backendUser->writeUC();
         return new JsonResponse(['success' => true]);
     }
+
+    public function setClipboardMode(ServerRequestInterface $request): ResponseInterface
+    {
+        $backendUser = TemplaVoilaUtility::getBackendUser();
+
+        $userconfig = $backendUser->uc['templavoilaplus'];
+        $userconfig['clipboardMode'] = $request->getQueryParams()['mode'];
+        $backendUser->uc['templavoilaplus'] = $userconfig;
+        $backendUser->writeUC();
+        return new JsonResponse(['success' => true]);
+    }
 }

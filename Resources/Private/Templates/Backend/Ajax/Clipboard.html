@@ -24,8 +24,9 @@
                         </div>
                     </f:for>
                     <h3>Clipboardmode</h3>
-                    <div><input type="radio" checked> Copy element</input></div>
-                    <div><input type="radio" disabled> Move element</input></div>
+                    <div><input type="radio" {f:if(condition: '!{settings.configuration.userSettings.clipboardMode} || {settings.configuration.userSettings.clipboardMode} == \'copy\'', then: 'checked')} name="clipboardMode" value="copy"> Copy element</input></div>
+                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'move\'', then: 'checked')} name="clipboardMode" value="move"> Move element</input></div>
+                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'reference\'', then: 'checked')} disabled name="clipboardMode" value="reference"> Reference element</input></div>
                 </div>
             </f:if>
         </f:for>

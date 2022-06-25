@@ -57,9 +57,17 @@ abstract class AbstractResponse
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
         $nodeTree = $processingService->getNodeWithTree($table, $row);
 
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $this->getSettings());
+        $view->assign('nodeTree', $nodeTree);
+
+        return $view->render();
+    }
+
+    protected function getSettings()
+    {
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
-        $settings = [
+        return [
             'configuration' => [
                 'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
@@ -72,10 +80,5 @@ abstract class AbstractResponse
                 'TCA' => $GLOBALS['TCA'],
             ],
         ];
-
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $settings);
-        $view->assign('nodeTree', $nodeTree);
-
-        return $view->render();
     }
 }

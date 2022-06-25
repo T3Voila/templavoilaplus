@@ -142,10 +142,11 @@ class ProcessingService
         }
 
         if (isset($usedElements[$table][$row['uid']])) {
-            $usedElements[$table][$row['uid']]++;
+            $usedElements[$table][$row['uid']]['count']++;
         } else {
-            $usedElements[$table][$row['uid']] = 1;
+            $usedElements[$table][$row['uid']]['count'] = 1;
         }
+        $usedElements[$table][$row['uid']]['parentPointers'][] = $parentPointerString;
 
         $node = [
             'raw' => [
@@ -158,7 +159,7 @@ class ProcessingService
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
                 'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
                 'belongsToCurrentPage' => ($basePid === $onPid),
-                'countUsedOnPage' => $usedElements[$table][$row['uid']],
+                'countUsedOnPage' => $usedElements[$table][$row['uid']]['count'],
                 'parentPointer' => $parentPointerString,
                 'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                 'beLayoutDesign' => ($backendLayoutConfiguration ? $backendLayoutConfiguration->isDesign() : false),
@@ -317,7 +318,7 @@ class ProcessingService
             // Traverse the sheet's elements:
             if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
                 foreach ($lKeys as $lKey) {
-                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
+                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                 }
             }
         }
@@ -325,7 +326,7 @@ class ProcessingService
         return $childs;
     }
 
-    protected function getNodeChildsFromElements(array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
+    protected function getNodeChildsFromElements(array $baseNode, string $baseSheetKey, array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
     {
         $childs = [];
         /** @TODO We need this dynamically */
@@ -336,11 +337,11 @@ class ProcessingService
                 if ($fieldConfig['section']) {
                     if (isset($values[$fieldKey]['el'])) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
-                            $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
+                            $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
                         }
                     }
                 } else {
-                    $childs[$fieldKey] = $this->getNodeChildsFromElements($fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
+                    $childs[$fieldKey] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
                 }
             } else {
                 // If the current field points to another table, process it if not sys_file or sys_file_reference:
@@ -353,8 +354,7 @@ class ProcessingService
                     foreach ($vKeys as $vKey) {
                         $listOfSubElementUids = $values[$fieldKey][$vKey];
                         if ($listOfSubElementUids) {
-//                             $parentPointer = $this->createParentPointer($node, $sheetKey, $fieldKey, $lKey, $vKey);
-                            $parentPointer = [];
+                            $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, $vKey);
                             $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
                         } else {
                             $childs[$fieldKey][$vKey] = [];
@@ -371,6 +371,20 @@ class ProcessingService
         }
 
         return $childs;
+    }
+
+    public function findRecordsSourcePointer(array $row): string
+    {
+        $pageRow = BackendUtility::getRecordWSOL('pages', $row['pid']);
+        $parentPointer = [];
+        $usedElements = [];
+        $baseNode = $this->getNodeWithTree('pages', $pageRow, $parentPointer, (int) $row['pid'], $usedElements);
+
+        if (isset($usedElements['tt_content'][$row['uid']])) {
+            return $usedElements['tt_content'][$row['uid']]['parentPointers'][0];
+        }
+
+        return 'tt_content:' . $row['uid'];
     }
 
     public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, string $table, array &$usedElements): array
@@ -442,7 +456,7 @@ class ProcessingService
         }
 
         // insert record into destination
-        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $elementUid);
         $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
 
         return $elementUid;
@@ -469,12 +483,30 @@ class ProcessingService
         if (!$sourcePointer || !$destinationPointer) {
             return false;
         }
+        // Destination can't be pure table, needs to be a pointer field
+        if (!isset($destinationPointer['position'])) {
+            return false;
+        }
+
+        // Points to an non used element, it is more like add reference and move pid
+        if (!isset($sourcePointer['position'])) {
+            $elementTable = $sourcePointer['table'];
+            $elementUid = (int) $sourcePointer['uid'];
+        } else {
+            $elementTable = $sourcePointer['foundFieldReferences']['referenceTable'];
+            $elementUid = (int) $sourcePointer['foundFieldReferences']['references'][$sourcePointer['position']];
+        }
+
+        if ($elementTable !== $destinationPointer['foundFieldReferences']['referenceTable']) {
+            // Can't move an element from one to another table type
+            return false;
+        }
+
         $elementsAreWithinTheSameParentElement = (
             $sourcePointer['table'] == $destinationPointer['table'] &&
             $sourcePointer['uid'] == $destinationPointer['uid']
         );
 
-        $elementUid = $sourcePointer['foundFieldReferences'][$sourcePointer['position']];
 
         // Move the element within the same parent element:
         if ($elementsAreWithinTheSameParentElement) {
@@ -486,23 +518,48 @@ class ProcessingService
             );
             if ($elementsAreWithinTheSameParentField) {
                 $newPosition = $destinationPointer['position'];
-                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences']['references'], $sourcePointer['position']);
                 $newReferences = $this->insertElementReferenceIntoList($newReferences, $newPosition, $elementUid);
                 $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
             } else {
-                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences']['references'], $sourcePointer['position']);
                 $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
-                $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+                $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $elementUid);
                 $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
             }
         } else {
             // Move the element to a different parent element:
-            $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
-            $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
-            $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $elementUid);
+            if (isset($sourcePointer['foundFieldReferences']['references'])) {
+                // Unlink on source only if field reference
+                $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences']['references'], $sourcePointer['position']);
+                $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
+            }
+            $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $elementUid);
             $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
 
-            /** @TODO Move over pages should reset the PID of the element (only for tt_content?) */
+            // Update pid if we move tt_content over pages
+            if ($elementTable === 'tt_content') {
+                $sourcePid = (int) ($sourcePointer['table'] == 'pages' ? $sourcePointer['foundRecord']['uid'] : $sourcePointer['foundRecord']['pid']);
+                $destinationPid = (int) ($destinationPointer['table'] == 'pages' ? $destinationPointer['foundRecord']['uid'] : $destinationPointer['foundRecord']['pid']);
+
+                if ($sourcePID !== $destinationPid) {
+                    $cmdArray = [];
+                    $cmdArray['tt_content'][$elementUid]['move'] = $destinationPid;
+
+                    // Move childs if there any
+                    $parentPointer = [];
+                    $usedElements = [];
+                    $baseNode = $this->getNodeWithTree($sourcePointer['table'], $sourcePointer['foundRecord'], $parentPointer, $sourcePid, $usedElements);
+                    foreach ($usedElements['tt_content'] as $uid => $_unused) {
+                        $cmdArray['tt_content'][$uid]['move'] = $destinationPid;
+                    }
+
+                    $tce = GeneralUtility::makeInstance(DataHandler::class);
+                    $tce->stripslashes_values = 0;
+                    $tce->start([], $cmdArray);
+                    $tce->process_cmdmap();
+                }
+            }
         }
 
         return true;
@@ -528,7 +585,7 @@ class ProcessingService
         }
 
         // Unlink
-        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences']['references'], $sourcePointer['position']);
         $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
 
         // Delete
@@ -584,7 +641,7 @@ class ProcessingService
         $newElementUid = $tce->copyMappingArray_merged[$sourceElementTable][$sourceElementUid];
 
         // Insert new uid into reference
-        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences'], $destinationPointer['position'], $newElementUid);
+        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $newElementUid);
         $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
 
         return $newElementUid;
@@ -609,7 +666,7 @@ class ProcessingService
         }
 
         // Unlink
-        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences'], $sourcePointer['position']);
+        $newReferences = $this->removeElementReferenceFromList($sourcePointer['foundFieldReferences']['references'], $sourcePointer['position']);
         $this->storeElementReferencesListInRecord($newReferences, $sourcePointer);
 
         return true;
@@ -735,6 +792,11 @@ class ProcessingService
         }
         $flexformPointer['foundRecord'] = $pointerRecord;
 
+        // Only point to a record and no field/position
+        if (!isset($flexformPointer['position'])) {
+            return $flexformPointer;
+        }
+
         if ($flexformPointer['position'] < 0) {
             if ($this->debug) {
                 GeneralUtility::devLog('flexform_getValidPointer: The position must be positive!', 'TemplaVoilà!+ API', 2, $flexformPointer);
@@ -745,16 +807,18 @@ class ProcessingService
 
         // Now we need the DS from record
         $dataStructure = $this->getDatastructureForPointer($flexformPointer);
+
         $flexformPointer['foundDataStructure'] = $dataStructure;
 
         /** @TODO Does it have a flex field and which one is it? */
         if ($pointerRecord['tx_templavoilaplus_flex'] === null) {
             $pointerRecord['tx_templavoilaplus_flex'] = '';
         }
+
         $elementReferences = $this->getElementReferencesFromXml($pointerRecord['tx_templavoilaplus_flex'], $flexformPointer);
 
         // position should between 0 and count of existing elements for possible adding elements
-        $maxPosition = count($elementReferences);
+        $maxPosition = count($elementReferences['references']);
         if (!$newPositionPossible) {
             // We are starting from 0, so max is count elements - 1
             $maxPosition--;
@@ -781,7 +845,7 @@ class ProcessingService
      * @param string $flexformXml XML content of a flexform field
      * @param array $flexformPointer Pointing to a field in the XML structure to get the list of element references from.
      *
-     * @return array|null Numerical array tt_content uids or NULL if an error occurred (eg. flexformXML was no valid XML)
+     * @return array|null Array with field references which holds uids as array and referenceTable which holds the tablename or NULL if an error occurred (eg. flexformXML was no valid XML)
      */
     public function getElementReferencesFromXml($flexformXml, $flexformPointer): ?array
     {
@@ -846,7 +910,10 @@ class ProcessingService
             }
         }
 
-        return $elementReferencesArr;
+        return [
+            'references' => $elementReferencesArr,
+            'referenceTable' => $innerTable,
+        ];
     }
 
     /**
@@ -895,7 +962,7 @@ class ProcessingService
     {
         if (isset($parentPointer['sheet'])) {
             $flexformPointerString = sprintf(
-                '%s:%s:%s:%s:%s:%s:%s',
+                '%s:%s:%s:%s:#%s:%s:%s',
                 $parentPointer['table'],
                 $parentPointer['uid'],
                 $parentPointer['sheet'],
