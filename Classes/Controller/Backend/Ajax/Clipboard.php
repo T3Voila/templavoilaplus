@@ -58,6 +58,16 @@ class Clipboard extends AbstractResponse
          */
         $clipboardData = $this->clipboard2fluid();
 
+        /** @TODO Only show tt_content at the moment */
+        foreach ($clipboardData as $table => $tableEntries) {
+            if (
+                $table !== '__totalCount__'
+                && $table !== 'tt_content'
+            ) {
+                unset($clipboardData[$table]);
+            }
+        }
+
         $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Clipboard.html', $this->getSettings());
         $view->assign('clipboardData', $clipboardData);
 
