@@ -91,6 +91,9 @@ class Clipboard extends AbstractResponse
             case 'move':
                 $result = $this->move($parameters);
                 break;
+            case 'reference':
+                $result = $this->reference($parameters);
+                break;
             default:
                 // Empty by design
                 break;
@@ -126,6 +129,29 @@ class Clipboard extends AbstractResponse
             $parameters['sourceTable'] ?? '',
             (int) $parameters['sourceUid'] ?? 0
         );
+    }
+
+    /**
+     * @param array $parameters the current request
+     * @return int|bool The new uid or FALSE
+     */
+    protected function reference(array $parameters)
+    {
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        $sourceUid = (int) $parameters['sourceUid'] ?? 0;
+        $sourceTable = $parameters['sourceTable'] ?? '';
+
+        $result = $processingService->referenceElement(
+            $parameters['destinationPointer'] ?? '',
+            $sourceTable,
+            $sourceUid
+        );
+
+        if ($result) {
+            $this->removeFromClipboard($sourceTable, $sourceUid);
+            return (int) $parameters['sourceUid'];
+        }
     }
 
     /**

@@ -648,6 +648,36 @@ class ProcessingService
     }
 
     /**
+     * Reference an element into given location
+     *
+     * @param string $destinationPointerString flexform pointer to the new location
+     * @param string $table The table from which we copy, should be tt_content!
+     * @param int $sourceElementUid The elements uid which should be copied
+     * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     */
+    public function referenceElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
+    {
+        if ($this->debug) {
+            GeneralUtility::devLog('API: referenceElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString]);
+        }
+
+        // Check and get all information about the source position:
+        $destinationPointer = $this->getValidPointer($destinationPointerString);
+        if (!$destinationPointer) {
+            return false;
+        }
+        // Only tt_content yet
+        if ($sourceElementTable !== 'tt_content') {
+            return false;
+        }
+
+        // Insert new uid into reference
+        $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $sourceElementUid);
+        $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+
+        return $sourceElementUid;
+    }
+    /**
      * Removes a reference to the element (= unlinks) specified by the source pointer.
      *
      * @param string $sourcePointerString flexform pointer pointing to the reference which shall be removed

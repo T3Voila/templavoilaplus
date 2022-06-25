@@ -256,7 +256,6 @@ console.log('onAdd');
                             case 'clipboard':
                                 // Check clipboard mode copy/move/reference
                                 // Non tt_content can only be referenced (if target allows them!
-                                console.log(evt);
                                 var mode = evt.from.parentNode.querySelector('input[name="clipboardMode"]:checked').value;
                                 $.ajax({
                                     type: 'POST',
