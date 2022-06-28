@@ -126,7 +126,7 @@ define([
                 $.ajax({
                     type: 'POST',
                     data: {
-                        id: $('#moduleWrapper').data('tvpPageId')
+                        pid: $('#moduleWrapper').data('tvpPageId')
                     },
                     url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_load'],
                     success: function(data) {

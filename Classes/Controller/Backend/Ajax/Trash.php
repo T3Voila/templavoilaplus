@@ -47,8 +47,6 @@ class Trash extends AbstractResponse
         /** @var array */
         $parameters = $request->getParsedBody();
 
-        $parameters['pid'] = 1;
-
         $unusedElements = $this->trash2fluid((int)$parameters['pid']);
 
         $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Trash.html', $this->getSettings());
