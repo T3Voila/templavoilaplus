@@ -98,6 +98,7 @@ define([
                         instance.content(data);
                         PageLayout.initWizardDrag(instance);
                         PageLayout.initClipboardModeListener(instance);
+                        PageLayout.initClipboardReleaseListener(instance);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         instance.content('Request failed because of error: ' + textStatus);
@@ -273,14 +274,8 @@ console.log('onAdd');
                                         PageLayout.initSwitchVisibilityListener(div.firstElementChild);
                                         PageLayout.showSuccess(div.firstElementChild);
                                         evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-                                        if (data.clipboard.tt_content) {
-                                            $('#navbarClipboard')[0].dataset.clipboardCount = data.clipboard.tt_content.count;
-                                            $('#navbarClipboard .badge').html(data.clipboard.tt_content.count);
-                                        } else {
-                                            $('#navbarClipboard')[0].dataset.clipboardCount = 0;
-                                            $('#navbarClipboard .badge').html(0);
-                                            PageLayout.disableEmptyClipboard();
-                                        }
+
+                                        PageLayout.updateClipboardNumber(data.clipboard);
                                     },
                                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                                         var el = evt.item;
@@ -424,6 +419,28 @@ console.log('onAdd');
         }
     }
 
+    PageLayout.initClipboardReleaseListener = function(instance) {
+        var allButtons = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-clipboard-release'))
+
+        for (const item of allButtons) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node-clipboard');
+                PageLayout.clipboardRelease(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
+    PageLayout.updateClipboardNumber = function(clipboardData) {
+        if (clipboardData.tt_content) {
+            $('#navbarClipboard')[0].dataset.clipboardCount = clipboardData.tt_content.count;
+            $('#navbarClipboard .badge').html(clipboardData.tt_content.count);
+        } else {
+            $('#navbarClipboard')[0].dataset.clipboardCount = 0;
+            $('#navbarClipboard .badge').html(0);
+            PageLayout.disableEmptyClipboard();
+        }
+    }
+
     PageLayout.openRecordEdit = function(table, uid) {
         var url = TYPO3.settings.ajaxUrls['templavoilaplus_record_edit'];
         var separator = (url.indexOf('?') > -1) ? '&' : '?';
@@ -469,6 +486,24 @@ console.log('onAdd');
             url: TYPO3.settings.ajaxUrls['templavoilaplus_record_switch_visibility'],
             success: function(data) {
                 PageLayout.reloadRecord(table, uid);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(items);
+            }
+        });
+    }
+
+    PageLayout.clipboardRelease = function(table, uid) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                table: table,
+                uid: uid,
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_release'],
+            success: function(data) {
+                $('#navbarClipboard').tooltipster('close');
+                PageLayout.updateClipboardNumber(data.clipboard);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 PageLayout.showError(items);

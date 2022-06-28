@@ -16,10 +16,15 @@
             <f:if condition="{tableName} !== '__totalCount__'">
                 <div class="tab-pane active tvjs-drag" id="nav-{tableName}" role="tabpanel" aria-labelledby="nav-{tableName}-tab">
                     <f:for each="{tableElements.elements}" as="contentElement" key="contentElementKey">
-                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
+                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2 tvp-node-clipboard" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
                             <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><f:format.raw>{contentElement.icon}</f:format.raw></div>
                             <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
                                 <div><b>{contentElement.title}</b></div>
+                            </div>
+                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-right')} flex-shrink-0">
+                                <button type="button" class="btn btn-default btn-sm tvjs-clipboard-release">
+                                    <core:icon identifier="actions-edit-copy-release" />
+                                </button>
                             </div>
                         </div>
                     </f:for>

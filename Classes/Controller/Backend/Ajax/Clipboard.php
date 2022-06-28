@@ -116,6 +116,37 @@ class Clipboard extends AbstractResponse
     }
 
     /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function release(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var array */
+        $parameters = $request->getParsedBody();
+        $result = null;
+
+        $result = $this->removeFromClipboard(
+            $parameters['table'],
+            (int) $parameters['uid']
+        );
+
+        if ($result) {
+            return new JsonResponse([
+                'uid' => $result,
+                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid']),
+                'clipboard' => $this->clipboard2fluid(),
+            ]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => $result
+                ],
+                400 /* Bad request */
+            );
+        }
+    }
+
+    /**
      * @param array $parameters the current request
      * @return int|bool The new uid or FALSE
      */
@@ -205,7 +236,7 @@ class Clipboard extends AbstractResponse
         return false;
     }
 
-    protected function removeFromClipboard(string $table, int $uid)
+    protected function removeFromClipboard(string $table, int $uid): bool
     {
         $key = $table . '|' . $uid;
 
@@ -220,13 +251,13 @@ class Clipboard extends AbstractResponse
                             ]
                         );
                         $this->typo3Clipboard->endClipboard();
-                        return;
+                        return true;
                     }
                 }
             }
         }
 
-        return 0;
+        return false;
     }
 
     protected function findInClipboard(string $table, int $uid)
