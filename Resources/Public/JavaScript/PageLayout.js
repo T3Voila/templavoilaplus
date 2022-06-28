@@ -345,6 +345,7 @@ console.log('onAdd');
         $('#moduleShadowing').addClass('hidden');
 
         PageLayout.initEditRecordListener(document);
+        PageLayout.initClipboardAddListener(document);
         PageLayout.initSwitchVisibilityListener(document);
         PageLayout.disableEmptyClipboard();
         PageLayout.disableEmptyTrash();
@@ -374,6 +375,17 @@ console.log('onAdd');
             item.addEventListener('click', function(event) {
                 var origItem = item.closest('.tvp-node');
                 PageLayout.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
+    PageLayout.initClipboardAddListener = function(base) {
+        var allItems = base.querySelectorAll('div.tvp-node .tvp-clipboard-add');
+
+        for (const item of allItems) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node');
+                PageLayout.clipboardAdd(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }
     }
@@ -503,6 +515,23 @@ console.log('onAdd');
             url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_release'],
             success: function(data) {
                 $('#navbarClipboard').tooltipster('close');
+                PageLayout.updateClipboardNumber(data.clipboard);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(items);
+            }
+        });
+    }
+
+    PageLayout.clipboardAdd = function(table, uid) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                table: table,
+                uid: uid,
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_add'],
+            success: function(data) {
                 PageLayout.updateClipboardNumber(data.clipboard);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {

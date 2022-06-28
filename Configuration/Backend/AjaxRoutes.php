@@ -62,6 +62,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::release',
     ],
+    'templavoilaplus_clipboard_add' => [
+        'path' => '/templavoilaplus/clipboard/add',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::add',
+    ],
     'templavoilaplus_record_switch_visibility' => [
         'path' => '/templavoilaplus/record/switchvisibility',
         'access' => 'user,group',

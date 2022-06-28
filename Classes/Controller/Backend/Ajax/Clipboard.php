@@ -147,6 +147,37 @@ class Clipboard extends AbstractResponse
     }
 
     /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function add(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var array */
+        $parameters = $request->getParsedBody();
+        $result = null;
+
+        $result = $this->addToClipboard(
+            $parameters['table'],
+            (int) $parameters['uid']
+        );
+
+        if ($result) {
+            return new JsonResponse([
+                'uid' => $result,
+                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid']),
+                'clipboard' => $this->clipboard2fluid(),
+            ]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => $result
+                ],
+                400 /* Bad request */
+            );
+        }
+    }
+
+    /**
      * @param array $parameters the current request
      * @return int|bool The new uid or FALSE
      */
@@ -258,6 +289,22 @@ class Clipboard extends AbstractResponse
         }
 
         return false;
+    }
+
+    protected function addToClipboard(string $table, int $uid): bool
+    {
+        $key = $table . '|' . $uid;
+
+        $this->typo3Clipboard->setCmd(
+            [
+                'setP' => 'tab_1',
+                'el' => [
+                    $key => 1, /** @TODO We could set this to a flexform pointer (like old TV) but the pointer won't get updated on moves etc. */
+                ]
+            ]
+        );
+        $this->typo3Clipboard->endClipboard();
+        return true;
     }
 
     protected function findInClipboard(string $table, int $uid)

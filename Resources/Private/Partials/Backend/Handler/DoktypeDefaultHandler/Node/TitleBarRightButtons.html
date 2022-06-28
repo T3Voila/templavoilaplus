@@ -11,23 +11,25 @@
             </f:if>
         </button>
         <f:if condition="{node.rendering.belongsToCurrentPage}">
-            <button type="button" class="btn btn-default btn-sm  tvp-record-edit">
+            <button type="button" class="btn btn-default btn-sm tvp-record-edit">
                 <core:icon identifier="actions-document-open" />
             </button>
         </f:if>
     </div>
     <f:if condition="{node.raw.table} == 'tt_content'">
         <f:then>
-            <button type="button" class="btn btn-default btn-sm disabled">
-                <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                    <f:then>
+            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
+                <f:then>
+                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
                         <core:icon identifier="actions-edit-copy-release" />
-                    </f:then>
-                    <f:else>
+                    </button>
+                </f:then>
+                <f:else>
+                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-add">
                         <core:icon identifier="actions-edit-copy" />
-                    </f:else>
-                </f:if>
-            </button>
+                    </button>
+                </f:else>
+            </f:if>
 
             <f:if condition="!{node.rendering.belongsToCurrentPage}">
                 <button type="button" class="btn btn-default btn-sm">
