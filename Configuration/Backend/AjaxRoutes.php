@@ -17,10 +17,10 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Module\Cm1\Ajax::class . '::getDisplayFileContent',
     ],
-    'templavoilaplus_contentElement_insert' => [
-        'path' => '/templavoilaplus/contentElement/insert',
+    'templavoilaplus_contentElement_create' => [
+        'path' => '/templavoilaplus/contentElement/create',
         'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::insert',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::create',
     ],
     'templavoilaplus_contentElement_reload' => [
         'path' => '/templavoilaplus/contentElement/reload',
@@ -67,10 +67,25 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Clipboard::class . '::add',
     ],
+    'templavoilaplus_trash_load' => [
+        'path' => '/templavoilaplus/trash/load',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::load',
+    ],
+    'templavoilaplus_trash_delete' => [
+        'path' => '/templavoilaplus/trash/delete',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::delete',
+    ],
     'templavoilaplus_record_switch_visibility' => [
         'path' => '/templavoilaplus/record/switchvisibility',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::switchVisibility',
+    ],
+    'templavoilaplus_record_link' => [
+        'path' => '/templavoilaplus/record/link',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::link',
     ],
     'templavoilaplus_record_edit' => [
         'path' => '/templavoilaplus/record/editform',

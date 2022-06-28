@@ -1,0 +1,18 @@
+{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<div>
+    <div class="tab-pane active tvjs-drag">
+        <f:for each="{unusedElements.elements}" as="contentElement">
+            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2 tvp-node-trash" data-record-table="tt_content" data-panel="trash" data-record-uid="{contentElement.uid}">
+                <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><f:format.raw>{contentElement.icon}</f:format.raw></div>
+                <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
+                    <div><b>{contentElement.title}</b></div>
+                </div>
+                <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-right')} flex-shrink-0">
+                    <button type="button" class="btn btn-default btn-sm tvjs-trash-delete">
+                        <core:icon identifier="actions-edit-copy-release" />
+                    </button>
+                </div>
+            </div>
+        </f:for>
+    </div>
+</div>

@@ -31,7 +31,7 @@ class ContentElements extends AbstractResponse
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
-    public function insert(ServerRequestInterface $request): ResponseInterface
+    public function create(ServerRequestInterface $request): ResponseInterface
     {
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
@@ -39,7 +39,7 @@ class ContentElements extends AbstractResponse
         $parameters = $request->getParsedBody();
 
         /** @TODO LanguageHandling! */
-        /** @TODO Should we hide every element on insert as it isn't configured yet? */
+        /** @TODO Should we hide every element on create as it isn't configured yet? */
         $result = $processingService->insertElement(
             $parameters['destinationPointer'] ?? '',
             $parameters['elementRow'] ?? []

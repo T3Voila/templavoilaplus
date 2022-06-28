@@ -113,6 +113,40 @@ define([
                 $('#moduleShadowing').addClass('hidden');
             },
         });
+        $('#navbarTrash:not(.disabled)').tooltipster({
+            updateAnimation: false,
+            side: 'left',
+            interactive: true,
+            trackTooltip: true,
+            trigger: 'click',
+            content: 'Loading...',
+            contentAsHTML: true,
+            functionBefore: function(instance, helper) {
+                $('#moduleShadowing').removeClass('hidden');
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        id: $('#moduleWrapper').data('tvpPageId')
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_load'],
+                    success: function(data) {
+                        // Add data to content
+                        instance.content(data);
+                        PageLayout.initWizardDrag(instance);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        instance.content('Request failed because of error: ' + textStatus);
+                        $('#moduleWrapper').data('loadedContentElementWizard', false);
+                    }
+                });
+            },
+            functionReady: function(instance, helper) {
+                 PageLayout.initWizardDrag(instance);
+            },
+            functionAfter: function(instance, helper) {
+                $('#moduleShadowing').addClass('hidden');
+            },
+        });
         $('#navbarConfig').tooltipster({
             side: 'left',
             interactive: true,
@@ -282,7 +316,36 @@ console.log('onAdd');
                                         el.parentNode.removeChild(el);
                                     }
                                 });
+                                break;
+                            case 'trash':
+                                console.log(evt.item, evt.target);
+                                $.ajax({
+                                    type: 'POST',
+                                    data: {
+                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                                        sourceTable: evt.item.dataset.recordTable,
+                                        sourceUid: evt.item.dataset.recordUid
+                                    },
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_record_link'],
+                                    success: function(data) {
+                                        var div = document.createElement('div');
+                                        div.innerHTML = data.nodeHtml;
+                                        PageLayout.initEditRecordListener(div.firstElementChild);
+                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
+                                        PageLayout.showSuccess(div.firstElementChild);
+                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
 
+//                                        PageLayout.updateTrashNumber(data.trash);
+                                    },
+                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                        var el = evt.item;
+                                        el.parentNode.removeChild(el);
+                                    }
+                                });
+                                return false;
+                                break;
+                            default:
+                                return false;
                         }
                     } else {
                         // Move from another field
