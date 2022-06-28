@@ -386,7 +386,7 @@ console.log('onAdd');
                     data: {
                         sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString()
                     },
-                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_remove'],
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_unlink'],
                     success: function(data) {
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
