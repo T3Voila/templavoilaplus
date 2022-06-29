@@ -133,6 +133,7 @@ define([
                         // Add data to content
                         instance.content(data);
                         PageLayout.initWizardDrag(instance);
+                        PageLayout.initTrashDeleteListener(instance);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         instance.content('Request failed because of error: ' + textStatus);
@@ -505,6 +506,17 @@ console.log('onAdd');
         }
     }
 
+    PageLayout.initTrashDeleteListener = function(instance) {
+        var allButtons = [].slice.call(instance.elementTooltip().querySelectorAll('.tvjs-trash-delete'))
+
+        for (const item of allButtons) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node-trash');
+                PageLayout.trashDelete(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
     PageLayout.updateClipboardNumber = function(clipboardData) {
         if (clipboardData.tt_content) {
             $('#navbarClipboard')[0].dataset.clipboardCount = clipboardData.tt_content.count;
@@ -513,6 +525,17 @@ console.log('onAdd');
             $('#navbarClipboard')[0].dataset.clipboardCount = 0;
             $('#navbarClipboard .badge').html(0);
             PageLayout.disableEmptyClipboard();
+        }
+    }
+
+    PageLayout.updateTrashNumber = function(trashData) {
+        if (trashData.totalCount) {
+            $('#navbarTrash')[0].dataset.unusedCount = trashData.totalCount;
+            $('#navbarTrash .badge').html(trashData.totalCount);
+        } else {
+            $('#navbarTrash')[0].dataset.unusedCount = 0;
+            $('#navbarTrash .badge').html(0);
+            PageLayout.disableEmptyTrash();
         }
     }
 
@@ -579,6 +602,25 @@ console.log('onAdd');
             success: function(data) {
                 $('#navbarClipboard').tooltipster('close');
                 PageLayout.updateClipboardNumber(data.clipboard);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(items);
+            }
+        });
+    }
+
+    PageLayout.trashDelete = function(table, uid) {
+        $.ajax({
+            type: 'POST',
+            data: {
+                table: table,
+                uid: uid,
+                pid: $('#moduleWrapper').data('tvpPageId')
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_delete'],
+            success: function(data) {
+                $('#navbarTrash').tooltipster('close');
+                PageLayout.updateTrashNumber(data.trash);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 PageLayout.showError(items);

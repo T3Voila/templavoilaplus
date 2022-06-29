@@ -24,6 +24,7 @@ use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -66,7 +67,21 @@ class Trash extends AbstractResponse
         $parameters = $request->getParsedBody();
 
 
-        return new JsonResponse([$result]);
+        // Delete
+        $cmdArray = [];
+        $cmdArray['tt_content'][(int)$parameters['uid']]['delete'] = 1;
+        // Element UID should always be that of the online version here...
+
+        /** @var DataHandler */
+        $tce = GeneralUtility::makeInstance(DataHandler::class);
+
+        $tce->start([], $cmdArray);
+        $tce->process_cmdmap();
+
+        return new JsonResponse([
+            'uid' => (int)$parameters['uid'],
+            'trash' => $this->trash2fluid((int)$parameters['pid']),
+        ]);
     }
 
     protected function trash2fluid(int $pid): array

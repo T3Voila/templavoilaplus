@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -108,7 +109,7 @@ class DataHandler
             return;
         }
 
-        $templaVoilaAPI = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ApiService::class);
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         switch ($command) {
             case 'delete':
@@ -140,15 +141,27 @@ class DataHandler
                     }
                     // avoid that deleting offline version in the live workspace unlinks the online version - see #11359
                     if ($record['uid'] && $record['pid']) {
-                        $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
-                            $record['uid'],
-                            $record['pid']
-                        );
-                        $sourceFlexformPointer = $sourceFlexformPointersArr[0];
-                        $templaVoilaAPI->unlinkElement($sourceFlexformPointer);
+                        $page = BackendUtility::getRecord('pages', (int)$record['pid']);
+
+                        $parentPointer = [];
+                        $usedElements = [];
+
+                        /** @TODO getNodeWithTree is strange to get all usedElements and their pointers */
+                        $nodes = $processingService->getNodeWithTree('pages', $page, $parentPointer, $record['pid'], $usedElements);
+
+                        foreach ($usedElements[$table] as $usedUid => $elementConfig) {
+                            if ($id == $usedUid) {
+                                /** @TODO We should unlink every pointer but the position inside pointer will change after first unlink */
+                                if (isset($elementConfig['parentPointers'][0])) {
+                                    $processingService->unlinkElement($elementConfig['parentPointers'][0]);
+                                }
+                            }
+                        }
                     }
                 }
                 break;
+            default:
+                // Empty default as we only react on delete command here
         }
     }
 

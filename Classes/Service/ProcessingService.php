@@ -981,7 +981,7 @@ class ProcessingService
     /**
      * Converts a flexform pointer array to a string of the format "table:uid:sheet:sLang:field:vLang:position/targettable:targetuid"
      *
-     * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see flexform_getPointerFromString flexform_getStringFromPointer in ApiService
+     * @TODO Fix naming parentPointer vs flexformPointer, move into own class @see getPointerFromString
      * NOTE: "targettable" currently must be tt_content
      *
      * @param array $parentPointer A valid flexform pointer array
