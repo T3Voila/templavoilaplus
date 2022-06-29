@@ -158,23 +158,6 @@
                             <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
                         </div>
                     </li>
-                    <li class="sidenav-item disabled sidenav-item-blue">
-                        <div>
-                            <core:icon identifier="actions-template-new" size="default" />
-                        </div>
-                    </li>
-                    <li class="sidenav-item disabled">
-                        <div>
-                            <f:if condition="{settings.configuration.is10orNewer}">
-                                <f:then>
-                                    <core:icon identifier="actions-message-add" size="default" />
-                                </f:then>
-                                <f:else>
-                                    <core:icon identifier="actions-edit-localize-status-high" size="default" />
-                                </f:else>
-                            </f:if>
-                        </div>
-                    </li>
                     <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash" id="navbarTrash" data-unused-count="{unused.tt_content.count}">
                         <div>
                             <core:icon identifier="actions-delete" size="default" /><span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
@@ -198,7 +181,7 @@
         <div class="tvp-tooltip-templates">
             <div id="navbarConfigTooltip">
                 <div class="form-check checkbox-type-toggle">
-                    <input type="checkbox" class="form-check-input" value="1" id="dark-mode-switch">
+                    <input type="checkbox" class="form-check-input" value="1" id="dark-mode-switch" {f:if(condition: '{settings.configuration.userSettings.enableDarkMode}', then: 'checked')}>
                     <label class="form-check-label" for="dark-mode-switch">
                         <span class="checkbox-label-text">&nbsp; Dark Mode</span>
                     </label>
