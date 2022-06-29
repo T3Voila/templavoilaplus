@@ -4,37 +4,56 @@
 [![version](https://img.shields.io/badge/TER_version-7.3.6-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 
-TemplaVoilà! Plus is a templating extension for the TYPO3 content management system. It is the follow up of the popular
-TemplaVoilà! extension from Kasper Skårhøj prepared for modern versions of TYPO3.
+TemplaVoilà! Plus (TV+) is an extension for the TYPO3 content management system which adds an easy way to extend content elements and rendering to templates in Backend and Frontend.
+It is the follow up of the popular TemplaVoilà! extension from Kasper Skårhøj prepared for modern versions of TYPO3.
 
 ## Language files
 
 If you like to help with the translation of the extension, please visit https://github.com/T3Voila/templavoilaplus-languagefiles
 
-## The next big TV+ version
+## The big TV+ 8 release
 
-The next big TV+ version will be 8.0.0, it contains a rewrite of the TV+ code base and a restructuring of template configuration and handling. It will support TYPO3 v8, v9, v10 and v11 LTS.
+The first stable TV+ 8 release is 8.1.0 which changes many things on the base of TemplaVoilà! and so it needed a complete rewrite. Which will allow us to enhance it with new features. But for the moment some features are cut down, to get the release out.
 
-### Development status
+### Whats missing
 
-The handling of configuration is mostly done, we now use so called "Places" to define which configuration type comes from which directory. This is needed, as we want later, that you can install a base theme and extend/overwrite it partially with your own configuration data.
+* The point-and-click mapper as it is very hard to get all things together and it isn't the base so it may come back as extension later on.
+* MultiLanguage as this is very hard and partly confuse, we need a "data donation" for this. Also this isn't realy a core compatible way and so Language Fallback Support isn't easy possible.
+* Workspace Support is also missing, or better, not well tested, it may be buggy it may be working.
+* StoragePIDs as this core functionallity do not exists anymore.
+* Documentational parts, please help here.
+
+### On all this missing parts, what the hell is new/better?
+
+* Compatible with TYPO3 v10 and v11 is new, there are also some bits for v12 already.
+* No database records for templates and structures anymore, which helps on servers which use deployments and prepare this rollouts on testing/staging systems.
+* Split frontend between data organization and rendering, this allows us to integrate different templating engines like [fluid](https://github.com/T3Voila/tvplus_fluid).
+* Backend written with fluid templates, which allows us to use fluid templates for the backend layouts or backend previews, instead of the marker based templates.
+* Also the good old XPathRenderer got small features which help on recursive data handling.
+* Using places, so we could create theme extensions like [em_tvplus_theme_demo](https://github.com/extrameile/em_tvplus_theme_demo/) or [UIkit theme](https://github.com/T3Voila/t3voila_uikit) which will extensible with your own extension.
+
+## What may come next a.k.a. 8.2.0
+
+After 8.1.0 an update with fixes and readded missing features will come as 8.2.0, which may include support for workspaces, migration for multiple storage pids and maybe MultiLanguage, which depends on testers / data donators to try migration handling and output handling. Also eliminate dependency to fluid_styled_content and get "extending from theme" working.
+Afterwards a TV+ 9 release will be skipped as TYPO3 v9 is already out of support at this point. So a TV+ 10 release with support for TYPO3 v10/v11 and v12 is planned. Hopefully also a cleaner handling of flexforms.
+
+## How is the configuration handling differently
+
+The handling of configuration is done inside directories called "Places". This is needed, as we want later, that you can install a base theme and extend/overwrite it partially with your own configuration data.
 The old configuration parts, DataStructure and TemplateObject, have been rearranged. TV+ uses now four configuration types DataConfiguration (with the clean core DataStructure), MappingConfiguration, TemplateConfiguration and BackendLayoutConfiguration. This allows for a better reusage of configuration parts and the possibility to configure different output renderer.
 All old entry points to extend TV+ are removed at the moment and some complete new are arising, for example the LoadSaveHandlers, which enables you to write an own configuration loader/saver for your configuration files and your own super duper configuration file format.
+Please take a look inside the two theme extensions or check the extension which is created while migration to understand how it looks and how it works.
 
-If you like to test, develop and/or help documenting, see the demo theme extension which gives you an orientation and explaination how it works. It get updates while development of TV+ 8 happens as it is the testing reference if all works as exspected.
+## How to upgrade
 
-### HINT! Beta Testers
+The TV+ Control Center resides in the admin tools section, it includes the "Update Script" to start the migration process. The "Update Script" checks first your system and tells you as much as possible what and how it does. At the end a theme extension will be generated which includes all needed parts for the installation.
+Afterwards you need to update your TypoScript for starting frontend output. All together can be found in the [documentation](https://docs.typo3.org/p/templavoilaplus/templavoilaplus/8.0/en-us/Migration/Index.html).
+If you use deployment strategie you don't have to run the complete migration again, the information for database migration is saved in an json file, a "Server Migration Script" will show up for this.
 
-* If you have multilanguage websites, please test and report back, not all multilanguage parts are working yet or are tested completely. As there are to much possible configurations.
-* Clipboard is not working yet
-* Unused Elements is not working yet
-* The TV+ Control Center resides in the admin tools section, it includes the "Update Script" to start the migration process.
-* There is no editor anymore, the planed EXT:form editor is very complicated and took to much time. Maybe something else, later as another extension, as this functionality haven't todo with TV+ base.
-* Check the extension which is created while migration, it will help to understand the configuration of TV+ 8.0.0.
-* Please help with documentation.
 
 ### Theme Extensions as WIP for TV+ 8
-* https://github.com/extrameile/em_tvplus_theme_demo/ - Demo theme using XPath Renderer
+* [em_tvplus_theme_demo](https://github.com/extrameile/em_tvplus_theme_demo/) - Demo theme using XPath Renderer
+* [UIkit theme](https://github.com/T3Voila/t3voila_uikit) - Theme using the Fluid Renderer and the UIkit inside frontend output
 
 ### What works:
 
@@ -44,8 +63,8 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * There is a Debug screen which shows more about the internal configuration of the objects.
 * There is also a new PageLayout Modul, which isn't puzzled together yet while rewriting
     * No support for multilanguage
-    * No support for clipboard
-    * No support of unused_elements
+    * ~~No support for clipboard~~
+    * ~~No support of unused_elements~~
     * No support for extending menu
 * Frontend rendering works for sDEF/lDEV/vDEF as you define
     * DataStructure will be taken into account
@@ -59,8 +78,8 @@ If you like to test, develop and/or help documenting, see the demo theme extensi
     * You can add new renderer (for example Smarty, Twig)
     * You can work on own themes
 * Update Script
-    * There is an Update Script which already works quite extensive
+    * There is an Update Script which works quite well
     * You should select "creating new extension" also if it shows you a green extension to select
     * No support for multiple storage pids yet
     * Step 6, removing old data, is not available yet
-    * The feature "ServerDeployment JSON" for better server upgrades isn't available yet
+    * ~~The feature "ServerDeployment JSON" for better server upgrades isn't available yet~~
