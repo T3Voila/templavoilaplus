@@ -72,6 +72,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::load',
     ],
+    'templavoilaplus_trash_link' => [
+        'path' => '/templavoilaplus/trash/link',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::link',
+    ],
     'templavoilaplus_trash_delete' => [
         'path' => '/templavoilaplus/trash/delete',
         'access' => 'user,group',
@@ -81,11 +86,6 @@ return [
         'path' => '/templavoilaplus/record/switchvisibility',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::switchVisibility',
-    ],
-    'templavoilaplus_record_link' => [
-        'path' => '/templavoilaplus/record/link',
-        'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::link',
     ],
     'templavoilaplus_record_edit' => [
         'path' => '/templavoilaplus/record/editform',

@@ -677,6 +677,7 @@ class ProcessingService
 
         return $sourceElementUid;
     }
+
     /**
      * Removes a reference to the element (= unlinks) specified by the source pointer.
      *

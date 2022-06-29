@@ -325,9 +325,10 @@ console.log('onAdd');
                                     data: {
                                         destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
                                         sourceTable: evt.item.dataset.recordTable,
-                                        sourceUid: evt.item.dataset.recordUid
+                                        sourceUid: evt.item.dataset.recordUid,
+                                        pid: $('#moduleWrapper').data('tvpPageId')
                                     },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_record_link'],
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_link'],
                                     success: function(data) {
                                         var div = document.createElement('div');
                                         div.innerHTML = data.nodeHtml;
@@ -335,8 +336,7 @@ console.log('onAdd');
                                         PageLayout.initSwitchVisibilityListener(div.firstElementChild);
                                         PageLayout.showSuccess(div.firstElementChild);
                                         evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-
-//                                        PageLayout.updateTrashNumber(data.trash);
+                                       PageLayout.updateTrashNumber(data.trash);
                                     },
                                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                                         var el = evt.item;
