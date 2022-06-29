@@ -33,5 +33,19 @@ Steps to do for migration
         10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
     }
 
+Server migration
+^^^^^^^^^^^^^^^^
+
+While running the migration and creating your theme extension a file called "ServerMigration.json", residing inside the folder Configuration/TVP of your theme, was generated. It includes informations on how the server database needs to migrated to use this theme (updating the TV+ fields inside pages and tt_content table).
+So you do not need to run the complete migration process on server again. After you migrate all testing/staging/production servers you can remove this file.
+
+#. Backup your database and files!
+#. Run your deployment process.
+#. Go to the new TV+ Control Center which will be inside the "Admin Tools" section
+#. Press the yellow "Start Update Script" button
+#. Press the yellow "Server Migration" button
+#. Follow the short instructions
+#. You are done, if you have TypoScript inside database do not forgett to update it on server
+
 Now your system should be ready. If all works you can remove the old TemplaVoilà! Plus database tables from your system.
 If you have issues, ask on `slack channel <https://typo3.slack.com/archives/C4HCAH659>`_ or on `github <https://github.com/T3Voila/templavoilaplus>`_
