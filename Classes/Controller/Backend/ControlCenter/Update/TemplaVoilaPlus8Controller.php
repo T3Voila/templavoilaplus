@@ -762,15 +762,15 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 $emConfConfig = [
                     'title' => $extensionName,
                     'description' => '',
-                    'version' => '0.1.0',
-                    'state' => 'alpha',
+                    'version' => '1.0.0',
+                    'state' => 'stable',
                     'author' => $author,
                     'author_email' => '',
                     'author_company' => $authorCompany,
                     'clearCacheOnLoad' => true,
                     'constraints' => [
                         'depends' => [
-                            'typo3' => '8.7.0-10.4.99',
+                            'typo3' => '8.7.0-11.5.99',
                             'templavoilaplus' => '8.0.0-8.99.99',
                         ],
                     ],
@@ -783,7 +783,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                     'type' => 'typo3-cms-extension',
                     'description' => 'My Theme Extension',
                     'require' => [
-                        'typo3/cms-core' => '^8.7.0 || ^9.5.0 || ^10.4.0',
+                        'typo3/cms-core' => '^8.7.0 || ^9.5.0 || ^10.4.0 || ^11.5.0',
                         'templavoilaplus/templavoilaplus' => '~8.0.0',
                     ],
                     'replace' => [
