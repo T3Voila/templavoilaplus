@@ -65,6 +65,9 @@ if (TYPO3_MODE === 'BE') {
             'inheritNavigationComponentFromMainModule' => false
         ]
     );
+
+    $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
+    unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
 }
 
 // complex condition to make sure the icons are available during frontend editing...
