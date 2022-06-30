@@ -95,6 +95,8 @@
 
 <f:section name="Header">
 
+    <f:format.raw>{contentHeader}</f:format.raw>
+
     <h1 id="tvpPageTitle" data-identifier="tvpPageTitle">{pageTitle}</h1>
     <f:if condition="{pageDescription}">
         <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
@@ -112,13 +114,13 @@
 
 <f:section name="Stage">
 
-    <f:comment><!--@TODO Maybe deprecated--></f:comment>
     <f:format.raw>{contentBody}</f:format.raw>
 
     <f:for each="{contentPartials.body}" as="partialName">
         <f:render partial="{partialName}" arguments="{_all}" />
     </f:for>
 
+    <f:format.raw>{contentFooter}</f:format.raw>
 </f:section>
 
 <f:section name="SidebarContentManipulation">

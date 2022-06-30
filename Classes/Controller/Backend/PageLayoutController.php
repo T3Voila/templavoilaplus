@@ -100,7 +100,7 @@ class PageLayoutController extends ActionController
      *
      * @var int
      */
-    protected $currentLanguageUid;
+    protected $currentLanguageUid = 0;
 
     /**
      * Contains records of all available languages (not hidden, with ISOcode), including the default
@@ -160,6 +160,21 @@ class PageLayoutController extends ActionController
             'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
             'TCA' => $GLOBALS['TCA'],
         ];
+    }
+
+    public function getCurrentLanguageUid(): int
+    {
+        return $this->currentLanguageUid;
+    }
+
+    public function getCurrentPageUid(): int
+    {
+        return $this->pageId;
+    }
+
+    public function getCurrentPageInfo(): array
+    {
+        return $this->pageInfo;
     }
 
     /**
@@ -681,7 +696,7 @@ class PageLayoutController extends ActionController
     }
 
     /**
-     * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook']
+     * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook']
      * and returns there result as combined string.
      *
      * @param string $hookName Name of the hook to call
@@ -694,8 +709,8 @@ class PageLayoutController extends ActionController
     {
         $result = '';
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'])) {
-            $renderFunctionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['BackendLayout'][$hookName . 'FunctionHook'];
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook'])) {
+            $renderFunctionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook'];
             if (is_array($renderFunctionHook)) {
                 foreach ($renderFunctionHook as $hook) {
                     $params = [];
