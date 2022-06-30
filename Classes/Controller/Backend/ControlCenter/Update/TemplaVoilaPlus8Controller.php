@@ -537,8 +537,9 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 $qualify -= 100;
                 $why[] = 'Path not writable';
             } elseif (file_exists($package->getPackagePath() . '/Configuration/TVP')) {
-                // Already includes TVP configuration so maybe possible theme/config extension
-                $qualify += 10;
+                // Already includes TVP configuration so not useable
+                $qualify -= 100;
+                $why[] = 'Existing TV+ configuration path, so not useable.';
             }
             if (stripos($package->getPackageKey(), 'config') || stripos($package->getPackageMetaData()->getDescription(), 'config')) {
                 $qualify += 10;
@@ -696,9 +697,20 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
     {
         $errors = [];
 
+        /** @var PackageManager */
+        $packageManager = GeneralUtility::makeInstance(PackageManager::class);
+        $allAvailablePackages = $packageManager->getAvailablePackages();
+
         $selection = $_POST['selection'];
 
-        $errors[] = 'Using an existing extension isn\'t supported yet.';
+        if (!isset($allAvailablePackages[$selection])) {
+            $errors[] = 'Selected extension couldn\'t be found';
+        } else {
+            $package = $allAvailablePackages[$selection];
+            if (file_exists($package->getPackagePath() . '/Configuration/TVP')) {
+                $errors[] = 'Existing TV+ configuration path, so not useable.';
+            }
+        }
 
         $this->view->assignMultiple([
             'errors' => $errors,
@@ -725,6 +737,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         $selection = $_POST['selection'];
         $overwrite = $_POST['overwrite'];
         $newExtensionKey = '';
+        $extensionAlreadyInstalled = true;
 
         try {
             // Create new extension directory and base extension files
@@ -736,6 +749,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 $authorCompany = $_POST['authorCompany'];
 
                 $publicExtensionDirectory = $this->getPackagePaths($newExtensionKey);
+                $extensionAlreadyInstalled = false;
 
                 if (file_exists($publicExtensionDirectory)) {
                     if ($overwrite) {
@@ -804,7 +818,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "// @TODO This line can be removed after cache is implemented\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');";
+                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');\n";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -813,6 +827,18 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 }
 
                 $selection = $newExtensionKey;
+            } else {
+                $publicExtensionDirectory = $this->getPackagePaths($selection);
+
+                if (file_exists($publicExtensionDirectory . '/ext_localconf.php')) {
+                    $extLocalconf = "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $selection . "');\n";
+                    file_put_contents($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf, FILE_APPEND | LOCK_EX);
+                } else {
+                    // Create extension registration in ext_localconf.php
+                    /** @TODO Remove later */
+                    $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $selection . "');\n";
+                    GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
+                }
             }
             // Done creating new extension, following is like updating existing extension
 
@@ -946,6 +972,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
             'authorCompany' => $authorCompany,
             'covertingInstructions' => $covertingInstructions,
             'covertingInstructionsJson' => json_encode($covertingInstructions),
+            'extensionAlreadyInstalled' => ($extensionAlreadyInstalled ? '1' : '0'),
         ]);
     }
 

@@ -4,11 +4,6 @@
     <h2 class="text-primary">Update configuration to TemplaVoilà! Plus 8</h2>
     <h2>Step 3 - Create new Extension</h2>
 
-    <f:if condition="{terListHint}">
-        <f:be.infobox title="Warning" state="1">
-            <p class="lead">The extension list from the TYPO3 Extension Repository (TER) wasn't downloaded, so we can't differentiate between your own extensions and released extensions where you shouldn't normally won't write your configuration data to.</p>
-        </f:be.infobox>
-    </f:if>
     <form action="#" method="POST">
         <input type="hidden" name="update" value="TemplaVoilaPlus8" />
         <input type="hidden" name="selection" value="{selection}">

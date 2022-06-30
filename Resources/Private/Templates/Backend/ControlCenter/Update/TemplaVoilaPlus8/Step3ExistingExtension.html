@@ -19,6 +19,9 @@
         </f:if>
 
         <f:if condition="!{hasError}">
+            <f:be.infobox title="Please be aware" state="-1">
+                <p class="lead">The extensions seams useable but please be aware, we add a registration to the end of ext_localconf.php. Adding the dependency to templavoilaplus in ext_emconf.php and to templavoilaplus/templavoilaplus in composer.json needs to be done by yourself.</p>
+            </f:be.infobox>
         </f:if>
 
         <div class="row">
