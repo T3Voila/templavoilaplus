@@ -102,8 +102,12 @@ class ProcessingService
     {
         $table = 'tt_content';
 
-        // Get all page elements not in usedElements
-        $usedUids = array_keys($usedElements[$table]);
+        if (!isset($usedElements[$table]) && !is_array($usedElements[$table])) {
+            $usedUids = [];
+        } else {
+            // Get all page elements not in usedElements
+            $usedUids = array_keys($usedElements[$table]);
+        }
 
         /** @TODO Move into Repository? */
         /** @var QueryBuilder */
@@ -116,9 +120,13 @@ class ProcessingService
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->notIn('uid', $usedUids),
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT))
             );
+        if (!empty($usedUids)) {
+            $queryBuilder->andWhere(
+                $queryBuilder->expr()->notIn('uid', $usedUids)
+            );
+        }
 
         $row = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
 
