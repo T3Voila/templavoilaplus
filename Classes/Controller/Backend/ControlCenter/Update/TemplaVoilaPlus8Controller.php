@@ -962,7 +962,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         $this->view->assignMultiple([
             'errors' => $errors,
             'hasError' => (count($errors) ? true : false),
-            'warnings' => $errors,
+            'warnings' => $warnings,
             'hasWarning' => (count($warnings) ? true : false),
             'newExtensionKey' => $newExtensionKey,
             'selection' => $selection,
