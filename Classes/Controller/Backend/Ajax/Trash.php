@@ -95,12 +95,33 @@ class Trash extends AbstractResponse
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
      */
-    public function delete(ServerRequestInterface $request): ResponseInterface
+    public function unlink(ServerRequestInterface $request): ResponseInterface
     {
+        /** @var array */
+        $parameters = $request->getParsedBody();
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
-        $parameters = $request->getParsedBody();
 
+        $result = $processingService->unlinkElement(
+            $parameters['sourcePointer'] ?? ''
+        );
+
+        return new JsonResponse([
+            'result' => $result,
+            'trash' => $this->trash2fluid((int)$parameters['pid']),
+        ]);
+    }
+
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function delete(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var array */
+        $parameters = $request->getParsedBody();
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         // Delete
         $cmdArray = [];

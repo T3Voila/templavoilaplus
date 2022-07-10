@@ -264,11 +264,12 @@ console.log('onAdd');
                 $.ajax({
                     type: 'POST',
                     data: {
-                        sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString()
+                        sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
+                        pid: $('#moduleWrapper').data('tvpPageId')
                     },
-                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_unlink'],
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_unlink'],
                     success: function(data) {
-                        console.log(data);
+                        PageLayout.updateTrashNumber(data.trash);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     }
@@ -575,7 +576,7 @@ console.log('onAdd');
             $('#navbarTrash')[0].dataset.unusedCount = trashData.totalCount;
             $('#navbarTrash .badge').html(trashData.totalCount);
             $('#navbarTrash').removeClass('disabled');
-            PageLayout.addTooltipsterTrashf();
+            PageLayout.addTooltipsterTrash();
         } else {
             $('#navbarTrash')[0].dataset.unusedCount = 0;
             $('#navbarTrash .badge').html(0);

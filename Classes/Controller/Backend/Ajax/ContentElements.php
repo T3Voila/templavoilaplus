@@ -119,22 +119,4 @@ class ContentElements extends AbstractResponse
 
         return new JsonResponse([$result]);
     }
-
-    /**
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
-     */
-    public function unlink(ServerRequestInterface $request): ResponseInterface
-    {
-        /** @var ProcessingService */
-        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
-
-        $parameters = $request->getParsedBody();
-
-        $result = $processingService->unlinkElement(
-            $parameters['sourcePointer'] ?? ''
-        );
-
-        return new JsonResponse([$result]);
-    }
 }

@@ -32,11 +32,6 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::move',
     ],
-    'templavoilaplus_contentElement_unlink' => [
-        'path' => '/templavoilaplus/contentElement/unlink',
-        'access' => 'user,group',
-        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::unlink',
-    ],
     'templavoilaplus_contentElement_remove' => [
         'path' => '/templavoilaplus/contentElement/remove',
         'access' => 'user,group',
@@ -76,6 +71,11 @@ return [
         'path' => '/templavoilaplus/trash/link',
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::link',
+    ],
+    'templavoilaplus_trash_unlink' => [
+        'path' => '/templavoilaplus/trash/unlink',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Trash::class . '::unlink',
     ],
     'templavoilaplus_trash_delete' => [
         'path' => '/templavoilaplus/trash/delete',
