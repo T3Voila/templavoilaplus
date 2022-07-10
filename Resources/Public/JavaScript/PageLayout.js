@@ -39,127 +39,6 @@ define([
             }
         });
 
-        // Add tooltip functionality to Sidebar
-        $('#navbarContentElementWizard:not(.disabled)').tooltipster({
-            updateAnimation: false,
-            side: 'left',
-            interactive: true,
-            trackTooltip: true,
-            trigger: 'click',
-            content: 'Loading...',
-            contentAsHTML: true,
-            functionBefore: function(instance, helper) {
-                $('#moduleShadowing').removeClass('hidden');
-                if (!$('#moduleWrapper').data('loadedContentElementWizard')) {
-                    $('#moduleWrapper').data('loadedContentElementWizard', true);
-                    $.ajax({
-                        type: 'POST',
-                        data: {
-                            id: $('#moduleWrapper').data('tvpPageId')
-                        },
-                        url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElementWizard'],
-                        success: function(data) {
-                            // Add data to content
-                            instance.content(data);
-                            PageLayout.initWizardDrag(instance);
-                        },
-                        error: function(XMLHttpRequest, textStatus, errorThrown) {
-                            instance.content('Request failed because of error: ' + textStatus);
-                            $('#moduleWrapper').data('loadedContentElementWizard', false);
-                        }
-                    });
-                }
-            },
-            functionReady: function(instance, helper) {
-                 PageLayout.initWizardDrag(instance);
-            },
-            functionAfter: function(instance, helper) {
-                $('#moduleShadowing').addClass('hidden');
-            },
-        });
-        $('#navbarClipboard:not(.disabled)').tooltipster({
-            updateAnimation: false,
-            side: 'left',
-            interactive: true,
-            trackTooltip: true,
-            trigger: 'click',
-            content: 'Loading...',
-            contentAsHTML: true,
-            functionBefore: function(instance, helper) {
-                $('#moduleShadowing').removeClass('hidden');
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        id: $('#moduleWrapper').data('tvpPageId')
-                    },
-                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_load'],
-                    success: function(data) {
-                        // Add data to content
-                        instance.content(data);
-                        PageLayout.initWizardDrag(instance);
-                        PageLayout.initClipboardModeListener(instance);
-                        PageLayout.initClipboardReleaseListener(instance);
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        instance.content('Request failed because of error: ' + textStatus);
-                        $('#moduleWrapper').data('loadedContentElementWizard', false);
-                    }
-                });
-            },
-            functionReady: function(instance, helper) {
-                 PageLayout.initWizardDrag(instance);
-            },
-            functionAfter: function(instance, helper) {
-                $('#moduleShadowing').addClass('hidden');
-            },
-        });
-        $('#navbarTrash:not(.disabled)').tooltipster({
-            updateAnimation: false,
-            side: 'left',
-            interactive: true,
-            trackTooltip: true,
-            trigger: 'click',
-            content: 'Loading...',
-            contentAsHTML: true,
-            functionBefore: function(instance, helper) {
-                $('#moduleShadowing').removeClass('hidden');
-                $.ajax({
-                    type: 'POST',
-                    data: {
-                        pid: $('#moduleWrapper').data('tvpPageId')
-                    },
-                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_load'],
-                    success: function(data) {
-                        // Add data to content
-                        instance.content(data);
-                        PageLayout.initWizardDrag(instance);
-                        PageLayout.initTrashDeleteListener(instance);
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        instance.content('Request failed because of error: ' + textStatus);
-                        $('#moduleWrapper').data('loadedContentElementWizard', false);
-                    }
-                });
-            },
-            functionReady: function(instance, helper) {
-                 PageLayout.initWizardDrag(instance);
-            },
-            functionAfter: function(instance, helper) {
-                $('#moduleShadowing').addClass('hidden');
-            },
-        });
-        $('#navbarConfig').tooltipster({
-            side: 'left',
-            interactive: true,
-            trigger: 'click',
-            functionBefore: function(instance, helper) {
-                $('#moduleShadowing').removeClass('hidden');
-            },
-            functionAfter: function(instance, helper) {
-                $('#moduleShadowing').addClass('hidden');
-            }
-
-        });
         $('#dark-mode-switch').change(function() {
             if (this.checked) {
                 $('body').addClass('animationTransition');
@@ -389,6 +268,7 @@ console.log('onAdd');
                     },
                     url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_unlink'],
                     success: function(data) {
+                        console.log(data);
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                     }
@@ -402,17 +282,169 @@ console.log('onAdd');
                 put: true
             },
             ghostClass: "hidden",
+            onAdd: function (evt) {
+                // Remove from container later we may give the possibility for restoring before leaving page
+                var el = evt.item;
+                el.parentNode.removeChild(el);
+
+                PageLayout.clipboardAdd(el.dataset.recordTable, el.dataset.recordUid);
+            },
         });
 
         $('#moduleWrapper').removeClass('hidden');
         $('#moduleLoadingIndicator').addClass('hidden');
         $('#moduleShadowing').addClass('hidden');
 
+        PageLayout.addTooltipster();
         PageLayout.initEditRecordListener(document);
         PageLayout.initClipboardAddListener(document);
         PageLayout.initSwitchVisibilityListener(document);
         PageLayout.disableEmptyClipboard();
         PageLayout.disableEmptyTrash();
+    }
+
+    PageLayout.addTooltipster = function() {
+        // Add tooltip functionality to Sidebar
+        PageLayout.addTooltipsterContentElementWizard();
+        PageLayout.addTooltipsterClipboard();
+        PageLayout.addTooltipsterTrash();
+        PageLayout.addTooltipsterConfig();
+    }
+    PageLayout.addTooltipsterContentElementWizard = function() {
+        if (!$('#navbarContentElementWizard:not(.disabled)').hasClass("tooltipstered")) {
+            $('#navbarContentElementWizard:not(.disabled)').tooltipster({
+                updateAnimation: false,
+                side: 'left',
+                interactive: true,
+                trackTooltip: true,
+                trigger: 'click',
+                content: 'Loading...',
+                contentAsHTML: true,
+                functionBefore: function(instance, helper) {
+                    $('#moduleShadowing').removeClass('hidden');
+                    if (!$('#moduleWrapper').data('loadedContentElementWizard')) {
+                        $('#moduleWrapper').data('loadedContentElementWizard', true);
+                        $.ajax({
+                            type: 'POST',
+                            data: {
+                                id: $('#moduleWrapper').data('tvpPageId')
+                            },
+                            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElementWizard'],
+                            success: function(data) {
+                                // Add data to content
+                                instance.content(data);
+                                PageLayout.initWizardDrag(instance);
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                                instance.content('Request failed because of error: ' + textStatus);
+                                $('#moduleWrapper').data('loadedContentElementWizard', false);
+                            }
+                        });
+                    }
+                },
+                functionReady: function(instance, helper) {
+                    PageLayout.initWizardDrag(instance);
+                },
+                functionAfter: function(instance, helper) {
+                    $('#moduleShadowing').addClass('hidden');
+                },
+            });
+        }
+    }
+    PageLayout.addTooltipsterClipboard = function() {
+        if (!$('#navbarClipboard:not(.disabled)').hasClass("tooltipstered")) {
+            $('#navbarClipboard:not(.disabled)').tooltipster({
+                updateAnimation: false,
+                side: 'left',
+                interactive: true,
+                trackTooltip: true,
+                trigger: 'click',
+                content: 'Loading...',
+                contentAsHTML: true,
+                functionBefore: function(instance, helper) {
+                    $('#moduleShadowing').removeClass('hidden');
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            id: $('#moduleWrapper').data('tvpPageId')
+                        },
+                        url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_load'],
+                        success: function(data) {
+                            // Add data to content
+                            instance.content(data);
+                            PageLayout.initWizardDrag(instance);
+                            PageLayout.initClipboardModeListener(instance);
+                            PageLayout.initClipboardReleaseListener(instance);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            instance.content('Request failed because of error: ' + textStatus);
+                            $('#moduleWrapper').data('loadedContentElementWizard', false);
+                        }
+                    });
+                },
+                functionReady: function(instance, helper) {
+                    PageLayout.initWizardDrag(instance);
+                },
+                functionAfter: function(instance, helper) {
+                    $('#moduleShadowing').addClass('hidden');
+                },
+            });
+        }
+    }
+    PageLayout.addTooltipsterTrash = function() {
+        if (!$('#navbarTrash:not(.disabled)').hasClass("tooltipstered")) {
+            $('#navbarTrash:not(.disabled)').tooltipster({
+                updateAnimation: false,
+                side: 'left',
+                interactive: true,
+                trackTooltip: true,
+                trigger: 'click',
+                content: 'Loading...',
+                contentAsHTML: true,
+                functionBefore: function(instance, helper) {
+                    $('#moduleShadowing').removeClass('hidden');
+                    $.ajax({
+                        type: 'POST',
+                        data: {
+                            pid: $('#moduleWrapper').data('tvpPageId')
+                        },
+                        url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_load'],
+                        success: function(data) {
+                            // Add data to content
+                            instance.content(data);
+                            PageLayout.initWizardDrag(instance);
+                            PageLayout.initTrashDeleteListener(instance);
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            instance.content('Request failed because of error: ' + textStatus);
+                            $('#moduleWrapper').data('loadedContentElementWizard', false);
+                        }
+                    });
+                },
+                functionReady: function(instance, helper) {
+                    PageLayout.initWizardDrag(instance);
+                },
+                functionAfter: function(instance, helper) {
+                    $('#moduleShadowing').addClass('hidden');
+                },
+            });
+        }
+    }
+    PageLayout.addTooltipsterConfig = function() {
+        if (!$('#navbarConfig:not(.disabled)').hasClass("tooltipstered")) {
+            $('#navbarConfig').tooltipster({
+                side: 'left',
+                interactive: true,
+                trigger: 'click',
+                functionBefore: function(instance, helper) {
+                    $('#moduleShadowing').removeClass('hidden');
+                },
+                functionAfter: function(instance, helper) {
+                    $('#moduleShadowing').addClass('hidden');
+                }
+
+            });
+        }
     }
 
     PageLayout.disableEmptyClipboard = function() {
@@ -521,9 +553,14 @@ console.log('onAdd');
         if (clipboardData.tt_content) {
             $('#navbarClipboard')[0].dataset.clipboardCount = clipboardData.tt_content.count;
             $('#navbarClipboard .badge').html(clipboardData.tt_content.count);
+            $('#navbarClipboard').removeClass('disabled');
+            PageLayout.addTooltipsterClipboard();
         } else {
             $('#navbarClipboard')[0].dataset.clipboardCount = 0;
             $('#navbarClipboard .badge').html(0);
+            if ($('#navbarClipboard').hasClass("tooltipstered")) {
+                $('#navbarClipboard').tooltipster('destroy');
+            }
             PageLayout.disableEmptyClipboard();
         }
     }
@@ -532,9 +569,14 @@ console.log('onAdd');
         if (trashData.totalCount) {
             $('#navbarTrash')[0].dataset.unusedCount = trashData.totalCount;
             $('#navbarTrash .badge').html(trashData.totalCount);
+            $('#navbarTrash').removeClass('disabled');
+            PageLayout.addTooltipsterTrashf();
         } else {
             $('#navbarTrash')[0].dataset.unusedCount = 0;
             $('#navbarTrash .badge').html(0);
+            if ($('#navbarTrash').hasClass("tooltipstered")) {
+                $('#navbarTrash').tooltipster('destroy');
+            }
             PageLayout.disableEmptyTrash();
         }
     }
