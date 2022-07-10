@@ -454,13 +454,21 @@ console.log('onAdd');
           || clipboard[0].dataset.clipboardCount == 0
         ) {
             clipboard.addClass('disabled');
+            if ($('#navbarClipboard').hasClass("tooltipstered")) {
+                $('#navbarClipboard').tooltipster('destroy');
+            }
         }
     }
 
     PageLayout.disableEmptyTrash = function() {
         var trash = $('#navbarTrash');
-        if (!trash[0].dataset.unusedCount) {
+        if (!trash[0].dataset.unusedCount
+          || trash[0].dataset.unusedCount == 0
+        ) {
             trash.addClass('disabled');
+            if ($('#navbarTrash').hasClass("tooltipstered")) {
+                $('#navbarTrash').tooltipster('destroy');
+            }
         }
     }
 
@@ -558,9 +566,6 @@ console.log('onAdd');
         } else {
             $('#navbarClipboard')[0].dataset.clipboardCount = 0;
             $('#navbarClipboard .badge').html(0);
-            if ($('#navbarClipboard').hasClass("tooltipstered")) {
-                $('#navbarClipboard').tooltipster('destroy');
-            }
             PageLayout.disableEmptyClipboard();
         }
     }
@@ -574,9 +579,6 @@ console.log('onAdd');
         } else {
             $('#navbarTrash')[0].dataset.unusedCount = 0;
             $('#navbarTrash .badge').html(0);
-            if ($('#navbarTrash').hasClass("tooltipstered")) {
-                $('#navbarTrash').tooltipster('destroy');
-            }
             PageLayout.disableEmptyTrash();
         }
     }

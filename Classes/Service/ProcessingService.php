@@ -670,7 +670,7 @@ class ProcessingService
         }
 
         // Check and get all information about the source position:
-        $destinationPointer = $this->getValidPointer($destinationPointerString);
+        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
             return false;
         }
