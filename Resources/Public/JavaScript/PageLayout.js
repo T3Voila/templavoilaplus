@@ -153,7 +153,7 @@ console.log('onAdd');
                                         destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
                                         elementRow: JSON.parse(evt.item.dataset.elementRow)
                                     },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_insert'],
+                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_create'],
                                     success: function(data) {
                                         var div = document.createElement('div');
                                         div.innerHTML = data.nodeHtml;
