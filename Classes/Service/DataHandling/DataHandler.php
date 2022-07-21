@@ -15,8 +15,10 @@ namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -129,8 +131,7 @@ class DataHandler
                         sprintf($this->getLanguageService()->getLL('access_noModifyAccess'), $table, $id),
                         1
                     );
-                    $command = '';
-                // Do not delete! A hack but there is no other way to prevent deletion...
+                    $command = ''; // Do not delete! A hack but there is no other way to prevent deletion...
                 } else {
                     if ((int)$record['t3ver_oid'] > 0 && $record['pid'] == -1) {
                         // we unlink a offline version in a workspace
@@ -144,8 +145,26 @@ class DataHandler
                             $record['uid'],
                             $record['pid']
                         );
-                        $sourceFlexformPointer = $sourceFlexformPointersArr[0];
-                        $templaVoilaAPI->unlinkElement($sourceFlexformPointer);
+                        while (count($sourceFlexformPointersArr) > 0) {
+                            $sourceFlexformPointer = $templaVoilaAPI
+                                ->flexform_getStringFromPointer($sourceFlexformPointersArr[0]);
+                            $success = GeneralUtility::makeInstance(ProcessingService::class)
+                                ->unlinkElement($sourceFlexformPointer);
+                            if ($success) {
+                                $sourceFlexformPointersArr = $templaVoilaAPI->flexform_getPointersByRecord(
+                                    $record['uid'],
+                                    $record['pid']
+                                );
+                            } else {
+                                GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class)->warning(sprintf(
+                                    'Failed to remove flexform reference %s after deleting record %s:%s',
+                                    $sourceFlexformPointer,
+                                    $table,
+                                    $id
+                                ));
+                                break;
+                            }
+                        }
                     }
                 }
                 break;

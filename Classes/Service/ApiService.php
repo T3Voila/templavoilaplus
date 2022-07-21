@@ -716,7 +716,10 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') {
+                                        if (
+                                            ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce')
+                                            || ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['TCEforms']['config']['type'] === 'group')
+                                        ) {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 foreach ($valueItems as $subElementUid) {
@@ -776,26 +779,33 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $valueName => $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') { /** @TODO What the hell? */
-                                            $valueItems = GeneralUtility::intExplode(',', $value);
-                                            if (is_array($valueItems)) {
-                                                $position = 1;
-                                                foreach ($valueItems as $subElementUid) {
-                                                    if ($subElementUid > 0) {
-                                                        $flexformPointers[] = [
-                                                            'table' => $table,
-                                                            'uid' => $uid,
-                                                            'sheet' => $sheetKey,
-                                                            'sLang' => $languageKey,
-                                                            'field' => $fieldName, /** @TODO What is with sections/arrays? */
-                                                            'vLang' => $valueName,
-                                                            'position' => $position,
-                                                            'targetCheckUid' => $subElementUid,
-                                                        ];
-                                                        if ($recursionDepth < 100) {
-                                                            $this->flexform_getFlexformPointersToSubElementsRecursively('tt_content', $subElementUid, $flexformPointers, $recursionDepth + 1);
+                                        if ($value) {
+                                            if (
+                                                ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce')
+                                                ||
+                                                ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['TCEforms']['config']['type'] === 'group')
+                                            ) {
+                                                /** @TODO What the hell? */
+                                                $valueItems = GeneralUtility::intExplode(',', $value);
+                                                if (is_array($valueItems)) {
+                                                    $position = 1;
+                                                    foreach ($valueItems as $subElementUid) {
+                                                        if ($subElementUid > 0) {
+                                                            $flexformPointers[] = [
+                                                                'table' => $table,
+                                                                'uid' => $uid,
+                                                                'sheet' => $sheetKey,
+                                                                'sLang' => $languageKey,
+                                                                'field' => $fieldName, // @TODO What is with sections/arrays?
+                                                                'vLang' => $valueName,
+                                                                'position' => $position,
+                                                                'targetCheckUid' => $subElementUid,
+                                                            ];
+                                                            if ($recursionDepth < 100) {
+                                                                $this->flexform_getFlexformPointersToSubElementsRecursively('tt_content', $subElementUid, $flexformPointers, $recursionDepth + 1);
+                                                            }
+                                                            $position++;
                                                         }
-                                                        $position++;
                                                     }
                                                 }
                                             }
