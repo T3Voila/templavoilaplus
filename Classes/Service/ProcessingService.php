@@ -117,11 +117,15 @@ class ProcessingService
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // set table and where clause
+        // as we want unused elements here instead of a complex case discussion which language mode it is, just filter
+        // to standalone elements, defined as "has no lang parent". Thus, it would show -1=all_lang as well as default
+        // lang or free-translation mode elements as only those can be used directly.
         $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         if (!empty($usedUids)) {
             $queryBuilder->andWhere(
