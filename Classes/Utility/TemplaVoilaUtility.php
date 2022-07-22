@@ -108,6 +108,11 @@ final class TemplaVoilaUtility
      */
     public static function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false, array $modSharedTSconfig = [])
     {
+        if (!$modSharedTSconfig) {
+            $pageTsConfig = BackendUtility::getPagesTSconfig($id);
+            // @TODO Get rid of this properties key
+            $modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'];
+        }
         $useStaticInfoTables = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 
         $languages = [];
