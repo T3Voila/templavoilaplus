@@ -1,8 +1,30 @@
 .navbar {
-  position: relative;
-  min-height: 50px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
+    position: relative;
+    min-height: 50px;
+    margin-bottom: 20px;
+    padding: 8px 0px;
+    border: 1px solid transparent;
+}
+
+.navbar > .container-fluid {
+    display: flex;
+    flex-wrap: inherit;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.ms-2 {
+    margin-left: .5rem !important;
+}
+
+.me-auto {
+    margin-right: auto !important;
 }
 @media (min-width: 768px) {
   .navbar {
