@@ -1,7 +1,7 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
 <f:for each="{node.datastructure.sheets.sDEF.ROOT.el}" key="fieldName" as="fieldConfig">
-    <f:if condition="!{node.childNodes.sDEF.lDEF.{fieldName}.vDEF}">
+    <f:if condition="!{node.childNodes.sDEF.lDEF.{fieldName}.vDEF} && {node.flexform.data.sDEF.lDEF.{fieldName}.vDEF}">
         <f:if condition="{fieldConfig.TCEforms.label}">
             <strong><f:translate key="{fieldConfig.TCEforms.label}" default="{fieldConfig.TCEforms.label}" /></strong>
         </f:if>
