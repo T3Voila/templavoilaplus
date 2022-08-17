@@ -20,7 +20,8 @@
     <f:variable name="title" value="{tvp:backend.labelFromMappingConfiguration(identifier:'{node.raw.entity.tx_templavoilaplus_map}')}"/>
 </f:if>
 
-<f:if condition="{title}">
+<f:comment>Don't show pages typeColumn as only type=standard pages are shown here anyways</f:comment>
+<f:if condition="{title} && {node.raw.table} != 'pages'">
     <strong>
             <f:translate key="{title}" default="{title}"/>
     </strong><br/>
