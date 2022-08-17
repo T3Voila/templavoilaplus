@@ -276,6 +276,10 @@ nav.flashRed {
     max-height: none;
 }
 
+.tooltipster-sidetip .tooltipster-content h2 {
+    margin-top: .5em;
+}
+
 .tooltipster-sidetip .tooltipster-box {
     overflow: hidden;
 }

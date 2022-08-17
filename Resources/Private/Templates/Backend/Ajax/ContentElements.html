@@ -1,17 +1,19 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <div>
+    <h2><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:createNewContent" /></h2>
+    <p><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardDesc" /></p>
     <nav>
         <ul class="nav nav-tabs t3js-tabs" id="nav-tab" role="tablist">
-            <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
+            <f:for each="{contentElementsConfig}" as="section" key="sectionKey" iteration="iter">
                 <li role="presentation" class="t3js-tabmenu-item">
-                    <a class="nav-link" id="nav-{sectionKey}-tab" data-toggle="tab" data-bs-toggle="tab" href="#nav-{sectionKey}" role="tab" aria-controls="nav-{sectionKey}" aria-selected="false">{section.label}</a>
+                    <a class="nav-link {f:if(condition:iter.isFirst, then: ' active')}" id="nav-{sectionKey}-tab" data-toggle="tab" data-bs-toggle="tab" href="#nav-{sectionKey}" role="tab" aria-controls="nav-{sectionKey}" aria-selected="{f:if(condition:iter.isFirst, then: 'true', else: 'false')}">{section.label}</a>
                 </li>
             </f:for>
         </ul>
     </nav>
     <div class="tab-content" id="nav-tabContent">
-        <f:for each="{contentElementsConfig}" as="section" key="sectionKey">
-            <div class="tab-pane tvjs-drag" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
+        <f:for each="{contentElementsConfig}" as="section" key="sectionKey" iteration="iter">
+            <div class="tab-pane tvjs-drag {f:if(condition:iter.isFirst, then: ' active show')}" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
                 <f:for each="{section.contentElements}" as="contentElement" key="contentElementKey">
                     <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="tt_content" data-panel="newcontent" data-element-row="{contentElement.element-row -> f:format.json()}">
                         <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><core:icon identifier="{contentElement.iconIdentifier}" size="default" /></div>
