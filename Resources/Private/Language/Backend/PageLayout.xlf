@@ -118,6 +118,13 @@
                 <source>Error: This FCE has no mapping set.</source>
             </trans-unit>
 
+			<trans-unit id="newCeWizardTitle" xml:space="preserve">
+				<source>Add new content to page.</source>
+			</trans-unit>
+
+			<trans-unit id="newCeWizardDesc" xml:space="preserve">
+				<source>Please select the content type you want to add from the appropiate tab and drag and drop it to the desired position.</source>
+			</trans-unit>
 
         </body>
     </file>
