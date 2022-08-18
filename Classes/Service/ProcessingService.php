@@ -434,10 +434,6 @@ class ProcessingService
      */
     public function insertElement(string $destinationPointerString, array $elementRow)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: insertElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString, 'elementRow' => $elementRow]);
-        }
-
         // Check and get all information about the destination position:
         $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
@@ -480,10 +476,6 @@ class ProcessingService
      */
     public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: moveElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointerString, 'destinationPointer' => $destinationPointerString]);
-        }
-
         // Check and get all information about the source position:
         $sourcePointer = $this->getValidPointer($sourcePointerString);
         // Check and get all information about the destination position:
@@ -582,10 +574,6 @@ class ProcessingService
      */
     public function deleteElement(string $sourcePointerString): bool
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: deleteElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointerString]);
-        }
-
         // Check and get all information about the source position:
         $sourcePointer = $this->getValidPointer($sourcePointerString);
         if (!$sourcePointer) {
@@ -620,10 +608,6 @@ class ProcessingService
      */
     public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: copyElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString]);
-        }
-
         // Check and get all information about the source position:
         $destinationPointer = $this->getValidPointer($destinationPointerString);
         if (!$destinationPointer) {
@@ -665,10 +649,6 @@ class ProcessingService
      */
     public function referenceElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: referenceElement()', 'templavoilaplus', 0, ['destinationPointer' => $destinationPointerString]);
-        }
-
         // Check and get all information about the source position:
         $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
@@ -694,9 +674,6 @@ class ProcessingService
      */
     public function unlinkElement(string $sourcePointerString): bool
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: unlinkElement()', 'templavoilaplus', 0, ['sourcePointer' => $sourcePointer]);
-        }
 
         // Check and get all information about the source position:
         $sourcePointer = $this->getValidPointer($sourcePointerString);
@@ -751,10 +728,6 @@ class ProcessingService
      */
     public function storeElementReferencesListInRecord(array $referencesArr, array $destinationPointer)
     {
-        if ($this->debug) {
-            GeneralUtility::devLog('API: storeElementReferencesListInRecord()', 'templavoilaplus', 0, ['referencesArr' => $referencesArr, 'destinationPointer' => $destinationPointer]);
-        }
-
         $dataArr = [];
         $uid = BackendUtility::wsMapId($destinationPointer['table'], $destinationPointer['uid']);
         $containerHasWorkspaceVersion = false;
@@ -808,10 +781,6 @@ class ProcessingService
     {
         $flexformPointer = $this->getPointerFromString($pointerString);
         if (!isset($GLOBALS['TCA'][$flexformPointer['table']])) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: Table "' . $flexformPointer['table'] . '" is not in the list of allowed tables!', 'TemplaVoilà!+ API', 2);
-            }
-
             return null;
         }
         /** @TODO Does it have a flex field and which one is it? */
@@ -823,10 +792,6 @@ class ProcessingService
 
         $pointerRecord = BackendUtility::getRecordWSOL($flexformPointer['table'], $flexformPointer['uid'], $minimumFields);
         if (!$pointerRecord) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: Pointer destination record not found!', 'TemplaVoilà!+ API', 2, $flexformPointer);
-            }
-
             return null;
         }
         $flexformPointer['foundRecord'] = $pointerRecord;
@@ -837,10 +802,6 @@ class ProcessingService
         }
 
         if ($flexformPointer['position'] < 0) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: The position must be positive!', 'TemplaVoilà!+ API', 2, $flexformPointer);
-            }
-
             return null;
         }
 
@@ -863,10 +824,6 @@ class ProcessingService
             $maxPosition--;
         }
         if ($flexformPointer['position'] > $maxPosition) {
-            if ($this->debug) {
-                GeneralUtility::devLog('flexform_getValidPointer: The position in the specified flexform pointer does not exist!', 'TemplaVoila API', 2, $flexformPointer);
-            }
-
             return null;
         }
         $flexformPointer['foundFieldReferences'] = $elementReferences;
@@ -891,10 +848,6 @@ class ProcessingService
         // Getting value of the field containing the relations:
         $flexform = GeneralUtility::xml2array($flexformXml);
         if (!is_array($flexform) && strlen($flexformXml) > 0) {
-            if ($this->debug) {
-                GeneralUtility::devLog('getElementReferencesFromXml: flexformXML seems to be no valid XML. Parser error message: ' . $flexform, 'TemplaVoila API', 2, $flexformXml);
-            }
-
             return null;
         }
 
@@ -917,10 +870,6 @@ class ProcessingService
             }
         }
         if (!is_array($baseDataStructure) && !is_array($baseDataStructure['TCEforms']) && !is_array($baseDataStructure['TCEforms']['config']) && $baseDataStructure['TCEforms']['config']['type'] === 'group') {
-            if ($this->debug) {
-                GeneralUtility::devLog('getElementReferencesFromXml: Field has no group configuration: ', 'TemplaVoila API', 2);
-            }
-
             return null;
         }
         $innerTable = $baseDataStructure['TCEforms']['config']['allowed'];

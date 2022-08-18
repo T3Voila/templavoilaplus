@@ -214,6 +214,7 @@ class Clipboard extends AbstractResponse
             $this->removeFromClipboard($sourceTable, $sourceUid);
             return (int) $parameters['sourceUid'];
         }
+        return false;
     }
 
     /**
