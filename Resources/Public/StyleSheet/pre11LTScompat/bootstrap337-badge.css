@@ -1,0 +1,12 @@
+.rounded-pill {
+    border-radius: 50rem !important;
+}
+.translate-middle {
+    transform: translate(-50%, -50%) !important;
+}
+.position-absolute {
+    position: absolute !important;
+}
+.bg-danger {
+    background-color: rgba(200, 60, 60, 1) !important;
+}
