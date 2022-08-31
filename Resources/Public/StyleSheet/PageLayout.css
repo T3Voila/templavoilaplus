@@ -196,9 +196,21 @@ div.tvjs-dropzone {
     text-overflow: ellipsis;
 }
 
+.tvp-node-description {
+    font-size: .8rem;
+}
+
 .tvp-node-clipboard,
+.tvp-node-newce,
 .tvp-node-trash {
-    min-width:  300px;
+    min-width: 300px;
+    margin-bottom: 10px;
+}
+
+.tvp-node-clipboard .tvp-node-header,
+.tvp-node-newce .tvp-node-header,
+.tvp-node-trash .tvp-node-header {
+    padding: 4px 6px;
 }
 
 /** @TODO default transition only while switching theme? */

@@ -4,9 +4,9 @@
     <p><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:trashDesc" /></p>
     <div class="tab-pane active tvjs-drag">
         <f:for each="{unusedElements.elements}" as="contentElement">
-            <div class="tvp-node tvp-node-trash card dragHandle">
+            <div class="tvp-node tvp-node-trash card dragHandle" data-record-table="tt_content" data-panel="trash" data-record-uid="{contentElement.uid}">
                 <div class="card-header">
-                    <div class="container-fluid tvp-node-header" data-record-table="tt_content" data-panel="trash" data-record-uid="{contentElement.uid}">
+                    <div class="container-fluid tvp-node-header">
                         <div class="tvp-node-header-icons-left"><f:format.raw>{contentElement.icon}</f:format.raw></div>
                         <div class="tvp-node-title">{contentElement.title}</div>
                         <div class="tvp-node-header-icons-right">

@@ -24,9 +24,9 @@
             <f:if condition="{tableName} !== '__totalCount__'">
                 <div class="tab-pane active tvjs-drag" id="nav-{tableName}" role="tabpanel" aria-labelledby="nav-{tableName}-tab">
                     <f:for each="{tableElements.elements}" as="contentElement" key="contentElementKey">
-                        <div class="tvp-node tvp-node-clipboard card dragHandle">
+                        <div class="tvp-node tvp-node-clipboard card dragHandle" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
                             <div class="card-header">
-                                <div class="container-fluid tvp-node-header" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
+                                <div class="container-fluid tvp-node-header">
                                     <div class="tvp-node-header-icons-left">
                                         <f:format.raw>{contentElement.icon}</f:format.raw>
                                     </div>
