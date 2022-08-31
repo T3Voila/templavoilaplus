@@ -158,8 +158,12 @@ nav.flashRed {
     cursor: pointer;
 }
 
-.tvp-node:hover .tvp-node:hover > .card-header > .navbar {
-    background-color: var(--bs-gray-500) !important;
+.tvp-node-header {
+    display: flex;
+    background-color: rgb(238, 238, 238) !important;
+    margin-bottom: 0;
+    padding: 8px 12px;
+    align-items: center;
 }
 
 .tvp-node:hover .tvp-node:hover .card-body {
@@ -168,11 +172,6 @@ nav.flashRed {
 
 .tvp-node .tvp-node .card-body {
     opacity: 0.6;
-}
-
-/** Fix BS3 navbar margin */
-.tvp-node .card-header .navbar {
-    margin-bottom: 0;
 }
 
 .tvp-node {
