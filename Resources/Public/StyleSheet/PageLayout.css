@@ -45,7 +45,7 @@ div.tvjs-dropzone {
     padding: 0;
 }
 
-.row.tvp-childs-table {
+.tvp-record-edit:empty+.row.tvp-childs-table {
     margin-top: -12px;
 }
 
