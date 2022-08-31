@@ -159,11 +159,12 @@ div.tvjs-dropzone {
 }
 
 .tvp-node-header {
-    display: flex;
+    align-items: center;
     background-color: rgb(238, 238, 238) !important;
+    display: flex;
+    flex-wrap: nowrap !important;
     margin-bottom: 0;
     padding: 8px 12px;
-    align-items: center;
 }
 
 .tvp-node:hover .tvp-node:hover .card-body {
@@ -178,10 +179,6 @@ div.tvjs-dropzone {
     max-width: 100%;
 }
 
-.tvp-node-header {
-    flex-wrap: nowrap !important;
-}
-
 .tvp-node-header-icons-left,
 .tvp-node-header-icons-right {
     white-space: nowrap;
@@ -191,10 +188,16 @@ div.tvjs-dropzone {
 .tvp-node-title {
     font-size: .9375rem;
     white-space: nowrap;
+    margin-left: .5rem!important;
+    margin-right: auto!important;
     overflow: hidden;
     padding-bottom: 4px;
     padding-top: 4px;
     text-overflow: ellipsis;
+}
+
+.tvp-node-trash {
+    min-width:  300px;
 }
 
 /** @TODO default transition only while switching theme? */
