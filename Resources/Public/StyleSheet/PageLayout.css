@@ -196,6 +196,7 @@ div.tvjs-dropzone {
     text-overflow: ellipsis;
 }
 
+.tvp-node-clipboard,
 .tvp-node-trash {
     min-width:  300px;
 }

@@ -1,11 +1,19 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <div>
+    <h2>
+        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardHeading"/>
+    </h2>
+    <p>
+        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardDesc"/>
+    </p>
     <nav>
         <ul class="nav nav-tabs t3js-tabs" id="nav-tab" role="tablist">
             <f:for each="{clipboardData}" as="tableElements" key="tableName">
                 <f:if condition="{tableName} !== '__totalCount__'">
                     <li role="presentation" class="t3js-tabmenu-item nav-item active">
-                        <a class="nav-link active" id="nav-{tableName}-tab" data-toggle="tab" data-bs-toggle="tab" href="#nav-{tableName}" role="tab" aria-controls="nav-{tableName}" aria-selected="false"><f:translate key="{tableElements.label}" default="{tableElements.label}" /></a>
+                        <a class="nav-link active" id="nav-{tableName}-tab" data-toggle="tab" data-bs-toggle="tab" href="#nav-{tableName}" role="tab" aria-controls="nav-{tableName}" aria-selected="false">
+                            <f:translate key="{tableElements.label}" default="{tableElements.label}"/>
+                        </a>
                     </li>
                 </f:if>
             </f:for>
@@ -16,22 +24,31 @@
             <f:if condition="{tableName} !== '__totalCount__'">
                 <div class="tab-pane active tvjs-drag" id="nav-{tableName}" role="tabpanel" aria-labelledby="nav-{tableName}-tab">
                     <f:for each="{tableElements.elements}" as="contentElement" key="contentElementKey">
-                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2 tvp-node-clipboard" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
-                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><f:format.raw>{contentElement.icon}</f:format.raw></div>
-                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
-                                <div><b>{contentElement.title}</b></div>
-                            </div>
-                            <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-right')} flex-shrink-0">
-                                <button type="button" class="btn btn-default btn-sm tvjs-clipboard-release">
-                                    <core:icon identifier="actions-edit-copy-release" />
-                                </button>
+                        <div class="tvp-node tvp-node-clipboard card dragHandle">
+                            <div class="card-header">
+                                <div class="container-fluid tvp-node-header" data-record-table="{tableName}" data-panel="clipboard" data-record-uid="{contentElement.uid}">
+                                    <div class="tvp-node-header-icons-left">
+                                        <f:format.raw>{contentElement.icon}</f:format.raw>
+                                    </div>
+                                    <div class="tvp-node-title">{contentElement.title}</div>
+                                    <div class="tvp-node-header-icons-right">
+                                        <button type="button" class="btn btn-default btn-sm tvjs-clipboard-release">
+                                            <core:icon identifier="actions-edit-copy-release"/>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </f:for>
-                    <h3>Clipboardmode</h3>
-                    <div><input type="radio" {f:if(condition: '!{settings.configuration.userSettings.clipboardMode} || {settings.configuration.userSettings.clipboardMode} == \'copy\'', then: 'checked')} name="clipboardMode" value="copy"> Copy element</input></div>
-                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'move\'', then: 'checked')} name="clipboardMode" value="move"> Move element</input></div>
-                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'reference\'', then: 'checked')} name="clipboardMode" value="reference"> Reference element</input></div>
+                    <h3>
+                        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardMode"/>
+                    </h3>
+                    <div><input type="radio" {f:if(condition: '!{settings.configuration.userSettings.clipboardMode} || {settings.configuration.userSettings.clipboardMode} == \'copy\'', then: 'checked')} name="clipboardMode" value="copy">
+                        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardCopy"/></input></div>
+                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'move\'', then: 'checked')} name="clipboardMode" value="move">
+                        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardMove"/></input></div>
+                    <div><input type="radio" {f:if(condition: '{settings.configuration.userSettings.clipboardMode} == \'reference\'', then: 'checked')} name="clipboardMode" value="reference">
+                        <f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardReference"/></input></div>
                 </div>
             </f:if>
         </f:for>
