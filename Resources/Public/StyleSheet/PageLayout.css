@@ -68,15 +68,15 @@ div.tvjs-dropzone {
     height: 10px;
 }
 
-nav.toYellow {
+.toYellow {
     animation: toYellow 0.5s linear forwards;
 }
 
-nav.flashGreen {
+.flashGreen {
     animation: flashGreen 1s linear;
 }
 
-nav.flashRed {
+.flashRed {
     animation: flashRed 2s linear;
 }
 
