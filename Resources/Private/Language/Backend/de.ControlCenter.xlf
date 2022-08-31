@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+    <file source-language="en" target-language="de" original="" datatype="plaintext" date="2022-10-06T14:23:19+02:00">
+        <body>
+            <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+                <source>TemplaVoilà! Plus Control Center</source>
+                <target>TemplaVoilà! Plus Kontrollzentrum</target>
+            </trans-unit>
+            <trans-unit id="title" resname="title">
+                <source>TemplaVoilà! Plus Control Center</source>
+                <target>TemplaVoilà! Plus Kontrollzentrum</target>
+            </trans-unit>
+            <trans-unit id="datastructures" resname="datastructures">
+                <source>Data Structures</source>
+                <target>Datenstrukturen (DataStructures)</target>
+            </trans-unit>
+            <trans-unit id="datastructures.description" resname="datastructures.description">
+                <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
+                <target>Datenstrukturen definieren die Elemente und Bereiche die für die Strukturierung der Inhalte einer Zuordnung genutzt werden.</target>
+            </trans-unit>
+            <trans-unit id="mappings" resname="mappings">
+                <source>Mappings</source>
+                <target>Zuordnungen (Mappings)</target>
+            </trans-unit>
+            <trans-unit id="mappings.description" resname="mappings.description">
+                <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
+                <target>Zuordnungen erlauben festzulegen welche TemplaVoilà! Plus Konfiguration für eine ausgewählte Seite oder ein ausgewähltes Inhaltselement genutzt werden.</target>
+            </trans-unit>
+            <trans-unit id="templates" resname="templates">
+                <source>Templates</source>
+                <target>Vorlagen (Templates)</target>
+            </trans-unit>
+            <trans-unit id="templates.description" resname="templates.description">
+                <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
+                <target>Vorlagen definieren welche Elemente zu welchen Bereichen einer bspw. HTML-Vorlage zugeordnet werden sollen, um die Ausgabe zu realisieren.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
