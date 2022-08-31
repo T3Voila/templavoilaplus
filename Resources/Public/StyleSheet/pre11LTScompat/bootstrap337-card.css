@@ -1,3 +1,16 @@
 .card-body {
     padding: 1.5em 1.5em 0 1.5em;
 }
+
+.card {
+    background-color: #ffffff;
+}
+
+.card-body:last-child,
+.card-footer:last-child,
+.card-header:last-child,
+.card-image:last-child,
+.panel-body:last-child,
+.panel-footer:last-child {
+    padding-bottom: 1.5em;
+}
