@@ -58,7 +58,7 @@ class PageLayoutController extends ActionController
     /**
      * Record of current page with _path information BackendUtility::readPageAccess
      *
-     * @var array
+     * @var array|false
      */
     protected $pageInfo;
 
@@ -188,7 +188,9 @@ class PageLayoutController extends ActionController
 
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        if ($this->pageInfo !== false) {
+            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        }
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $contentHeader = '';
