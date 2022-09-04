@@ -251,7 +251,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 
         $this->view->assign('calcPerms', $this->calcPerms);
-        $this->view->assign('basicEditRights', $this->hasBasicEditRights());
+        $this->view->assign('basicEditRights', $this->hasBasicEditRights(isset($this->pageInfo['uid']) ? 'pages' : null, isset($this->pageInfo['uid']) ? $this->pageInfo : null));
         $this->view->assign('clipboard', $this->clipboard2fluid());
 
 
