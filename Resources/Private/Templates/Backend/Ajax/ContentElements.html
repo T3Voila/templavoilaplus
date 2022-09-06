@@ -17,11 +17,15 @@
         <f:for each="{contentElementsConfig}" as="section" key="sectionKey" iteration="iter">
             <div class="tab-pane tvjs-drag {f:if(condition:iter.isFirst, then: ' active')} {f:if(condition:'{iter.isFirst} && {settings.configuration.is11orNewer}', then: ' show')}" id="nav-{sectionKey}" role="tabpanel" aria-labelledby="nav-{sectionKey}-tab">
                 <f:for each="{section.contentElements}" as="contentElement" key="contentElementKey">
-                    <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then: '', else: 'media  media-new-content-element-wizard')} d-flex align-items-start p-2" data-record-table="tt_content" data-panel="newcontent" data-element-row="{contentElement.element-row -> f:format.json()}">
-                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-left')} flex-shrink-0 dragHandle"><core:icon identifier="{contentElement.iconIdentifier}" size="default" /></div>
-                        <div class="{f:if(condition: '{settings.configuration.is11orNewer}', then:'', else: 'media-body')} flex-grow-1 ms-3">
-                            <div><b>{contentElement.title}</b></div>
-                            <div>{contentElement.description}</div>
+                    <div class="tvp-node tvp-node-newce card dragHandle" data-record-table="tt_content" data-panel="newcontent" data-element-row="{contentElement.element-row -> f:format.json()}">
+                        <div class="card-header">
+                            <div class="container-fluid tvp-node-header">
+                                <div class="tvp-node-header-icons-left"><core:icon identifier="{contentElement.iconIdentifier}" size="default" /></div>
+                                <div class="tvp-node-title">
+                                    {contentElement.title}
+                                    <div class="tvp-node-description">{contentElement.description}</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </f:for>

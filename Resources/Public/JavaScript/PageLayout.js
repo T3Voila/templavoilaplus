@@ -721,31 +721,28 @@ console.log('onAdd');
 
     PageLayout.showInProgress = function(items)
     {
-        $('nav.navbar', items)
-            .addClass("toYellow")
-            .removeClass("bg-light");
+        $('.tvp-node-header', items)
+            .addClass("toYellow");
     }
 
     PageLayout.showSuccess = function(items)
     {
         // flash green
-        $('nav.navbar', items)
+        $('.tvp-node-header', items)
             .off()
             .addClass("flashGreen")
-            .removeClass("bg-light")
             .removeClass("toYellow")
-            .one("animationend webkitAnimationEnd", function(){ $('nav.navbar', items).addClass("bg-light").removeClass("flashGreen"); });
+            .one("animationend webkitAnimationEnd", function(){ $('.tvp-node-header', items).removeClass("flashGreen"); });
     }
 
     PageLayout.showError = function(items)
     {
         // flash red
-        $('nav.navbar', items)
+        $('.tvp-node-header', items)
             .off()
             .addClass("flashRed")
-            .removeClass("bg-light")
             .removeClass("toYellow")
-            .one("animationend webkitAnimationEnd", function(){ $('nav.navbar', items).addClass("bg-light").removeClass("flashRed"); });
+            .one("animationend webkitAnimationEnd", function(){ $('.tvp-node-header', items).removeClass("flashRed"); });
     }
 
 

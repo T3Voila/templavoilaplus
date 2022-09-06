@@ -41,22 +41,23 @@ div.tvjs-dropzone {
     min-height: 40px;
 }
 
-table.tvp-childs-table {
-    width: 100%;
+.tvp-childs-table .col.t3-grid-cell {
+    padding: 0;
 }
 
-table.tvp-childs-table > tbody > tr > td {
-    padding: 0 10px;
-    vertical-align: top;
+.tvp-record-edit:empty+.row.tvp-childs-table {
+    margin-top: -12px;
 }
 
-table.tvp-childs-table td:first-child {
-    padding-left: 0;
+.row.tvp-childs-table > .col {
+    padding-bottom: 10px;
 }
 
-table.tvp-childs-table td:last-child {
-    padding-right: 0;
+.row.tvp-childs-table > .col > .t3-page-column-header {
+    padding: 10px 10px 5px 10px;
 }
+
+
 
 #typo3-docbody > .typo3-message {
     margin: 5px 8px;
@@ -67,15 +68,15 @@ table.tvp-childs-table td:last-child {
     height: 10px;
 }
 
-nav.toYellow {
+.toYellow {
     animation: toYellow 0.5s linear forwards;
 }
 
-nav.flashGreen {
+.flashGreen {
     animation: flashGreen 1s linear;
 }
 
-nav.flashRed {
+.flashRed {
     animation: flashRed 2s linear;
 }
 
@@ -157,8 +158,13 @@ nav.flashRed {
     cursor: pointer;
 }
 
-.tvp-node:hover .tvp-node:hover > .card-header > .navbar {
-    background-color: var(--bs-gray-500) !important;
+.tvp-node-header {
+    align-items: center;
+    background-color: rgb(238, 238, 238) !important;
+    display: flex;
+    flex-wrap: nowrap !important;
+    margin-bottom: 0;
+    padding: 8px 12px;
 }
 
 .tvp-node:hover .tvp-node:hover .card-body {
@@ -169,17 +175,8 @@ nav.flashRed {
     opacity: 0.6;
 }
 
-/** Fix BS3 navbar margin */
-.tvp-node .card-header .navbar {
-    margin-bottom: 0;
-}
-
 .tvp-node {
     max-width: 100%;
-}
-
-.tvp-node-header {
-    flex-wrap: nowrap !important;
 }
 
 .tvp-node-header-icons-left,
@@ -191,10 +188,29 @@ nav.flashRed {
 .tvp-node-title {
     font-size: .9375rem;
     white-space: nowrap;
+    margin-left: .5rem!important;
+    margin-right: auto!important;
     overflow: hidden;
     padding-bottom: 4px;
     padding-top: 4px;
     text-overflow: ellipsis;
+}
+
+.tvp-node-description {
+    font-size: .8rem;
+}
+
+.tvp-node-clipboard,
+.tvp-node-newce,
+.tvp-node-trash {
+    min-width: 300px;
+    margin-bottom: 10px;
+}
+
+.tvp-node-clipboard .tvp-node-header,
+.tvp-node-newce .tvp-node-header,
+.tvp-node-trash .tvp-node-header {
+    padding: 4px 6px;
 }
 
 /** @TODO default transition only while switching theme? */

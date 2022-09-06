@@ -5,3 +5,17 @@ html {
 .media-body {
     width: unset;
 }
+
+.container-fluid {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ms-2 {
+    margin-left: .5rem !important;
+}
+
+.me-auto {
+    margin-right: auto !important;
+}

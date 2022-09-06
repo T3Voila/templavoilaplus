@@ -118,11 +118,32 @@
                 <source>Error: This FCE has no mapping set.</source>
             </trans-unit>
 
-			<!-- newContentElementWizard -->
+			<!-- sidebar -->
+			<trans-unit id="clipboardHeading" xml:space="preserve">
+				<source>Clipboard</source>
+			</trans-unit>
+			<trans-unit id="clipboardDesc" xml:space="preserve">
+				<source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
+			</trans-unit>
+			<trans-unit id="clipboardMove" xml:space="preserve">
+				<source>Move element</source>
+			</trans-unit>
+			<trans-unit id="clipboardCopy" xml:space="preserve">
+				<source>Copy element</source>
+			</trans-unit>
+			<trans-unit id="clipboardReference" xml:space="preserve">
+				<source>Reference element</source>
+			</trans-unit>
 			<trans-unit id="newCeWizardDesc" xml:space="preserve">
-				<source>Please select the content type you want to add from the appropiate tab and drag and drop its icon to the desired position.</source>
+				<source>Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</source>
+			</trans-unit>
+			<trans-unit id="trashHeading" xml:space="preserve">
+				<source>Unused Elements</source>
+			</trans-unit>
+			<trans-unit id="trashDesc" xml:space="preserve">
+				<source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
 			</trans-unit>
 
-        </body>
+		</body>
     </file>
 </xliff>

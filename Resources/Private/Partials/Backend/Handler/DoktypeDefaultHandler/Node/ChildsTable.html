@@ -53,16 +53,21 @@
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
                             {f:variable(name: 'countWhat', value: '{childElements.{fieldKey}}')}
                             {f:variable(name: 'count', value: '{f:count(subject: countWhat)}')}
-                            {f:variable(name: 'cellWidth', value: '{100 / count}')}
-                            <table class="table tvp-childs-table table-secondary">
-                                <tr>
+                            <f:switch expression="{count}">
+                                <f:case value="1">{f:variable(name: 'colwidthclass', value: 'col col-lg-12')}</f:case>
+                                <f:case value="2">{f:variable(name: 'colwidthclass', value: 'col col-lg-6')}</f:case>
+                                <f:case value="3">{f:variable(name: 'colwidthclass', value: 'col col-lg-4')}</f:case>
+                                <f:case value="4">{f:variable(name: 'colwidthclass', value: 'col col-lg-3')}</f:case>
+                                <f:case value="6">{f:variable(name: 'colwidthclass', value: 'col col-lg-2')}</f:case>
+                                <f:defaultCase>{f:variable(name: 'colwidthclass', value: 'col')}</f:defaultCase>
+                             </f:switch>
+                            <div class="table row tvp-childs-table table-secondary">
                                     <f:for each="{childElements.{fieldKey}}" key="dataKey" as="sectionFieldElements">
-                                        <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%">
-                                            <f:render section="renderChildElements"  arguments="{fieldConfig: subFieldConfig.el, childElements: sectionFieldElements, childFlexformData: '{subFlexFormData.{dataKey}}', beLayout: beLayout, parentPointer: '{parentPointer}#{fieldKey}#el#{dataKey}', subpart: '{subpart}.{fieldKey}'}" />
-                                        </td>
+                                        <div class="{colwidthclass}" id="cell{node.rendering.md5}_{layoutKey}">
+                                             <f:render section="renderChildElements"  arguments="{fieldConfig: subFieldConfig.el, childElements: sectionFieldElements, childFlexformData: '{subFlexFormData.{dataKey}}', beLayout: beLayout, parentPointer: '{parentPointer}#{fieldKey}#el#{dataKey}', subpart: '{subpart}.{fieldKey}'}" />
+                                       </div>
                                     </f:for>
-                                </tr>
-                            </table>
+                            </div>
                         </tvp:arrayVariable>
                     </f:then>
                     <f:else>
@@ -90,17 +95,20 @@
         </f:if>
     </f:for>
     {f:variable(name: 'count', value: '{f:count(subject: layoutHeaders)}')}
-    {f:variable(name: 'cellWidth', value: '{100 / count}')}
-    <table class="tvp-childs-table">
-        <tr>
-            <f:for each="{layoutHeaders}" as="layoutHeader">
-                <td width="{cellWidth}%"><f:format.raw>{layoutHeader}</f:format.raw></td>
-            </f:for>
-        </tr>
-        <tr>
-            <f:for each="{layoutFields}" key="layoutKey" as="layoutField">
-                <td id="cell{node.rendering.md5}_{layoutKey}" width="{cellWidth}%"><f:format.raw>{layoutField}</f:format.raw></td>
-            </f:for>
-        </tr>
-    </table>
+    <f:switch expression="{count}">
+        <f:case value="1">{f:variable(name: 'colwidthclass', value: 'col col-lg-12')}</f:case>
+        <f:case value="2">{f:variable(name: 'colwidthclass', value: 'col col-lg-6')}</f:case>
+        <f:case value="3">{f:variable(name: 'colwidthclass', value: 'col col-lg-4')}</f:case>
+        <f:case value="4">{f:variable(name: 'colwidthclass', value: 'col col-lg-3')}</f:case>
+        <f:case value="6">{f:variable(name: 'colwidthclass', value: 'col col-lg-2')}</f:case>
+        <f:defaultCase>{f:variable(name: 'colwidthclass', value: 'col')}</f:defaultCase>
+    </f:switch>
+    <div class="row tvp-childs-table">
+        <f:for each="{layoutFields}" key="layoutKey" as="_unused">
+            <div class="{colwidthclass} t3-grid-cell">
+                <div class="t3-page-column-header"><f:format.raw>{layoutHeaders.{layoutKey}}</f:format.raw></div>
+                <div class="t3-page-ce"><f:format.raw>{layoutFields.{layoutKey}}</f:format.raw></div>
+            </div>
+        </f:for>
+    </div>
 </f:section>

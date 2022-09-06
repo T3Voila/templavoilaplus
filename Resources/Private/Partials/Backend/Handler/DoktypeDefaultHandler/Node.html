@@ -14,7 +14,7 @@
 <f:section name="TableNode">
 <div class="tvp-node sortableItem {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
     <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
-    <div class="card-header">
+    <div class="card-header dragHandle">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: node}" />
         <f:if condition="!{node.rendering.belongsToCurrentPage}">
             <div class="bg-info px-2 py-1">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{settings.configuration.lllFile}:infoElementFromOtherPage" arguments="{0: node.raw.entity.uid, 1: node.raw.entity.pid}" /></em></div>
