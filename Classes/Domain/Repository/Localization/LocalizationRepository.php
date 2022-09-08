@@ -53,7 +53,6 @@ class LocalizationRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         $tcaCtrl['transOrigPointerField'],
-                        // $tcaCtrl['translationSource'] ?? $tcaCtrl['transOrigPointerField'] Thats from core, but wrong!
                         $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
                     ),
                     $queryBuilder->expr()->gt($tcaCtrl['languageField'], 0)
