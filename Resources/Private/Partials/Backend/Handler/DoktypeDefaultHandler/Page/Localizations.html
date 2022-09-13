@@ -1,5 +1,5 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}{namespace be=TYPO3\CMS\Backend\ViewHelpers}
-<f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown}">
+<f:if condition="{settings.configuration.localizationPossible}">
     <div class="tvp-localization-info tvp-localization-info-pages">
         <strong>
             <f:translate key="{settings.configuration.lllFile}:labelLocalizations"/>:

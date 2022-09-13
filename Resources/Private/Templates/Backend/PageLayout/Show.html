@@ -106,9 +106,7 @@
         <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
     </f:if>
 
-    <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown}">
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
-    </f:if>
+    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
 </f:section>
 
 <f:section name="SidebarContentTree">
