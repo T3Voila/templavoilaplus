@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
-class DoktypeSysfolderHandler
+class DoktypeSysfolderHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Sysfolder"
@@ -35,6 +35,7 @@ class DoktypeSysfolderHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
+        self::addLocalizationInformationForPage($controller,$pageRecord);
         $listModuleUrl = '';
         if ($this->userHasAccessToListModule()) {
             $listModuleUrl = 'javascript:top.goToModule(\'web_list\',1);';

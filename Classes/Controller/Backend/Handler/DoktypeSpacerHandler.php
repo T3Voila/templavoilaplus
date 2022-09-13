@@ -21,7 +21,7 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
-class DoktypeSpacerHandler
+class DoktypeSpacerHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Mount Point"
@@ -33,6 +33,7 @@ class DoktypeSpacerHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
+        self::addLocalizationInformationForPage($controller,$pageRecord);
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeSpacerCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSpacer'),

@@ -101,13 +101,13 @@
 
     <f:format.raw>{contentHeader}</f:format.raw>
 
-    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: doktypeDefault.nodeTree.node}" />
+    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}" />
     <f:if condition="{pageDescription}">
         <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
     </f:if>
 
     <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown}">
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: doktypeDefault.nodeTree.node, settings: settings}" />
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
     </f:if>
 </f:section>
 

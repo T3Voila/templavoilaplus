@@ -19,7 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
 
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 
-class DoktypeRecyclerHandler
+class DoktypeRecyclerHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the List of content elements moved on the doktype "Recycler"
@@ -31,6 +31,7 @@ class DoktypeRecyclerHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
+        self::addLocalizationInformationForPage($controller,$pageRecord);
         return 'Not yet implemented';
     }
 }

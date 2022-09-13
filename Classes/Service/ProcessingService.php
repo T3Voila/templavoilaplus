@@ -103,6 +103,30 @@ class ProcessingService
         ];
     }
 
+    /**
+     * Returns the node (probably page) and its localization information or localizationActions.
+     *
+     * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
+     * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
+     *
+     * @return array The content tree
+     */
+    public function getNodeWithLocalization(string $table, array $row): array
+    {
+        $basePid = (int)$row['uid'];
+        $parentPointer = [
+            'table' => $table,
+            'uid' => $row['uid'],
+        ];
+
+        $node = $this->getNodeFromRow($table, $row, $parentPointer, $basePid);
+        $node['localization'] = $this->getLocalizationForNode($node);
+        $node['localizationActions'] = $this->getLocalizationActionsForMissingLocalizations($node, $basePid);
+
+        // Return result:
+        return $node;
+    }
+
     public function getUnusedElements(array $pageRow, array $usedElements): array
     {
         $table = 'tt_content';

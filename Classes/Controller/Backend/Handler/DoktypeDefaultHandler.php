@@ -25,7 +25,7 @@ use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class DoktypeDefaultHandler
+class DoktypeDefaultHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the content of the page on the doktype "Default"/"BE_User_Section"
@@ -70,6 +70,7 @@ class DoktypeDefaultHandler
             }
         } else {
             try {
+                self::addLocalizationInformationForPage($controller,$pageRecord);
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
                 $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 

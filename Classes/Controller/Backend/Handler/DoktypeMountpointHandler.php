@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
-class DoktypeMountpointHandler
+class DoktypeMountpointHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Mount Point"
@@ -35,6 +35,7 @@ class DoktypeMountpointHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
+        self::addLocalizationInformationForPage($controller,$pageRecord);
         // Mountpoint starts here but start content is taken from this page
         if (!$pageRecord['mount_pid_ol']) {
             // @TODO How to include DoktypePage from here?
