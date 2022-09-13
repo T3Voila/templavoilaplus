@@ -2,13 +2,13 @@
 
 <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown} && {node.raw.entity.sys_language_uid} != -1 && {node.raw.table} != pages">
 
-    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-footer')} card-footer tpm-localisation-info-table">
+    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-footer')} card-footer tvp-localization-info">
         <strong>
             <f:translate key="{settings.configuration.lllFile}:labelLocalizations"/>:
         </strong>
         <f:for each="{settings.configuration.allExistingPageLanguages}" as="language">
             <f:if condition="{language.uid} > 0">
-                <div class="tpm-language-row tpm-language-info">
+                <div class="tvp-localization-row">
                     <f:if condition="{node.localization.{language.uid}}">
                         <f:then>
                             <div class="tvp-node {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.localization.{language.uid}.rendering.stylingClasses}"
