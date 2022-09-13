@@ -105,6 +105,7 @@ class ProcessingService
     public function getUnusedElements(array $pageRow, array $usedElements): array
     {
         $table = 'tt_content';
+        $l10n_parent_field = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? 'l10n_parent';
 
         if (!isset($usedElements[$table]) && !is_array($usedElements[$table])) {
             $usedUids = [];
@@ -128,7 +129,7 @@ class ProcessingService
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq('l18n_parent', $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq($l10n_parent_field, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         if (!empty($usedUids)) {
             $queryBuilder->andWhere(
@@ -319,7 +320,7 @@ class ProcessingService
 
         $localizationRepository = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository::class);
 
-        $records = $localizationRepository->fetchRecordLocalizations($table, (int)$row['uid']);
+        $records = $localizationRepository::fetchRecordLocalizations($table, (int)$row['uid']);
         /** @TODO WSOL? */
         foreach ($records as $record) {
             $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);
