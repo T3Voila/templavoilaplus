@@ -13,5 +13,10 @@
             </f:else>
         </f:if>
     </a>
+    <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown}">
+        <span title="{settings.configuration.allAvailableLanguages.{node.raw.entity.sys_language_uid}.title}">
+            <core:icon identifier="{settings.configuration.allAvailableLanguages.{node.raw.entity.sys_language_uid}.flagIcon}" />
+        </span>
+    </f:if>
 </div>
 
