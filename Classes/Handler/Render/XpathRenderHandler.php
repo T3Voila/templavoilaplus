@@ -211,7 +211,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
                     /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
-                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
+                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><templavoilapluscontentwrap>' . $processedValues[$fieldName] . '</templavoilapluscontentwrap>', $this->libXmlConfig);
 
                     /** lastChild is our own added Tag from above */
                     foreach ($tmpDoc->lastChild->childNodes as $importNode) {
@@ -248,7 +248,7 @@ class XpathRenderHandler implements RenderHandlerInterface
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
                     /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
-                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><__TEMPLAVOILAPLUS__>' . $processedValues[$fieldName] . '</__TEMPLAVOILAPLUS__>', $this->libXmlConfig);
+                    $tmpDoc->loadHTML('<?xml encoding="utf-8" ?><templavoilapluscontentwrap>' . $processedValues[$fieldName] . '</templavoilapluscontentwrap>', $this->libXmlConfig);
 
                     $isFirst = true;
 
