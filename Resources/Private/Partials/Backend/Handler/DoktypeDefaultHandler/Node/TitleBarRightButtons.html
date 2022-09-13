@@ -10,7 +10,7 @@
                 </f:else>
             </f:if>
         </button>
-        <f:if condition="{node.rendering.belongsToCurrentPage}">
+        <f:if condition="{node.rendering.belongsToCurrentPage} || {node.raw.table} == pages">
             <button type="button" class="btn btn-default btn-sm tvp-record-edit">
                 <core:icon identifier="actions-document-open" />
             </button>
