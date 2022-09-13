@@ -19,6 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
+use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
@@ -318,9 +319,7 @@ class ProcessingService
 
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
-        $localizationRepository = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository::class);
-
-        $records = $localizationRepository::fetchRecordLocalizations($table, (int)$row['uid']);
+        $records = LocalizationRepository::fetchRecordLocalizations($table, (int)$row['uid']);
         /** @TODO WSOL? */
         foreach ($records as $record) {
             $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);

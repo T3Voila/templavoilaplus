@@ -37,7 +37,7 @@ class LocalizationRepository
      *
      * @return array
      */
-    public function fetchRecordLocalizations(string $table, int $uid): array
+    public static function fetchRecordLocalizations(string $table, int $uid): array
     {
         $result = [];
 
