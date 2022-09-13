@@ -165,6 +165,34 @@ div.tvjs-dropzone {
     padding: 8px 12px;
 }
 
+.tvp-page-header {
+    background-color: transparent !important;
+}
+
+.tvp-localization-info-pages {
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
+    width: fit-content;
+    min-width: 300px;
+    max-width: 100%;
+}
+
+.tvp-localization-info-pages .card {
+    margin-bottom: .1rem;
+}
+
+.tvp-localization-row {
+    margin-bottom: .5rem;
+}
+
+.tvp-localization-row .tvp-node-header {
+    padding: 0 .2rem;
+}
+
+.tvp-localization-info-pages .tvp-node-title {
+    padding-right: .2rem;
+}
+
 .tvp-node:hover .tvp-node:hover .card-body {
     opacity: 1;
 }
@@ -192,6 +220,19 @@ div.tvjs-dropzone {
     padding-bottom: 4px;
     padding-top: 4px;
     text-overflow: ellipsis;
+}
+
+.tvp-page-header {
+    font-size: 1.6875rem;
+    padding-left: 0 !important;
+}
+.tvp-page-header .tvp-node-title {
+    font-size: 1.6875rem;
+    font-family: 'Source Sans Pro',sans-serif;
+    font-variant: normal;
+    font-weight: 400;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .tvp-node-description {
