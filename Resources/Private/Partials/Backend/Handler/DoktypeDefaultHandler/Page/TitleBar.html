@@ -1,6 +1,8 @@
-<div class="container-fluid tvp-page-header tvp-node-header">
-    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBarLeftButtons" arguments="{node: node}"/>
-    <div class="me-auto ms-2 tvp-node-title">{node.rendering.fullTitle}</div>
-    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBarRightButtons" arguments="{node: node}"/>
+<div class="tvp-node" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}">
+    <div class="container-fluid tvp-page-header tvp-node-header">
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBarLeftButtons" arguments="{node: node}"/>
+        <div class="me-auto ms-2 tvp-node-title">{node.rendering.fullTitle}</div>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBarRightButtons" arguments="{node: node}"/>
+    </div>
 </div>
 
