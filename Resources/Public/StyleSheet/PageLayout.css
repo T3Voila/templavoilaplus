@@ -170,7 +170,8 @@ div.tvjs-dropzone {
 }
 
 .tvp-localization-info-pages {
-    margin-left: 2.5rem;
+    margin-top: -.5rem;
+    margin-left: 2.85rem;
     margin-bottom: 1rem;
     width: fit-content;
     min-width: 300px;
@@ -186,7 +187,7 @@ div.tvjs-dropzone {
 }
 
 .tvp-localization-row .tvp-node-header {
-    padding: 0 .2rem;
+    padding: .15rem .3rem;
 }
 
 .tvp-localization-info-pages .tvp-node-title {
@@ -209,6 +210,14 @@ div.tvjs-dropzone {
 .tvp-node-header-icons-right {
     white-space: nowrap;
     flex-wrap: nowrap;
+}
+
+.tvp-page-header .tvp-node-header-icons-left {
+    margin-top: -.5em;
+}
+
+.tvp-page-header .tvp-node-header-icons-left .tvp-page-flag{
+    margin-left: .2em;
 }
 
 .tvp-node-title {

@@ -10,32 +10,8 @@
                 </f:else>
             </f:if>
         </button>
-        <f:if condition="{node.rendering.belongsToCurrentPage} || {node.raw.table} == pages">
-            <button type="button" class="btn btn-default btn-sm tvp-record-edit">
-                <core:icon identifier="actions-document-open" />
-            </button>
-        </f:if>
+        <button type="button" class="btn btn-default btn-sm tvp-record-edit">
+            <core:icon identifier="actions-document-open" />
+        </button>
     </div>
-    <f:if condition="{node.raw.table} == 'tt_content'">
-        <f:then>
-            <f:if condition="{configuration.clipboard.hasContent} && {configuration.clipboard.mode} == 'copy' && {configuration.clipboard.table} == 'tt_content' && {configuration.clipboard.uid} == {node.raw.entity.uid}" >
-                <f:then>
-                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
-                        <core:icon identifier="actions-edit-copy-release" />
-                    </button>
-                </f:then>
-                <f:else>
-                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-add">
-                        <core:icon identifier="actions-edit-copy" />
-                    </button>
-                </f:else>
-            </f:if>
-
-            <f:if condition="!{node.rendering.belongsToCurrentPage}">
-                <button type="button" class="btn btn-default btn-sm">
-                    <core:icon identifier="extensions-templavoila-makelocalcopy" />
-                </button>
-            </f:if>
-        </f:then>
-    </f:if>
 </div>
