@@ -104,6 +104,11 @@ class PageLayoutController extends ActionController
     protected $currentLanguageUid = 0;
 
     /**
+     * Contains the current language mode (strict, fallback, fallback-to-what)
+     */
+    protected $languageAspect = null;
+
+    /**
      * Contains records of all available languages (not hidden, with ISOcode), including the default
      * language and multiple languages. Used for displaying the flags for content elements, set in init().
      *
@@ -152,6 +157,7 @@ class PageLayoutController extends ActionController
             'allAvailableLanguages' => $this->allAvailableLanguages,
             // If we have more then "all-languages" and 1 editors language available
             'moreThenOneLanguageAvailable' => count($this->allAvailableLanguages) > 2 ? true : false,
+            'languageAspect' => $this->languageAspect,
             'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
             'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
             'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
@@ -767,6 +773,8 @@ class PageLayoutController extends ActionController
             );
         }
         $this->currentLanguageKey = $this->allAvailableLanguages[$this->currentLanguageUid]['ISOcode'];
+
+        $this->languageAspect = TemplaVoilaUtility::fetchLanguageAspect($this->pageId, $this->currentLanguageUid);
     }
 
     /**

@@ -15,13 +15,18 @@ namespace Tvp\TemplaVoilaPlus\Utility;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Log\LoggerAwareInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -184,6 +189,109 @@ final class TemplaVoilaUtility
         }
 
         return $languages;
+    }
+
+    /**
+     * This presents a generic interface to get the localization config for a specific page
+     * Basically it should cover fallbacktype and fallbacks (site handling era).
+     *
+     * It sums up info about system, site and page as e.g. the page could marked as no-fallback
+     * although the site is configured differently. In order to make this as flexible as possible
+     * it just configures the typical defaults and enriches them step by step with actual LTS-specific
+     * info
+     *
+     * @param int $pageId
+     * @param int $languageId
+     *
+     * @return LanguageAspect|null
+     * @see LanguageAspectFactory::createFromSiteLanguage()
+     *
+     */
+    public static function fetchLanguageAspect(int $pageId, int $languageId = 0)
+    {
+        // pages.l18n_cfg consideration, it uses a bitmask field
+        $row = BackendUtility::getRecordWSOL('pages', $pageId, 'l18n_cfg');
+        $PAGES_L18NCFG_HIDEDEFAULT = 0b0001; /* 1 */
+        $PAGES_L18NCFG_HIDEIFNOTTRANSLATED = 0b0010; /* 2 */
+        $fallbackTypeOverride = null;
+        // There is a global conf var hidePagesIfNotTranslatedByDefault which changes the behaviour
+        // of HIDEIFNOTTRANSLATED, we only need the override if that is not set (because else it means mixed/default)
+        if (($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEIFNOTTRANSLATED) && (!$GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'])) {
+            $fallbackTypeOverride = 'strict';
+        }
+        if ($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEDEFAULT) {
+            $fallbackTypeOverride = 'free';
+        }
+
+        // site handling exists (>=9LTS)
+        if (class_exists(SiteFinder::class)) {
+            try {
+                $currentSite = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pageId);
+                if ($currentSite) {
+                    $currentSiteLanguage = $currentSite->getLanguageById($languageId);
+
+                    $languageId = $currentSiteLanguage->getLanguageId();
+                    $fallbackType = $fallbackTypeOverride ?? $currentSiteLanguage->getFallbackType();
+                    $fallbackOrder = $currentSiteLanguage->getFallbackLanguageIds();
+                    $fallbackOrder[] = 'pageNotFound';
+                    switch ($fallbackType) {
+                        // Fall back to other language, if the page does not exist in the requested language
+                        // But always fetch only records of this specific (available) language
+                        case 'free':
+                            $overlayType = LanguageAspect::OVERLAYS_OFF;
+                            break;
+
+                        // Fall back to other language, if the page does not exist in the requested language
+                        // Do overlays, and keep the ones that are not translated
+                        case 'fallback':
+                            $overlayType = LanguageAspect::OVERLAYS_MIXED;
+                            break;
+
+                        // Same as "fallback" but remove the records that are not translated
+                        case 'strict':
+                            $overlayType = LanguageAspect::OVERLAYS_ON_WITH_FLOATING;
+                            break;
+
+                        // Ignore, fallback to default language
+                        default:
+                            $fallbackOrder = [0];
+                            $overlayType = LanguageAspect::OVERLAYS_OFF;
+                    }
+
+                    return GeneralUtility::makeInstance(LanguageAspect::class, $languageId, $languageId, $overlayType, $fallbackOrder);
+                }
+            } catch (SiteNotFoundException | \InvalidArgumentException $e) {
+                // if site not found, then there is no language config, e.g. pid=0 or root sysfolders for stuff
+                // languageId should always be valid argument, except for '-1'
+                return null;
+            }
+        }
+
+        // before site handling exists (<=8LTS)
+        // sane defaults: current language should be shown in mixed mode (default with translation overlay)
+        // this is the recommended configuration
+        // s. https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Context/Index.html#language-aspect
+        $languageAspect['id'] = $languageId;
+        $languageAspect['contentId'] = $languageId;
+        $languageAspect['fallbackChain'] = 0;
+        $languageAspect['overlayType'] = 'mixed';
+
+        // @TODO sys_language_mode strict and free support.
+        // it would be necessary to get the $legacyLanguageConfig for  a specific languageID - I think that is in fact
+        // impossible. Fallback to langId=0 could work or we keep it the current way, because we actually might not need
+        // it anyways
+        //
+        // if ($legacyLanguageConfig['sys_language_mode'] == 'strict') {
+        //     $languageAspect['overlayType'] = 'includeFloating';
+        // }
+        // if ($legacyLanguageConfig['sys_language_mode'] == 'strict' && $fallbackTypeOverride == 'strict') {
+        //     $languageAspect['fallbackChain'] = [];
+        // }
+        // if ($legacyLanguageConfig['sys_language_mode'] == 'free') {
+        //     $languageAspect['overlayType'] = 'off;
+        // }
+
+        return ($languageAspect);
     }
 
     public static function getUseableLanguages(int $pageId = 0)
