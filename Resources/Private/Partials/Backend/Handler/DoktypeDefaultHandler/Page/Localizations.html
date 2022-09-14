@@ -1,6 +1,6 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}{namespace be=TYPO3\CMS\Backend\ViewHelpers}
 <f:if condition="{settings.configuration.localizationPossible}">
-    <div class="tvp-localization-info tvp-localization-info-pages">
+    <div class="tvp-localization-info tvp-localization-info-pages {f:if(condition: '{settings.configuration.moreThanOneLanguageShouldBeShown}', then:' tvp-localization-info-pages-withflags', else: '')}">
         <strong>
             <f:translate key="{settings.configuration.lllFile}:labelLocalizations"/>:
         </strong>
@@ -9,12 +9,11 @@
                 <div class="tvp-localization-row">
                     <f:if condition="{node.localization.{language.uid}}">
                         <f:then>
-                            <div class="tvp-node {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.localization.{language.uid}.rendering.stylingClasses}"
-                                 id="item{node.localization.{language.uid}.rendering.md5}" data-record-table="{node.localization.{language.uid}.raw.table}" data-record-uid="{node.localization.{language.uid}.raw.entity.uid}"
-                                 data-parent-pointer="{node.localization.{language.uid}.rendering.parentPointer}">
+                            <div class="tvp-node tvp-localization-row {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.localization.{language.uid}.rendering.stylingClasses}" id="item{node.localization.{language.uid}.rendering.md5}"
+                                 data-record-table="{node.localization.{language.uid}.raw.table}" data-record-uid="{node.localization.{language.uid}.raw.entity.uid}" data-parent-pointer="{node.localization.{language.uid}.rendering.parentPointer}">
                                 <a name="c{node.localization.{language.uid}.rendering.md5}{node.localization.{language.uid}.raw.entity.uid}"></a>
                                 <div class="card-header">
-                                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: '{node.localization.{language.uid}}'}"/>
+                                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: '{node.localization.{language.uid}}', skipButtons: true}"/>
                                 </div>
                             </div>
                         </f:then>

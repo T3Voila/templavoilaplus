@@ -171,11 +171,14 @@ div.tvjs-dropzone {
 
 .tvp-localization-info-pages {
     margin-top: -.5rem;
-    margin-left: 2.85rem;
+    margin-left: 1.7rem;
     margin-bottom: 1rem;
     width: fit-content;
     min-width: 300px;
     max-width: 100%;
+}
+.tvp-localization-info-pages-withflags {
+    margin-left: 2.85rem;
 }
 
 .tvp-localization-info-pages .card {
@@ -187,7 +190,7 @@ div.tvjs-dropzone {
 }
 
 .tvp-localization-row .tvp-node-header {
-    padding: .15rem .3rem;
+    padding: 0 .2rem;
 }
 
 .tvp-localization-info-pages .tvp-node-title {

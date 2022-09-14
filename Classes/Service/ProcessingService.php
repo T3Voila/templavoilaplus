@@ -360,7 +360,7 @@ class ProcessingService
         $availableLanguageKeys = array_keys($availableLanguages);
         foreach ($availableLanguageKeys as $languageId) {
             if ($languageId > 0 && !in_array($languageId, $existingLocalizations)) {
-                $params = '&cmd[tt_content][' . $node['raw']['entity']['uid'] . '][localize]=' . $languageId;
+                $params = '&cmd['.$node['raw']['table'].'][' . $node['raw']['entity']['uid'] . '][localize]=' . $languageId;
                 $localizationActions[$languageId]['actionUrl'] = BackendUtility::getLinkToDataHandlerAction($params);
             }
         }

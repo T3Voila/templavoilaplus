@@ -8,7 +8,6 @@
         </strong>
         <f:for each="{settings.configuration.allExistingPageLanguages}" as="language">
             <f:if condition="{language.uid} > 0">
-                <div class="tvp-localization-row">
                     <f:if condition="{node.localization.{language.uid}}">
                         <f:then>
                             <div class="tvp-node {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.localization.{language.uid}.rendering.stylingClasses}"
@@ -31,27 +30,28 @@
                             </div>
                         </f:then>
                         <f:else>
-                            <a href="{node.localizationActions.{language.uid}.actionUrl}">
-                                <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
-                                    <f:if condition="{settings.configuration.is10orNewer}">
-                                        <f:then>
-                                            <core:icon identifier="actions-document-add" size="small"/>
-                                        </f:then>
-                                        <f:else>
-                                            <core:icon identifier="actions-document-new" size="small"/>
-                                        </f:else>
-                                    </f:if>
-                                    <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
-                                                    <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
-                                                 </span>
-                                    <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation"/>
-                                    {settings.configuration.allAvailableLanguages.{language.uid}.title} ({settings.configuration.allAvailableLanguages.{language.uid}.ISOcode})
+                            <div class="tvp-localization-row">
+                                <a href="{node.localizationActions.{language.uid}.actionUrl}">
+                                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
+                                        <f:if condition="{settings.configuration.is10orNewer}">
+                                            <f:then>
+                                                <core:icon identifier="actions-document-add" size="small"/>
+                                            </f:then>
+                                            <f:else>
+                                                <core:icon identifier="actions-document-new" size="small"/>
+                                            </f:else>
+                                        </f:if>
+                                        <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
+                                                        <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
+                                                     </span>
+                                        <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation"/>
+                                        {settings.configuration.allAvailableLanguages.{language.uid}.title} ({settings.configuration.allAvailableLanguages.{language.uid}.ISOcode})
 
-                                </button>
-                            </a>
+                                    </button>
+                                </a>
+                            </div>
                         </f:else>
                     </f:if>
-                </div>
             </f:if>
         </f:for>
         </table>
