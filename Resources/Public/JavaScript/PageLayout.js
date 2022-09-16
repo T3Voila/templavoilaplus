@@ -22,8 +22,8 @@ define([
     PageLayout.initialize = function() {
 
         // Check for Dark Mode
-        var settings = $('#moduleWrapper').data('tvpSettings');
-        if (settings.userSettings.enableDarkMode) {
+        var userSettings = $('#moduleWrapper').data('tvpUsersettings');
+        if (userSettings.enableDarkMode) {
             $('body').addClass('dark-mode-on');
         }
         // Enable Sidebar Elements
