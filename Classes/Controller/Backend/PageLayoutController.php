@@ -264,6 +264,12 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentFooter', $contentFooter);
     }
 
+    /**
+     * This checks pages.content_from_pid in both directions to show if this page shows other content
+     * or if this pages content is shown somewhere else
+     *
+     * @return void
+     */
     protected function checkContentFromPid()
     {
         // If content from different pid is displayed
@@ -289,6 +295,7 @@ class PageLayoutController extends ActionController
             );
         }
 
+        // If this pages content is displayed somewhere else
         /** @var PageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $pages = $pageRepository->getPagesUsingContentFrom((int)$this->pageInfo['uid']);
