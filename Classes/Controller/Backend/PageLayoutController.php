@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
+use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -283,7 +284,7 @@ class PageLayoutController extends ActionController
                 [[
                     'url' => (string)$linkToPage,
                     'label' => $title,
-                    'icon' => 'apps-pagetree-page-shortcut',
+                    'icon' => IconUtility::getRecordIconIdentifier('pages', $contentPage['uid'], 'apps-pagetree-page-shortcut'),
                 ]]
             );
         }
@@ -302,7 +303,7 @@ class PageLayoutController extends ActionController
                 $buttons[] = [
                     'url' => $linkToPage = GeneralUtility::linkThisScript(['id' => $contentPage['uid']]),
                     'label' => $title,
-                    'icon' => 'apps-pagetree-page-shortcut',
+                    'icon' => IconUtility::getRecordIconIdentifier('pages', $contentPage['uid'], 'apps-pagetree-page-shortcut'),
                 ];
             }
 
