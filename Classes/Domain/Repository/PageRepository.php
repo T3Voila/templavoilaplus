@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 // phpcs:disable
-if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+if (version_compare(TYPO3_version, '10.0.0', '>=')) {
     class CorePageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
     {
     }
