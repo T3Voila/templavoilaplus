@@ -602,7 +602,7 @@ console.log('onAdd');
                   var iframeDocument = Modal.currentModal.find('.t3js-modal-iframe').get(0).contentDocument;
                     var form = iframeDocument.getElementById('EditDocumentController');
                     if (form) {
-                        Modal.currentModal.find('.t3js-modal-title').text(form.querySelector('h1').innerHTML);
+                        Modal.currentModal.find('.t3js-modal-title').html(form.querySelector('h1').innerHTML);
                         form.querySelector('h1').style.display = 'none';
                     }
                     var closeModal = iframeDocument.getElementById('CloseModal');
