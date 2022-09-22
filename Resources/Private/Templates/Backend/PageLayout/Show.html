@@ -64,7 +64,6 @@
         </section>
 
     </div>
-
 <f:section name="FlashMessage">
     <f:for each="{pageMessages}" as="message">
         <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false" >
@@ -98,15 +97,15 @@
 </f:section>
 
 <f:section name="Header">
+    <f:if condition="{node}">
+        <f:format.raw>{contentHeader}</f:format.raw>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}" />
+        <f:if condition="{pageDescription}">
+            <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
+        </f:if>
 
-    <f:format.raw>{contentHeader}</f:format.raw>
-
-    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}" />
-    <f:if condition="{pageDescription}">
-        <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
     </f:if>
-
-    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
 </f:section>
 
 <f:section name="SidebarContentTree">
