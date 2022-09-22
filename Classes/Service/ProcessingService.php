@@ -155,7 +155,7 @@ class ProcessingService
             $usedElements[$table][$row['uid']]['count'] = 1;
         }
         $usedElements[$table][$row['uid']]['parentPointers'][] = $parentPointerString;
-
+        
         $node = [
             'raw' => [
                 'entity' => $row,
@@ -168,6 +168,7 @@ class ProcessingService
                 'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']]['count'],
+                'errorNoMapping' => ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1' && !$row['tx_templavoilaplus_map']),
                 'parentPointer' => $parentPointerString,
                 'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                 'beLayoutDesign' => ($backendLayoutConfiguration ? $backendLayoutConfiguration->isDesign() : false),
