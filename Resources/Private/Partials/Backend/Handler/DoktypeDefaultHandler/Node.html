@@ -16,6 +16,9 @@
     <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
     <div class="card-header dragHandle">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: node}" />
+        <f:if condition="{node.rendering.errorNoMapping}">
+            <div class="bg-warning px-2 py-1">&nbsp;<em><core:icon identifier="status-dialog-error" /> <f:translate key="{settings.configuration.lllFile}:error.fce.noMapping" arguments="{0: node.rendering.countUsedOnPage}" /></em></div>
+        </f:if>
         <f:if condition="!{node.rendering.belongsToCurrentPage}">
             <div class="bg-info px-2 py-1">&nbsp;<em><core:icon identifier="status-dialog-notification" /> <f:translate key="{settings.configuration.lllFile}:infoElementFromOtherPage" arguments="{0: node.raw.entity.uid, 1: node.raw.entity.pid}" /></em></div>
         </f:if>
