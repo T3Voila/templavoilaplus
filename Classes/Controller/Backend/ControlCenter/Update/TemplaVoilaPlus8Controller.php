@@ -471,7 +471,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
             ->where(
                 $queryBuilder->expr()->neq('tx_templavoilaplus_to', $queryBuilder->createNamedParameter('', \PDO::PARAM_STR))
             )
-            ->groupBy('tx_templavoilaplus_to')
+            ->groupBy('uid', 'tx_templavoilaplus_to')
             ->execute()
             ->fetchAll();
 
