@@ -413,15 +413,13 @@ class ProcessingService
         // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
         $counter = 1;
         foreach ($dbAnalysis->itemArray as $position => $recIdent) {
-            $idStr = $table . ':' . $recIdent['id'];
-
             $contentRow = BackendUtility::getRecordWSOL($table, $recIdent['id']);
 
             $parentPointer['position'] = $position;
 
             // Only do it if the element referenced was not deleted! - or hidden :-)
             if (is_array($contentRow)) {
-                $nodes[$idStr] = $this->getNodeWithTree($table, $contentRow, $parentPointer, $basePid, $usedElements);
+                $nodes[] = $this->getNodeWithTree($table, $contentRow, $parentPointer, $basePid, $usedElements);
             }
         }
 
