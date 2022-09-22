@@ -51,7 +51,7 @@
 
     </div>
 
-    <f:if condition="{settings.configuration.moreThanOneLanguageAvailable} && {node.raw.entity.sys_language_uid} != -1 && {node.raw.table} != pages">
+    <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown} && {node.raw.entity.sys_language_uid} != -1 && {node.raw.table} != pages">
 
         <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-footer')} card-footer">
             <f:comment>@TODO $this->render_localizationInfoTable($contentTreeArr, $parentPointer, $parentDsMeta)</f:comment>
@@ -61,7 +61,7 @@
                         <f:translate key="{settings.configuration.lllFile}:labelLocalizations"/>:
                     </td>
                 </tr>
-                <f:for each="{settings.configuration.allAvailableLanguages}" as="language">
+                <f:for each="{settings.configuration.allExistingPageLanguages}" as="language">
                     <f:if condition="{language.uid} > 0">
                         <tr class="tpm-language-row">
                             <f:if condition="{node.localization.{language.uid}}">
