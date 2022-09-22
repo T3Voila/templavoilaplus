@@ -19,6 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
+use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
