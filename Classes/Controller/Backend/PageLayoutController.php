@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
+use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -263,6 +264,12 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentFooter', $contentFooter);
     }
 
+    /**
+     * This checks pages.content_from_pid in both directions to show if this page shows other content
+     * or if this pages content is shown somewhere else
+     *
+     * @return void
+     */
     protected function checkContentFromPid()
     {
         // If content from different pid is displayed
@@ -283,11 +290,12 @@ class PageLayoutController extends ActionController
                 [[
                     'url' => (string)$linkToPage,
                     'label' => $title,
-                    'icon' => 'apps-pagetree-page-shortcut',
+                    'icon' => IconUtility::getRecordIconIdentifier('pages', $contentPage['uid'], 'apps-pagetree-page-shortcut'),
                 ]]
             );
         }
 
+        // If this pages content is displayed somewhere else
         /** @var PageRepository */
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $pages = $pageRepository->getPagesUsingContentFrom((int)$this->pageInfo['uid']);
@@ -302,7 +310,7 @@ class PageLayoutController extends ActionController
                 $buttons[] = [
                     'url' => $linkToPage = GeneralUtility::linkThisScript(['id' => $contentPage['uid']]),
                     'label' => $title,
-                    'icon' => 'apps-pagetree-page-shortcut',
+                    'icon' => IconUtility::getRecordIconIdentifier('pages', $contentPage['uid'], 'apps-pagetree-page-shortcut'),
                 ];
             }
 

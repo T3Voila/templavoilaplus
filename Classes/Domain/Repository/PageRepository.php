@@ -57,6 +57,26 @@ class PageRepository extends CorePageRepository
             ->from('pages')
             ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
 
-        return $queryBuilder->execute()->fetchAll();
+        $pages = $queryBuilder->execute()->fetchAll();
+
+        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
+            if ($pages) {
+                foreach ($pages as $key => $page) {
+                    // check if the page is a translation of another page
+                    // and has languageSynchronization enabled for content_for_pid
+                    if (
+                        $page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] > 0
+                        && $page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0
+                        && $page['l10n_state']
+                        && json_decode($page['l10n_state'],true)['content_from_pid']
+                        && json_decode($page['l10n_state'],true)['content_from_pid'] == 'parent'
+                    ) {
+                        unset($pages[$key]);
+                    }
+                }
+            }
+        }
+
+        return $pages;
     }
 }
