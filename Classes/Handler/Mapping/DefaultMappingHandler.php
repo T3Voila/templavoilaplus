@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Mapping;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -91,6 +92,9 @@ class DefaultMappingHandler
                 break;
             case 'container':
                 $processedValue = $this->processContainer($processedValue, $table, $row, $instructions['container']);
+                break;
+            case 'rowList':
+                $processedValue = $this->processRowList($processedValue, $table, $row);
                 break;
             case 'stdWrap':
                 break;
@@ -174,6 +178,16 @@ class DefaultMappingHandler
             foreach ($containerInstructions as $templateFieldName => $instructions) {
                 $postprocessedValue[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
             }
+        }
+        return $postprocessedValue;
+    }
+
+    protected function processRowList(string $flexformData, string $table, array $row): array
+    {
+        $postprocessedValue = [];
+        $childrenUids = explode(',',$flexformData);
+        foreach ($childrenUids as $uid) {
+            $postprocessedValue[] = BackendUtility::getRecordWSOL($table,$uid);
         }
         return $postprocessedValue;
     }
