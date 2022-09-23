@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
 use Symfony\Component\Finder\SplFileInfo;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 
 class MappingConfigurationHandler extends AbstractConfigurationHandler
 {
@@ -34,7 +35,11 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
         }
 
         if (isset($configuration['tvp-mapping']['meta']['name'])) {
-            $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['name']);
+            if (strpos(trim($configuration['tvp-mapping']['meta']['name']), 'LLL:') === 0) {
+                $mappingConfiguration->setName(TemplaVoilaUtility::getLanguageService()->sL($configuration['tvp-mapping']['meta']['name']) ?? $configuration['tvp-mapping']['meta']['name']);
+            } else {
+                $mappingConfiguration->setName($configuration['tvp-mapping']['meta']['name']);
+            }
         } else {
             $mappingConfiguration->setName($file->getFilename());
         }
