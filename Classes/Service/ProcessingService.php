@@ -155,7 +155,18 @@ class ProcessingService
             $usedElements[$table][$row['uid']]['count'] = 1;
         }
         $usedElements[$table][$row['uid']]['parentPointers'][] = $parentPointerString;
-        
+
+        if ($parentPointer['table'] == 'pages') {
+            $pageTsConfig = BackendUtility::getPagesTSconfig($parentPointer['uid']);
+            $additionalRecordDataColumns = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.']['additionalRecordData.'][$table] ?? null;
+            if ($additionalRecordDataColumns) {
+                $additionalRecordData = ' ';
+                foreach (explode(',', $additionalRecordDataColumns) as $additionalRecordDataColumn) {
+                    $additionalRecordData .= 'data-' . strtolower($additionalRecordDataColumn) . '="' . ($row[$additionalRecordDataColumn] ?? '') . '" ';
+                }
+            }
+        }
+
         $node = [
             'raw' => [
                 'entity' => $row,
@@ -173,6 +184,7 @@ class ProcessingService
                 'beLayout' => $combinedBackendLayoutConfigurationIdentifier,
                 'beLayoutDesign' => ($backendLayoutConfiguration ? $backendLayoutConfiguration->isDesign() : false),
                 'md5' => md5($parentPointerString . '/' . $table . ':' . $row['uid']),
+                'additionalRecordData' => $additionalRecordData ?? ''
             ],
         ];
 

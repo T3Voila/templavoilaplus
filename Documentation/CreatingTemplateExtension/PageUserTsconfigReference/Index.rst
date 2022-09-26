@@ -119,9 +119,6 @@ mod.web\_txtemplavoilaplusLayout
          fallback
 
 
-.. ###### END~OF~TABLE ######
-
-
 .. container:: table-row
 
    Property
@@ -145,6 +142,29 @@ mod.web\_txtemplavoilaplusLayout
 
          :typoscript:`mod.web_txtemplavoilaplusLayout.filterMaps.1 = vendor/yourextension/Page`
          :typoscript:`mod.web_txtemplavoilaplusLayout.filterMaps.2 = vendor/yourotherextension/FCE`
+
+   Default
+         null
+
+
+
+
+.. container:: table-row
+
+   Property
+         additionalRecordData
+
+   Data type
+         string/csv
+
+   Description
+         In order to add column values as data-attributes to backend preview nodes
+         for each table there can be a comma-separated list of columns which should
+         be output, e.g. to allow CSS based styling or custom JavaScript.
+
+         Examples:
+
+         :typoscript:`mod.web_txtemplavoilaplusLayout.additionalRecordData.tt_content = layout,imageorient`
 
    Default
          null
