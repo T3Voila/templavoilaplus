@@ -24,12 +24,13 @@ final class IconUtility
     public static function getRecordIconIdentifier($table, $uid, $fallbackIconIdentifier)
     {
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $row = BackendUtility::getRecordWSOL($table, $uid);
-            $iconIdentifier = self::mapRecordTypeToIconIdentifier($table, $row);
-
             /** @var IconRegistry $iconRegistry */
             $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
             $defaultIcon = $iconRegistry->getDefaultIconIdentifier();
+
+            $row = BackendUtility::getRecordWSOL($table, $uid);
+            $iconIdentifier = is_array($row) ? self::mapRecordTypeToIconIdentifier($table, $row) : $defaultIcon;
+
             return $iconIdentifier === $defaultIcon ? $fallbackIconIdentifier : $iconIdentifier;
         } else {
             return $fallbackIconIdentifier;
