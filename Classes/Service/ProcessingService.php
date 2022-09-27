@@ -156,7 +156,7 @@ class ProcessingService
         }
         $usedElements[$table][$row['uid']]['parentPointers'][] = $parentPointerString;
 
-        if ($parentPointer['table'] == 'pages') {
+        if ($parentPointer['table'] === 'pages') {
             $pageTsConfig = BackendUtility::getPagesTSconfig($parentPointer['uid']);
             $additionalRecordDataColumns = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.']['additionalRecordData.'][$table] ?? null;
             if ($additionalRecordDataColumns) {
