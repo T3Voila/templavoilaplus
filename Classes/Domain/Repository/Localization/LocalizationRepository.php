@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Repository\Localization;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -31,7 +32,9 @@ class LocalizationRepository
     /**
      * Fetch all available languages
      *
-     * @param int $pageId
+     * @param string $table
+     * @param int $uid
+     *
      * @return array
      */
     public function fetchRecordLocalizations(string $table, int $uid): array
@@ -70,5 +73,25 @@ class LocalizationRepository
     protected static function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'] ?? null;
+    }
+
+    public static function getLanguageOverlayRecord($table, $uid, $language = null)
+    {
+        if ($language === null) {
+            $language = self::getCurrentLanguage();
+        }
+        if ($language <= 0) {
+            return BackendUtility::getRecordWSOL($table, $uid);
+        } else {
+            return BackendUtility::getRecordLocalization($table, $uid, $language)[0] ?? [];
+        }
+    }
+
+    public static function getCurrentLanguage()
+    {
+        if (version_compare(TYPO3_version, '9.4.0', '<=')) {
+            return $GLOBALS['TSFE']->sys_language_uid;
+        }
+        return GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
     }
 }
