@@ -30,8 +30,7 @@
                     </button>
                 </f:else>
             </f:if>
-
-            <f:if condition="!{node.rendering.belongsToCurrentPage}">
+            <f:if condition="!{node.rendering.belongsToCurrentPage} && !{isLocalization}">
                 <button type="button" class="btn btn-default btn-sm">
                     <core:icon identifier="extensions-templavoila-makelocalcopy" />
                 </button>
