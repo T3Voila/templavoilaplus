@@ -83,7 +83,7 @@ class LocalizationRepository
         if ($language <= 0) {
             return BackendUtility::getRecordWSOL($table, $uid);
         } else {
-            return BackendUtility::getRecordLocalization($table, $uid, $language)[0] ?? [];
+            return BackendUtility::getRecordLocalization($table, $uid, $language)[0] ?? BackendUtility::getRecordWSOL($table, $uid);
         }
     }
 
