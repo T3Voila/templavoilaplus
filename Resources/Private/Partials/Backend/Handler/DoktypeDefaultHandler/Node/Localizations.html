@@ -43,9 +43,7 @@
                                         <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
                                                         <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
                                                      </span>
-                                        <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation"/>
-                                        {settings.configuration.allAvailableLanguages.{language.uid}.title} ({settings.configuration.allAvailableLanguages.{language.uid}.ISOcode})
-
+                                        <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation" arguments="{1:'{settings.configuration.allAvailableLanguages.{language.uid}.title}',2:'{settings.configuration.allAvailableLanguages.{language.uid}.ISOcode}'}" />
                                     </button>
                                 </a>
                             </div>
