@@ -48,14 +48,14 @@
                                                             <tr>
                                                                 <td>{templateConfiguration.name}<br/>{templateConfiguration.identifier}</td>
                                                                 <td>
-                                                                    Created: <f:format.date>{templateConfiguration.store.file.CTime}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{templateConfiguration.store.file.MTime}</f:format.date>
+                                                                    Created: <f:format.date>{templateConfiguration.file.CTime}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{templateConfiguration.file.MTime}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'uuid': templatePlace.uuid, 'placeIdentifier': templateConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'placeIdentifier': templateConfiguration.place.identifier, 'configurationIdentifier': templateConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
                                                                         <f:link.action action="info" arguments="{'placeIdentifier': templateConfiguration.place.identifier, 'configurationIdentifier': templateConfiguration.identifier}" class="btn btn-default"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'uuid': templatePlace.uuid, 'placeIdentifier': templateConfiguration.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'placeIdentifier': templateConfiguration.place.identifier, 'configurationIdentifier': templateConfiguration.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
