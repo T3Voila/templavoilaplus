@@ -77,14 +77,19 @@ class LocalizationRepository
 
     public static function getLanguageOverlayRecord($table, $uid, $language = null)
     {
+        $hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? 'hidden';
         if ($language === null) {
             $language = self::getCurrentLanguage();
         }
-        if ($language <= 0) {
-            return BackendUtility::getRecordWSOL($table, $uid);
-        } else {
-            return BackendUtility::getRecordLocalization($table, $uid, $language)[0] ?? BackendUtility::getRecordWSOL($table, $uid);
+        $baseRecord = BackendUtility::getRecordWSOL($table, $uid, '*', ' AND ' . $hiddenField . '=0');
+        if ($language > 0 && $baseRecord) {
+            $l10nRecord = BackendUtility::getRecordLocalization($table, $uid, $language)[0];
+            // sadly $l10nRecord doesn't allow additionalWhere, so we check for hidden afterwards
+            if ($l10nRecord && $l10nRecord[$hiddenField] === 0) {
+                return $l10nRecord;
+            }
         }
+        return $baseRecord;
     }
 
     public static function getCurrentLanguage()

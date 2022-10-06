@@ -187,11 +187,14 @@ class DefaultMappingHandler
     protected function processRowList(string $flexformData, string $table, array $row): array
     {
         $postprocessedValue = [];
-        $childrenUids = explode(',',$flexformData);
+        $childrenUids = explode(',', $flexformData);
         foreach ($childrenUids as $uid) {
             $record = LocalizationRepository::getLanguageOverlayRecord($table, $uid);
-            $recordWithFal = RecordFalUtility::addFalReferencesToRecord($table, $record);
-            $postprocessedValue[] = $recordWithFal;
+            // hidden records are returned as null
+            if ($record) {
+                $recordWithFal = RecordFalUtility::addFalReferencesToRecord($table, $record);
+                $postprocessedValue[] = $recordWithFal;
+            }
         }
         return $postprocessedValue;
     }
