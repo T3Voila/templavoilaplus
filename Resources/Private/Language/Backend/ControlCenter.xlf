@@ -19,8 +19,23 @@
             <trans-unit id="storagefolders" xml:space="preserve">
                 <source>Storage Folders</source>
             </trans-unit>
-            <trans-unit id="datastructures" xml:space="preserve">
+			<trans-unit id="datastructures" xml:space="preserve">
                 <source>Data Structures</source>
+            </trans-unit>
+			<trans-unit id="datastructures.description" xml:space="preserve">
+                <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
+            </trans-unit>
+			<trans-unit id="mappings" xml:space="preserve">
+                <source>Mappings</source>
+            </trans-unit>
+			<trans-unit id="mappings.description" xml:space="preserve">
+                <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
+            </trans-unit>
+			<trans-unit id="templates" xml:space="preserve">
+                <source>Templates</source>
+            </trans-unit>
+			<trans-unit id="templates.description" xml:space="preserve">
+                <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
             </trans-unit>
             <trans-unit id="templateobjects" xml:space="preserve">
                 <source>Template Objects</source>

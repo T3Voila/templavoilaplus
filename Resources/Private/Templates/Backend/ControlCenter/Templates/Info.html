@@ -12,35 +12,39 @@
 
 <f:section name="content">
     <div class="row">
-        Path: {templatePlace.pathRelative}<br />
-        Configuration File: {templateConfiguration.identifier}<br />
-        Template File: {templateConfiguration.templateFile.identifier}<br />
-        Label: {templateConfiguration.label}<br />
-        Handler Name: {templatePlace.handlerName}<br />
-        <b>Mapping</b>
-        <ul>
-            <f:for each="{templateConfiguration.mapping}" as="value" key="key">
-                <f:if condition="{key} == 'container'">
-                    <f:then>
-                        <li>{key}
-                            <ul>
-                                <f:for each="{value}" as="fieldConfig" key="fieldName">
-                                    <li><b>{fieldName}</b>
-                                        <ul>
-                                            <f:for each="{fieldConfig}" as="fieldConfigValue" key="fieldConfigKey">
-                                                <li>{fieldConfigKey} => {fieldConfigValue}</li>
-                                            </f:for>
-                                        </ul>
-                                    </li>
-                                </f:for>
-                            </ul>
-                        </li>
-                    </f:then>
-                    <f:else>
-                        <li>{key} => {value}</li>
-                    </f:else>
-                </f:if>
-            </f:for>
-        </ul>
+        <div class="col">
+            Path: {templatePlace.entryPoint}<br />
+            Configuration File: {templateConfiguration.identifier}<br />
+            Template File: {templateConfiguration.templateFileName}<br />
+            Label: {templateConfiguration.name}<br />
+            Handler Name: {templateConfiguration.renderHandlerIdentifier}<br />
+            <f:if condition="{templateConfiguration.mapping}">
+                <b>Mapping</b>
+                <ul>
+                    <f:for each="{templateConfiguration.mapping}" as="value" key="key">
+                        <f:if condition="{key} == 'container'">
+                            <f:then>
+                                <li>{key}
+                                    <ul>
+                                        <f:for each="{value}" as="fieldConfig" key="fieldName">
+                                            <li><b>{fieldName}</b>
+                                                <ul>
+                                                    <f:for each="{fieldConfig}" as="fieldConfigValue" key="fieldConfigKey">
+                                                        <li>{fieldConfigKey} => {fieldConfigValue}</li>
+                                                    </f:for>
+                                                </ul>
+                                            </li>
+                                        </f:for>
+                                    </ul>
+                                </li>
+                            </f:then>
+                            <f:else>
+                                <li>{key} => {value}</li>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </ul>
+            </f:if>
+        </div>
     </div>
 </f:section>

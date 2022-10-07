@@ -49,21 +49,21 @@
                                                         <f:for each="{mappingPlace.configurations}" as="mappingConfiguration">
                                                             <tr>
                                                                 <td>
-                                                                    {mappingConfiguration.configuration.name}
+                                                                    {mappingConfiguration.name}
                                                                     <f:for each="{mappingConfiguration.configuration.childMappingConfigurations}" as="child">
                                                                         <br/><core:icon identifier="apps-filetree-folder-opened" /> {child.name}
                                                                     </f:for>
-                                                                    <br/>{mappingConfiguration.configuration.identifier}
+                                                                    <br/>{mappingConfiguration.identifier}
                                                                 </td>
                                                                 <td>
-                                                                    Created: <f:format.date>{mappingConfiguration.store.file.CTime}</f:format.date><br/>
-                                                                    Modified: <f:format.date>{mappingConfiguration.store.file.MTime}</f:format.date>
+                                                                    Created: <f:format.date>{mappingConfiguration.file.CTime}</f:format.date><br/>
+                                                                    Modified: <f:format.date>{mappingConfiguration.file.MTime}</f:format.date>
                                                                 </td>
                                                                 <td>
                                                                     <div class="btn-group" role="group" aria-label="...">
-                                                                        <f:link.action action="edit" arguments="{'placeIdentifier': dataStructurePlace.identifier, 'configurationIdentifier': dataStructure.configuration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
-                                                                        <f:link.action action="info" arguments="{'placeIdentifier': dataStructurePlace.identifier, 'configurationIdentifier': dataStructure.configuration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-document-info" /></f:link.action>
-                                                                        <f:link.action action="delete" arguments="{'placeIdentifier': dataStructurePlace.identifier, 'configurationIdentifier': dataStructure.configuration.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
+                                                                        <f:link.action action="edit" arguments="{'placeIdentifier': mappingConfiguration.place.identifier, 'configurationIdentifier': mappingConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-open" /></f:link.action>
+                                                                        <f:link.action action="info" arguments="{'placeIdentifier': mappingConfiguration.place.identifier, 'configurationIdentifier': mappingConfiguration.identifier}" class="btn btn-default disabled"><core:icon identifier="actions-document-info" /></f:link.action>
+                                                                        <f:link.action action="delete" arguments="{'placeIdentifier': mappingConfiguration.place.identifier, 'configurationIdentifier': mappingConfiguration.identifier}" class="btn btn-danger disabled"><core:icon identifier="actions-edit-delete" /></f:link.action>
                                                                     </div>
                                                                 </td>
                                                             </tr>
