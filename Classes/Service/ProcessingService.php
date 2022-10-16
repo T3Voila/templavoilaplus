@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
@@ -625,11 +626,11 @@ class ProcessingService
         // Check and get all information about the source position:
         $destinationPointer = $this->getValidPointer($destinationPointerString);
         if (!$destinationPointer) {
-            return false;
+           throw new ProcessingException('Copy action has missing or invalid destinationPointer:'.$destinationPointerString);
         }
         // Only tt_content yet
         if ($sourceElementTable !== 'tt_content') {
-            return false;
+            throw new ProcessingException('Copy action only implemented for content elements');
         }
 
         $destinationRecord = $destinationPointer['foundRecord'];

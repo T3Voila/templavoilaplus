@@ -21,6 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\HtmlResponse;
 use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Clipboard\Clipboard as CoreClipboard;
@@ -83,32 +84,40 @@ class Clipboard extends AbstractResponse
         /** @var array */
         $parameters = $request->getParsedBody();
         $result = null;
+        try {
+            switch ($parameters['mode']) {
+                case 'copy':
+                    $result = $this->copy($parameters);
+                    break;
+                case 'move':
+                    $result = $this->move($parameters);
+                    break;
+                case 'reference':
+                    $result = $this->reference($parameters);
+                    break;
+                default:
+                    // Empty by design
+                    break;
+            }
 
-        switch ($parameters['mode']) {
-            case 'copy':
-                $result = $this->copy($parameters);
-                break;
-            case 'move':
-                $result = $this->move($parameters);
-                break;
-            case 'reference':
-                $result = $this->reference($parameters);
-                break;
-            default:
-                // Empty by design
-                break;
-        }
-
-        if ($result) {
-            return new JsonResponse([
-                'uid' => $result,
-                'nodeHtml' => $this->record2html('tt_content', $result),
-                'clipboard' => $this->clipboard2fluid(),
-            ]);
-        } else {
+            if ($result) {
+                return new JsonResponse([
+                    'uid' => $result,
+                    'nodeHtml' => $this->record2html('tt_content', $result),
+                    'clipboard' => $this->clipboard2fluid(),
+                ]);
+            } else {
+                return new JsonResponse(
+                    [
+                        'error' => $result
+                    ],
+                    400 /* Bad request */
+                );
+            }
+        } catch (ProcessingException $e) {
             return new JsonResponse(
                 [
-                    'error' => $result
+                    'error' => $e->getMessage()
                 ],
                 400 /* Bad request */
             );
