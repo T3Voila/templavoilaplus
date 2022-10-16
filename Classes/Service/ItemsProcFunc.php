@@ -90,7 +90,7 @@ class ItemsProcFunc
      *
      * @return bool
      */
-    protected static function checkIfMapIsFiltered(array $tvpPageTsConfig, string $mappingPlace): bool
+    public static function checkIfMapIsFiltered(array $tvpPageTsConfig, string $mappingPlace): bool
     {
         if (isset($tvpPageTsConfig['filterMaps.'])) {
             $allowedPlaces = $tvpPageTsConfig['filterMaps.'];

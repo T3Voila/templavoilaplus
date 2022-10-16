@@ -48,4 +48,9 @@ class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\
 
         return $wizardItems;
     }
+
+    public function getPageId()
+    {
+        return $this->id;
+    }
 }
