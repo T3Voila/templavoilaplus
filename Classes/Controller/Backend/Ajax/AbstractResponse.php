@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -52,6 +53,10 @@ abstract class AbstractResponse
     protected function record2html(string $table, int $uid, string $parentPointer = null): string
     {
         $row = BackendUtility::getRecord($table, $uid);
+
+        if (!$row) {
+            throw new ProcessingException(sprintf('Trying to render %s:%u, but record not available', $table, $uid));
+        }
 
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
