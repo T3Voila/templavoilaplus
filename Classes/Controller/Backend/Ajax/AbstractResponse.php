@@ -49,13 +49,16 @@ abstract class AbstractResponse
         return $view;
     }
 
-    protected function record2html(string $table, int $uid): string
+    protected function record2html(string $table, int $uid, string $parentPointer = null): string
     {
         $row = BackendUtility::getRecord($table, $uid);
 
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
         $nodeTree = $processingService->getNodeWithTree($table, $row);
+        if ($parentPointer) {
+            $nodeTree['node']['rendering']['parentPointer'] = $parentPointer;
+        }
 
         $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $this->getSettings());
         $view->assign('nodeTree', $nodeTree);

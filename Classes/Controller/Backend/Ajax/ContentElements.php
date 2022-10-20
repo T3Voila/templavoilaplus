@@ -48,7 +48,7 @@ class ContentElements extends AbstractResponse
         if ($result) {
             return new JsonResponse([
                 'uid' => $result,
-                'nodeHtml' => $this->record2html('tt_content', $result),
+                'nodeHtml' => $this->record2html('tt_content', $result, $parameters['destinationPointer']),
             ]);
         } else {
             return new JsonResponse(
