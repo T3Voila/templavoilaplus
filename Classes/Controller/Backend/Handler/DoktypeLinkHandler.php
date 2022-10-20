@@ -44,7 +44,7 @@ class DoktypeLinkHandler
                 FlashMessage::INFO
             );
 
-            return $this->getLinkButton($controller, $pageRecord['url']);
+            return '';
         }
         return $this->handle8($controller, $pageRecord);
     }
