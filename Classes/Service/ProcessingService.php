@@ -624,7 +624,7 @@ class ProcessingService
     public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
     {
         // Check and get all information about the source position:
-        $destinationPointer = $this->getValidPointer($destinationPointerString);
+        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
            throw new ProcessingException('Copy action has missing or invalid destinationPointer:'.$destinationPointerString);
         }
