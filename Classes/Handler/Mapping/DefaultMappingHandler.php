@@ -185,9 +185,9 @@ class DefaultMappingHandler
     protected function processRowList(string $flexformData, string $table, array $row): array
     {
         $postprocessedValue = [];
-        $childrenUids = explode(',',$flexformData);
+        $childrenUids = explode(',', $flexformData);
         foreach ($childrenUids as $uid) {
-            $postprocessedValue[] = BackendUtility::getRecordWSOL($table,$uid);
+            $postprocessedValue[] = BackendUtility::getRecordWSOL($table, $uid);
         }
         return $postprocessedValue;
     }

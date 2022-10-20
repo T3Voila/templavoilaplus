@@ -620,13 +620,14 @@ class ProcessingService
      * @param string $table The table from which we copy, should be tt_content!
      * @param int $sourceElementUid The elements uid which should be copied
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     * @throws ProcessingException
      */
     public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
     {
         // Check and get all information about the source position:
         $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
-           throw new ProcessingException('Copy action has missing or invalid destinationPointer:'.$destinationPointerString);
+            throw new ProcessingException('Copy action has missing or invalid destinationPointer:' . $destinationPointerString);
         }
         // Only tt_content yet
         if ($sourceElementTable !== 'tt_content') {
