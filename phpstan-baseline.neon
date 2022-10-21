@@ -1,46 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Access to constant DOKTYPE_BE_USER_SECTION on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_DEFAULT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_LINK on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_MOUNTPOINT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_RECYCLER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_SHORTCUT on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_SPACER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
-			message: "#^Access to constant DOKTYPE_SYSFOLDER on an unknown class TYPO3\\\\CMS\\\\Frontend\\\\Page\\\\PageRepository\\.$#"
-			count: 1
-			path: Classes/Configuration/BackendConfiguration.php
-
-		-
 			message: "#^Array has 3 duplicate keys with value 200 \\(self\\:\\:RENDER_HEADER, self\\:\\:RENDER_BODY, self\\:\\:RENDER_FOOTER\\)\\.$#"
 			count: 1
 			path: Classes/Configuration/BackendConfiguration.php
@@ -81,21 +41,6 @@ parameters:
 			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV8Controller.php
 
 		-
-			message: "#^Class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\ControlCenter\\\\Update\\\\UnquotedString not found\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/ControlCenter/Update/TemplaVoilaPlus8Controller.php
-
-		-
-			message: "#^Instantiated class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\ControlCenter\\\\Update\\\\UnquotedString not found\\.$#"
-			count: 13
-			path: Classes/Controller/Backend/ControlCenter/Update/TemplaVoilaPlus8Controller.php
-
-		-
-			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\DoktypeLinkHandler\\:\\:getLinkButton\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Handler/DoktypeLinkHandler.php
-
-		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
 			count: 1
 			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
@@ -117,7 +62,7 @@ parameters:
 
 		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$pageRenderer\\.$#"
-			count: 1
+			count: 3
 			path: Classes/Controller/Backend/PageLayoutController.php
 
 		-
@@ -156,26 +101,6 @@ parameters:
 			path: Classes/Service/ApiService.php
 
 		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModTSconfig\\(\\)\\.$#"
-			count: 1
-			path: Classes/Service/ApiService.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getRecordRaw\\(\\)\\.$#"
-			count: 1
-			path: Classes/Service/ApiService.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getRecordsByField\\(\\)\\.$#"
-			count: 3
-			path: Classes/Service/ApiService.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
-			count: 26
-			path: Classes/Service/ApiService.php
-
-		-
 			message: "#^Undefined variable\\: \\$place$#"
 			count: 1
 			path: Classes/Service/ConfigurationService.php
@@ -186,27 +111,12 @@ parameters:
 			path: Classes/Service/DataHandling/DataHandler.php
 
 		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$debug\\.$#"
-			count: 8
-			path: Classes/Service/ProcessingService.php
-
-		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$modifyReferencesInLiveWS\\.$#"
 			count: 1
 			path: Classes/Service/ProcessingService.php
 
 		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$rootTable\\.$#"
-			count: 1
-			path: Classes/Service/ProcessingService.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
-			count: 8
-			path: Classes/Service/ProcessingService.php
-
-		-
-			message: "#^Undefined variable\\: \\$tt_content_elementRegister$#"
 			count: 1
 			path: Classes/Service/ProcessingService.php
 

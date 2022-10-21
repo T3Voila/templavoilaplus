@@ -33,13 +33,13 @@ if (version_compare(TYPO3_version, '10.0.0', '>=')) {
     {
     }
 }
-// phpcs:enable
 
 /**
  * Repository for record localizations
  */
 class PageRepository extends CorePageRepository
 {
+// phpcs:enable
     /**
      * Get all pages where the content of a page $pageId is also shown on
      *

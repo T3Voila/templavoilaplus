@@ -54,8 +54,10 @@ final class IconUtility
      *
      * @return string The icon identifier string for the icon of that DB record
      */
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     protected static function mapRecordTypeToIconIdentifier($table, array $row)
     {
+        // phpcs:enable
         $recordType = [];
         $ref = null;
 
