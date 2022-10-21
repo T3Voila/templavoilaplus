@@ -45,7 +45,7 @@ div.tvjs-dropzone {
     padding: 0;
 }
 
-.tvp-record-edit:empty+.row.tvp-childs-table {
+.tvp-record-edit:empty + .row.tvp-childs-table {
     margin-top: -12px;
 }
 
@@ -54,10 +54,8 @@ div.tvjs-dropzone {
 }
 
 .row.tvp-childs-table > .col > .t3-page-column-header {
-    padding: 10px 10px 5px 10px;
+    padding: 10px 10px 5px;
 }
-
-
 
 #typo3-docbody > .typo3-message {
     margin: 5px 8px;
@@ -186,10 +184,10 @@ div.tvjs-dropzone {
 }
 
 .tvp-node-title {
-    font-size: .9375rem;
+    font-size: 0.9375rem;
     white-space: nowrap;
-    margin-left: .5rem!important;
-    margin-right: auto!important;
+    margin-left: 0.5rem !important;
+    margin-right: auto !important;
     overflow: hidden;
     padding-bottom: 4px;
     padding-top: 4px;
@@ -197,7 +195,7 @@ div.tvjs-dropzone {
 }
 
 .tvp-node-description {
-    font-size: .8rem;
+    font-size: 0.8rem;
 }
 
 .tvp-node-clipboard,
@@ -293,7 +291,7 @@ div.tvjs-dropzone {
 }
 
 .tooltipster-sidetip .tooltipster-content h2 {
-    margin-top: .5em;
+    margin-top: 0.5em;
 }
 
 .tooltipster-sidetip .tooltipster-box {
