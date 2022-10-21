@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Service;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
@@ -619,17 +620,18 @@ class ProcessingService
      * @param string $table The table from which we copy, should be tt_content!
      * @param int $sourceElementUid The elements uid which should be copied
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     * @throws ProcessingException
      */
     public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
     {
         // Check and get all information about the source position:
-        $destinationPointer = $this->getValidPointer($destinationPointerString);
+        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
         if (!$destinationPointer) {
-            return false;
+            throw new ProcessingException('Copy action has missing or invalid destinationPointer:' . $destinationPointerString);
         }
         // Only tt_content yet
         if ($sourceElementTable !== 'tt_content') {
-            return false;
+            throw new ProcessingException('Copy action only implemented for content elements');
         }
 
         $destinationRecord = $destinationPointer['foundRecord'];

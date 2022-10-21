@@ -3,7 +3,9 @@
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\ItemsProcFunc;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -34,23 +36,42 @@ class WizardItems implements NewContentElementWizardHookInterface
         );
         $placesService->loadConfigurationsByPlaces($mappingPlaces);
 
+
         foreach ($mappingPlaces as $mappingPlace) {
             if ($mappingPlace->getScope() === \Tvp\TemplaVoilaPlus\Domain\Model\Scope::SCOPE_FCE) {
                 $mappingConfigurations = $mappingPlace->getConfigurations();
-
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration->getIdentifier();
-                    $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
-                        'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
-                        'description' => /** @TODO $mappingConfiguration->getDescription() ?? */TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
-                        'title' => $mappingConfiguration->getName(),
-                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
-                    ];
+                    $wizardLabel = 'fce_' . $combinedMappingIdentifier;
+                    if ($this->checkIfWizardItemShouldBeShown($parentObject->getPageId(), $combinedMappingIdentifier, $wizardLabel)) {
+                        $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
+                            'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
+                            'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
+                                TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                            'title' => $mappingConfiguration->getName(),
+                            'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
+                        ];
+                    }
                 }
             }
         }
         $wizardItems = $fceWizardItems + $wizardItems;
         $wizardItems = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizardItems);
+    }
+
+    protected function checkIfWizardItemShouldBeShown($currentPageId, $combinedMappingIdentifier, $wizardLabel)
+    {
+        $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
+        $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
+        $fcePageTsConfig = $pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'];
+        if (ItemsProcFunc::checkIfMapIsFiltered($tvpPageTsConfig, $combinedMappingIdentifier)) {
+            return false;
+        }
+        if (isset($fcePageTsConfig['show'])) {
+            return $fcePageTsConfig['show'] === '*'
+                || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false);
+        }
+        return true;
     }
 
     /**

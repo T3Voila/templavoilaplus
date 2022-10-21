@@ -65,190 +65,7 @@ define([
         var allDropzones = [].slice.call(document.querySelectorAll('.tvjs-dropzone'))
 
         for (var i = 0; i < allDropzones.length; i++) {
-            new Sortable(allDropzones[i], {
-                revertOnSpill: true,
-                group: {
-                    name: 'dropzones_' + allDropzones[i].dataset.childAllowed,
-                    pull: function (to, from, el, evt) {
-                        if (to.el.id === 'navbarClipboard') {
-                            return 'clone';
-                        }
-                        if (to.el.id === 'navbarTrash') {
-                            return true;
-                        }
-                        return true;
-                    },
-                    put: function (to, from, el, evt) {
-//                         console.log(el);
-//                         $(to.el).addClass('green');
-                    },
-                    revertClone: true
-                },
-                ghostClass: "iAmGhost",
-                dragable: '.sortableItem',
-                animation: 150,
-                swapThreshold: 0.65,
-                emptyInsertThreshold: 30,
-                onUpdate: function (/**Event*/evt) {
-console.log('onUpdate');
-                    // Move inside field
-                    PageLayout.showInProgress(evt.item);
-                    $.ajax({
-                      type: 'POST',
-                      data: {
-                          sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
-                          destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
-                      },
-                      url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
-                      success: function(data) {
-                          // @TODO Elements need to update their parenPointer after move
-                          PageLayout.showSuccess(evt.item);
-                      },
-                      error: function(XMLHttpRequest, textStatus, errorThrown) {
-                          PageLayout.showError(evt.item);
-                          return false;
-                      }
-                    });
-                },
-                onSort: function (/**Event*/evt) {
-console.log('onSort');
-                },
-                onRemove: function (/**Event*/evt) {
-console.log('onRemove');
-                },
-                onFilter: function (/**Event*/evt) {
-console.log('onFilter');
-                },
-                onClone: function (/**Event*/evt) {
-console.log('onClone');
-                },
-                onChange: function (/**Event*/evt) {
-console.log('onChange');
-                },
-                onStart: function (/**Event*/evt) {
-console.log('onStart');
-                    $('#navbarClipboard').removeClass('disabled');
-                    $('#navbarTrash').removeClass('disabled');
-                },
-                onEnd: function (/**Event*/evt) {
-console.log('onEnd');
-                    PageLayout.disableEmptyClipboard();
-                    PageLayout.disableEmptyTrash();
-                    $(evt.item).removeClass('blue');
-                },
-                onMove: function (/**Event*/evt, /**Event*/originalEvent) {
-console.log('onMove');
-                    $('.iAmGhost').addClass('blue');
-                },
-                onAdd: function (/**Event*/evt) {
-console.log('onAdd');
-                    if (evt.pullMode === 'clone') {
-                        // Insert from NewContentElementWizard (later also clipboard/trash)
-                        switch (evt.item.dataset.panel) {
-                            case 'newcontent':
-                                // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
-                                $.ajax({
-                                    type: 'POST',
-                                    data: {
-                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
-                                        elementRow: JSON.parse(evt.item.dataset.elementRow)
-                                    },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_create'],
-                                    success: function(data) {
-                                        var div = document.createElement('div');
-                                        div.innerHTML = data.nodeHtml;
-                                        PageLayout.initEditRecordListener(div.firstElementChild);
-                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
-                                        PageLayout.showSuccess(div.firstElementChild);
-                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-                                    },
-                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                        var el = evt.item;
-                                        el.parentNode.removeChild(el);
-                                    }
-                                });
-                                break;
-                            case 'clipboard':
-                                // Check clipboard mode copy/move/reference
-                                // Non tt_content can only be referenced (if target allows them!
-                                var mode = evt.from.parentNode.querySelector('input[name="clipboardMode"]:checked').value;
-                                $.ajax({
-                                    type: 'POST',
-                                    data: {
-                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
-                                        mode: mode,
-                                        sourceTable: evt.item.dataset.recordTable,
-                                        sourceUid: evt.item.dataset.recordUid
-                                    },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_action'],
-                                    success: function(data) {
-                                        var div = document.createElement('div');
-                                        div.innerHTML = data.nodeHtml;
-                                        PageLayout.initEditRecordListener(div.firstElementChild);
-                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
-                                        PageLayout.showSuccess(div.firstElementChild);
-                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-
-                                        PageLayout.updateClipboardNumber(data.clipboard);
-                                    },
-                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                        var el = evt.item;
-                                        el.parentNode.removeChild(el);
-                                    }
-                                });
-                                break;
-                            case 'trash':
-                                console.log(evt.item, evt.target);
-                                $.ajax({
-                                    type: 'POST',
-                                    data: {
-                                        destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
-                                        sourceTable: evt.item.dataset.recordTable,
-                                        sourceUid: evt.item.dataset.recordUid,
-                                        pid: $('#moduleWrapper').data('tvpPageId')
-                                    },
-                                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_link'],
-                                    success: function(data) {
-                                        var div = document.createElement('div');
-                                        div.innerHTML = data.nodeHtml;
-                                        PageLayout.initEditRecordListener(div.firstElementChild);
-                                        PageLayout.initSwitchVisibilityListener(div.firstElementChild);
-                                        PageLayout.showSuccess(div.firstElementChild);
-                                        evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
-                                       PageLayout.updateTrashNumber(data.trash);
-                                    },
-                                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                        var el = evt.item;
-                                        el.parentNode.removeChild(el);
-                                    }
-                                });
-                                return false;
-                                break;
-                            default:
-                                return false;
-                        }
-                    } else {
-                        // Move from another field
-                        // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
-                        PageLayout.showInProgress(evt.item);
-                        $.ajax({
-                            type: 'POST',
-                            data: {
-                                sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
-                                destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
-                            },
-                            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
-                            success: function(data) {
-                                // @TODO Elements need to update their parenPointer after move
-                                PageLayout.showSuccess(evt.item);
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) {
-                                PageLayout.showError(evt.item);
-                            }
-                        });
-                    }
-                }
-            });
+            PageLayout.initSortable(document);
         }
 
         new Sortable(document.getElementById('navbarTrash'), {
@@ -297,11 +114,207 @@ console.log('onAdd');
         $('#moduleShadowing').addClass('hidden');
 
         PageLayout.addTooltipster();
-        PageLayout.initEditRecordListener(document);
-        PageLayout.initClipboardAddListener(document);
-        PageLayout.initSwitchVisibilityListener(document);
+        PageLayout.initElements(document);
         PageLayout.disableEmptyClipboard();
         PageLayout.disableEmptyTrash();
+    }
+
+
+    PageLayout.initElements = function (base) {
+        PageLayout.initSortable(base);
+        PageLayout.initEditRecordListener(base);
+        PageLayout.initClipboardAddListener(base);
+        PageLayout.initSwitchVisibilityListener(base);
+    }
+
+    PageLayout.initSortable = function (base) {
+      var allItems = base.querySelectorAll('.tvjs-dropzone');
+      for (const el of allItems) {
+        new Sortable(el, {
+          revertOnSpill: true,
+          group: {
+            name: 'dropzones_' + el.dataset.childAllowed,
+            pull: function (to, from, el, evt) {
+              if (to.el.id === 'navbarClipboard') {
+                return 'clone';
+              }
+              if (to.el.id === 'navbarTrash') {
+                return true;
+              }
+              return true;
+            },
+            put: function (to, from, el, evt) {
+              // console.log(el);
+              // $(to.el).addClass('green');
+            },
+            revertClone: true
+          },
+          ghostClass: "iAmGhost",
+          dragable: '.sortableItem',
+          animation: 150,
+          swapThreshold: 0.65,
+          emptyInsertThreshold: 30,
+          onUpdate: function (/**Event*/evt) {
+            console.log('onUpdate');
+            // Move inside field
+            PageLayout.showInProgress(evt.item);
+            $.ajax({
+              type: 'POST',
+              data: {
+                sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
+                destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
+              },
+              url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
+              success: function (data) {
+                // @TODO Elements need to update their parenPointer after move
+                PageLayout.showSuccess(evt.item);
+              },
+              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(evt.item);
+                return false;
+              }
+            });
+          },
+          onSort: function (/**Event*/evt) {
+            console.log('onSort');
+          },
+          onRemove: function (/**Event*/evt) {
+            console.log('onRemove');
+          },
+          onFilter: function (/**Event*/evt) {
+            console.log('onFilter');
+          },
+          onClone: function (/**Event*/evt) {
+            console.log('onClone');
+          },
+          onChange: function (/**Event*/evt) {
+            console.log('onChange');
+          },
+          onStart: function (/**Event*/evt) {
+            console.log('onStart');
+            $('#navbarClipboard').removeClass('disabled');
+            $('#navbarTrash').removeClass('disabled');
+          },
+          onEnd: function (/**Event*/evt) {
+            console.log('onEnd');
+            PageLayout.disableEmptyClipboard();
+            PageLayout.disableEmptyTrash();
+            $(evt.item).removeClass('blue');
+          },
+          onMove: function (/**Event*/evt, /**Event*/originalEvent) {
+            console.log('onMove');
+            $('.iAmGhost').addClass('blue');
+          },
+          onAdd: function (/**Event*/evt) {
+            console.log('onAdd');
+            if (evt.pullMode === 'clone') {
+              // Insert from NewContentElementWizard (later also clipboard/trash)
+              switch (evt.item.dataset.panel) {
+                case 'newcontent':
+                  // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+                  $.ajax({
+                    type: 'POST',
+                    data: {
+                      destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                      elementRow: JSON.parse(evt.item.dataset.elementRow)
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_create'],
+                    success: function (data) {
+                      var div = document.createElement('div');
+                      div.innerHTML = data.nodeHtml;
+                      PageLayout.initElements(div.firstElementChild);
+                      PageLayout.showSuccess(div.firstElementChild);
+                      evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                      var el = evt.item;
+                      el.parentNode.removeChild(el);
+                    }
+                  });
+                  break;
+                case 'clipboard':
+                  // Check clipboard mode copy/move/reference
+                  // Non tt_content can only be referenced (if target allows them!
+                  var mode = evt.from.parentNode.querySelector('input[name="clipboardMode"]:checked').value;
+                  $.ajax({
+                    type: 'POST',
+                    data: {
+                      destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                      mode: mode,
+                      sourceTable: evt.item.dataset.recordTable,
+                      sourceUid: evt.item.dataset.recordUid
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_action'],
+                    success: function (data) {
+                      var div = document.createElement('div');
+                      div.innerHTML = data.nodeHtml;
+                      PageLayout.initElements(div.firstElementChild);
+                      PageLayout.showSuccess(div.firstElementChild);
+                      evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+
+                      PageLayout.updateClipboardNumber(data.clipboard);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                      var el = evt.item;
+                      el.parentNode.removeChild(el);
+                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
+                      });
+                    },
+                  });
+                  break;
+                case 'trash':
+                  console.log(evt.item, evt.target);
+                  $.ajax({
+                    type: 'POST',
+                    data: {
+                      destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString(),
+                      sourceTable: evt.item.dataset.recordTable,
+                      sourceUid: evt.item.dataset.recordUid,
+                      pid: $('#moduleWrapper').data('tvpPageId')
+                    },
+                    url: TYPO3.settings.ajaxUrls['templavoilaplus_trash_link'],
+                    success: function (data) {
+                      var div = document.createElement('div');
+                      div.innerHTML = data.nodeHtml;
+                      PageLayout.initElements(div.firstElementChild);
+                      PageLayout.showSuccess(div.firstElementChild);
+                      evt.item.parentNode.replaceChild(div.firstElementChild, evt.item);
+                      PageLayout.updateTrashNumber(data.trash);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                      var el = evt.item;
+                      el.parentNode.removeChild(el);
+                    }
+                  });
+                  return false;
+                  break;
+                default:
+                  return false;
+              }
+            } else {
+              // Move from another field
+              // source/destination pages:694:sDEF:lDEF:field_breitOben:vDEF:1
+              PageLayout.showInProgress(evt.item);
+              $.ajax({
+                type: 'POST',
+                data: {
+                  sourcePointer: evt.from.dataset.parentPointer + ':' + evt.oldDraggableIndex.toString(),
+                  destinationPointer: evt.target.dataset.parentPointer + ':' + evt.newDraggableIndex.toString()
+                },
+                url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_move'],
+                success: function (data) {
+                  // @TODO Elements need to update their parenPointer after move
+                  PageLayout.showSuccess(evt.item);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                  PageLayout.showError(evt.item);
+                }
+              });
+            }
+          }
+        });
+      }
     }
 
     PageLayout.addTooltipster = function() {
@@ -706,8 +719,7 @@ console.log('onAdd');
                 div.innerHTML = data.nodeHtml;
                 for (var item of items) {
                     var newItem = div.firstElementChild.cloneNode(true)
-                    PageLayout.initEditRecordListener(newItem);
-                    PageLayout.initSwitchVisibilityListener(newItem);
+                    PageLayout.initElements(newItem);
                     PageLayout.showSuccess(newItem);
                     item.parentNode.replaceChild(newItem, item);
                 }

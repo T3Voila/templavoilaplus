@@ -68,8 +68,8 @@ class PageRepository extends CorePageRepository
                         $page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] > 0
                         && $page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0
                         && $page['l10n_state']
-                        && json_decode($page['l10n_state'],true)['content_from_pid']
-                        && json_decode($page['l10n_state'],true)['content_from_pid'] == 'parent'
+                        && json_decode($page['l10n_state'], true)['content_from_pid']
+                        && json_decode($page['l10n_state'], true)['content_from_pid'] == 'parent'
                     ) {
                         unset($pages[$key]);
                     }
