@@ -8,6 +8,7 @@
 /.gitignore export-ignore
 /.gitlab/ export-ignore
 /.php-cs-fixer.php export-ignore
+/.phpstan.bootstrap.php export-ignore
 /.phpstorm.meta.php export-ignore
 /.prettierrc.js export-ignore
 /Tests/ export-ignore

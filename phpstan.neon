@@ -10,6 +10,7 @@ parameters:
 
   bootstrapFiles:
     - .Build/vendor/autoload.php
+    - .phpstan.bootstrap.php
 
   paths:
     - Classes
@@ -24,4 +25,5 @@ parameters:
     - Classes/Form/**/*
     - Configuration/Backend/AjaxRoutes.php
     - Classes/Updates/Typo3Lts8Update.php
+    - Classes/Domain/Repository/PageRepository.php
     - Classes/Controller/Backend/Update/*
