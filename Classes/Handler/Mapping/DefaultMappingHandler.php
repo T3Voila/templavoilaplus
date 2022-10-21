@@ -18,6 +18,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Mapping;
  */
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
+use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
+use Tvp\TemplaVoilaPlus\Utility\RecordFalUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -187,7 +189,12 @@ class DefaultMappingHandler
         $postprocessedValue = [];
         $childrenUids = explode(',', $flexformData);
         foreach ($childrenUids as $uid) {
-            $postprocessedValue[] = BackendUtility::getRecordWSOL($table, $uid);
+            $record = LocalizationRepository::getLanguageOverlayRecord($table, $uid);
+            // hidden records are returned as null
+            if ($record) {
+                $recordWithFal = RecordFalUtility::addFalReferencesToRecord($table, $record);
+                $postprocessedValue[] = $recordWithFal;
+            }
         }
         return $postprocessedValue;
     }

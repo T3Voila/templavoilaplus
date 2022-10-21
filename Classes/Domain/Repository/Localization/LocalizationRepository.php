@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Repository\Localization;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -31,7 +32,9 @@ class LocalizationRepository
     /**
      * Fetch all available languages
      *
-     * @param int $pageId
+     * @param string $table
+     * @param int $uid
+     *
      * @return array
      */
     public function fetchRecordLocalizations(string $table, int $uid): array
@@ -70,5 +73,30 @@ class LocalizationRepository
     protected static function getBackendUserAuthentication()
     {
         return $GLOBALS['BE_USER'] ?? null;
+    }
+
+    public static function getLanguageOverlayRecord($table, $uid, $language = null)
+    {
+        $hiddenField = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? 'hidden';
+        if ($language === null) {
+            $language = self::getCurrentLanguage();
+        }
+        $baseRecord = BackendUtility::getRecordWSOL($table, $uid, '*', ' AND ' . $hiddenField . '=0');
+        if ($language > 0 && $baseRecord) {
+            $l10nRecord = BackendUtility::getRecordLocalization($table, $uid, $language)[0];
+            // sadly $l10nRecord doesn't allow additionalWhere, so we check for hidden afterwards
+            if ($l10nRecord && $l10nRecord[$hiddenField] === 0) {
+                return $l10nRecord;
+            }
+        }
+        return $baseRecord;
+    }
+
+    public static function getCurrentLanguage()
+    {
+        if (version_compare(TYPO3_version, '9.4.0', '<=')) {
+            return $GLOBALS['TSFE']->sys_language_uid;
+        }
+        return GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
     }
 }
