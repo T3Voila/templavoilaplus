@@ -557,7 +557,7 @@ class ProcessingService
                 $sourcePid = (int) ($sourcePointer['table'] == 'pages' ? $sourcePointer['foundRecord']['uid'] : $sourcePointer['foundRecord']['pid']);
                 $destinationPid = (int) ($destinationPointer['table'] == 'pages' ? $destinationPointer['foundRecord']['uid'] : $destinationPointer['foundRecord']['pid']);
 
-                if ($sourcePID !== $destinationPid) {
+                if ($sourcePid !== $destinationPid) {
                     $cmdArray = [];
                     $cmdArray['tt_content'][$elementUid]['move'] = $destinationPid;
 
