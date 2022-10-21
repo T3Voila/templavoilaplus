@@ -1569,9 +1569,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         $destination = $publicExtensionDirectory . $subPath . '/';
 
         if (file_exists($destination . $filename)) {
-            /** @TODO Implement me */
-//             $destination = $this->getUniqueFilename($destination, $filename);
-            throw new \Exception('Doubled file names arent implemented yet: "' . $destination . $filename . '"');
+            $filename = $this->getUniqueFilename($filename);
         }
 
         $result = @copy($source, $destination . $filename);
@@ -1603,9 +1601,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         $destination = $publicExtensionDirectory . $subPath . '/';
 
         if (file_exists($destination . $filename)) {
-            /** @TODO Implement me */
-//             $destination = $this->getUniqueFilename($destination, $filename);
-            throw new \Exception('Doubled file names arent implemented yet: "' . $destination . $filename . '"');
+            $filename = $this->getUniqueFilename($filename);
         }
 
         $result = @file_put_contents($destination . $filename, $content);
@@ -1662,6 +1658,12 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         }
 
         return $title;
+    }
+
+    protected function getUniqueFilename(string $filename): string
+    {
+        $filenameInfo = pathinfo($filename);
+        return $filenameInfo['filename'] . '_' . uniqid() . '.' . $filenameInfo['extension'];
     }
 
     /**
