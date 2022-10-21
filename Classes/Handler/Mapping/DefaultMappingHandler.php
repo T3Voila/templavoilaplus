@@ -47,8 +47,10 @@ class DefaultMappingHandler
         return $processedMapping;
     }
 
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     public function valueProcessing(array $instructions, array $flexformData, string $table, array $row)
     {
+        // phpcs:enable
         $oldCurrentFieldRegister = $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] ?? null;
         $processedValue = '';
 
