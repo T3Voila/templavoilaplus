@@ -495,12 +495,29 @@ class ProcessingService
      */
     public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
     {
-        // Check and get all information about the source position:
-        $sourcePointer = $this->getValidPointer($sourcePointerString);
-        // Check and get all information about the destination position:
-        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
-        if (!$sourcePointer || !$destinationPointer) {
-            return false;
+        try {
+            // Check and get all information about the source position:
+            $sourcePointer = $this->getValidPointer($sourcePointerString);
+            // Check and get all information about the destination position:
+            $destinationPointer = $this->getValidPointer($destinationPointerString, true);
+
+        } catch (\Exception $e) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: '.$e->getMessage()),
+                1666475603708
+            );
+        }
+        if (!$sourcePointer) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: sourcePointer %s not valid.',$sourcePointerString),
+                1666475603708
+            );
+        }
+        if (!$destinationPointer) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: destinationPointer %s not valid.',$destinationPointerString),
+                1666475603709
+            );
         }
         // Destination can't be pure table, needs to be a pointer field
         if (!isset($destinationPointer['position'])) {
@@ -934,6 +951,9 @@ class ProcessingService
      */
     public function getPointerFromString(string $pointerString): array
     {
+        if (!$pointerString) {
+            throw new ProcessingException(sprintf('Invalid pointer string: "%s"',$pointerString),1666475964956);
+        }
         $locationArr = explode(':', $pointerString);
 
         if (count($locationArr) == 2) {

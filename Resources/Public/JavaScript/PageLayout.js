@@ -229,6 +229,9 @@ define([
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                       var el = evt.item;
                       el.parentNode.removeChild(el);
+                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
+                      });
                     }
                   });
                   break;
@@ -285,6 +288,9 @@ define([
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                       var el = evt.item;
                       el.parentNode.removeChild(el);
+                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
+                      });
                     }
                   });
                   return false;
@@ -309,6 +315,9 @@ define([
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                   PageLayout.showError(evt.item);
+                  require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                    Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
+                  });
                 }
               });
             }
