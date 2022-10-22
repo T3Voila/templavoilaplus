@@ -59,19 +59,19 @@ class WizardItems implements NewContentElementWizardHookInterface
         $wizardItems = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizardItems);
     }
 
-    protected function checkIfWizardItemShouldBeShown($currentPageId, $combinedMappingIdentifier, $wizardLabel)
+    protected function checkIfWizardItemShouldBeShown(int $currentPageId, string $combinedMappingIdentifier, string $wizardLabel): bool
     {
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
         $fcePageTsConfig = $pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'];
-        if (ItemsProcFunc::checkIfMapIsFiltered($tvpPageTsConfig, $combinedMappingIdentifier)) {
-            return false;
+        if (ItemsProcFunc::isMappingPlaceVisible($tvpPageTsConfig, $combinedMappingIdentifier)) {
+            if (isset($fcePageTsConfig['show'])) {
+                return $fcePageTsConfig['show'] === '*'
+                    || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false);
+            }
+            return true;
         }
-        if (isset($fcePageTsConfig['show'])) {
-            return $fcePageTsConfig['show'] === '*'
-                || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false);
-        }
-        return true;
+        return false;
     }
 
     /**

@@ -47,7 +47,7 @@ class ItemsProcFunc
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
 
         foreach ($mappingPlaces as $mappingPlace) {
-            if ($mappingPlace->getScope() === $scope && static::checkIfMapIsFiltered($tvpPageTsConfig, $mappingPlace->getIdentifier())) {
+            if ($mappingPlace->getScope() === $scope && static::isMappingPlaceVisible($tvpPageTsConfig, $mappingPlace->getIdentifier())) {
                 $mappingConfigurations = $mappingPlace->getConfigurations();
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
@@ -90,7 +90,7 @@ class ItemsProcFunc
      *
      * @return bool
      */
-    public static function checkIfMapIsFiltered(array $tvpPageTsConfig, string $mappingPlace): bool
+    public static function isMappingPlaceVisible(array $tvpPageTsConfig, string $mappingPlace): bool
     {
         if (isset($tvpPageTsConfig['filterMaps.'])) {
             $allowedPlaces = $tvpPageTsConfig['filterMaps.'];
