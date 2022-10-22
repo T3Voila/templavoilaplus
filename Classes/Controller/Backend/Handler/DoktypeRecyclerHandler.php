@@ -31,7 +31,7 @@ class DoktypeRecyclerHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         return 'Not yet implemented';
     }
 }

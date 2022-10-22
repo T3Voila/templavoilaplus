@@ -33,7 +33,7 @@ class DoktypeSpacerHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord)
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeSpacerCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSpacer'),

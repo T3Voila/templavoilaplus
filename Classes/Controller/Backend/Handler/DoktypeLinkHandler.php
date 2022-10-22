@@ -34,7 +34,7 @@ class DoktypeLinkHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $controller->addFlashMessage(
                 sprintf(

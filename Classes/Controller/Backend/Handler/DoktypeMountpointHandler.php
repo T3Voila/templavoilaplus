@@ -35,7 +35,7 @@ class DoktypeMountpointHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         // Mountpoint starts here but start content is taken from this page
         if (!$pageRecord['mount_pid_ol']) {
             // @TODO How to include DoktypePage from here?

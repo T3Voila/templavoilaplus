@@ -315,7 +315,7 @@ final class TemplaVoilaUtility
     {
         $languages = static::getAvailableLanguages($id, $setDefault, $setMulti, $modSharedTSconfig);
         $resultingLanguages = [];
-        $resultingLanguages[0] = $languages[0]; // stick to default lang here; TODO: free mode without 0 translation
+        $resultingLanguages[0] = $languages[0]; /* stick to default lang here; TODO: free mode without 0 translation */
         if ($id > 0) {
             $existingLanguages = LocalizationRepository::fetchRecordLocalizations('pages', $id);
             foreach ($existingLanguages as $existingLanguage) {

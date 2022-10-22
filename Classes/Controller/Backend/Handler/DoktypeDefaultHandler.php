@@ -70,7 +70,7 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
             }
         } else {
             try {
-                self::addLocalizationInformationForPage($controller,$pageRecord);
+                self::addLocalizationInformationForPage($controller, $pageRecord);
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($combinedMappingConfigurationIdentifier);
                 $combinedBackendLayoutConfigurationIdentifier = $mappingConfiguration->getCombinedBackendLayoutConfigurationIdentifier();
 

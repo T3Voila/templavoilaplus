@@ -36,7 +36,7 @@ class DoktypeShortcutHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         $targetUid = 0;
         $targetPageRecord = [];
         $shortcutMode = (int)$pageRecord['shortcut_mode'];

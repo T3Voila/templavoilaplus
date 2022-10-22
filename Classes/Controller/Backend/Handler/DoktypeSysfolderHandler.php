@@ -35,7 +35,7 @@ class DoktypeSysfolderHandler extends AbstractDoktypeHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
-        self::addLocalizationInformationForPage($controller,$pageRecord);
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         $listModuleUrl = '';
         if ($this->userHasAccessToListModule()) {
             $listModuleUrl = 'javascript:top.goToModule(\'web_list\',1);';
