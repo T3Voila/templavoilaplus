@@ -550,7 +550,7 @@ class PageLayoutController extends ActionController
         $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
 
         $url = '#';
-        $onClick = null;
+        $onClick = '';
 
         switch ($module) {
             case 'view':
