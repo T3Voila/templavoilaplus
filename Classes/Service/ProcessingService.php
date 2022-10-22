@@ -106,11 +106,11 @@ class ProcessingService
     {
         $table = 'tt_content';
 
-        if (!isset($usedElements[$table]) && !is_array($usedElements[$table])) {
-            $usedUids = [];
-        } else {
+        if (isset($usedElements[$table]) && is_array($usedElements[$table])) {
             // Get all page elements not in usedElements
             $usedUids = array_keys($usedElements[$table]);
+        } else {
+            $usedUids = [];
         }
 
         /** @TODO Move into Repository? */
