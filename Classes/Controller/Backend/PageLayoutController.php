@@ -126,6 +126,11 @@ class PageLayoutController extends ActionController
     /** @var \TYPO3\CMS\Backend\Clipboard\Clipboard */
     protected $typo3Clipboard;
 
+    /** @TODO: previously undefined members, needed for 8.1 compat */
+    protected $translatorMode;
+    protected $rootElementTable;
+    protected $rootElementRecord;
+
     public function __construct()
     {
         $this->configuration = new BackendConfiguration();
@@ -144,8 +149,8 @@ class PageLayoutController extends ActionController
         $this->pageId = (int)GeneralUtility::_GP('id');
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
         // @TODO Get rid of this properties key
-        $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'];
-        $this->modTSconfig['properties'] = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
+        $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'] ?? null;
+        $this->modTSconfig['properties'] = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'] ?? null;
 
         $this->initializeCurrentLanguage();
 
@@ -230,6 +235,7 @@ class PageLayoutController extends ActionController
             // Additional footer content
             $contentFooter = $this->renderFunctionHook('renderFooter');
         } else {
+            $pageTitle = '';
             if (GeneralUtility::_GP('id') === '0') {
                 // normaly no page selected
                 $this->addFlashMessage(
@@ -254,7 +260,7 @@ class PageLayoutController extends ActionController
         $this->view->assign('pageInfo', $this->pageInfo);
         $this->view->assign('pageTitle', $pageTitle);
         $this->view->assign('pageDescription', $activePage[$GLOBALS['TCA']['pages']['ctrl']['descriptionColumn']] ?? '');
-        $this->view->assign('pageDoktype', $activePage['doktype']);
+        $this->view->assign('pageDoktype', $activePage['doktype'] ?? null);
         $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 
         $this->view->assign('calcPerms', $this->calcPerms);
@@ -430,8 +436,7 @@ class PageLayoutController extends ActionController
             TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showPage'),
             'actions-document-view'
         );
-
-        if (!$this->modTSconfig['properties']['disableIconToolbar']) {
+        if (!($this->modTSconfig['properties']['disableIconToolbar'] ?? null)) {
             if (!$this->translatorMode) {
                 if ($this->permissionPageNew()) {
                     // Create new page (wizard)
