@@ -44,6 +44,9 @@ class ProcessingService
     /** @var FlexFormTools */
     protected $flexFormTools;
 
+    /** @TODO: previously undefined members, needed for 8.1 compat */
+    protected $rootTable;
+
     public function __construct()
     {
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -141,6 +144,7 @@ class ProcessingService
         $onPid = ($table === 'pages' ? (int)$row['uid'] : (int)$row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
         $combinedBackendLayoutConfigurationIdentifier = '';
+        $backendLayoutConfiguration = null;
 
         $mappingConfiguration = $this->getMappingConfiguration($table, $row);
         if ($mappingConfiguration) {
@@ -221,7 +225,7 @@ class ProcessingService
         $rawDataStructure = [];
 
         /** @TODO At the moment, concentrating only on this parts, but more could be possible */
-        if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
+        if ($table === 'pages' || $table === $this->rootTable || ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1')) {
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
                 $table,
@@ -288,7 +292,7 @@ class ProcessingService
                     foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldConfig) {
                         foreach ($vKeys as $vKey) {
                             // Sections and repeatables shouldn't be deep filled
-                            if ($fieldConfig['type'] == 'array') {
+                            if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'array') {
                                 $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = [];
                             } else {
                                 $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = '';
@@ -358,7 +362,7 @@ class ProcessingService
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
-            if ($fieldConfig['type'] == 'array') {
+            if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'array') {
                 if ($fieldConfig['section']) {
                     if (isset($values[$fieldKey]['el'])) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
