@@ -2,8 +2,6 @@
 <f:if condition="{node.datastructure.error}">
     <f:be.infobox state="2">{node.datastructure.error}</f:be.infobox>
 </f:if>
-<!--f:debug>{node.datastructure.sheets}</f:debug-->
-<!--f:debug maxDepth="20">{_all}</f:debug-->
 <f:if condition="{node.raw.entity.tx_templavoilaplus_map}">
     <f:then>
         <f:render section="elements" arguments="{fieldsDs: node.datastructure.sheets.sDEF.ROOT.el, fieldsData: node.flexform.data.sDEF.lDEF, node: node}" />
