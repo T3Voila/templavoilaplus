@@ -92,6 +92,9 @@
 			"app-dir": ".Build",
 			"extension-key": "templavoilaplus",
 			"web-dir": ".Build/public"
+		},
+		"branch-alias": {
+			"dev-main": "8.2.x-dev"
 		}
 	},
 	"scripts": {
