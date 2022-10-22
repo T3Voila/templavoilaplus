@@ -1,6 +1,5 @@
 {
 	"name": "templavoilaplus/templavoilaplus",
-	"version": "v8.2.99-alpha.2",
 	"description": "Building kit for custom  pages and content elements with individual fields, containers and backend layouts. Supporting drag'n'drop and multiple references.",
 	"license": [
 		"GPL-2.0+"

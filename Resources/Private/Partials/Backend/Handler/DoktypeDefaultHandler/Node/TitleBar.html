@@ -5,8 +5,7 @@
         {node.rendering.fullTitle}
         <f:if condition="!{node.rendering.belongsToCurrentPage}"></em></f:if>
     </div>
-    <f:if condition="{skipButtons}">
+    <f:if condition="!{skipButtons}">
       <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBarRightButtons" arguments="{node: node}"/>
     </f:if>
 </div>
-
