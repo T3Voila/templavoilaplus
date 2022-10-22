@@ -20,7 +20,6 @@ The first stable TV+ 8 release is 8.1.0 which changes many things on the base of
 * The point-and-click mapper as it is very hard to get all things together and it isn't the base so it may come back as extension later on.
 * MultiLanguage as this is very hard and partly confuse, we need a "data donation" for this. Also this isn't realy a core compatible way and so Language Fallback Support isn't easy possible.
 * Workspace Support is also missing, or better, not well tested, it may be buggy it may be working.
-* StoragePIDs as this core functionallity do not exists anymore.
 * Documentational parts, please help here.
 
 ### On all this missing parts, what the hell is new/better?
@@ -77,9 +76,15 @@ If you use deployment strategie you don't have to run the complete migration aga
     * You can extend TV+ 8 with new Places with their own handler to load data
     * You can add new renderer (for example Smarty, Twig)
     * You can work on own themes
+    * You can freely manipulate the NewContentWizard tabs and elements
 * Update Script
     * There is an Update Script which works quite well
     * You should select "creating new extension" also if it shows you a green extension to select
     * No support for multiple storage pids yet
-    * Step 6, removing old data, is not available yet
     * ~~The feature "ServerDeployment JSON" for better server upgrades isn't available yet~~
+
+### What would help us:
+
+* If you need one of the following things, we would need a data donation from your system (from the tx_templavoilaplus_* tables and StaticDS files if you have), so we can't test this and try to work on a solution.
+    * Update script for multiple storage pids
+    * Multilanguage editing support for lDEF/vDEF systems (Systems which use the TemplaVoilà! language things and not the core ones a.k.a. langDisable/langChildren)
