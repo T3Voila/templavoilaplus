@@ -46,6 +46,7 @@ class ProcessingService
 
     /** @TODO: previously undefined members, needed for 8.1 compat */
     protected $rootTable;
+    protected $modifyReferencesInLiveWS;
 
     public function __construct()
     {
@@ -929,7 +930,7 @@ class ProcessingService
         $elementReferencesArr = [];
         $counter = 0;
         foreach ($arrayOfUIDs as $uid) {
-            if (is_array($dbAnalysis->results[$innerTable][$uid])) {
+            if (isset($dbAnalysis->results[$innerTable][$uid]) && is_array($dbAnalysis->results[$innerTable][$uid])) {
                 $elementReferencesArr[$counter] = $uid;
                 $counter++;
             }
@@ -1050,6 +1051,7 @@ class ProcessingService
      */
     public function getTCEmainRunningFlag(): bool
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'])
+            && $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'];
     }
 }
