@@ -91,11 +91,6 @@ parameters:
 			path: Classes/Service/DataHandling/DataHandler.php
 
 		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$modifyReferencesInLiveWS\\.$#"
-			count: 1
-			path: Classes/Service/ProcessingService.php
-
-		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Updates\\\\Typo3Lts9Update\\:\\:\\$extConf\\.$#"
 			count: 1
 			path: Classes/Updates/Typo3Lts9Update.php
