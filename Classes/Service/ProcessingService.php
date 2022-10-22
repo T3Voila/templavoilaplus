@@ -488,11 +488,14 @@ class ProcessingService
 
     /**
      * Moves an element specified by the source pointer to the location specified by destination pointer.
+     *
      * @TODO Only pointers to TCEform of type groups allowed, move inside sections should also be done
      *
      * @param string $sourcePointerString flexform pointer pointing to the element which shall be moved
      * @param string $destinationPointerString flexform pointer to the new location
+     *
      * @return boolean TRUE if operation was successfully, otherwise false
+     * @throws ProcessingException
      */
     public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
     {
@@ -501,22 +504,21 @@ class ProcessingService
             $sourcePointer = $this->getValidPointer($sourcePointerString);
             // Check and get all information about the destination position:
             $destinationPointer = $this->getValidPointer($destinationPointerString, true);
-
         } catch (\Exception $e) {
             throw new ProcessingException(
-                sprintf('Error moving elements: '.$e->getMessage()),
+                sprintf('Error moving elements: %s', $e->getMessage()),
                 1666475603708
             );
         }
         if (!$sourcePointer) {
             throw new ProcessingException(
-                sprintf('Error moving elements: sourcePointer %s not valid.',$sourcePointerString),
+                sprintf('Error moving elements: sourcePointer %s not valid.', $sourcePointerString),
                 1666475603708
             );
         }
         if (!$destinationPointer) {
             throw new ProcessingException(
-                sprintf('Error moving elements: destinationPointer %s not valid.',$destinationPointerString),
+                sprintf('Error moving elements: destinationPointer %s not valid.', $destinationPointerString),
                 1666475603709
             );
         }
@@ -947,13 +949,15 @@ class ProcessingService
      *
      * FUTURE Versions will use another pointer string here, more like table:uid:dbRowField:sheet:sLang:#flexformfield:vLang:position:md5
      *
-     * @param string $pointer A string of the format "table:uid:sheet:sLang:#field:vLang:position:md5".
+     * @param string $pointerString A string of the format "table:uid:sheet:sLang:#field:vLang:position:md5".
+     *
      * @return array A flexform pointer array which can be used with the functions in tx_templavoilaplus_api
+     * @throws ProcessingException
      */
     public function getPointerFromString(string $pointerString): array
     {
         if (!$pointerString) {
-            throw new ProcessingException(sprintf('Invalid pointer string: "%s"',$pointerString),1666475964956);
+            throw new ProcessingException(sprintf('Invalid pointer string: "%s"', $pointerString), 1666475964956);
         }
         $locationArr = explode(':', $pointerString);
 
