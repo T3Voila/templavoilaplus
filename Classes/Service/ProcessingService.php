@@ -883,7 +883,7 @@ class ProcessingService
                 continue;
             }
             if ($fieldName !== 'el' || $baseDataStructure['type'] === 'array') {
-                if ($baseDataStructure['section']) {
+                if (isset($baseDataStructure['section']) && $baseDataStructure['section']) {
                     $lastWasSection = true;
                 }
                 $baseDataStructure = $baseDataStructure[$fieldName];
