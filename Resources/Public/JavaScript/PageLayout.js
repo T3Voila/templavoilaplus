@@ -229,9 +229,7 @@ define([
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                       var el = evt.item;
                       el.parentNode.removeChild(el);
-                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
-                      });
+                      PageLayout.showErrorNotification(XMLHttpRequest);
                     }
                   });
                   break;
@@ -260,9 +258,7 @@ define([
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                       var el = evt.item;
                       el.parentNode.removeChild(el);
-                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
-                      });
+                      PageLayout.showErrorNotification(XMLHttpRequest);
                     },
                   });
                   break;
@@ -288,9 +284,7 @@ define([
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
                       var el = evt.item;
                       el.parentNode.removeChild(el);
-                      require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                        Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
-                      });
+                      PageLayout.showErrorNotification(XMLHttpRequest);
                     }
                   });
                   return false;
@@ -315,9 +309,7 @@ define([
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                   PageLayout.showError(evt.item);
-                  require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
-                    Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
-                  });
+                  PageLayout.showErrorNotification(XMLHttpRequest);
                 }
               });
             }
@@ -325,7 +317,26 @@ define([
         });
       }
     }
-
+    PageLayout.showErrorNotification = function (XMLHttpRequest) {
+        if (XMLHttpRequest.status === 400) {
+            require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                Notification.error('Templavoilà! Plus Error', XMLHttpRequest.responseJSON.error);
+            });
+            return;
+        } else if (XMLHttpRequest.status === 500) {
+            require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+                var el = document.createElement( 'html' );
+                el.innerHTML = XMLHttpRequest.responseText;
+                var errorMessage = el.getElementsByClassName('trace-message')[0].innerText;
+                Notification.error('Templavoilà! Plus Error', errorMessage);
+            });
+            return;
+        }
+        require(['TYPO3/CMS/Backend/Notification'], function (Notification) {
+            Notification.error('Templavoilà! Plus Error', XMLHttpRequest.statusText);
+        });
+        console.log(XMLHttpRequest);
+    }
     PageLayout.addTooltipster = function() {
         // Add tooltip functionality to Sidebar
         PageLayout.addTooltipsterContentElementWizard();
