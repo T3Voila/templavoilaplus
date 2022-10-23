@@ -19,10 +19,12 @@ namespace Tvp\TemplaVoilaPlus\Service;
 
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
+use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\InvalidIdentifierException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException as CoreInvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -93,6 +95,8 @@ class ProcessingService
 
         $node['localization'] = $this->getLocalizationForNode($node);
 
+        $node['localizationActions'] = $this->getLocalizationActionsForMissingLocalizations($node, $basePid);
+
         // Get node childs:
         $node['childNodes'] = $this->getNodeChilds($node, $basePid, $usedElements);
 
@@ -103,9 +107,34 @@ class ProcessingService
         ];
     }
 
+    /**
+     * Returns the node (probably page) and its localization information or localizationActions.
+     *
+     * @param string $table Table which contains the (XML) data structure. Only records from table 'pages' or flexible content elements from 'tt_content' are handled
+     * @param array $row Record of the root element where the tree starts (Possibly overlaid with workspace content)
+     *
+     * @return array The content tree
+     */
+    public function getNodeWithLocalization(string $table, array $row): array
+    {
+        $basePid = (int)$row['uid'];
+        $parentPointer = [
+            'table' => $table,
+            'uid' => $row['uid'],
+        ];
+
+        $node = $this->getNodeFromRow($table, $row, $parentPointer, $basePid);
+        $node['localization'] = $this->getLocalizationForNode($node);
+        $node['localizationActions'] = $this->getLocalizationActionsForMissingLocalizations($node, $basePid);
+
+        // Return result:
+        return $node;
+    }
+
     public function getUnusedElements(array $pageRow, array $usedElements): array
     {
         $table = 'tt_content';
+        $l10n_parent_field = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? 'l10n_parent';
 
         if (isset($usedElements[$table]) && is_array($usedElements[$table])) {
             // Get all page elements not in usedElements
@@ -121,11 +150,15 @@ class ProcessingService
         $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // set table and where clause
+        // as we want unused elements here instead of a complex case discussion which language mode it is, just filter
+        // to standalone elements, defined as "has no lang parent". Thus, it would show -1=all_lang as well as default
+        // lang or free-translation mode elements as only those can be used directly.
         $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT)),
+                $queryBuilder->expr()->eq($l10n_parent_field, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
             );
         if (!empty($usedUids)) {
             $queryBuilder->andWhere(
@@ -315,15 +348,28 @@ class ProcessingService
 
         $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
-        $localizationRepository = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository::class);
-
-        $records = $localizationRepository->fetchRecordLocalizations($table, (int)$row['uid']);
+        $records = LocalizationRepository::fetchRecordLocalizations($table, (int)$row['uid']);
         /** @TODO WSOL? */
         foreach ($records as $record) {
             $localization[$record[$tcaCtrl['languageField']]] = $this->getNodeFromRow($table, $record);
         }
 
         return $localization;
+    }
+
+    public function getLocalizationActionsForMissingLocalizations(array $node, int $pid): array
+    {
+        $localizationActions = [];
+        $existingLocalizations = array_keys($node['localization']);
+        $availableLanguages = TemplaVoilaUtility::getAvailableLanguages($pid);
+        $availableLanguageKeys = array_keys($availableLanguages);
+        foreach ($availableLanguageKeys as $languageId) {
+            if ($languageId > 0 && !in_array($languageId, $existingLocalizations)) {
+                $params = '&cmd[' . $node['raw']['table'] . '][' . $node['raw']['entity']['uid'] . '][localize]=' . $languageId;
+                $localizationActions[$languageId]['actionUrl'] = BackendUtility::getLinkToDataHandlerAction($params);
+            }
+        }
+        return $localizationActions;
     }
 
     public function getNodeChilds(array $node, int $basePid, array &$usedElements): array

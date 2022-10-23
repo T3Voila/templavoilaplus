@@ -1,0 +1,22 @@
+{namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+
+<div class="tvp-node {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}">
+    <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
+    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-body')} card-body">
+        <div class="tvp-record-edit">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
+        </div>
+        <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
+            <f:if condition="{node.rendering.beLayout}">
+                <f:variable name="beLayout" value="{node.rendering.beLayout}" />
+            </f:if>
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/Childs" arguments="{node: node, beLayout: beLayout}" />
+        </f:if>
+        <div class="tvp-record-edit">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/PreviewContent" arguments="{node: node}" />
+        </div>
+
+    </div>
+
+</div>

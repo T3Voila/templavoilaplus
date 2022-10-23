@@ -10,7 +10,7 @@
                 </f:else>
             </f:if>
         </button>
-        <f:if condition="{node.rendering.belongsToCurrentPage}">
+        <f:if condition="{node.rendering.belongsToCurrentPage} || {node.raw.table} == pages">
             <button type="button" class="btn btn-default btn-sm tvp-record-edit">
                 <core:icon identifier="actions-document-open" />
             </button>
@@ -30,8 +30,7 @@
                     </button>
                 </f:else>
             </f:if>
-
-            <f:if condition="!{node.rendering.belongsToCurrentPage}">
+            <f:if condition="!{node.rendering.belongsToCurrentPage} && !{isLocalization}">
                 <button type="button" class="btn btn-default btn-sm">
                     <core:icon identifier="extensions-templavoila-makelocalcopy" />
                 </button>

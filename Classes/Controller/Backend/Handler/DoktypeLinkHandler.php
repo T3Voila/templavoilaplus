@@ -22,7 +22,7 @@ use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 
-class DoktypeLinkHandler
+class DoktypeLinkHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "External URL"
@@ -34,6 +34,7 @@ class DoktypeLinkHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         if (version_compare(TYPO3_version, '9.0.0', '>=')) {
             $controller->addFlashMessage(
                 sprintf(

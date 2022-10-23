@@ -3,8 +3,14 @@
         <f:if condition="!{basicEditRights}">
             <f:be.infobox title="{f:translate(key:'{configuration.lllFile}:infoTitleMissingEditRights')}" state="-1"><f:translate key="{configuration.lllFile}:infoContentMissingEditRights"/></f:be.infobox>
         </f:if>
-
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+        <f:if condition="{doktypeDefault.nodeTree.node.raw.table} == 'pages'">
+            <f:then>
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+            </f:then>
+            <f:else>
+                <f:render p@artial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+            </f:else>
+        </f:if>
     </f:then>
     <f:else>
         <f:be.infobox title="{f:translate(key:'{configuration.lllFile}:infoTitleSelectTemplateDesign')}" state="-1"><f:translate key="{configuration.lllFile}:infoContentSelectTemplateDesign"/></f:be.infobox>

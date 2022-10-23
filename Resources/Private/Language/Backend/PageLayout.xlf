@@ -111,6 +111,9 @@
             <trans-unit id="labelLocalizations" xml:space="preserve">
                 <source>Localizations</source>
             </trans-unit>
+			<trans-unit id="createCopyForTranslation" xml:space="preserve">
+                <source>Create a copy for translation "%s (%s)"</source>
+            </trans-unit>
             <trans-unit id="newContentElementWizard.fce" xml:space="preserve">
                 <source>FCE</source>
             </trans-unit>

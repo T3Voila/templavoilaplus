@@ -24,7 +24,7 @@ use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class DoktypeShortcutHandler
+class DoktypeShortcutHandler extends AbstractDoktypeHandler
 {
     /**
      * Displays the edit page screen if the currently selected page is of the doktype "Shortcut"
@@ -36,6 +36,7 @@ class DoktypeShortcutHandler
      */
     public function handle(PageLayoutController $controller, array $pageRecord): string
     {
+        self::addLocalizationInformationForPage($controller, $pageRecord);
         $targetUid = 0;
         $targetPageRecord = [];
         $shortcutMode = (int)$pageRecord['shortcut_mode'];

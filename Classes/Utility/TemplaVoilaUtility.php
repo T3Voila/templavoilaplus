@@ -16,6 +16,7 @@ namespace Tvp\TemplaVoilaPlus\Utility;
  */
 
 use Psr\Log\LoggerAwareInterface;
+use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -108,6 +109,11 @@ final class TemplaVoilaUtility
      */
     public static function getAvailableLanguages($id = 0, $setDefault = true, $setMulti = false, array $modSharedTSconfig = [])
     {
+        if (!$modSharedTSconfig) {
+            $pageTsConfig = BackendUtility::getPagesTSconfig($id);
+            // @TODO Get rid of this properties key
+            $modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'];
+        }
         $useStaticInfoTables = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 
         $languages = [];
@@ -292,6 +298,34 @@ final class TemplaVoilaUtility
         // }
 
         return ($languageAspect);
+    }
+
+    /*
+     * Returns an array of existing page translations (including hidden, including default=0)
+     *
+     * @param int $id If zero, the query will select all sys_language records from root level. If set to another value, the query will select all sys_language records that has a pages_language_overlay record on that page (and is not hidden, unless you are admin user)
+     * @param bool $onlyIsoCoded If set, only languages which are paired witch have a ISO code set (via core or static_info_tables)
+     * @param bool $setDefault If set, an array entry for a default language is added (uid 0).
+     * @param bool $setMulti If set, an array entry for "multiple languages" is added (uid -1)
+     * @param array $modSharedTSconfig
+     *
+     * @return array
+     */
+    public static function getExistingPageLanguages($id = 0, $setDefault = true, $setMulti = false, array $modSharedTSconfig = [])
+    {
+        $languages = static::getAvailableLanguages($id, $setDefault, $setMulti, $modSharedTSconfig);
+        $resultingLanguages = [];
+        $resultingLanguages[0] = $languages[0]; /* stick to default lang here; TODO: free mode without 0 translation */
+        if ($id > 0) {
+            $existingLanguages = LocalizationRepository::fetchRecordLocalizations('pages', $id);
+            foreach ($existingLanguages as $existingLanguage) {
+                $existingLanguageId = $existingLanguage[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                if (isset($languages[$existingLanguageId])) {
+                    $resultingLanguages[$existingLanguageId] = $languages[$existingLanguageId];
+                }
+            }
+        }
+        return $resultingLanguages;
     }
 
     public static function getUseableLanguages(int $pageId = 0)
