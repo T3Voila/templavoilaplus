@@ -195,7 +195,7 @@ class ProcessingService
         }
         $usedElements[$table][$row['uid']]['parentPointers'][] = $parentPointerString;
 
-        if ($parentPointer['table'] === 'pages') {
+        if (isset($parentPointer['table']) && $parentPointer['table'] === 'pages') {
             $pageTsConfig = BackendUtility::getPagesTSconfig($parentPointer['uid']);
             $additionalRecordDataColumns = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.']['additionalRecordData.'][$table] ?? null;
             if ($additionalRecordDataColumns) {
@@ -1054,8 +1054,10 @@ class ProcessingService
                 /** @TODO Whats that? */
                 $flexformPointerString .= '/tt_content:' . $parentPointer['targetCheckUid'];
             }
-        } else {
+        } elseif (isset($parentPointer['table']) && isset($parentPointer['uid'])) {
             $flexformPointerString = $parentPointer['table'] . ':' . $parentPointer['uid'];
+        } else {
+            $flexformPointerString = '';
         }
 
         return $flexformPointerString;
