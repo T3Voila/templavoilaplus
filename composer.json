@@ -2,7 +2,7 @@
 	"name": "templavoilaplus/templavoilaplus",
 	"description": "Building kit for custom  pages and content elements with individual fields, containers and backend layouts. Supporting drag'n'drop and multiple references.",
 	"license": [
-		"GPL-2.0+"
+		"GPL-2.0-or-later"
 	],
 	"type": "typo3-cms-extension",
 	"keywords": [
@@ -83,6 +83,9 @@
 		"vendor-dir": ".Build/vendor"
 	},
 	"extra": {
+		"branch-alias": {
+			"dev-main": "8.2.x-dev"
+		},
 		"typo3/class-alias-loader": {
 			"class-alias-maps": [
 				"Migrations/Code/ClassAliasMap.php"
@@ -92,9 +95,6 @@
 			"app-dir": ".Build",
 			"extension-key": "templavoilaplus",
 			"web-dir": ".Build/public"
-		},
-		"branch-alias": {
-			"dev-main": "8.2.x-dev"
 		}
 	},
 	"scripts": {
