@@ -39,6 +39,9 @@ class MarkerBasedRenderHandler implements RenderHandlerInterface
                 $content = $subPartContent;
             }
         }
+        if (isset($processedValues['settings']) && is_array($processedValues['settings'])) {
+            unset($processedValues['settings']);
+        }
         $content = $markerBasedTemplateService->substituteMarkerArray($content, $processedValues, '###|###', false, true);
 
         return $content;

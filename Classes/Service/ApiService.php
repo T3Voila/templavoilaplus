@@ -358,11 +358,11 @@ class ApiService
                 continue;
             }
 
-            if ($pageRecord['tx_templavoilaplus_next_map']) {
+            if ($pageRecord['tx_templavoilaplus_next_map'] ?? null) {
                 // If there is a next-level MAP:
                 return $pageRecord['tx_templavoilaplus_next_map'];
             }
-            if ($pageRecord['tx_templavoilaplus_map'] && !$mapBackupIdentifier) {
+            if (($pageRecord['tx_templavoilaplus_map'] ?? null) && !$mapBackupIdentifier) {
                 // Otherwise try the NORMAL MAP as backup
                 $mapBackupIdentifier = $pageRecord['tx_templavoilaplus_map'];
             }

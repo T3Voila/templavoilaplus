@@ -157,7 +157,7 @@ class ConfigurationService implements SingletonInterface
         if (!isset($this->availableHandler[$handlerIdentifier])) {
             throw new \Exception('Handler with identifier "' . $handlerIdentifier . '" do not exist');
         }
-        return GeneralUtility::makeInstance($this->availableHandler[$handlerIdentifier]['class'], $place);
+        return GeneralUtility::makeInstance($this->availableHandler[$handlerIdentifier]['class']);
     }
 
     public function getAvailableHandlers()

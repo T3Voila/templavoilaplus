@@ -44,6 +44,10 @@ class ProcessingService
     /** @var FlexFormTools */
     protected $flexFormTools;
 
+    /** @TODO: previously undefined members, needed for 8.1 compat */
+    protected $rootTable;
+    protected $modifyReferencesInLiveWS;
+
     public function __construct()
     {
         $this->flexFormTools = GeneralUtility::makeInstance(FlexFormTools::class);
@@ -103,11 +107,11 @@ class ProcessingService
     {
         $table = 'tt_content';
 
-        if (!isset($usedElements[$table]) && !is_array($usedElements[$table])) {
-            $usedUids = [];
-        } else {
+        if (isset($usedElements[$table]) && is_array($usedElements[$table])) {
             // Get all page elements not in usedElements
             $usedUids = array_keys($usedElements[$table]);
+        } else {
+            $usedUids = [];
         }
 
         /** @TODO Move into Repository? */
@@ -141,6 +145,7 @@ class ProcessingService
         $onPid = ($table === 'pages' ? (int)$row['uid'] : (int)$row['pid']);
         $parentPointerString = $this->getParentPointerAsString($parentPointer);
         $combinedBackendLayoutConfigurationIdentifier = '';
+        $backendLayoutConfiguration = null;
 
         $mappingConfiguration = $this->getMappingConfiguration($table, $row);
         if ($mappingConfiguration) {
@@ -221,7 +226,7 @@ class ProcessingService
         $rawDataStructure = [];
 
         /** @TODO At the moment, concentrating only on this parts, but more could be possible */
-        if ($table == 'pages' || $table == $this->rootTable || ($table == 'tt_content' && $row['CType'] == 'templavoilaplus_pi1')) {
+        if ($table === 'pages' || $table === $this->rootTable || ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1')) {
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 $GLOBALS['TCA'][$table]['columns']['tx_templavoilaplus_flex'],
                 $table,
@@ -288,7 +293,7 @@ class ProcessingService
                     foreach ($sheetData['ROOT']['el'] as $fieldKey => $fieldConfig) {
                         foreach ($vKeys as $vKey) {
                             // Sections and repeatables shouldn't be deep filled
-                            if ($fieldConfig['type'] == 'array') {
+                            if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'array') {
                                 $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = [];
                             } else {
                                 $emptyFlexform['data'][$sheetKey][$lKey][$fieldKey][$vKey] = '';
@@ -358,7 +363,7 @@ class ProcessingService
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
-            if ($fieldConfig['type'] == 'array') {
+            if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'array') {
                 if ($fieldConfig['section']) {
                     if (isset($values[$fieldKey]['el'])) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
@@ -483,20 +488,39 @@ class ProcessingService
 
     /**
      * Moves an element specified by the source pointer to the location specified by destination pointer.
+     *
      * @TODO Only pointers to TCEform of type groups allowed, move inside sections should also be done
      *
      * @param string $sourcePointerString flexform pointer pointing to the element which shall be moved
      * @param string $destinationPointerString flexform pointer to the new location
+     *
      * @return boolean TRUE if operation was successfully, otherwise false
+     * @throws ProcessingException
      */
     public function moveElement(string $sourcePointerString, string $destinationPointerString): bool
     {
-        // Check and get all information about the source position:
-        $sourcePointer = $this->getValidPointer($sourcePointerString);
-        // Check and get all information about the destination position:
-        $destinationPointer = $this->getValidPointer($destinationPointerString, true);
-        if (!$sourcePointer || !$destinationPointer) {
-            return false;
+        try {
+            // Check and get all information about the source position:
+            $sourcePointer = $this->getValidPointer($sourcePointerString);
+            // Check and get all information about the destination position:
+            $destinationPointer = $this->getValidPointer($destinationPointerString, true);
+        } catch (\Exception $e) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: %s', $e->getMessage()),
+                1666475603708
+            );
+        }
+        if (!$sourcePointer) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: sourcePointer %s not valid.', $sourcePointerString),
+                1666475603708
+            );
+        }
+        if (!$destinationPointer) {
+            throw new ProcessingException(
+                sprintf('Error moving elements: destinationPointer %s not valid.', $destinationPointerString),
+                1666475603709
+            );
         }
         // Destination can't be pure table, needs to be a pointer field
         if (!isset($destinationPointer['position'])) {
@@ -879,7 +903,7 @@ class ProcessingService
                 continue;
             }
             if ($fieldName !== 'el' || $baseDataStructure['type'] === 'array') {
-                if ($baseDataStructure['section']) {
+                if (isset($baseDataStructure['section']) && $baseDataStructure['section']) {
                     $lastWasSection = true;
                 }
                 $baseDataStructure = $baseDataStructure[$fieldName];
@@ -908,7 +932,7 @@ class ProcessingService
         $elementReferencesArr = [];
         $counter = 0;
         foreach ($arrayOfUIDs as $uid) {
-            if (is_array($dbAnalysis->results[$innerTable][$uid])) {
+            if (isset($dbAnalysis->results[$innerTable][$uid]) && is_array($dbAnalysis->results[$innerTable][$uid])) {
                 $elementReferencesArr[$counter] = $uid;
                 $counter++;
             }
@@ -925,11 +949,16 @@ class ProcessingService
      *
      * FUTURE Versions will use another pointer string here, more like table:uid:dbRowField:sheet:sLang:#flexformfield:vLang:position:md5
      *
-     * @param string $pointer A string of the format "table:uid:sheet:sLang:#field:vLang:position:md5".
+     * @param string $pointerString A string of the format "table:uid:sheet:sLang:#field:vLang:position:md5".
+     *
      * @return array A flexform pointer array which can be used with the functions in tx_templavoilaplus_api
+     * @throws ProcessingException
      */
     public function getPointerFromString(string $pointerString): array
     {
+        if (!$pointerString) {
+            throw new ProcessingException(sprintf('Invalid pointer string: "%s"', $pointerString), 1666475964956);
+        }
         $locationArr = explode(':', $pointerString);
 
         if (count($locationArr) == 2) {
@@ -1026,6 +1055,7 @@ class ProcessingService
      */
     public function getTCEmainRunningFlag(): bool
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'])
+            && $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'];
     }
 }

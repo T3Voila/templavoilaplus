@@ -66,21 +66,6 @@ parameters:
 			path: Classes/Controller/Backend/PageLayoutController.php
 
 		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$rootElementRecord\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$rootElementTable\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$translatorMode\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
 			count: 1
 			path: Classes/Controller/Backend/PageLayoutController.php
@@ -101,24 +86,9 @@ parameters:
 			path: Classes/Service/ApiService.php
 
 		-
-			message: "#^Undefined variable\\: \\$place$#"
-			count: 1
-			path: Classes/Service/ConfigurationService.php
-
-		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
 			count: 4
 			path: Classes/Service/DataHandling/DataHandler.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$modifyReferencesInLiveWS\\.$#"
-			count: 1
-			path: Classes/Service/ProcessingService.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ProcessingService\\:\\:\\$rootTable\\.$#"
-			count: 1
-			path: Classes/Service/ProcessingService.php
 
 		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Updates\\\\Typo3Lts9Update\\:\\:\\$extConf\\.$#"

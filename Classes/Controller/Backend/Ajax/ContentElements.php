@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Core\Http\JsonResponse;
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -84,18 +85,26 @@ class ContentElements extends AbstractResponse
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
+        try {
+            $result = $processingService->moveElement(
+                $parameters['sourcePointer'] ?? '',
+                $parameters['destinationPointer'] ?? ''
+            );
 
-        $result = $processingService->moveElement(
-            $parameters['sourcePointer'] ?? '',
-            $parameters['destinationPointer'] ?? ''
-        );
-
-        if ($result) {
-            return new JsonResponse([$result]);
-        } else {
+            if ($result) {
+                return new JsonResponse([$result]);
+            } else {
+                return new JsonResponse(
+                    [
+                        'error' => $result
+                    ],
+                    400 /* Bad request */
+                );
+            }
+        } catch (ProcessingException $e) {
             return new JsonResponse(
                 [
-                    'error' => $result
+                    'error' => $e->getMessage()
                 ],
                 400 /* Bad request */
             );

@@ -136,11 +136,11 @@ class ExtensionUtility implements SingletonInterface
             $configurationService->registerPlace(
                 $identifier,
                 $placeConfiguration['name'],
-                $placeConfiguration['scope'],
-                $placeConfiguration['configurationHandler'] ?: $defaultConfigurationHandlerIdentifier,
+                $placeConfiguration['scope'] ?? '',
+                $placeConfiguration['configurationHandler'] ?? $defaultConfigurationHandlerIdentifier,
                 $placeConfiguration['loadSaveHandler'],
                 $placeConfiguration['path'],
-                (int)$placeConfiguration['indentation'] ?: 4
+                (int)($placeConfiguration['indentation'] ?? 4)
             );
         }
     }

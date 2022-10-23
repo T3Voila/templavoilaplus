@@ -55,7 +55,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
     {
         $result = false;
 
-        if ($this->extConfig['staticDS']['enable']) {
+        if ($this->extConfig['staticDS']['enable'] ?? null) {
             // If static DS is in use we need to migrate the file pointer
             $result = true;
         }
@@ -83,7 +83,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
      */
     public function executeUpdate(): bool
     {
-        if ($this->extConfig['staticDS']['enable']) {
+        if ($this->extConfig['staticDS']['enable'] ?? null) {
             $this->migrateStaticDsFilePointer();
         }
 
