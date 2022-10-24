@@ -73,7 +73,7 @@ class DataHandler
             );
         }
 
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ?? null) {
             return;
         }
 
@@ -101,7 +101,7 @@ class DataHandler
         if ($this->debug) {
             GeneralUtility::devLog('processCmdmap_preProcess', 'templavoilaplus', 0, [$command, $table, $id, $value]);
         }
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ?? null) {
             return;
         }
 

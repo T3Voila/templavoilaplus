@@ -112,7 +112,7 @@ final class TemplaVoilaUtility
         if (!$modSharedTSconfig) {
             $pageTsConfig = BackendUtility::getPagesTSconfig($id);
             // @TODO Get rid of this properties key
-            $modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'];
+            $modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'] ?? null;
         }
         $useStaticInfoTables = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('static_info_tables');
 
@@ -222,11 +222,13 @@ final class TemplaVoilaUtility
         $fallbackTypeOverride = null;
         // There is a global conf var hidePagesIfNotTranslatedByDefault which changes the behaviour
         // of HIDEIFNOTTRANSLATED, we only need the override if that is not set (because else it means mixed/default)
-        if (($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEIFNOTTRANSLATED) && (!$GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'])) {
-            $fallbackTypeOverride = 'strict';
-        }
-        if ($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEDEFAULT) {
-            $fallbackTypeOverride = 'free';
+        if (isset($row['l18n_cfg'])) {
+            if (($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEIFNOTTRANSLATED) && (!($GLOBALS['TYPO3_CONF_VARS']['FE']['hidePagesIfNotTranslatedByDefault'] ?? null))) {
+                $fallbackTypeOverride = 'strict';
+            }
+            if ($row['l18n_cfg'] & $PAGES_L18NCFG_HIDEDEFAULT) {
+                $fallbackTypeOverride = 'free';
+            }
         }
 
         // site handling exists (>=9LTS)

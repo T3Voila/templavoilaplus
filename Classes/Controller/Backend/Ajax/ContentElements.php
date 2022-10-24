@@ -69,10 +69,18 @@ class ContentElements extends AbstractResponse
     {
         $parameters = $request->getParsedBody();
 
-        /** @TODO $parameters['table'] */
-        return new JsonResponse([
-            'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid']),
-        ]);
+        if ($parameters['table'] && (int)$parameters['uid'] > 0) {
+            return new JsonResponse([
+                'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid']),
+            ]);
+        } else {
+            return new JsonResponse(
+                [
+                    'error' => 'Trying to reload element without defining table and uid'
+                ],
+                400 /* Bad request */
+            );
+        }
     }
 
     /**

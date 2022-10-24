@@ -143,8 +143,10 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      * @param string $callBackMethod_value Method name of call back function in object for values
      * @return bool|string true on success, string if error happened (error string returned)
      */
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     public function traverseFlexFormXMLData($table, $field, $row, $callBackObj, $callBackMethod_value)
     {
+        // phpcs:enable
         if (!is_array($GLOBALS['TCA'][$table]) || !is_array($GLOBALS['TCA'][$table]['columns'][$field])) {
             return 'TCA table/field was not defined.';
         }
@@ -222,7 +224,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     $PA['field'] = $field;
                     $PA['uid'] = $row['uid'];
                     // Render flexform:
-                    $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey][$lang], $PA, 'data/' . $sheetKey . '/' . $lang);
+                    $this->traverseFlexFormXMLData_recurse($sheetData['ROOT']['el'], $editData['data'][$sheetKey][$lang] ?? null, $PA, 'data/' . $sheetKey . '/' . $lang);
                 } else {
                     return 'Data Structure ERROR: No ROOT element found for sheet "' . $sheetKey . '".';
                 }
