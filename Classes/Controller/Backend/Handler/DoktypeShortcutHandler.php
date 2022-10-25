@@ -42,7 +42,7 @@ class DoktypeShortcutHandler
 
         $pageRepositoryClass = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
         if (version_compare(TYPO3_version, '10.0.0', '<')) {
-            $pageRepositoryClass = \TYPO3\CMS\Frontend\Page\PageRepository;
+            $pageRepositoryClass = \TYPO3\CMS\Frontend\Page\PageRepository::class;
         }
 
         switch ($shortcutMode) {
