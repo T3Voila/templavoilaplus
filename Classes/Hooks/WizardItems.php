@@ -2,6 +2,7 @@
 
 namespace Tvp\TemplaVoilaPlus\Hooks;
 
+use Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ExtendedNewContentElementController;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Service\ItemsProcFunc;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -43,15 +44,24 @@ class WizardItems implements NewContentElementWizardHookInterface
                 foreach ($mappingConfigurations as $mappingConfiguration) {
                     $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration->getIdentifier();
                     $wizardLabel = 'fce_' . $combinedMappingIdentifier;
-                    if ($this->checkIfWizardItemShouldBeShown($parentObject->getPageId(), $combinedMappingIdentifier, $wizardLabel)) {
-                        $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
-                            'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
-                            'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
-                                TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
-                            'title' => $mappingConfiguration->getName(),
-                            'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
-                        ];
+
+                    if ($parentObject instanceof ExtendedNewContentElementController
+                            && !$this->checkIfWizardItemShouldBeShown(
+                                $parentObject->getPageId(),
+                                $combinedMappingIdentifier,
+                                $wizardLabel
+                            )
+                    ) {
+                        /* if TVP custom controller and should not be shown skip to next FCE */
+                        continue;
                     }
+                    $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
+                        'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
+                        'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
+                            TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                        'title' => $mappingConfiguration->getName(),
+                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
+                    ];
                 }
             }
         }
