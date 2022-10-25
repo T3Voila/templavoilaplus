@@ -8,6 +8,7 @@ use Tvp\TemplaVoilaPlus\Service\ItemsProcFunc;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
+use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -45,14 +46,23 @@ class WizardItems implements NewContentElementWizardHookInterface
                     $combinedMappingIdentifier = $mappingPlace->getIdentifier() . ':' . $mappingConfiguration->getIdentifier();
                     $wizardLabel = 'fce_' . $combinedMappingIdentifier;
 
-                    if ($parentObject instanceof ExtendedNewContentElementController
-                            && !$this->checkIfWizardItemShouldBeShown(
-                                $parentObject->getPageId(),
-                                $combinedMappingIdentifier,
-                                $wizardLabel
-                            )
+                    // try to get pid, either from out Controller if available or from URL
+                    $pageId = 0;
+                    if ($parentObject instanceof ExtendedNewContentElementController) {
+                        $pageId = $parentObject->getPageId();
+                    } elseif ((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id') > 0) {
+                        $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
+                    }
+
+                    // if pid is available check PageTSconfig, if pid unavailable or pageTSconfig forbids: skip this fce
+                    if (
+                        $pageId > 0
+                        && !$this->isWizardItemAvailable(
+                            $pageId,
+                            $combinedMappingIdentifier,
+                            $wizardLabel
+                        )
                     ) {
-                        /* if TVP custom controller and should not be shown skip to next FCE */
                         continue;
                     }
                     $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
@@ -69,15 +79,23 @@ class WizardItems implements NewContentElementWizardHookInterface
         $wizardItems = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizardItems);
     }
 
-    protected function checkIfWizardItemShouldBeShown(int $currentPageId, string $combinedMappingIdentifier, string $wizardLabel): bool
+    /**
+     * @param int $currentPageId
+     * @param string $combinedMappingIdentifier
+     * @param string $wizardLabel
+     *
+     * @return bool true if the wizard item should be available
+     */
+    protected function isWizardItemAvailable(int $currentPageId, string $combinedMappingIdentifier, string $wizardLabel): bool
     {
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
         $fcePageTsConfig = $pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'];
         if (ItemsProcFunc::isMappingPlaceVisible($tvpPageTsConfig, $combinedMappingIdentifier)) {
-            if (isset($fcePageTsConfig['show'])) {
+            if (isset($fcePageTsConfig['show']) && $fcePageTsConfig['show']) {
                 return $fcePageTsConfig['show'] === '*'
-                    || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false);
+                    || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false)
+                    || in_array($combinedMappingIdentifier, explode(',', $fcePageTsConfig['show']), false);
             }
             return true;
         }
