@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
  */
 
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
+use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
@@ -40,10 +41,7 @@ class DoktypeShortcutHandler
         $targetPageRecord = [];
         $shortcutMode = (int)$pageRecord['shortcut_mode'];
 
-        $pageRepositoryClass = \TYPO3\CMS\Core\Domain\Repository\PageRepository::class;
-        if (version_compare(TYPO3_version, '10.0.0', '<')) {
-            $pageRepositoryClass = \TYPO3\CMS\Frontend\Page\PageRepository::class;
-        }
+        $pageRepositoryClass = PageRepository::class;
 
         switch ($shortcutMode) {
             // Should be SHORTCUT_MODE_SELECT
