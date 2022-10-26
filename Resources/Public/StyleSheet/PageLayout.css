@@ -88,6 +88,7 @@ div.tvjs-dropzone {
     0% {
         background-color: #ffffd0;
     }
+
     50% {
         background-color: #d0ffd0;
     }
@@ -97,12 +98,15 @@ div.tvjs-dropzone {
     0% {
         background-color: #ffffd0;
     }
+
     25% {
         background-color: #ffd0d0;
     }
+
     50% {
         background-color: #eaeaea;
     }
+
     75% {
         background-color: #ffd0d0;
     }
@@ -153,7 +157,7 @@ div.tvjs-dropzone {
     width: 90px;
     right: 0;
     border-left: 1px solid #c3c3c3;
-    background-color: #eeeeee;
+    background-color: #eee;
 }
 
 #tvp-component-stage-container {
@@ -215,7 +219,6 @@ div.tvjs-dropzone {
     max-width: 100%;
 }
 
-
 .tvp-localization-info-pages .card {
     margin-bottom: 0.1rem;
 }
@@ -252,9 +255,6 @@ div.tvjs-dropzone {
 .tvp-node-header-icons-right {
     white-space: nowrap;
     flex-wrap: nowrap;
-}
-
-.tvp-page-header .tvp-node-header-icons-left {
 }
 
 .tvp-node-header .tvp-node-header-icons-left,
@@ -333,9 +333,9 @@ div.tvjs-dropzone {
 
 .sidenav-item {
     color: #198734;
-    background-color: #eeeeee;
+    background-color: #eee;
     border: 1px solid #c3c3c3;
-    margin: .4rem 1rem;
+    margin: 0.4rem 1rem;
     padding: 1rem;
 }
 
@@ -347,10 +347,12 @@ div.tvjs-dropzone {
     list-style-position: outside;
     list-style-type: none;
 }
+
 .nav-explained .sidenav-item {
     display: inline-block;
 }
-.nav-explained .sidenav-item-explaination {
+
+.nav-explained .sidenav-item-explanation {
     display: inline-block;
     width: 80%;
 }
@@ -383,7 +385,6 @@ div.tvjs-dropzone {
 .sidenav-item-config {
     color: #ffc107;
 }
-
 
 .tvp-loading-spinner {
     width: 150px;
