@@ -1,4 +1,5 @@
-{namespace core = TYPO3\CMS\Core\ViewHelpers}
+<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
+
 <f:if condition="{settings.configuration.is11orNewer}">
     <f:then>
         <f:be.pageRenderer
@@ -132,7 +133,8 @@
         <div id="tvpContentIntegrator" data-identifier="tvpContentIntegrator">
             <nav id="sidenav">
                 <ul class="sidenav-menu">
-                    <li class="sidenav-item disabled" id="navbarContentElementWizard">
+                    <li class="sidenav-item disabled" id="navbarContentElementWizard" draggable="false"
+                        {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardAriaLabel\')}',placement:'left')} >
                         <div>
                             <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
@@ -151,7 +153,8 @@
                             </div>
                         </li>
                     </f:if>
-                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} " id="navbarClipboard" data-clipboard-count="{clipboard.tt_content.count}">
+                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} " id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
+                        {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardAriaLabel\')}',placement:'left')} >
                         <div>
                             <f:if condition="{settings.configuration.is10orNewer}">
                                 <f:then>
@@ -164,7 +167,8 @@
                             <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
                         </div>
                     </li>
-                    <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash" id="navbarTrash" data-unused-count="{unused.tt_content.count}">
+                    <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash"  draggable="false" id="navbarTrash" data-unused-count="{unused.tt_content.count}"
+                        {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:trashAriaLabel\')}',placement:'left')} >
                         <div>
                             <core:icon identifier="actions-delete" size="default" /><span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
                         </div>

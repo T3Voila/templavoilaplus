@@ -73,6 +73,7 @@ define([
                 name: 'dropzones',
                 put: true
             },
+            draggable: 'none',
             ghostClass: "hidden",
             onAdd: function (evt) {
                 // Remove from container later we may give the possibility for restoring before leaving page
@@ -99,6 +100,7 @@ define([
                 name: 'dropzones',
                 put: true
             },
+            draggable: 'none',
             ghostClass: "hidden",
             onAdd: function (evt) {
                 // Remove from container later we may give the possibility for restoring before leaving page
