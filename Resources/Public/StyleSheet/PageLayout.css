@@ -340,6 +340,10 @@ div.tvjs-dropzone {
     padding: 1rem;
 }
 
+.nav-explained .sidenav-item {
+    display: inline-block;
+}
+
 .sidenav-item.disabled {
     background-color: #d7d7d7;
 }
@@ -363,7 +367,6 @@ div.tvjs-dropzone {
 
 .sidenav-item-trash {
     color: #dc3545;
-    margin-top: 10px;
 }
 
 .sidenav-item-config {

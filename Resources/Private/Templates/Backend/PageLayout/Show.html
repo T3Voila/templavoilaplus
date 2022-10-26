@@ -56,6 +56,9 @@
             <div id="tvp-component-stage-content">
                 <f:render section="Stage" arguments="{_all}"/>
             </div>
+            <f:if condition="{tutorial}">
+                <f:render partial="Backend/Tutorial" arguments="{_all}"/>
+            </f:if>
         </div>
     </section>
 </div>
@@ -163,7 +166,8 @@
                     <core:icon identifier="actions-delete" size="default"/>
                     <span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
                     </li>
-                    <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">
+                    <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip"
+                        {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:configAriaLabel\')}',placement:'left')} >
                         <f:if condition="{settings.configuration.is10orNewer}">
                             <f:then>
                                 <core:icon identifier="actions-cog-alt" size="default"/>
