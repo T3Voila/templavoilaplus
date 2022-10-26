@@ -220,7 +220,7 @@ class PageLayoutController extends ActionController
 
         if ($this->pageInfo !== false) {
             $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        }
+         }
         $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $contentHeader = '';

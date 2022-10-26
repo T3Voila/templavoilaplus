@@ -1,6 +1,6 @@
 <div class="container-fluid tvp-node-header">
     <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBarLeftButtons" arguments="{node: node}"/>
-    <div class="me-auto ms-2 tvp-node-title">
+    <div class="tvp-node-title">
         <f:if condition="!{node.rendering.belongsToCurrentPage}"><em></f:if>
         {node.rendering.fullTitle}
         <f:if condition="!{node.rendering.belongsToCurrentPage}"></em></f:if>
