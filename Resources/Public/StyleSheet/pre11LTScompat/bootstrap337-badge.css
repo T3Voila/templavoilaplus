@@ -10,3 +10,6 @@
 .bg-danger {
     background-color: rgba(200, 60, 60, 1) !important;
 }
+.bg-success {
+    background-color: rgba(121, 165, 72, 1) !important;
+}

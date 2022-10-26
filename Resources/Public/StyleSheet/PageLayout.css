@@ -141,7 +141,6 @@ div.tvjs-dropzone {
     position: absolute;
     top: 35px;
     height: 100%;
-    overflow: hidden;
 }
 
 #tvp-component-sidebar-left {

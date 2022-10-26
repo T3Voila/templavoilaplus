@@ -32,14 +32,15 @@ class IconViewHelper extends \TYPO3\CMS\Core\ViewHelpers\IconViewHelper
         if (version_compare(TYPO3_version, '9.99.0', '<=')) {
             $arguments['identifier'] = static::switchIconIdentifierWith9Variant($arguments['identifier']);
         }
-        return \TYPO3\CMS\Core\ViewHelpers\IconViewHelper::renderStatic($arguments,$renderChildrenClosure,$renderingContext);
+        return \TYPO3\CMS\Core\ViewHelpers\IconViewHelper::renderStatic($arguments, $renderChildrenClosure, $renderingContext);
     }
 
-    protected static function switchIconIdentifierWith9Variant(string $identifier) {
+    protected static function switchIconIdentifierWith9Variant(string $identifier)
+    {
         $mapping10to9 = [
             'actions-document-add' => 'actions-document-new',
             'actions-clipboard' => 'actions-edit-copy',
-            'actions-cog-alt' =>'actions-system-extension-configure'
+            'actions-cog-alt' => 'actions-system-extension-configure'
         ];
         return $mapping10to9[$identifier] ?? $identifier;
     }

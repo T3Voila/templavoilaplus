@@ -133,7 +133,7 @@
         <div id="tvpContentIntegrator" data-identifier="tvpContentIntegrator">
             <nav id="sidenav">
                 <ul class="sidenav-menu">
-                    <li class="sidenav-item disabled" id="navbarContentElementWizard" draggable="false"
+                    <li class="sidenav-item disabled sidenav-item-green" id="navbarContentElementWizard" draggable="false"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardAriaLabel\')}',placement:'left')} >
                         <tvp:icon identifier="actions-document-add" size="default"/>
                     </li>
@@ -142,7 +142,7 @@
                             <tvp:icon identifier="flags-multiple" size="default"/>
                         </li>
                     </f:if>
-                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} " id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
+                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} sidenav-item-green" id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardAriaLabel\')}',placement:'left')} >
                         <tvp:icon identifier="actions-clipboard" size="default"/>
                         <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
