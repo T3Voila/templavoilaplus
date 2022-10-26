@@ -340,8 +340,20 @@ div.tvjs-dropzone {
     padding: 1rem;
 }
 
+.nav-explained {
+    padding: 0;
+}
+
+.nav-explained li {
+    list-style-position: outside;
+    list-style-type: none;
+}
 .nav-explained .sidenav-item {
     display: inline-block;
+}
+.nav-explained .sidenav-item-explaination {
+    display: inline-block;
+    width: 80%;
 }
 
 .sidenav-item.disabled {
