@@ -92,13 +92,19 @@ class DefaultMappingHandler
             case 'typoScriptConstants':
                 break;
             case 'repeatable':
-                $processedValue = $this->processRepeatable($processedValue, $table, $row, $instructions['container']);
+                if (is_array($processedValue)) {
+                    $processedValue = $this->processRepeatable($processedValue, $table, $row, $instructions['container']);
+                }
                 break;
             case 'container':
-                $processedValue = $this->processContainer($processedValue, $table, $row, $instructions['container']);
+                if (is_array($processedValue)) {
+                    $processedValue = $this->processContainer($processedValue, $table, $row, $instructions['container']);
+                }
                 break;
             case 'rowList':
-                $processedValue = $this->processRowList($processedValue, $table, $row);
+                if (is_array($processedValue)) {
+                    $processedValue = $this->processRowList($processedValue, $table, $row);
+                }
                 break;
             case 'stdWrap':
                 break;

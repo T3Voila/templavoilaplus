@@ -262,7 +262,7 @@ class FrontendController extends AbstractPlugin
         return $flexformValues;
     }
 
-    public function processDataValues(array $dataValues, array $DSelements, $valueKey = 'vDEF')
+    public function processDataValues(array $dataValues, array $DSelements, $valueKey = 'vDEF'): array
     {
         $processedDataValues = [];
 
@@ -274,7 +274,7 @@ class FrontendController extends AbstractPlugin
                             $processedDataValues[$fieldName][$key] = $this->processDataValues($repeatableValue, $dsConf['el'], $valueKey);
                         }
                     } else {
-                        $processedDataValues[$fieldName][$key] = '';
+                        $processedDataValues[$fieldName][$key] = [];
                     }
                 } else {
                     $processedDataValues[$fieldName] = $this->processDataValues($dataValues[$fieldName]['el'], $dsConf['el'], $valueKey);
