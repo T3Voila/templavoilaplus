@@ -1,7 +1,18 @@
 pull_request_rules:
-  - name: Automatic merge on approval
+  - name: Conventional Commit
     conditions:
-      - "#approved-reviews-by>=1"
+      - base=main
     actions:
-      merge:
-        method: merge
+      post_check:
+        success_conditions:
+          - "title~=^\\[(BUGFIX|FEATURE|DOC|RELEASE|TASK)\\]\\s"
+        title: |
+          {% if check_succeed %}
+          Title follows Conventional Commit
+          {% else %}
+          Title does not follow Conventional Commit
+          {% endif %}
+        summary: |
+          {% if not check_succeed %}
+          Your pull request title must start with [(BUGFIX|FEATURE|DOC|RELEASE|TASK)].
+          {% endif %}
