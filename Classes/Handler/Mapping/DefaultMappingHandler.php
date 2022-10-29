@@ -102,9 +102,7 @@ class DefaultMappingHandler
                 }
                 break;
             case 'rowList':
-                if (is_array($processedValue)) {
-                    $processedValue = $this->processRowList($processedValue, $table, $row);
-                }
+                $processedValue = $this->processRowList($processedValue, $table, $row);
                 break;
             case 'stdWrap':
                 break;
@@ -173,10 +171,8 @@ class DefaultMappingHandler
     protected function processRepeatable(array $flexformData, string $table, array $row, array $containerInstructions): array
     {
         $postprocessedValue = [];
-        if (is_array($flexformData)) {
-            foreach ($flexformData as $key => $preProcessedValue) {
-                $postprocessedValue[$key] = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
-            }
+        foreach ($flexformData as $key => $preProcessedValue) {
+            $postprocessedValue[$key] = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
         }
         return $postprocessedValue;
     }
@@ -184,10 +180,8 @@ class DefaultMappingHandler
     protected function processContainer(array $flexformData, string $table, array $row, array $containerInstructions): array
     {
         $postprocessedValue = [];
-        if (is_array($containerInstructions)) {
-            foreach ($containerInstructions as $templateFieldName => $instructions) {
-                $postprocessedValue[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
-            }
+        foreach ($containerInstructions as $templateFieldName => $instructions) {
+            $postprocessedValue[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
         }
         return $postprocessedValue;
     }
