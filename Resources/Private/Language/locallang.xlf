@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-    <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoilaplus">
-        <header/>
+    <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:31+02:00">
+        <header></header>
         <body>
-            <trans-unit id="cm1_title" xml:space="preserve">
+            <trans-unit id="cm1_title" resname="cm1_title">
                 <source>TemplaVoilà Plus</source>
             </trans-unit>
-            <trans-unit id="cm1_viewsubelements" xml:space="preserve">
+            <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
                 <source>View: Sub elements</source>
             </trans-unit>
-            <trans-unit id="cm1_viewflexformxml" xml:space="preserve">
+            <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
                 <source>View: Flexform XML</source>
             </trans-unit>
-            <trans-unit id="cm_viewdsto" xml:space="preserve">
+            <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
                 <source>View: DS/TO</source>
             </trans-unit>
-            <trans-unit id="cm1_pagesusingthiselement" xml:space="preserve">
+            <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement">
                 <source>Pages using this element -&gt;</source>
             </trans-unit>
-            <trans-unit id="wiz_refElements" xml:space="preserve">
+            <trans-unit id="wiz_refElements" resname="wiz_refElements">
                 <source>Reference unused content elements (templavoilaplus)</source>
             </trans-unit>
-            <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
+            <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
                 <source>Rename a field in pages.tx_templavoilaplus_flex</source>
             </trans-unit>
-            <trans-unit id="field_sourceField" xml:space="preserve">
+            <trans-unit id="field_sourceField" resname="field_sourceField">
                 <source>source field</source>
             </trans-unit>
-            <trans-unit id="field_destinationField" xml:space="preserve">
+            <trans-unit id="field_destinationField" resname="field_destinationField">
                 <source>destination field</source>
             </trans-unit>
-            <trans-unit id="field_simulateField" xml:space="preserve">
+            <trans-unit id="field_simulateField" resname="field_simulateField">
                 <source>Simulate Change only</source>
             </trans-unit>
-            <trans-unit id="field_submit" xml:space="preserve">
+            <trans-unit id="field_submit" resname="field_submit">
                 <source>submit</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.header" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.header" resname="extconf.staticWizard.header">
                 <source>Migrate</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.messageMigration" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.messageMigration" resname="extconf.staticWizard.messageMigration">
                 <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.messageNoMigration" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.messageNoMigration" resname="extconf.staticWizard.messageNoMigration">
                 <source>You do not use staticDS, so no migration needed.</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.messageMigrationDone" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.messageMigrationDone" resname="extconf.staticWizard.messageMigrationDone">
                 <source>Fine, no migration needed. There is no datastructure inside your database.</source>
             </trans-unit>
-            <trans-unit id="extconf.staticWizard.link" xml:space="preserve">
+            <trans-unit id="extconf.staticWizard.link" resname="extconf.staticWizard.link">
                 <source>Click here to run the wizard</source>
             </trans-unit>
         </body>
