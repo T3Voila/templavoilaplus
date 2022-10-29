@@ -122,6 +122,9 @@
             </trans-unit>
 
 			<!-- sidebar -->
+			<trans-unit id="clipboardAriaLabel" xml:space="preserve">
+				<source>You can drag items from the page to add them to the clipboard, or open a filled clipboard to drag items to the page.</source>
+			</trans-unit>
 			<trans-unit id="clipboardHeading" xml:space="preserve">
 				<source>Clipboard</source>
 			</trans-unit>
@@ -137,8 +140,14 @@
 			<trans-unit id="clipboardReference" xml:space="preserve">
 				<source>Reference element</source>
 			</trans-unit>
+			<trans-unit id="newCeWizardAriaLabel" xml:space="preserve">
+				<source>Click here to open the new content element wizard to add new content elements by dragging them to the page.</source>
+			</trans-unit>
 			<trans-unit id="newCeWizardDesc" xml:space="preserve">
 				<source>Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</source>
+			</trans-unit>
+			<trans-unit id="trashAriaLabel" xml:space="preserve">
+				<source>You can drag items from the page to here to remove them, or open a filled trash to drag items back to the page to restore them.</source>
 			</trans-unit>
 			<trans-unit id="trashHeading" xml:space="preserve">
 				<source>Unused Elements</source>
