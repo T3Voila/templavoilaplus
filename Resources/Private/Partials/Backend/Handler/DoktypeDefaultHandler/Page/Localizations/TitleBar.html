@@ -1,0 +1,11 @@
+<div class="card-header">
+    <div class="container-fluid tvp-node-header">
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations/TitleBarLeftButtons" arguments="{node: node}"/>
+        <div class="tvp-node-title">
+            <span>{node.rendering.fullTitle}</span>
+        </div>
+        <f:if condition="!{skipButtons}">
+            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations/TitleBarRightButtons" arguments="{node: node, isLocalization: isLocalization}"/>
+        </f:if>
+    </div>
+</div>

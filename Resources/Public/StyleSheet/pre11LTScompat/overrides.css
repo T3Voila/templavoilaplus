@@ -19,3 +19,22 @@ html {
 .me-auto {
     margin-right: auto !important;
 }
+
+/* 9LTS uses img for svg, thus CSS coloring wont work, but we can calculate a filter via https://codepen.io/sosuke/pen/Pjoqqp */
+.sidenav-item-trash .t3js-icon img {
+    filter: invert(36%) sepia(59%) saturate(5866%) hue-rotate(337deg) brightness(91%) contrast(89%);
+}
+
+.sidenav-item-blue .t3js-icon img {
+    filter: invert(28%) sepia(76%) saturate(2224%) hue-rotate(208deg) brightness(101%) contrast(108%);
+}
+
+.sidenav-item-newcewizard .t3js-icon img,
+.sidenav-item-clipboard .t3js-icon img,
+.sidenav-item-green .t3js-icon img {
+    filter: invert(41%) sepia(53%) saturate(698%) hue-rotate(83deg) brightness(89%) contrast(90%);
+}
+
+.sidenav-item-config .t3js-icon img {
+    filter: invert(79%) sepia(64%) saturate(2018%) hue-rotate(352deg) brightness(102%) contrast(104%);
+}

@@ -37,37 +37,38 @@
     </f:else>
 </f:if>
 
-    <div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
-        <core:icon identifier="spinner-circle-dark" size="default" />
-        <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
-    </div>
-    <div id="moduleShadowing"></div>
-
-    <f:render section="FlashMessage" arguments="{_all}" />
-
-    <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}" data-tvp-usersettings="{settings.configuration.userSettings -> f:format.json()}">
-
-        <section id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
-            <f:render section="SidebarContentTree" />
-        </section>
-        <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
-            <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
-                <header id="tvp-component-stage-header">
-                    <f:render section="Header" arguments="{_all}" />
-                </header>
-                <div id="tvp-component-stage-content">
-                    <f:render section="Stage" arguments="{_all}" />
-                </div>
+<div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
+    <core:icon identifier="spinner-circle-dark" size="default" />
+    <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+</div>
+<div id="moduleShadowing"></div>
+<f:render section="FlashMessage" arguments="{_all}" />
+<section style="display:none" id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+    <f:render section="SidebarContentTree"/>
+</section>
+<div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}"
+     data-tvp-usersettings="{settings.configuration.userSettings -> f:format.json()}">
+    <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
+        <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
+            <header id="tvp-component-stage-header">
+                <f:render section="Header" arguments="{_all}"/>
+            </header>
+            <div id="tvp-component-stage-content">
+                <f:render section="Stage" arguments="{_all}"/>
             </div>
-        </section>
-        <section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
-            <f:render section="SidebarContentManipulation" arguments="{_all}" />
-        </section>
+            <f:if condition="{tutorial}">
+                <f:render partial="Backend/Tutorial" arguments="{_all}"/>
+            </f:if>
+        </div>
+    </section>
+</div>
+<section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+    <f:render section="SidebarContentManipulation" arguments="{_all}" />
+</section>
 
-    </div>
 <f:section name="FlashMessage">
     <f:for each="{pageMessages}" as="message">
-        <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false" >
+        <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false">
             {message.message}
             <f:if condition="{message.buttons}">
                 <br/>
@@ -100,11 +101,10 @@
 <f:section name="Header">
     <f:if condition="{node}">
         <f:format.raw>{contentHeader}</f:format.raw>
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}" />
         <f:if condition="{pageDescription}">
             <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
         </f:if>
-
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}"/>
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
     </f:if>
 </f:section>
@@ -133,57 +133,28 @@
         <div id="tvpContentIntegrator" data-identifier="tvpContentIntegrator">
             <nav id="sidenav">
                 <ul class="sidenav-menu">
-                    <li class="sidenav-item disabled" id="navbarContentElementWizard" draggable="false"
+                    <li class="sidenav-item disabled sidenav-item-green" id="navbarContentElementWizard" draggable="false"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardAriaLabel\')}',placement:'left')} >
-                        <div>
-                            <f:if condition="{settings.configuration.is10orNewer}">
-                                <f:then>
-                                    <core:icon identifier="actions-document-add" size="default" />
-                                </f:then>
-                                <f:else>
-                                    <core:icon identifier="actions-document-new" size="default" />
-                                </f:else>
-                            </f:if>
-                        </div>
+                        <tvp:icon identifier="actions-document-add" size="default"/>
                     </li>
                     <f:if condition="{settings.configuration.localizationPossible} && false">
                         <li class="sidenav-item disabled" id="navbarLanguages">
-                            <div>
-                                <core:icon identifier="flags-multiple" size="default" />
-                            </div>
+                            <tvp:icon identifier="flags-multiple" size="default"/>
                         </li>
                     </f:if>
-                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} " id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
+                    <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} sidenav-item-green" id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardAriaLabel\')}',placement:'left')} >
-                        <div>
-                            <f:if condition="{settings.configuration.is10orNewer}">
-                                <f:then>
-                                    <core:icon identifier="actions-clipboard" size="default" />
-                                </f:then>
-                                <f:else>
-                                    <core:icon identifier="actions-edit-copy" size="default" />
-                                </f:else>
-                            </f:if>
-                            <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
-                        </div>
+                        <tvp:icon identifier="actions-clipboard" size="default"/>
+                        <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
                     </li>
                     <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash"  draggable="false" id="navbarTrash" data-unused-count="{unused.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:trashAriaLabel\')}',placement:'left')} >
-                        <div>
-                            <core:icon identifier="actions-delete" size="default" /><span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
-                        </div>
+                        <core:icon identifier="actions-delete" size="default"/>
+                        <span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
                     </li>
-                    <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip">
-                        <div>
-                            <f:if condition="{settings.configuration.is10orNewer}">
-                                <f:then>
-                                    <core:icon identifier="actions-cog-alt" size="default" />
-                                </f:then>
-                                <f:else>
-                                    <core:icon identifier="actions-system-extension-configure" size="default" />
-                                </f:else>
-                            </f:if>
-                        </div>
+                    <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip"
+                        {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:configAriaLabel\')}',placement:'left')} >
+                        <tvp:icon identifier="actions-cog-alt" size="default"/>
                     </li>
                 </ul>
             </nav>

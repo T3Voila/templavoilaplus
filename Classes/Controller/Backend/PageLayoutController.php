@@ -254,13 +254,14 @@ class PageLayoutController extends ActionController
             $contentFooter = $this->renderFunctionHook('renderFooter');
         } else {
             $pageTitle = '';
-            if (GeneralUtility::_GP('id') === '0') {
-                // normaly no page selected
+            if (GeneralUtility::_GP('id') === null || GeneralUtility::_GP('id') === '0') {
+                //  no page selected
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->getLL('infoDefaultIntroduction'),
                     TemplaVoilaUtility::getLanguageService()->getLL('title'),
                     FlashMessage::INFO
                 );
+                $this->view->assign('tutorial', true);
             } else {
                 // NOt found or no show access
                 $this->addFlashMessage(

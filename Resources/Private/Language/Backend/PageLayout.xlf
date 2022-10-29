@@ -123,7 +123,7 @@
 
 			<!-- sidebar -->
 			<trans-unit id="clipboardAriaLabel" xml:space="preserve">
-				<source>You can drag items from the page to add them to the clipboard, or open a filled clipboard to drag items to the page.</source>
+				<source>You can drag items from the page to this icon to add them to the clipboard, or open a filled clipboard to drag items to the page.</source>
 			</trans-unit>
 			<trans-unit id="clipboardHeading" xml:space="preserve">
 				<source>Clipboard</source>
@@ -141,13 +141,13 @@
 				<source>Reference element</source>
 			</trans-unit>
 			<trans-unit id="newCeWizardAriaLabel" xml:space="preserve">
-				<source>Click here to open the new content element wizard to add new content elements by dragging them to the page.</source>
+				<source>Click this icon to open the new content element wizard to add new content elements by dragging them to the page.</source>
 			</trans-unit>
 			<trans-unit id="newCeWizardDesc" xml:space="preserve">
 				<source>Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</source>
 			</trans-unit>
 			<trans-unit id="trashAriaLabel" xml:space="preserve">
-				<source>You can drag items from the page to here to remove them, or open a filled trash to drag items back to the page to restore them.</source>
+				<source>You can drag items from the page to this icon to remove the content, or open a filled trash to drag items back to the page to restore them.</source>
 			</trans-unit>
 			<trans-unit id="trashHeading" xml:space="preserve">
 				<source>Unused Elements</source>
@@ -155,7 +155,30 @@
 			<trans-unit id="trashDesc" xml:space="preserve">
 				<source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
 			</trans-unit>
+			<trans-unit id="configAriaLabel" xml:space="preserve">
+				<source>Open the settings menu.</source>
+			</trans-unit>
 
+
+
+			<trans-unit id="tutorial.introduction" xml:space="preserve">
+				<source>The page module focuses on editing the content elements of a page.
+					In general there are different page areas or fields for which you can add content.
+					The content elements themselves can be moved around via drag and drop. For adding
+					or removing content refer to the sidebar icon</source>
+			</trans-unit>
+			<trans-unit id="tutorial.sidebar.heading" xml:space="preserve">
+				<source>Understanding the sidebar items</source>
+			</trans-unit>
+			<trans-unit id="tutorial.sidebar.introduction" xml:space="preserve">
+				<source>To the right you find a sidebar with some icons</source>
+			</trans-unit>
+			<trans-unit id="tutorial.editing.heading" xml:space="preserve">
+				<source>Start editing your pages!</source>
+			</trans-unit>
+			<trans-unit id="tutorial.editing.introduction" xml:space="preserve">
+				<source>Just select the page you want to edit from the page tree to the left.</source>
+			</trans-unit>
 		</body>
     </file>
 </xliff>

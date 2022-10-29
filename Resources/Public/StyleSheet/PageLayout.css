@@ -79,25 +79,46 @@ div.tvjs-dropzone {
 }
 
 @keyframes toYellow {
-    100% { background-color: #ffffd0; }
+    100% {
+        background-color: #ffffd0;
+    }
 }
 
 @keyframes flashGreen {
-    0% { background-color: #ffffd0; }
-    50% { background-color: #d0ffd0; }
+    0% {
+        background-color: #ffffd0;
+    }
+
+    50% {
+        background-color: #d0ffd0;
+    }
 }
 
 @keyframes flashRed {
-    0% { background-color: #ffffd0; }
-    25% { background-color: #ffd0d0; }
-    50% { background-color: #eaeaea; }
-    75% { background-color: #ffd0d0; }
+    0% {
+        background-color: #ffffd0;
+    }
+
+    25% {
+        background-color: #ffd0d0;
+    }
+
+    50% {
+        background-color: #eaeaea;
+    }
+
+    75% {
+        background-color: #ffd0d0;
+    }
+}
+
+.module {
+    overflow-x: hidden;
 }
 
 .module-body {
     height: 100%;
     width: 100%;
-    top: 65px;
 }
 
 .module-body > .callout {
@@ -122,9 +143,8 @@ div.tvjs-dropzone {
 
 .tvp-component-sidebar {
     position: absolute;
-    top: 0;
+    top: 35px;
     height: 100%;
-    overflow: hidden;
 }
 
 #tvp-component-sidebar-left {
@@ -134,9 +154,10 @@ div.tvjs-dropzone {
 }
 
 #tvp-component-sidebar-right {
-    width: 80px;
+    width: 90px;
     right: 0;
-    box-shadow: -6px 0 20px #333;
+    border-left: 1px solid #c3c3c3;
+    background-color: #eee;
 }
 
 #tvp-component-stage-container {
@@ -152,6 +173,12 @@ div.tvjs-dropzone {
     width: 100%;
 }
 
+.module-docheader-bar-navigation .module-docheader-bar-column-right {
+    width: 100%;
+    white-space: nowrap;
+    text-align: right;
+}
+
 .tvp-record-edit {
     cursor: pointer;
 }
@@ -159,27 +186,37 @@ div.tvjs-dropzone {
 .tvp-node-header {
     align-items: center;
     background-color: rgb(238, 238, 238) !important;
-    display: flex;
     flex-wrap: nowrap !important;
+    display: flex;
     margin-bottom: 0;
-    padding: 8px 12px;
+    padding: 6px 12px;
+}
+
+.tvp-node-header .icon {
+    overflow: initial;
+}
+
+#tvp-component-stage-header h1 {
+    margin-bottom: 0;
+}
+
+#tvp-component-stage-header .tvp-node {
+    padding: 0;
 }
 
 .tvp-page-header {
+    display: flex;
+    flex-wrap: nowrap !important;
     background-color: transparent !important;
+    padding: 0;
+    align-items: top;
 }
 
 .tvp-localization-info-pages {
-    margin-top: -0.5rem;
-    margin-left: 1.7rem;
     margin-bottom: 1rem;
     width: fit-content;
     min-width: 300px;
     max-width: 100%;
-}
-
-.tvp-localization-info-pages-withflags {
-    margin-left: 2.85rem;
 }
 
 .tvp-localization-info-pages .card {
@@ -190,20 +227,24 @@ div.tvjs-dropzone {
     margin-bottom: 0.5rem;
 }
 
-.tvp-localization-row .tvp-node-header {
-    padding: 0 0.2rem;
-}
-
 .tvp-localization-info-pages .tvp-node-title {
     padding-right: 0.2rem;
 }
 
-.tvp-node:hover .tvp-node:hover .card-body {
-    opacity: 1;
+.tvp-localization-info-pages .tvp-node-title span {
+    padding-right: 1em;
+}
+
+.tvp-node .card-body {
+    padding: 10px;
 }
 
 .tvp-node .tvp-node .card-body {
-    opacity: 0.6;
+    opacity: 1;
+}
+
+.tvp-node:hover .tvp-node:hover .card-body {
+    opacity: 1;
 }
 
 .tvp-node {
@@ -216,8 +257,9 @@ div.tvjs-dropzone {
     flex-wrap: nowrap;
 }
 
-.tvp-page-header .tvp-node-header-icons-left {
-    margin-top: -0.5em;
+.tvp-node-header .tvp-node-header-icons-left,
+.tvp-node-header .tvp-node-header-icons-left > a {
+    margin-left: 0;
 }
 
 .tvp-page-header .tvp-node-header-icons-left .tvp-page-flag {
@@ -233,6 +275,8 @@ div.tvjs-dropzone {
     padding-bottom: 4px;
     padding-top: 4px;
     text-overflow: ellipsis;
+    flex-grow: 1;
+    line-height: 1.2em;
 }
 
 .tvp-page-header {
@@ -275,7 +319,7 @@ div.tvjs-dropzone {
     padding: 0;
     height: 100%;
     position: absolute;
-    background-color: #9c9c9c;
+    top: 70px;
     right: 0;
     transform: translateX(0%);
 }
@@ -285,26 +329,49 @@ div.tvjs-dropzone {
     margin: 0;
     list-style-type: none;
     height: 100%;
-    margin-top: 65px;
 }
 
 .sidenav-item {
     color: #198734;
     background-color: #eee;
-    border: 1px solid #9c9c9c;
+    border: 1px solid #c3c3c3;
+    margin: 0.4rem 1rem;
+    padding: 1rem;
+}
+
+.nav-explained {
+    padding: 0;
+}
+
+.nav-explained li {
+    list-style-position: outside;
+    list-style-type: none;
+}
+
+.nav-explained .sidenav-item {
+    display: inline-block;
+}
+
+.nav-explained .sidenav-item-explanation {
+    display: inline-block;
+    width: 80%;
+}
+
+.sidenav-item.disabled {
+    background-color: #d7d7d7;
+}
+
+.sidenav-item.disabled .icon {
+    filter: grayscale(0.8) blur(1px);
+}
+
+.sidenav-item:hover:not(.disabled) {
+    background-color: #d7d7d7;
 }
 
 .sidenav-item .badge {
     font-size: 10px;
     font-weight: 400;
-}
-
-.sidenav-item.disabled {
-    background-color: #9c9c9c;
-}
-
-.sidenav-item.disabled > div {
-    filter: grayscale(0.7) blur(0.5px);
 }
 
 .sidenav-item-blue {
@@ -313,19 +380,10 @@ div.tvjs-dropzone {
 
 .sidenav-item-trash {
     color: #dc3545;
-    margin-top: 10px;
 }
 
 .sidenav-item-config {
     color: #ffc107;
-}
-
-.sidenav-item:hover:not(.disabled) {
-    background-color: #d7d7d7;
-}
-
-.sidenav-item div {
-    margin: 24px;
 }
 
 .tvp-loading-spinner {
