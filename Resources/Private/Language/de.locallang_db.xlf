@@ -11,9 +11,9 @@
         <source>Element Design:</source>
         <target state="needs-translation">Element Design:</target>
       </trans-unit>
-      <trans-unit id="tt_content.tx_templavoilaplus_flex" resname="tt_content.tx_templavoilaplus_flex">
+      <trans-unit id="tt_content.tx_templavoilaplus_flex" resname="tt_content.tx_templavoilaplus_flex" approved="yes">
         <source>Content:</source>
-        <target state="needs-translation">Content:</target>
+        <target state="final">Inhalt:</target>
       </trans-unit>
       <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1">
         <source>Flexible Content</source>
@@ -27,13 +27,13 @@
         <source>Subpages - Use Design:</source>
         <target state="needs-translation">Subpages - Use Design:</target>
       </trans-unit>
-      <trans-unit id="pages.tab.tx_templavoilaplus_flex" resname="pages.tab.tx_templavoilaplus_flex">
+      <trans-unit id="pages.tab.tx_templavoilaplus_flex" resname="pages.tab.tx_templavoilaplus_flex" approved="yes">
         <source>TemplaVoilà! Plus Content</source>
-        <target state="needs-translation">TemplaVoilà! Plus Content</target>
+        <target state="final">TemplaVoilà! Plus Inhalt</target>
       </trans-unit>
-      <trans-unit id="pages.tx_templavoilaplus_flex" resname="pages.tx_templavoilaplus_flex">
+      <trans-unit id="pages.tx_templavoilaplus_flex" resname="pages.tx_templavoilaplus_flex" approved="yes">
         <source>Content:</source>
-        <target state="needs-translation">Content:</target>
+        <target state="final">Inhalt:</target>
       </trans-unit>
     </body>
   </file>
