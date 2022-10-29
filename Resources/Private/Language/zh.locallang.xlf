@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoilaplus" target-language="zh-CN">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoilaplus" target-language="zh-TW">
     <header/>
     <body>
       <trans-unit id="cm1_title" xml:space="preserve">
