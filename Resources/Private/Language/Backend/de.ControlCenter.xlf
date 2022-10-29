@@ -11,31 +11,31 @@
             <target state="needs-translation">TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</target></trans-unit>
       <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
                 <source>TemplaVoilà! Plus Control Center</source>
-            <target state="needs-translation">TemplaVoilà! Plus Control Center</target></trans-unit>
+            <target state="translated">TemplaVoilà! Plus Kontrollzentrum</target></trans-unit>
       <trans-unit id="title" xml:space="preserve">
                 <source>TemplaVoilà! Plus Control Center</source>
-            <target state="needs-translation">TemplaVoilà! Plus Control Center</target></trans-unit>
+            <target state="translated">TemplaVoilà! Plus Kontrollzentrum</target></trans-unit>
       <trans-unit id="storagefolders" xml:space="preserve">
                 <source>Storage Folders</source>
             <target state="needs-translation">Storage Folders</target></trans-unit>
       <trans-unit id="datastructures" xml:space="preserve">
                 <source>Data Structures</source>
-            <target state="needs-translation">Data Structures</target></trans-unit>
+            <target state="translated">Datenstrukturen (DataStructures)</target></trans-unit>
       <trans-unit id="datastructures.description" xml:space="preserve">
                 <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
-            <target state="needs-translation">Data Structures define the elements and areas that are used to structure the content of a mapping.</target></trans-unit>
+            <target state="translated">Datenstrukturen definieren die Elemente und Bereiche die für die Strukturierung der Inhalte einer Zuordnung genutzt werden.</target></trans-unit>
       <trans-unit id="mappings" xml:space="preserve">
                 <source>Mappings</source>
-            <target state="needs-translation">Mappings</target></trans-unit>
+            <target state="translated">Zuordnungen (Mappings)</target></trans-unit>
       <trans-unit id="mappings.description" xml:space="preserve">
                 <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
-            <target state="needs-translation">Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</target></trans-unit>
+            <target state="translated">Zuordnungen erlauben festzulegen welche TemplaVoilà! Plus Konfiguration für eine ausgewählte Seite oder ein ausgewähltes Inhaltselement genutzt werden.</target></trans-unit>
       <trans-unit id="templates" xml:space="preserve">
                 <source>Templates</source>
-            <target state="needs-translation">Templates</target></trans-unit>
+            <target state="translated">Vorlagen (Templates)</target></trans-unit>
       <trans-unit id="templates.description" xml:space="preserve">
                 <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
-            <target state="needs-translation">Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</target></trans-unit>
+            <target state="translated">Vorlagen definieren welche Elemente zu welchen Bereichen einer bspw. HTML-Vorlage zugeordnet werden sollen, um die Ausgabe zu realisieren.</target></trans-unit>
       <trans-unit id="templateobjects" xml:space="preserve">
                 <source>Template Objects</source>
             <target state="needs-translation">Template Objects</target></trans-unit>
