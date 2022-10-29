@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:24Z" product-name="templavoilaplus" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="access_noDSaccess" xml:space="preserve">
+				<source>You have no access to data structure of this record</source>
+			<target state="needs-translation">You have no access to data structure of this record</target></trans-unit>
+      <trans-unit id="access_noTOaccess" xml:space="preserve">
+				<source>You have no access to template object of this record</source>
+			<target state="needs-translation">You have no access to template object of this record</target></trans-unit>
+      <trans-unit id="access_noModifyAccess" xml:space="preserve">
+				<source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
+			<target state="needs-translation">Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</target></trans-unit>
+      <trans-unit id="access_noCreateAccess" xml:space="preserve">
+				<source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
+			<target state="needs-translation">Creation of record in %s is not allowed because user has no access to its DS and/or TO</target></trans-unit>
+    </body>
+  </file>
+</xliff>
