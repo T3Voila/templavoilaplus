@@ -269,8 +269,12 @@ class FrontendController extends AbstractPlugin
         foreach ($DSelements as $fieldName => $dsConf) {
             if (isset($dsConf['type']) && $dsConf['type'] === 'array' && is_array($dsConf['el'])) {
                 if (isset($dsConf['section']) && $dsConf['section'] === '1') {
-                    foreach ($dataValues[$fieldName]['el'] as $key => $repeatableValue) {
-                        $processedDataValues[$fieldName][$key] = $this->processDataValues($repeatableValue, $dsConf['el'], $valueKey);
+                    if (isset($dataValues[$fieldName]['el']) && is_array($dataValues[$fieldName]['el'])) {
+                        foreach ($dataValues[$fieldName]['el'] as $key => $repeatableValue) {
+                            $processedDataValues[$fieldName][$key] = $this->processDataValues($repeatableValue, $dsConf['el'], $valueKey);
+                        }
+                    } else {
+                        $processedDataValues[$fieldName][$key] = '';
                     }
                 } else {
                     $processedDataValues[$fieldName] = $this->processDataValues($dataValues[$fieldName]['el'], $dsConf['el'], $valueKey);
