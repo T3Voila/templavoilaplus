@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.2" xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2">
-	<file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:24Z" product-name="templavoilaplus">
-		<header/>
+	<file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:19+02:00">
+		<header></header>
 		<body>
-			<trans-unit id="access_noDSaccess" xml:space="preserve">
+			<trans-unit id="access_noDSaccess" resname="access_noDSaccess">
 				<source>You have no access to data structure of this record</source>
 			</trans-unit>
-			<trans-unit id="access_noTOaccess" xml:space="preserve">
+			<trans-unit id="access_noTOaccess" resname="access_noTOaccess">
 				<source>You have no access to template object of this record</source>
 			</trans-unit>
-			<trans-unit id="access_noModifyAccess" xml:space="preserve">
+			<trans-unit id="access_noModifyAccess" resname="access_noModifyAccess">
 				<source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
 			</trans-unit>
-			<trans-unit id="access_noCreateAccess" xml:space="preserve">
+			<trans-unit id="access_noCreateAccess" resname="access_noCreateAccess">
 				<source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
 			</trans-unit>
 		</body>
