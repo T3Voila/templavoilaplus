@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="messages" date="2014-08-12T17:03:18Z" product-name="templavoilaplus" target-language="pl">
+    <header/>
+    <body>
+      <trans-unit id="enable.renderFCEHeader" xml:space="preserve">
+                <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
+            <target state="needs-translation">Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</target></trans-unit>
+      <trans-unit id="ds.indentation" xml:space="preserve">
+                <source>Defines the XML indentation in the Data Structures.:This is useful for static Data Structures. Number smaller than zero means no indentation, zero means using tabs and number larger than zero means number of space chars.</source>
+            <target state="needs-translation">Defines the XML indentation in the Data Structures.:This is useful for static Data Structures. Number smaller than zero means no indentation, zero means using tabs and number larger than zero means number of space chars.</target></trans-unit>
+      <trans-unit id="staticDS.enable" xml:space="preserve">
+                <source>Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</source>
+            <target state="needs-translation">Enable static files for data structures:Experimental! Use Static DS Conversion Wizard below!</target></trans-unit>
+      <trans-unit id="staticDS.path_fce" xml:space="preserve">
+                <source>FCE Data Structure Path:Path to the static data structures for flexible content elements</source>
+            <target state="needs-translation">FCE Data Structure Path:Path to the static data structures for flexible content elements</target></trans-unit>
+      <trans-unit id="staticDS.path_page" xml:space="preserve">
+                <source>Page Data Structure Path:Path to the static data structures for pages</source>
+            <target state="needs-translation">Page Data Structure Path:Path to the static data structures for pages</target></trans-unit>
+    </body>
+  </file>
+</xliff>
