@@ -25,15 +25,15 @@
       </trans-unit>
       <trans-unit id="wiz_refElements" resname="wiz_refElements">
         <source>Reference unused content elements (templavoilaplus)</source>
-        <target state="needs-translation">Reference unused content elements (templavoilaplus)</target>
+        <target state="translated">Reference for ubrugte indholdselementer (templavoilaplus)</target>
       </trans-unit>
       <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
         <source>Rename a field in pages.tx_templavoilaplus_flex</source>
-        <target state="needs-translation">Rename a field in pages.tx_templavoilaplus_flex</target>
+        <target state="translated">Omdøb et felt på pages.tx_templavoilaplus_flex</target>
       </trans-unit>
       <trans-unit id="field_sourceField" resname="field_sourceField">
         <source>source field</source>
-        <target state="needs-translation">source field</target>
+        <target state="translated">kildefelt</target>
       </trans-unit>
       <trans-unit id="field_destinationField" resname="field_destinationField">
         <source>destination field</source>
