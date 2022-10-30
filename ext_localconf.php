@@ -73,16 +73,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
     = \Tvp\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
 
 
-// Register slot for translation mirror url
-/** @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher $signalSlotDispatcher */
-$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-$signalSlotDispatcher->connect(
-    \TYPO3\CMS\Lang\Service\TranslationService::class,
-    'postProcessMirrorUrl',
-    \Tvp\TemplaVoilaPlus\Slots\TranslationServiceSlot::class,
-    'postProcessMirrorUrl'
-);
-
 // Register install/update processes
 // 8LTS Update
 // Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
