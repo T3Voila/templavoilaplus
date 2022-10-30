@@ -219,7 +219,7 @@ class DefaultMappingHandler
         /** @var ContentObjectRenderer $cObj */
         $cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $cObj->setParent($row, $table . ':' . $row['uid']);
-        $cObj->start($flexformData, '_NO_TABLE');
+        $cObj->start($flexformData + $row, '_NO_TABLE');
         $cObj->setCurrentVal($processedValue);
 
         return $cObj;
