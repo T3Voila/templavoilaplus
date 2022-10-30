@@ -1,56 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:54:17Z" product-name="templavoilaplus" target-language="el">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:31+02:00" target-language="el">
     <header/>
     <body>
-      <trans-unit id="cm1_title" xml:space="preserve">
-                <source>TemplaVoilà Plus</source>
-            <target state="needs-translation">TemplaVoilà Plus</target></trans-unit>
-      <trans-unit id="cm1_viewsubelements" xml:space="preserve">
-                <source>View: Sub elements</source>
-            <target state="needs-translation">View: Sub elements</target></trans-unit>
-      <trans-unit id="cm1_viewflexformxml" xml:space="preserve">
-                <source>View: Flexform XML</source>
-            <target state="needs-translation">View: Flexform XML</target></trans-unit>
-      <trans-unit id="cm_viewdsto" xml:space="preserve">
-                <source>View: DS/TO</source>
-            <target state="needs-translation">View: DS/TO</target></trans-unit>
-      <trans-unit id="cm1_pagesusingthiselement" xml:space="preserve">
-                <source>Pages using this element -&gt;</source>
-            <target state="needs-translation">Pages using this element -&gt;</target></trans-unit>
-      <trans-unit id="wiz_refElements" xml:space="preserve">
-                <source>Reference unused content elements (templavoilaplus)</source>
-            <target state="needs-translation">Reference unused content elements (templavoilaplus)</target></trans-unit>
-      <trans-unit id="wiz_renameFieldsInPage" xml:space="preserve">
-                <source>Rename a field in pages.tx_templavoilaplus_flex</source>
-            <target state="needs-translation">Rename a field in pages.tx_templavoilaplus_flex</target></trans-unit>
-      <trans-unit id="field_sourceField" xml:space="preserve">
-                <source>source field</source>
-            <target state="needs-translation">source field</target></trans-unit>
-      <trans-unit id="field_destinationField" xml:space="preserve">
-                <source>destination field</source>
-            <target state="needs-translation">destination field</target></trans-unit>
-      <trans-unit id="field_simulateField" xml:space="preserve">
-                <source>Simulate Change only</source>
-            <target state="needs-translation">Simulate Change only</target></trans-unit>
-      <trans-unit id="field_submit" xml:space="preserve">
-                <source>submit</source>
-            <target state="needs-translation">submit</target></trans-unit>
-      <trans-unit id="extconf.staticWizard.header" xml:space="preserve">
-                <source>Migrate</source>
-            <target state="needs-translation">Migrate</target></trans-unit>
-      <trans-unit id="extconf.staticWizard.messageMigration" xml:space="preserve">
-                <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-            <target state="needs-translation">Please use the migration wizard to move all datastructures from your database to the filesystem.</target></trans-unit>
-      <trans-unit id="extconf.staticWizard.messageNoMigration" xml:space="preserve">
-                <source>You do not use staticDS, so no migration needed.</source>
-            <target state="needs-translation">You do not use staticDS, so no migration needed.</target></trans-unit>
-      <trans-unit id="extconf.staticWizard.messageMigrationDone" xml:space="preserve">
-                <source>Fine, no migration needed. There is no datastructure inside your database.</source>
-            <target state="needs-translation">Fine, no migration needed. There is no datastructure inside your database.</target></trans-unit>
-      <trans-unit id="extconf.staticWizard.link" xml:space="preserve">
-                <source>Click here to run the wizard</source>
-            <target state="needs-translation">Click here to run the wizard</target></trans-unit>
+      <trans-unit id="cm1_title" resname="cm1_title">
+        <source>TemplaVoilà Plus</source>
+        <target state="needs-translation">TemplaVoilà Plus</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
+        <source>View: Sub elements</source>
+        <target state="needs-translation">View: Sub elements</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
+        <source>View: Flexform XML</source>
+        <target state="needs-translation">View: Flexform XML</target>
+      </trans-unit>
+      <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
+        <source>View: DS/TO</source>
+        <target state="needs-translation">View: DS/TO</target>
+      </trans-unit>
+      <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement">
+        <source>Pages using this element -&gt;</source>
+        <target state="needs-translation">Pages using this element -&gt;</target>
+      </trans-unit>
+      <trans-unit id="wiz_refElements" resname="wiz_refElements">
+        <source>Reference unused content elements (templavoilaplus)</source>
+        <target state="needs-translation">Reference unused content elements (templavoilaplus)</target>
+      </trans-unit>
+      <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
+        <source>Rename a field in pages.tx_templavoilaplus_flex</source>
+        <target state="needs-translation">Rename a field in pages.tx_templavoilaplus_flex</target>
+      </trans-unit>
+      <trans-unit id="field_sourceField" resname="field_sourceField">
+        <source>source field</source>
+        <target state="needs-translation">source field</target>
+      </trans-unit>
+      <trans-unit id="field_destinationField" resname="field_destinationField">
+        <source>destination field</source>
+        <target state="needs-translation">destination field</target>
+      </trans-unit>
+      <trans-unit id="field_simulateField" resname="field_simulateField">
+        <source>Simulate Change only</source>
+        <target state="needs-translation">Simulate Change only</target>
+      </trans-unit>
+      <trans-unit id="field_submit" resname="field_submit">
+        <source>submit</source>
+        <target state="needs-translation">submit</target>
+      </trans-unit>
+      <trans-unit id="extconf.staticWizard.header" resname="extconf.staticWizard.header">
+        <source>Migrate</source>
+        <target state="needs-translation">Migrate</target>
+      </trans-unit>
+      <trans-unit id="extconf.staticWizard.messageMigration" resname="extconf.staticWizard.messageMigration">
+        <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
+        <target state="needs-translation">Please use the migration wizard to move all datastructures from your database to the filesystem.</target>
+      </trans-unit>
+      <trans-unit id="extconf.staticWizard.messageNoMigration" resname="extconf.staticWizard.messageNoMigration">
+        <source>You do not use staticDS, so no migration needed.</source>
+        <target state="needs-translation">You do not use staticDS, so no migration needed.</target>
+      </trans-unit>
+      <trans-unit id="extconf.staticWizard.messageMigrationDone" resname="extconf.staticWizard.messageMigrationDone">
+        <source>Fine, no migration needed. There is no datastructure inside your database.</source>
+        <target state="needs-translation">Fine, no migration needed. There is no datastructure inside your database.</target>
+      </trans-unit>
+      <trans-unit id="extconf.staticWizard.link" resname="extconf.staticWizard.link">
+        <source>Click here to run the wizard</source>
+        <target state="needs-translation">Click here to run the wizard</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
