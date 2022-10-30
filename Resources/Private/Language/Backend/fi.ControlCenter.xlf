@@ -1,281 +1,372 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:46Z" product-name="templavoilaplus" target-language="fi">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:54+02:00" target-language="fi">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab" xml:space="preserve">
-                <source>TemplaVoilà!+</source>
-            <target state="needs-translation">TemplaVoilà!+</target></trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
-                <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
-            <target state="needs-translation">TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</target></trans-unit>
-      <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
-                <source>TemplaVoilà! Plus Control Center</source>
-            <target state="needs-translation">TemplaVoilà! Plus Control Center</target></trans-unit>
-      <trans-unit id="title" xml:space="preserve">
-                <source>TemplaVoilà! Plus Control Center</source>
-            <target state="needs-translation">TemplaVoilà! Plus Control Center</target></trans-unit>
-      <trans-unit id="storagefolders" xml:space="preserve">
-                <source>Storage Folders</source>
-            <target state="needs-translation">Storage Folders</target></trans-unit>
-      <trans-unit id="datastructures" xml:space="preserve">
-                <source>Data Structures</source>
-            <target state="needs-translation">Data Structures</target></trans-unit>
-      <trans-unit id="datastructures.description" xml:space="preserve">
-                <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
-            <target state="needs-translation">Data Structures define the elements and areas that are used to structure the content of a mapping.</target></trans-unit>
-      <trans-unit id="mappings" xml:space="preserve">
-                <source>Mappings</source>
-            <target state="needs-translation">Mappings</target></trans-unit>
-      <trans-unit id="mappings.description" xml:space="preserve">
-                <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
-            <target state="needs-translation">Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</target></trans-unit>
-      <trans-unit id="templates" xml:space="preserve">
-                <source>Templates</source>
-            <target state="needs-translation">Templates</target></trans-unit>
-      <trans-unit id="templates.description" xml:space="preserve">
-                <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
-            <target state="needs-translation">Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</target></trans-unit>
-      <trans-unit id="templateobjects" xml:space="preserve">
-                <source>Template Objects</source>
-            <target state="needs-translation">Template Objects</target></trans-unit>
-      <trans-unit id="templatefiles" xml:space="preserve">
-                <source>Template Files</source>
-            <target state="needs-translation">Template Files</target></trans-unit>
-      <trans-unit id="pagetemplates" xml:space="preserve">
-                <source>Page templates</source>
-            <target state="needs-translation">Page templates</target></trans-unit>
-      <trans-unit id="filereference" xml:space="preserve">
-                <source>File reference</source>
-            <target state="needs-translation">File reference</target></trans-unit>
-      <trans-unit id="description" xml:space="preserve">
-                <source>Description</source>
-            <target state="needs-translation">Description</target></trans-unit>
-      <trans-unit id="fces" xml:space="preserve">
-                <source>Flexible CE</source>
-            <target state="needs-translation">Flexible CE</target></trans-unit>
-      <trans-unit id="other" xml:space="preserve">
-                <source>Other</source>
-            <target state="needs-translation">Other</target></trans-unit>
-      <trans-unit id="unknown" xml:space="preserve">
-                <source>Unknown &quot;%s&quot;</source>
-            <target state="needs-translation">Unknown "%s"</target></trans-unit>
-      <trans-unit id="losttos" xml:space="preserve">
-                <source>Lost TOs [%d]</source>
-            <target state="needs-translation">Lost TOs [%d]</target></trans-unit>
-      <trans-unit id="overview" xml:space="preserve">
-                <source>XML file</source>
-            <target state="needs-translation">XML file</target></trans-unit>
-      <trans-unit id="dstotitle" xml:space="preserve">
-                <source>DS/TO Title</source>
-            <target state="needs-translation">DS/TO Title</target></trans-unit>
-      <trans-unit id="localization" xml:space="preserve">
-                <source>Localization</source>
-            <target state="needs-translation">Localization</target></trans-unit>
-      <trans-unit id="showdetails" xml:space="preserve">
-                <source>Show Details</source>
-            <target state="needs-translation">Show Details</target></trans-unit>
-      <trans-unit id="showuused" xml:space="preserve">
-                <source>Show unused datastructures</source>
-            <target state="needs-translation">Show unused datastructures</target></trans-unit>
-      <trans-unit id="containerstatus" xml:space="preserve">
-                <source>Container status</source>
-            <target state="needs-translation">Container status</target></trans-unit>
-      <trans-unit id="mappingstatus" xml:space="preserve">
-                <source>Mapping status</source>
-            <target state="needs-translation">Mapping status</target></trans-unit>
-      <trans-unit id="usagecount" xml:space="preserve">
-                <source>Usage count</source>
-            <target state="needs-translation">Usage count</target></trans-unit>
-      <trans-unit id="templatestatus" xml:space="preserve">
-                <source>Template Status</source>
-            <target state="needs-translation">Template Status</target></trans-unit>
-      <trans-unit id="rendertype" xml:space="preserve">
-                <source>Render Type</source>
-            <target state="needs-translation">Render Type</target></trans-unit>
-      <trans-unit id="language" xml:space="preserve">
-                <source>Language</source>
-            <target state="needs-translation">Language</target></trans-unit>
-      <trans-unit id="globalprocessing_xml" xml:space="preserve">
-                <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
-            <target state="needs-translation">Global Processing &lt;strong&gt;XML&lt;/strong&gt;</target></trans-unit>
-      <trans-unit id="localprocessing_xml" xml:space="preserve">
-                <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
-            <target state="needs-translation">Local Processing &lt;strong&gt;XML&lt;/strong&gt;</target></trans-unit>
-      <trans-unit id="usedby" xml:space="preserve">
-                <source>Used by</source>
-            <target state="needs-translation">Used by</target></trans-unit>
-      <trans-unit id="created" xml:space="preserve">
-                <source>Created</source>
-            <target state="needs-translation">Created</target></trans-unit>
-      <trans-unit id="updated" xml:space="preserve">
-                <source>Updated</source>
-            <target state="needs-translation">Updated</target></trans-unit>
-      <trans-unit id="noicon" xml:space="preserve">
-                <source>[No icon]</source>
-            <target state="needs-translation">[No icon]</target></trans-unit>
-      <trans-unit id="filenotfound" xml:space="preserve">
-                <source>[File not found!]</source>
-            <target state="needs-translation">[File not found!]</target></trans-unit>
-      <trans-unit id="createnewto" xml:space="preserve">
-                <source>Create new Template Object</source>
-            <target state="needs-translation">Create new Template Object</target></trans-unit>
-      <trans-unit id="containerwithseparatelocalization" xml:space="preserve">
-                <source>Container element with separate localization!</source>
-            <target state="needs-translation">Container element with separate localization!</target></trans-unit>
-      <trans-unit id="mixofcontentandref" xml:space="preserve">
-                <source>Mix of content and references, OK, but be careful!</source>
-            <target state="needs-translation">Mix of content and references, OK, but be careful!</target></trans-unit>
-      <trans-unit id="nocontentfields" xml:space="preserve">
-                <source>No content fields, recommended to set &quot;&lt;langDisable&gt;&quot; = 1</source>
-            <target state="needs-translation">No content fields, recommended to set "&lt;langDisable&gt;" = 1</target></trans-unit>
-      <trans-unit id="towasupdated" xml:space="preserve">
-                <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
-            <target state="needs-translation">Template file was updated since last mapping (%s) and you might need to remap the Template Object!</target></trans-unit>
-      <trans-unit id="warning_mappingstatus" xml:space="preserve">
-                <source>%s (TO: &quot;%s&quot;)</source>
-            <target state="needs-translation">%s (TO: "%s")</target></trans-unit>
-      <trans-unit id="mapping_uptodate" xml:space="preserve">
-                <source>Mapping is up to date.</source>
-            <target state="needs-translation">Mapping is up to date.</target></trans-unit>
-      <trans-unit id="update_mapping" xml:space="preserve">
-                <source>Update mapping</source>
-            <target state="needs-translation">Update mapping</target></trans-unit>
-      <trans-unit id="notmapped" xml:space="preserve">
-                <source>Not mapped yet!</source>
-            <target state="needs-translation">Not mapped yet!</target></trans-unit>
-      <trans-unit id="updatemapping_info" xml:space="preserve">
-                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
-            <target state="needs-translation">- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</target></trans-unit>
-      <trans-unit id="map" xml:space="preserve">
-                <source>Map</source>
-            <target state="needs-translation">Map</target></trans-unit>
-      <trans-unit id="remap" xml:space="preserve">
-                <source>Remap</source>
-            <target state="needs-translation">Remap</target></trans-unit>
-      <trans-unit id="preview" xml:space="preserve">
-                <source>Preview</source>
-            <target state="needs-translation">Preview</target></trans-unit>
-      <trans-unit id="toused_title" xml:space="preserve">
-                <source>Title</source>
-            <target state="needs-translation">Title</target></trans-unit>
-      <trans-unit id="toused_pid" xml:space="preserve">
-                <source>Page ID</source>
-            <target state="needs-translation">Page ID</target></trans-unit>
-      <trans-unit id="toused_path" xml:space="preserve">
-                <source>Path</source>
-            <target state="needs-translation">Path</target></trans-unit>
-      <trans-unit id="toused_workspace" xml:space="preserve">
-                <source>Workspace</source>
-            <target state="needs-translation">Workspace</target></trans-unit>
-      <trans-unit id="toused_uid" xml:space="preserve">
-                <source>UID</source>
-            <target state="needs-translation">UID</target></trans-unit>
-      <trans-unit id="toused_header" xml:space="preserve">
-                <source>Header</source>
-            <target state="needs-translation">Header</target></trans-unit>
-      <trans-unit id="toused_usedin" xml:space="preserve">
-                <source>Used in %d Elements</source>
-            <target state="needs-translation">Used in %d Elements</target></trans-unit>
-      <trans-unit id="noaccess" xml:space="preserve">
-                <source>No Access</source>
-            <target state="needs-translation">No Access</target></trans-unit>
-      <trans-unit id="usage" xml:space="preserve">
-                <source>Usage</source>
-            <target state="needs-translation">Usage</target></trans-unit>
-      <trans-unit id="action" xml:space="preserve">
-                <source>Action</source>
-            <target state="needs-translation">Action</target></trans-unit>
-      <trans-unit id="invalidtemplatevalues" xml:space="preserve">
-                <source>Invalid template values in %d elements</source>
-            <target state="needs-translation">Invalid template values in %d elements</target></trans-unit>
-      <trans-unit id="noerrorsfound" xml:space="preserve">
-                <source>No errors found!</source>
-            <target state="needs-translation">No errors found!</target></trans-unit>
-      <trans-unit id="byuser" xml:space="preserve">
-                <source>by user</source>
-            <target state="needs-translation">by user</target></trans-unit>
-      <trans-unit id="file" xml:space="preserve">
-                <source>File</source>
-            <target state="needs-translation">File</target></trans-unit>
-      <trans-unit id="newdsto" xml:space="preserve">
-                <source>New DS/TO</source>
-            <target state="needs-translation">New DS/TO</target></trans-unit>
-      <trans-unit id="usedfiles" xml:space="preserve">
-                <source>Used files</source>
-            <target state="needs-translation">Used files</target></trans-unit>
-      <trans-unit id="templatearchive" xml:space="preserve">
-                <source>Template Archive</source>
-            <target state="needs-translation">Template Archive</target></trans-unit>
-      <trans-unit id="configuration" xml:space="preserve">
-                <source>Configuration</source>
-            <target state="needs-translation">Configuration</target></trans-unit>
-      <trans-unit id="fceislocalized" xml:space="preserve">
-                <source>FCE-element is localized</source>
-            <target state="needs-translation">FCE-element is localized</target></trans-unit>
-      <trans-unit id="fceinlineislocalized" xml:space="preserve">
-                <source>FCE-inline-elements of the FCE-element are localized</source>
-            <target state="needs-translation">FCE-inline-elements of the FCE-element are localized</target></trans-unit>
-      <trans-unit id="casttointeger" xml:space="preserve">
-                <source>the entered/computed value will be cast to an integer</source>
-            <target state="needs-translation">the entered/computed value will be cast to an integer</target></trans-unit>
-      <trans-unit id="hsced" xml:space="preserve">
-                <source>the entered/computed value will be passed to htmlentities</source>
-            <target state="needs-translation">the entered/computed value will be passed to htmlentities</target></trans-unit>
-      <trans-unit id="hsc_on" xml:space="preserve">
-                <source>[HTML-code won't be available]</source>
-            <target state="needs-translation">[HTML-code won't be available]</target></trans-unit>
-      <trans-unit id="hsc_off" xml:space="preserve">
-                <source>[HTML-code will be displayed as-is]</source>
-            <target state="needs-translation">[HTML-code will be displayed as-is]</target></trans-unit>
-      <trans-unit id="stdwrap" xml:space="preserve">
-                <source>the entered/computed value will be wrapped</source>
-            <target state="needs-translation">the entered/computed value will be wrapped</target></trans-unit>
-      <trans-unit id="redundant" xml:space="preserve">
-                <source>redundant</source>
-            <target state="needs-translation">redundant</target></trans-unit>
-      <trans-unit id="illegalcharacters" xml:space="preserve">
-                <source>entry contains illegal characters and/or has multiple lines</source>
-            <target state="needs-translation">entry contains illegal characters and/or has multiple lines</target></trans-unit>
-      <trans-unit id="dsdetails_nobasicdefinitions" xml:space="preserve">
-                <source>The element has no basic definitions!</source>
-            <target state="needs-translation">The element has no basic definitions!</target></trans-unit>
-      <trans-unit id="dsdetails_notceformdefinitions" xml:space="preserve">
-                <source>The element has no TCE-form definitions!</source>
-            <target state="needs-translation">The element has no TCE-form definitions!</target></trans-unit>
-      <trans-unit id="dsdetails_notes" xml:space="preserve">
-                <source>Notes</source>
-            <target state="needs-translation">Notes</target></trans-unit>
-      <trans-unit id="dsdetails_ts" xml:space="preserve">
-                <source>TypoScript</source>
-            <target state="needs-translation">TypoScript</target></trans-unit>
-      <trans-unit id="dsdetails_column" xml:space="preserve">
-                <source>Column-positioning</source>
-            <target state="needs-translation">Column-positioning</target></trans-unit>
-      <trans-unit id="dsdetails_preset" xml:space="preserve">
-                <source>Preset used for the element</source>
-            <target state="needs-translation">Preset used for the element</target></trans-unit>
-      <trans-unit id="dsdetails_tsutilize" xml:space="preserve">
-                <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
-            <target state="needs-translation">will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</target></trans-unit>
-      <trans-unit id="dsdetails_tslines" xml:space="preserve">
-                <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
-            <target state="needs-translation">%d lines of TS-code inside the &lt;TypoScript&gt;-entry</target></trans-unit>
-      <trans-unit id="dsdetails_tsconstants" xml:space="preserve">
-                <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
-            <target state="needs-translation">%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</target></trans-unit>
-      <trans-unit id="warnings" xml:space="preserve">
-                <source>Warnings</source>
-            <target state="needs-translation">Warnings</target></trans-unit>
-      <trans-unit id="fatalerrors" xml:space="preserve">
-                <source>Fatal errors</source>
-            <target state="needs-translation">Fatal errors</target></trans-unit>
-      <trans-unit id="invaliddatastructure_xmlbroken" xml:space="preserve">
-                <source>The the element &quot;%1$s&quot; within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
-            <target state="needs-translation">The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</target></trans-unit>
-      <trans-unit id="description_pagesWithCertainDsTo" xml:space="preserve">
-                <source>The following pages in the root line contain data structures and template objects</source>
-            <target state="needs-translation">The following pages in the root line contain data structures and template objects</target></trans-unit>
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>TemplaVoilà!+</source>
+        <target state="needs-translation">TemplaVoilà!+</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
+        <target state="needs-translation">TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>TemplaVoilà! Plus Control Center</source>
+        <target state="needs-translation">TemplaVoilà! Plus Control Center</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>TemplaVoilà! Plus Control Center</source>
+        <target state="needs-translation">TemplaVoilà! Plus Control Center</target>
+      </trans-unit>
+      <trans-unit id="storagefolders" resname="storagefolders">
+        <source>Storage Folders</source>
+        <target state="needs-translation">Storage Folders</target>
+      </trans-unit>
+      <trans-unit id="datastructures" resname="datastructures">
+        <source>Data Structures</source>
+        <target state="needs-translation">Data Structures</target>
+      </trans-unit>
+      <trans-unit id="datastructures.description" resname="datastructures.description">
+        <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
+        <target state="needs-translation">Data Structures define the elements and areas that are used to structure the content of a mapping.</target>
+      </trans-unit>
+      <trans-unit id="mappings" resname="mappings">
+        <source>Mappings</source>
+        <target state="needs-translation">Mappings</target>
+      </trans-unit>
+      <trans-unit id="mappings.description" resname="mappings.description">
+        <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
+        <target state="needs-translation">Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</target>
+      </trans-unit>
+      <trans-unit id="templates" resname="templates">
+        <source>Templates</source>
+        <target state="needs-translation">Templates</target>
+      </trans-unit>
+      <trans-unit id="templates.description" resname="templates.description">
+        <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
+        <target state="needs-translation">Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</target>
+      </trans-unit>
+      <trans-unit id="templateobjects" resname="templateobjects">
+        <source>Template Objects</source>
+        <target state="needs-translation">Template Objects</target>
+      </trans-unit>
+      <trans-unit id="templatefiles" resname="templatefiles">
+        <source>Template Files</source>
+        <target state="needs-translation">Template Files</target>
+      </trans-unit>
+      <trans-unit id="pagetemplates" resname="pagetemplates">
+        <source>Page templates</source>
+        <target state="needs-translation">Page templates</target>
+      </trans-unit>
+      <trans-unit id="filereference" resname="filereference">
+        <source>File reference</source>
+        <target state="needs-translation">File reference</target>
+      </trans-unit>
+      <trans-unit id="description" resname="description">
+        <source>Description</source>
+        <target state="needs-translation">Description</target>
+      </trans-unit>
+      <trans-unit id="fces" resname="fces">
+        <source>Flexible CE</source>
+        <target state="needs-translation">Flexible CE</target>
+      </trans-unit>
+      <trans-unit id="other" resname="other">
+        <source>Other</source>
+        <target state="needs-translation">Other</target>
+      </trans-unit>
+      <trans-unit id="unknown" resname="unknown">
+        <source>Unknown "%s"</source>
+        <target state="needs-translation">Unknown "%s"</target>
+      </trans-unit>
+      <trans-unit id="losttos" resname="losttos">
+        <source>Lost TOs [%d]</source>
+        <target state="needs-translation">Lost TOs [%d]</target>
+      </trans-unit>
+      <trans-unit id="overview" resname="overview">
+        <source>XML file</source>
+        <target state="needs-translation">XML file</target>
+      </trans-unit>
+      <trans-unit id="dstotitle" resname="dstotitle">
+        <source>DS/TO Title</source>
+        <target state="needs-translation">DS/TO Title</target>
+      </trans-unit>
+      <trans-unit id="localization" resname="localization">
+        <source>Localization</source>
+        <target state="needs-translation">Localization</target>
+      </trans-unit>
+      <trans-unit id="showdetails" resname="showdetails">
+        <source>Show Details</source>
+        <target state="needs-translation">Show Details</target>
+      </trans-unit>
+      <trans-unit id="showuused" resname="showuused">
+        <source>Show unused datastructures</source>
+        <target state="needs-translation">Show unused datastructures</target>
+      </trans-unit>
+      <trans-unit id="containerstatus" resname="containerstatus">
+        <source>Container status</source>
+        <target state="needs-translation">Container status</target>
+      </trans-unit>
+      <trans-unit id="mappingstatus" resname="mappingstatus">
+        <source>Mapping status</source>
+        <target state="needs-translation">Mapping status</target>
+      </trans-unit>
+      <trans-unit id="usagecount" resname="usagecount">
+        <source>Usage count</source>
+        <target state="needs-translation">Usage count</target>
+      </trans-unit>
+      <trans-unit id="templatestatus" resname="templatestatus">
+        <source>Template Status</source>
+        <target state="needs-translation">Template Status</target>
+      </trans-unit>
+      <trans-unit id="rendertype" resname="rendertype">
+        <source>Render Type</source>
+        <target state="needs-translation">Render Type</target>
+      </trans-unit>
+      <trans-unit id="language" resname="language">
+        <source>Language</source>
+        <target state="needs-translation">Language</target>
+      </trans-unit>
+      <trans-unit id="globalprocessing_xml" resname="globalprocessing_xml">
+        <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+        <target state="needs-translation">Global Processing &lt;strong&gt;XML&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="localprocessing_xml" resname="localprocessing_xml">
+        <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
+        <target state="needs-translation">Local Processing &lt;strong&gt;XML&lt;/strong&gt;</target>
+      </trans-unit>
+      <trans-unit id="usedby" resname="usedby">
+        <source>Used by</source>
+        <target state="needs-translation">Used by</target>
+      </trans-unit>
+      <trans-unit id="created" resname="created">
+        <source>Created</source>
+        <target state="needs-translation">Created</target>
+      </trans-unit>
+      <trans-unit id="updated" resname="updated">
+        <source>Updated</source>
+        <target state="needs-translation">Updated</target>
+      </trans-unit>
+      <trans-unit id="noicon" resname="noicon">
+        <source>[No icon]</source>
+        <target state="needs-translation">[No icon]</target>
+      </trans-unit>
+      <trans-unit id="filenotfound" resname="filenotfound">
+        <source>[File not found!]</source>
+        <target state="needs-translation">[File not found!]</target>
+      </trans-unit>
+      <trans-unit id="createnewto" resname="createnewto">
+        <source>Create new Template Object</source>
+        <target state="needs-translation">Create new Template Object</target>
+      </trans-unit>
+      <trans-unit id="containerwithseparatelocalization" resname="containerwithseparatelocalization">
+        <source>Container element with separate localization!</source>
+        <target state="needs-translation">Container element with separate localization!</target>
+      </trans-unit>
+      <trans-unit id="mixofcontentandref" resname="mixofcontentandref">
+        <source>Mix of content and references, OK, but be careful!</source>
+        <target state="needs-translation">Mix of content and references, OK, but be careful!</target>
+      </trans-unit>
+      <trans-unit id="nocontentfields" resname="nocontentfields">
+        <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
+        <target state="needs-translation">No content fields, recommended to set "&lt;langDisable&gt;" = 1</target>
+      </trans-unit>
+      <trans-unit id="towasupdated" resname="towasupdated">
+        <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
+        <target state="needs-translation">Template file was updated since last mapping (%s) and you might need to remap the Template Object!</target>
+      </trans-unit>
+      <trans-unit id="warning_mappingstatus" resname="warning_mappingstatus">
+        <source>%s (TO: "%s")</source>
+        <target state="needs-translation">%s (TO: "%s")</target>
+      </trans-unit>
+      <trans-unit id="mapping_uptodate" resname="mapping_uptodate">
+        <source>Mapping is up to date.</source>
+        <target state="needs-translation">Mapping is up to date.</target>
+      </trans-unit>
+      <trans-unit id="update_mapping" resname="update_mapping">
+        <source>Update mapping</source>
+        <target state="needs-translation">Update mapping</target>
+      </trans-unit>
+      <trans-unit id="notmapped" resname="notmapped">
+        <source>Not mapped yet!</source>
+        <target state="needs-translation">Not mapped yet!</target>
+      </trans-unit>
+      <trans-unit id="updatemapping_info" resname="updatemapping_info">
+        <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+        <target state="needs-translation">- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</target>
+      </trans-unit>
+      <trans-unit id="map" resname="map">
+        <source>Map</source>
+        <target state="needs-translation">Map</target>
+      </trans-unit>
+      <trans-unit id="remap" resname="remap">
+        <source>Remap</source>
+        <target state="needs-translation">Remap</target>
+      </trans-unit>
+      <trans-unit id="preview" resname="preview">
+        <source>Preview</source>
+        <target state="needs-translation">Preview</target>
+      </trans-unit>
+      <trans-unit id="toused_title" resname="toused_title">
+        <source>Title</source>
+        <target state="needs-translation">Title</target>
+      </trans-unit>
+      <trans-unit id="toused_pid" resname="toused_pid">
+        <source>Page ID</source>
+        <target state="needs-translation">Page ID</target>
+      </trans-unit>
+      <trans-unit id="toused_path" resname="toused_path">
+        <source>Path</source>
+        <target state="needs-translation">Path</target>
+      </trans-unit>
+      <trans-unit id="toused_workspace" resname="toused_workspace">
+        <source>Workspace</source>
+        <target state="needs-translation">Workspace</target>
+      </trans-unit>
+      <trans-unit id="toused_uid" resname="toused_uid">
+        <source>UID</source>
+        <target state="needs-translation">UID</target>
+      </trans-unit>
+      <trans-unit id="toused_header" resname="toused_header">
+        <source>Header</source>
+        <target state="needs-translation">Header</target>
+      </trans-unit>
+      <trans-unit id="toused_usedin" resname="toused_usedin">
+        <source>Used in %d Elements</source>
+        <target state="needs-translation">Used in %d Elements</target>
+      </trans-unit>
+      <trans-unit id="noaccess" resname="noaccess">
+        <source>No Access</source>
+        <target state="needs-translation">No Access</target>
+      </trans-unit>
+      <trans-unit id="usage" resname="usage">
+        <source>Usage</source>
+        <target state="needs-translation">Usage</target>
+      </trans-unit>
+      <trans-unit id="action" resname="action">
+        <source>Action</source>
+        <target state="needs-translation">Action</target>
+      </trans-unit>
+      <trans-unit id="invalidtemplatevalues" resname="invalidtemplatevalues">
+        <source>Invalid template values in %d elements</source>
+        <target state="needs-translation">Invalid template values in %d elements</target>
+      </trans-unit>
+      <trans-unit id="noerrorsfound" resname="noerrorsfound">
+        <source>No errors found!</source>
+        <target state="needs-translation">No errors found!</target>
+      </trans-unit>
+      <trans-unit id="byuser" resname="byuser">
+        <source>by user</source>
+        <target state="needs-translation">by user</target>
+      </trans-unit>
+      <trans-unit id="file" resname="file">
+        <source>File</source>
+        <target state="needs-translation">File</target>
+      </trans-unit>
+      <trans-unit id="newdsto" resname="newdsto">
+        <source>New DS/TO</source>
+        <target state="needs-translation">New DS/TO</target>
+      </trans-unit>
+      <trans-unit id="usedfiles" resname="usedfiles">
+        <source>Used files</source>
+        <target state="needs-translation">Used files</target>
+      </trans-unit>
+      <trans-unit id="templatearchive" resname="templatearchive">
+        <source>Template Archive</source>
+        <target state="needs-translation">Template Archive</target>
+      </trans-unit>
+      <trans-unit id="configuration" resname="configuration">
+        <source>Configuration</source>
+        <target state="needs-translation">Configuration</target>
+      </trans-unit>
+      <trans-unit id="fceislocalized" resname="fceislocalized">
+        <source>FCE-element is localized</source>
+        <target state="needs-translation">FCE-element is localized</target>
+      </trans-unit>
+      <trans-unit id="fceinlineislocalized" resname="fceinlineislocalized">
+        <source>FCE-inline-elements of the FCE-element are localized</source>
+        <target state="needs-translation">FCE-inline-elements of the FCE-element are localized</target>
+      </trans-unit>
+      <trans-unit id="casttointeger" resname="casttointeger">
+        <source>the entered/computed value will be cast to an integer</source>
+        <target state="needs-translation">the entered/computed value will be cast to an integer</target>
+      </trans-unit>
+      <trans-unit id="hsced" resname="hsced">
+        <source>the entered/computed value will be passed to htmlentities</source>
+        <target state="needs-translation">the entered/computed value will be passed to htmlentities</target>
+      </trans-unit>
+      <trans-unit id="hsc_on" resname="hsc_on">
+        <source>[HTML-code won't be available]</source>
+        <target state="needs-translation">[HTML-code won't be available]</target>
+      </trans-unit>
+      <trans-unit id="hsc_off" resname="hsc_off">
+        <source>[HTML-code will be displayed as-is]</source>
+        <target state="needs-translation">[HTML-code will be displayed as-is]</target>
+      </trans-unit>
+      <trans-unit id="stdwrap" resname="stdwrap">
+        <source>the entered/computed value will be wrapped</source>
+        <target state="needs-translation">the entered/computed value will be wrapped</target>
+      </trans-unit>
+      <trans-unit id="redundant" resname="redundant">
+        <source>redundant</source>
+        <target state="needs-translation">redundant</target>
+      </trans-unit>
+      <trans-unit id="illegalcharacters" resname="illegalcharacters">
+        <source>entry contains illegal characters and/or has multiple lines</source>
+        <target state="needs-translation">entry contains illegal characters and/or has multiple lines</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_nobasicdefinitions" resname="dsdetails_nobasicdefinitions">
+        <source>The element has no basic definitions!</source>
+        <target state="needs-translation">The element has no basic definitions!</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_notceformdefinitions" resname="dsdetails_notceformdefinitions">
+        <source>The element has no TCE-form definitions!</source>
+        <target state="needs-translation">The element has no TCE-form definitions!</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_notes" resname="dsdetails_notes">
+        <source>Notes</source>
+        <target state="needs-translation">Notes</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_ts" resname="dsdetails_ts">
+        <source>TypoScript</source>
+        <target state="needs-translation">TypoScript</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_column" resname="dsdetails_column">
+        <source>Column-positioning</source>
+        <target state="needs-translation">Column-positioning</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_preset" resname="dsdetails_preset">
+        <source>Preset used for the element</source>
+        <target state="needs-translation">Preset used for the element</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_tsutilize" resname="dsdetails_tsutilize">
+        <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
+        <target state="needs-translation">will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_tslines" resname="dsdetails_tslines">
+        <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
+        <target state="needs-translation">%d lines of TS-code inside the &lt;TypoScript&gt;-entry</target>
+      </trans-unit>
+      <trans-unit id="dsdetails_tsconstants" resname="dsdetails_tsconstants">
+        <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
+        <target state="needs-translation">%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</target>
+      </trans-unit>
+      <trans-unit id="warnings" resname="warnings">
+        <source>Warnings</source>
+        <target state="needs-translation">Warnings</target>
+      </trans-unit>
+      <trans-unit id="fatalerrors" resname="fatalerrors">
+        <source>Fatal errors</source>
+        <target state="needs-translation">Fatal errors</target>
+      </trans-unit>
+      <trans-unit id="invaliddatastructure_xmlbroken" resname="invaliddatastructure_xmlbroken">
+        <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
+        <target state="needs-translation">The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</target>
+      </trans-unit>
+      <trans-unit id="description_pagesWithCertainDsTo" resname="description_pagesWithCertainDsTo">
+        <source>The following pages in the root line contain data structures and template objects</source>
+        <target state="needs-translation">The following pages in the root line contain data structures and template objects</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
