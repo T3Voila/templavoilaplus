@@ -1,176 +1,226 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:34Z" product-name="templavoilaplus" target-language="el">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:46+02:00" target-language="el">
     <header/>
     <body>
-      <trans-unit id="mlang_tabs_tab" xml:space="preserve">
-                <source>Page</source>
-            <target state="needs-translation">Page</target></trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" xml:space="preserve">
-                <source>This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension &quot;TemplaVoilà Plus&quot;.</source>
-            <target state="needs-translation">This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà Plus".</target></trans-unit>
-      <trans-unit id="mlang_labels_tablabel" xml:space="preserve">
-                <source>Create and edit pages</source>
-            <target state="needs-translation">Create and edit pages</target></trans-unit>
-      <trans-unit id="title" xml:space="preserve">
-                <source>Page Module</source>
-            <target state="needs-translation">Page Module</target></trans-unit>
-      <trans-unit id="infoDefaultIntroduction" xml:space="preserve">
-                <source>If you wish to edit the content of a page, please click the page title in the page tree on the left.</source>
-            <target state="needs-translation">If you wish to edit the content of a page, please click the page title in the page tree on the left.</target></trans-unit>
-      <trans-unit id="infoPageNotFound" xml:space="preserve">
-                <source>The requested page can't be found or is not accessible.</source>
-            <target state="needs-translation">The requested page can't be found or is not accessible.</target></trans-unit>
-      <!-- Doktype Handler -->
-      <trans-unit id="titleDoktypeShortcut" xml:space="preserve">
-                <source>Shortcut</source>
-            <target state="needs-translation">Shortcut</target></trans-unit>
-      <trans-unit id="infoDoktypeShortcutCannotEdit0" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the selected page &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the selected page "%s". Therefore you cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeShortcutCannotEdit1" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeShortcutCannotEdit2" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeShortcutCannotEdit3" xml:space="preserve">
-                <source>This page is of the type &quot;shortcut&quot;. Instead of having content on its own, this page shows the content of parent page of current/selected page, which is &quot;%s&quot;. Therefore you cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content of parent page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="hintDoktypeShortcutJumpToDestination" xml:space="preserve">
-                <source>Jump to shortcut destination</source>
-            <target state="needs-translation">Jump to shortcut destination</target></trans-unit>
-      <trans-unit id="titleDoktypeLink" xml:space="preserve">
-                <source>External URL</source>
-            <target state="needs-translation">External URL</target></trans-unit>
-      <trans-unit id="infoDoktypeLinkCannotEdit" xml:space="preserve">
-                <source>This page refers to the external address "%s", you therefore cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page refers to the external address "%s", you therefore cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeLinkCannotEdit1" xml:space="preserve">
-                <source>This page refers to an external website, you therefore cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page refers to an external website, you therefore cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeLinkCannotEdit2" xml:space="preserve">
-                <source>This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="infoDoktypeLinkCannotEdit3" xml:space="preserve">
-                <source>This page refers to an email address, you therefore cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page refers to an email address, you therefore cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="hintDoktypeLinkOpen" xml:space="preserve">
-                <source>Open external address (%s)</source>
-            <target state="needs-translation">Open external address (%s)</target></trans-unit>
-      <trans-unit id="titleDoktypeSysfolder" xml:space="preserve">
-                <source>System folder</source>
-            <target state="needs-translation">System folder</target></trans-unit>
-      <trans-unit id="infoDoktypeSysfolderCannotEdit" xml:space="preserve">
-                <source>The current page is of the type &quot;Sysfolder&quot;. Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</source>
-            <target state="needs-translation">The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</target></trans-unit>
-      <trans-unit id="hintDoktypeSysfolderOpen" xml:space="preserve">
-                <source>Switch to list view</source>
-            <target state="needs-translation">Switch to list view</target></trans-unit>
-      <trans-unit id="titleDoktypeMountpoint" xml:space="preserve">
-                <source>Mount point</source>
-            <target state="needs-translation">Mount point</target></trans-unit>
-      <trans-unit id="infoDoktypeMountpointCannotEdit" xml:space="preserve">
-                <source>This page acts as a mount point and its content is being replaced by another page (&quot;%s&quot;). Therefore you cannot edit the content of this page directly.</source>
-            <target state="needs-translation">This page acts as a mount point and its content is being replaced by another page ("%s"). Therefore you cannot edit the content of this page directly.</target></trans-unit>
-      <trans-unit id="hintDoktypeMountpointOpen" xml:space="preserve">
-                <source>Jump to source page of this mount point</source>
-            <target state="needs-translation">Jump to source page of this mount point</target></trans-unit>
-      <trans-unit id="titleDoktypeSpacer" xml:space="preserve">
-                <source>Spacer</source>
-            <target state="needs-translation">Spacer</target></trans-unit>
-      <trans-unit id="infoDoktypeSpacerCannotEdit" xml:space="preserve">
-                <source>The current page is of the type &quot;Spacer&quot; and therfore cannot be edited.</source>
-            <target state="needs-translation">The current page is of the type "Spacer" and therfore cannot be edited.</target></trans-unit>
-      <!-- DoktypeDefaultHandler -->
-      <trans-unit id="infoTitleSelectTemplateDesign" xml:space="preserve">
-                <source>Template Design</source>
-            <target state="needs-translation">Template Design</target></trans-unit>
-      <trans-unit id="infoContentSelectTemplateDesign" xml:space="preserve">
-                <source>Please select a template design for this page.</source>
-            <target state="needs-translation">Please select a template design for this page.</target></trans-unit>
-      <trans-unit id="infoTitleMissingEditRights" xml:space="preserve">
-                <source>Your user settings don't allow creating, moving or removing elements from this page.</source>
-            <target state="needs-translation">Your user settings don't allow creating, moving or removing elements from this page.</target></trans-unit>
-      <trans-unit id="infoContentMissingEditRights" xml:space="preserve">
-                <source>Your settings indicate that you either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
-            <target state="needs-translation">Your settings indicate that you either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</target></trans-unit>
-      <trans-unit id="infoElementFromOtherPage" xml:space="preserve">
-                <source>This is a reference to an element on page %2$d.</source>
-            <target state="needs-translation">This is a reference to an element on page %2$d.</target></trans-unit>
-      <trans-unit id="infoElementUsedMultipleTimes" xml:space="preserve">
-                <source>This element has been used %s times on this page!</source>
-            <target state="needs-translation">This element has been used %s times on this page!</target></trans-unit>
-      <trans-unit id="labelLocalizations" xml:space="preserve">
-                <source>Localizations</source>
-            <target state="needs-translation">Localizations</target></trans-unit>
-      <trans-unit id="createCopyForTranslation" xml:space="preserve">
-                <source>Create a copy for translation "%s (%s)"</source>
-            <target state="needs-translation">Create a copy for translation "%s (%s)"</target></trans-unit>
-      <trans-unit id="newContentElementWizard.fce" xml:space="preserve">
-                <source>FCE</source>
-            <target state="needs-translation">FCE</target></trans-unit>
-      <trans-unit id="error.fce.noMapping" xml:space="preserve">
-                <source>Error: This FCE has no mapping set.</source>
-            <target state="needs-translation">Error: This FCE has no mapping set.</target></trans-unit>
-      <!-- sidebar -->
-      <trans-unit id="clipboardAriaLabel" xml:space="preserve">
-				<source>You can drag items from the page to this icon to add them to the clipboard, or open a filled clipboard to drag items to the page.</source>
-			<target state="needs-translation">You can drag items from the page to this icon to add them to the clipboard, or open a filled clipboard to drag items to the page.</target></trans-unit>
-      <trans-unit id="clipboardHeading" xml:space="preserve">
-				<source>Clipboard</source>
-			<target state="needs-translation">Clipboard</target></trans-unit>
-      <trans-unit id="clipboardDesc" xml:space="preserve">
-				<source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
-			<target state="needs-translation">Please select the content element you want to add and drag and drop its icon to the desired position.</target></trans-unit>
-      <trans-unit id="clipboardMove" xml:space="preserve">
-				<source>Move element</source>
-			<target state="needs-translation">Move element</target></trans-unit>
-      <trans-unit id="clipboardCopy" xml:space="preserve">
-				<source>Copy element</source>
-			<target state="needs-translation">Copy element</target></trans-unit>
-      <trans-unit id="clipboardReference" xml:space="preserve">
-				<source>Reference element</source>
-			<target state="needs-translation">Reference element</target></trans-unit>
-      <trans-unit id="newCeWizardAriaLabel" xml:space="preserve">
-				<source>Click this icon to open the new content element wizard to add new content elements by dragging them to the page.</source>
-			<target state="needs-translation">Click this icon to open the new content element wizard to add new content elements by dragging them to the page.</target></trans-unit>
-      <trans-unit id="newCeWizardDesc" xml:space="preserve">
-				<source>Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</source>
-			<target state="needs-translation">Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</target></trans-unit>
-      <trans-unit id="trashAriaLabel" xml:space="preserve">
-				<source>You can drag items from the page to this icon to remove the content, or open a filled trash to drag items back to the page to restore them.</source>
-			<target state="needs-translation">You can drag items from the page to this icon to remove the content, or open a filled trash to drag items back to the page to restore them.</target></trans-unit>
-      <trans-unit id="trashHeading" xml:space="preserve">
-				<source>Unused Elements</source>
-			<target state="needs-translation">Unused Elements</target></trans-unit>
-      <trans-unit id="trashDesc" xml:space="preserve">
-				<source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
-			<target state="needs-translation">Please select the content element you want to add and drag and drop its icon to the desired position.</target></trans-unit>
-      <trans-unit id="configAriaLabel" xml:space="preserve">
-				<source>Open the settings menu.</source>
-			<target state="needs-translation">Open the settings menu.</target></trans-unit>
-      <trans-unit id="tutorial.introduction" xml:space="preserve">
-				<source>The page module focuses on editing the content elements of a page.
+      <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+        <source>Page</source>
+        <target state="needs-translation">Page</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà Plus".</source>
+        <target state="needs-translation">This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà Plus".</target>
+      </trans-unit>
+      <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+        <source>Create and edit pages</source>
+        <target state="needs-translation">Create and edit pages</target>
+      </trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>Page Module</source>
+        <target state="needs-translation">Page Module</target>
+      </trans-unit>
+      <trans-unit id="infoDefaultIntroduction" resname="infoDefaultIntroduction">
+        <source>If you wish to edit the content of a page, please click the page title in the page tree on the left.</source>
+        <target state="needs-translation">If you wish to edit the content of a page, please click the page title in the page tree on the left.</target>
+      </trans-unit>
+      <trans-unit id="infoPageNotFound" resname="infoPageNotFound">
+        <source>The requested page can't be found or is not accessible.</source>
+        <target state="needs-translation">The requested page can't be found or is not accessible.</target>
+      </trans-unit>
+      <trans-unit id="titleDoktypeShortcut" resname="titleDoktypeShortcut">
+        <source>Shortcut</source>
+        <target state="needs-translation">Shortcut</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeShortcutCannotEdit0" resname="infoDoktypeShortcutCannotEdit0">
+        <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the selected page "%s". Therefore you cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the selected page "%s". Therefore you cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeShortcutCannotEdit1" resname="infoDoktypeShortcutCannotEdit1">
+        <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content from the first sub page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeShortcutCannotEdit2" resname="infoDoktypeShortcutCannotEdit2">
+        <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content of a random sub page of current/selected page. Therefore you cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeShortcutCannotEdit3" resname="infoDoktypeShortcutCannotEdit3">
+        <source>This page is of the type "shortcut". Instead of having content on its own, this page shows the content of parent page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page is of the type "shortcut". Instead of having content on its own, this page shows the content of parent page of current/selected page, which is "%s". Therefore you cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="hintDoktypeShortcutJumpToDestination" resname="hintDoktypeShortcutJumpToDestination">
+        <source>Jump to shortcut destination</source>
+        <target state="needs-translation">Jump to shortcut destination</target>
+      </trans-unit>
+      <trans-unit id="titleDoktypeLink" resname="titleDoktypeLink">
+        <source>External URL</source>
+        <target state="needs-translation">External URL</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeLinkCannotEdit" resname="infoDoktypeLinkCannotEdit">
+        <source>This page refers to the external address "%s", you therefore cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page refers to the external address "%s", you therefore cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeLinkCannotEdit1" resname="infoDoktypeLinkCannotEdit1">
+        <source>This page refers to an external website, you therefore cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page refers to an external website, you therefore cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeLinkCannotEdit2" resname="infoDoktypeLinkCannotEdit2">
+        <source>This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page refers to an external FTP location, you therefore cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeLinkCannotEdit3" resname="infoDoktypeLinkCannotEdit3">
+        <source>This page refers to an email address, you therefore cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page refers to an email address, you therefore cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="hintDoktypeLinkOpen" resname="hintDoktypeLinkOpen">
+        <source>Open external address (%s)</source>
+        <target state="needs-translation">Open external address (%s)</target>
+      </trans-unit>
+      <trans-unit id="titleDoktypeSysfolder" resname="titleDoktypeSysfolder">
+        <source>System folder</source>
+        <target state="needs-translation">System folder</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeSysfolderCannotEdit" resname="infoDoktypeSysfolderCannotEdit">
+        <source>The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</source>
+        <target state="needs-translation">The current page is of the type "Sysfolder". Sysfolders usually don't contain content elements but are used for collecting other types of records in a single folder.</target>
+      </trans-unit>
+      <trans-unit id="hintDoktypeSysfolderOpen" resname="hintDoktypeSysfolderOpen">
+        <source>Switch to list view</source>
+        <target state="needs-translation">Switch to list view</target>
+      </trans-unit>
+      <trans-unit id="titleDoktypeMountpoint" resname="titleDoktypeMountpoint">
+        <source>Mount point</source>
+        <target state="needs-translation">Mount point</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeMountpointCannotEdit" resname="infoDoktypeMountpointCannotEdit">
+        <source>This page acts as a mount point and its content is being replaced by another page ("%s"). Therefore you cannot edit the content of this page directly.</source>
+        <target state="needs-translation">This page acts as a mount point and its content is being replaced by another page ("%s"). Therefore you cannot edit the content of this page directly.</target>
+      </trans-unit>
+      <trans-unit id="hintDoktypeMountpointOpen" resname="hintDoktypeMountpointOpen">
+        <source>Jump to source page of this mount point</source>
+        <target state="needs-translation">Jump to source page of this mount point</target>
+      </trans-unit>
+      <trans-unit id="titleDoktypeSpacer" resname="titleDoktypeSpacer">
+        <source>Spacer</source>
+        <target state="needs-translation">Spacer</target>
+      </trans-unit>
+      <trans-unit id="infoDoktypeSpacerCannotEdit" resname="infoDoktypeSpacerCannotEdit">
+        <source>The current page is of the type "Spacer" and therfore cannot be edited.</source>
+        <target state="needs-translation">The current page is of the type "Spacer" and therfore cannot be edited.</target>
+      </trans-unit>
+      <trans-unit id="infoTitleSelectTemplateDesign" resname="infoTitleSelectTemplateDesign">
+        <source>Template Design</source>
+        <target state="needs-translation">Template Design</target>
+      </trans-unit>
+      <trans-unit id="infoContentSelectTemplateDesign" resname="infoContentSelectTemplateDesign">
+        <source>Please select a template design for this page.</source>
+        <target state="needs-translation">Please select a template design for this page.</target>
+      </trans-unit>
+      <trans-unit id="infoTitleMissingEditRights" resname="infoTitleMissingEditRights">
+        <source>Your user settings don't allow creating, moving or removing elements from this page.</source>
+        <target state="needs-translation">Your user settings don't allow creating, moving or removing elements from this page.</target>
+      </trans-unit>
+      <trans-unit id="infoContentMissingEditRights" resname="infoContentMissingEditRights">
+        <source>Your settings indicate that you either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</source>
+        <target state="needs-translation">Your settings indicate that you either don't have the general right to edit page content, or you're not allowed to modify required tables or you're not allowed to edit the content fields. We suggest you recheck the settings or get in touch with your technical support.</target>
+      </trans-unit>
+      <trans-unit id="infoElementFromOtherPage" resname="infoElementFromOtherPage">
+        <source>This is a reference to an element on page %2$d.</source>
+        <target state="needs-translation">This is a reference to an element on page %2$d.</target>
+      </trans-unit>
+      <trans-unit id="infoElementUsedMultipleTimes" resname="infoElementUsedMultipleTimes">
+        <source>This element has been used %s times on this page!</source>
+        <target state="needs-translation">This element has been used %s times on this page!</target>
+      </trans-unit>
+      <trans-unit id="labelLocalizations" resname="labelLocalizations">
+        <source>Localizations</source>
+        <target state="needs-translation">Localizations</target>
+      </trans-unit>
+      <trans-unit id="createCopyForTranslation" resname="createCopyForTranslation">
+        <source>Create a copy for translation "%s (%s)"</source>
+        <target state="needs-translation">Create a copy for translation "%s (%s)"</target>
+      </trans-unit>
+      <trans-unit id="newContentElementWizard.fce" resname="newContentElementWizard.fce">
+        <source>FCE</source>
+        <target state="needs-translation">FCE</target>
+      </trans-unit>
+      <trans-unit id="error.fce.noMapping" resname="error.fce.noMapping">
+        <source>Error: This FCE has no mapping set.</source>
+        <target state="needs-translation">Error: This FCE has no mapping set.</target>
+      </trans-unit>
+      <trans-unit id="clipboardAriaLabel" resname="clipboardAriaLabel">
+        <source>You can drag items from the page to this icon to add them to the clipboard, or open a filled clipboard to drag items to the page.</source>
+        <target state="needs-translation">You can drag items from the page to this icon to add them to the clipboard, or open a filled clipboard to drag items to the page.</target>
+      </trans-unit>
+      <trans-unit id="clipboardHeading" resname="clipboardHeading">
+        <source>Clipboard</source>
+        <target state="needs-translation">Clipboard</target>
+      </trans-unit>
+      <trans-unit id="clipboardDesc" resname="clipboardDesc">
+        <source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
+        <target state="needs-translation">Please select the content element you want to add and drag and drop its icon to the desired position.</target>
+      </trans-unit>
+      <trans-unit id="clipboardMove" resname="clipboardMove">
+        <source>Move element</source>
+        <target state="needs-translation">Move element</target>
+      </trans-unit>
+      <trans-unit id="clipboardCopy" resname="clipboardCopy">
+        <source>Copy element</source>
+        <target state="needs-translation">Copy element</target>
+      </trans-unit>
+      <trans-unit id="clipboardReference" resname="clipboardReference">
+        <source>Reference element</source>
+        <target state="needs-translation">Reference element</target>
+      </trans-unit>
+      <trans-unit id="newCeWizardAriaLabel" resname="newCeWizardAriaLabel">
+        <source>Click this icon to open the new content element wizard to add new content elements by dragging them to the page.</source>
+        <target state="needs-translation">Click this icon to open the new content element wizard to add new content elements by dragging them to the page.</target>
+      </trans-unit>
+      <trans-unit id="newCeWizardDesc" resname="newCeWizardDesc">
+        <source>Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</source>
+        <target state="needs-translation">Please select the content type you want to add from the appropriate tab and drag and drop its icon to the desired position.</target>
+      </trans-unit>
+      <trans-unit id="trashAriaLabel" resname="trashAriaLabel">
+        <source>You can drag items from the page to this icon to remove the content, or open a filled trash to drag items back to the page to restore them.</source>
+        <target state="needs-translation">You can drag items from the page to this icon to remove the content, or open a filled trash to drag items back to the page to restore them.</target>
+      </trans-unit>
+      <trans-unit id="trashHeading" resname="trashHeading">
+        <source>Unused Elements</source>
+        <target state="needs-translation">Unused Elements</target>
+      </trans-unit>
+      <trans-unit id="trashDesc" resname="trashDesc">
+        <source>Please select the content element you want to add and drag and drop its icon to the desired position.</source>
+        <target state="needs-translation">Please select the content element you want to add and drag and drop its icon to the desired position.</target>
+      </trans-unit>
+      <trans-unit id="configAriaLabel" resname="configAriaLabel">
+        <source>Open the settings menu.</source>
+        <target state="needs-translation">Open the settings menu.</target>
+      </trans-unit>
+      <trans-unit id="tutorial.introduction" resname="tutorial.introduction">
+        <source>The page module focuses on editing the content elements of a page.
 					In general there are different page areas or fields for which you can add content.
 					The content elements themselves can be moved around via drag and drop. For adding
 					or removing content refer to the sidebar icon</source>
-			<target state="needs-translation">The page module focuses on editing the content elements of a page.
+        <target state="needs-translation">The page module focuses on editing the content elements of a page.
 					In general there are different page areas or fields for which you can add content.
 					The content elements themselves can be moved around via drag and drop. For adding
-					or removing content refer to the sidebar icon</target></trans-unit>
-      <trans-unit id="tutorial.sidebar.heading" xml:space="preserve">
-				<source>Understanding the sidebar items</source>
-			<target state="needs-translation">Understanding the sidebar items</target></trans-unit>
-      <trans-unit id="tutorial.sidebar.introduction" xml:space="preserve">
-				<source>To the right you find a sidebar with some icons</source>
-			<target state="needs-translation">To the right you find a sidebar with some icons</target></trans-unit>
-      <trans-unit id="tutorial.editing.heading" xml:space="preserve">
-				<source>Start editing your pages!</source>
-			<target state="needs-translation">Start editing your pages!</target></trans-unit>
-      <trans-unit id="tutorial.editing.introduction" xml:space="preserve">
-				<source>Just select the page you want to edit from the page tree to the left.</source>
-			<target state="needs-translation">Just select the page you want to edit from the page tree to the left.</target></trans-unit>
+					or removing content refer to the sidebar icon</target>
+      </trans-unit>
+      <trans-unit id="tutorial.sidebar.heading" resname="tutorial.sidebar.heading">
+        <source>Understanding the sidebar items</source>
+        <target state="needs-translation">Understanding the sidebar items</target>
+      </trans-unit>
+      <trans-unit id="tutorial.sidebar.introduction" resname="tutorial.sidebar.introduction">
+        <source>To the right you find a sidebar with some icons</source>
+        <target state="needs-translation">To the right you find a sidebar with some icons</target>
+      </trans-unit>
+      <trans-unit id="tutorial.editing.heading" resname="tutorial.editing.heading">
+        <source>Start editing your pages!</source>
+        <target state="needs-translation">Start editing your pages!</target>
+      </trans-unit>
+      <trans-unit id="tutorial.editing.introduction" resname="tutorial.editing.introduction">
+        <source>Just select the page you want to edit from the page tree to the left.</source>
+        <target state="needs-translation">Just select the page you want to edit from the page tree to the left.</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
