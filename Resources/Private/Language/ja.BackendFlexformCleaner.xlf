@@ -1,29 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:29Z" product-name="templavoilaplus" target-language="ja">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:40+02:00" target-language="ja">
     <header/>
     <body>
-      <trans-unit id="title" xml:space="preserve">
-				<source>View FlexForm XML data</source>
-			<target state="needs-translation">View FlexForm XML data</target></trans-unit>
-      <trans-unit id="needsCleaning" xml:space="preserve">
-				<source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the &quot;Clean&quot; button below if you wish to clean it!</source>
-			<target state="needs-translation">It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</target></trans-unit>
-      <trans-unit id="XMLclean" xml:space="preserve">
-				<source>XML is clean</source>
-			<target state="needs-translation">XML is clean</target></trans-unit>
-      <trans-unit id="cleanUp" xml:space="preserve">
-				<source>Save clean XML to record!</source>
-			<target state="needs-translation">Save clean XML to record!</target></trans-unit>
-      <trans-unit id="current" xml:space="preserve">
-				<source>Current XML:</source>
-			<target state="needs-translation">Current XML:</target></trans-unit>
-      <trans-unit id="clean" xml:space="preserve">
-				<source>Clean XML:</source>
-			<target state="needs-translation">Clean XML:</target></trans-unit>
-      <trans-unit id="diff" xml:space="preserve">
-				<source>Difference:</source>
-			<target state="needs-translation">Difference:</target></trans-unit>
+      <trans-unit id="title" resname="title">
+        <source>View FlexForm XML data</source>
+        <target state="needs-translation">View FlexForm XML data</target>
+      </trans-unit>
+      <trans-unit id="needsCleaning" resname="needsCleaning">
+        <source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</source>
+        <target state="needs-translation">It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</target>
+      </trans-unit>
+      <trans-unit id="XMLclean" resname="XMLclean">
+        <source>XML is clean</source>
+        <target state="needs-translation">XML is clean</target>
+      </trans-unit>
+      <trans-unit id="cleanUp" resname="cleanUp">
+        <source>Save clean XML to record!</source>
+        <target state="needs-translation">Save clean XML to record!</target>
+      </trans-unit>
+      <trans-unit id="current" resname="current">
+        <source>Current XML:</source>
+        <target state="needs-translation">Current XML:</target>
+      </trans-unit>
+      <trans-unit id="clean" resname="clean">
+        <source>Clean XML:</source>
+        <target state="needs-translation">Clean XML:</target>
+      </trans-unit>
+      <trans-unit id="diff" resname="diff">
+        <source>Difference:</source>
+        <target state="needs-translation">Difference:</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
