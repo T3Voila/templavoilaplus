@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
-  <file source-language="en" datatype="plaintext" original="messages" date="2014-07-13T20:55:10Z" product-name="templavoilaplus" target-language="fi">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:08+02:00" target-language="fi">
     <header/>
     <body>
-      <trans-unit id="be_groups.tx_templavoilaplus_access" xml:space="preserve">
-                <source>Disallow access to TemplaVoilà! Plus objects:</source>
-            <target state="needs-translation">Disallow access to TemplaVoilà! Plus objects:</target></trans-unit>
-      <trans-unit id="tt_content.tx_templavoilaplus_map" xml:space="preserve">
-                <source>Element Design:</source>
-            <target state="needs-translation">Element Design:</target></trans-unit>
-      <trans-unit id="tt_content.tx_templavoilaplus_flex" xml:space="preserve">
-                <source>Content:</source>
-            <target state="needs-translation">Content:</target></trans-unit>
-      <trans-unit id="tt_content.CType_pi1" xml:space="preserve">
-                <source>Flexible Content</source>
-            <target state="needs-translation">Flexible Content</target></trans-unit>
-      <trans-unit id="pages.tx_templavoilaplus_map" xml:space="preserve">
-                <source>Use Design:</source>
-            <target state="needs-translation">Use Design:</target></trans-unit>
-      <trans-unit id="pages.tx_templavoilaplus_next_map" xml:space="preserve">
-                <source>Subpages - Use Design:</source>
-            <target state="needs-translation">Subpages - Use Design:</target></trans-unit>
-      <trans-unit id="pages.tab.tx_templavoilaplus_flex" xml:space="preserve">
-                <source>TemplaVoilà! Plus Content</source>
-            <target state="needs-translation">TemplaVoilà! Plus Content</target></trans-unit>
-      <trans-unit id="pages.tx_templavoilaplus_flex" xml:space="preserve">
-                <source>Content:</source>
-            <target state="needs-translation">Content:</target></trans-unit>
+      <trans-unit id="be_groups.tx_templavoilaplus_access" resname="be_groups.tx_templavoilaplus_access">
+        <source>Disallow access to TemplaVoilà! Plus objects:</source>
+        <target state="needs-translation">Disallow access to TemplaVoilà! Plus objects:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_templavoilaplus_map" resname="tt_content.tx_templavoilaplus_map">
+        <source>Element Design:</source>
+        <target state="needs-translation">Element Design:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.tx_templavoilaplus_flex" resname="tt_content.tx_templavoilaplus_flex">
+        <source>Content:</source>
+        <target state="needs-translation">Content:</target>
+      </trans-unit>
+      <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1">
+        <source>Flexible Content</source>
+        <target state="needs-translation">Flexible Content</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_templavoilaplus_map" resname="pages.tx_templavoilaplus_map">
+        <source>Use Design:</source>
+        <target state="needs-translation">Use Design:</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_templavoilaplus_next_map" resname="pages.tx_templavoilaplus_next_map">
+        <source>Subpages - Use Design:</source>
+        <target state="needs-translation">Subpages - Use Design:</target>
+      </trans-unit>
+      <trans-unit id="pages.tab.tx_templavoilaplus_flex" resname="pages.tab.tx_templavoilaplus_flex">
+        <source>TemplaVoilà! Plus Content</source>
+        <target state="needs-translation">TemplaVoilà! Plus Content</target>
+      </trans-unit>
+      <trans-unit id="pages.tx_templavoilaplus_flex" resname="pages.tx_templavoilaplus_flex">
+        <source>Content:</source>
+        <target state="needs-translation">Content:</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
