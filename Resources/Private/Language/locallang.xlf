@@ -10,7 +10,7 @@
                 <source>View: Sub elements</source>
             </trans-unit>
             <trans-unit id="cm1_viewflexformxml" xml:space="preserve">
-                <source>View: Flexform XML</source>
+                <source>View: FlexForm XML</source>
             </trans-unit>
             <trans-unit id="cm_viewdsto" xml:space="preserve">
                 <source>View: DS/TO</source>
