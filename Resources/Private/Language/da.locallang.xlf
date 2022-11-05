@@ -4,36 +4,36 @@
     <header/>
     <body>
       <trans-unit id="cm1_title" resname="cm1_title">
-        <source>TemplaVoilà Plus</source>
-        <target state="translated">TemplaVoilà Plus</target>
+        <source>TemplaVoilà! Plus</source>
+        <target state="needs-translation">TemplaVoilà! Plus</target>
       </trans-unit>
-      <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
+      <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements" approved="yes">
         <source>View: Sub elements</source>
-        <target state="translated">Vis: Underelementer</target>
+        <target state="final">Vis: Underelementer</target>
       </trans-unit>
       <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
-        <source>View: Flexform XML</source>
-        <target state="translated">Vis: Flexform XML</target>
+        <source>View: FlexForm XML</source>
+        <target state="needs-translation">View: FlexForm XML</target>
       </trans-unit>
-      <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
+      <trans-unit id="cm_viewdsto" resname="cm_viewdsto" approved="yes">
         <source>View: DS/TO</source>
-        <target state="translated">Vis: DS/TO</target>
+        <target state="final">Vis: DS/TO</target>
       </trans-unit>
-      <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement">
+      <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement" approved="yes">
         <source>Pages using this element -&gt;</source>
-        <target state="translated">Sider med dette element -&gt;</target>
+        <target state="final">Sider med dette element -&gt;</target>
       </trans-unit>
-      <trans-unit id="wiz_refElements" resname="wiz_refElements">
+      <trans-unit id="wiz_refElements" resname="wiz_refElements" approved="yes">
         <source>Reference unused content elements (templavoilaplus)</source>
-        <target state="translated">Reference for ubrugte indholdselementer (templavoilaplus)</target>
+        <target state="final">Reference for ubrugte indholdselementer (templavoilaplus)</target>
       </trans-unit>
-      <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
+      <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage" approved="yes">
         <source>Rename a field in pages.tx_templavoilaplus_flex</source>
-        <target state="translated">Omdøb et felt på pages.tx_templavoilaplus_flex</target>
+        <target state="final">Omdøb et felt på pages.tx_templavoilaplus_flex</target>
       </trans-unit>
-      <trans-unit id="field_sourceField" resname="field_sourceField">
+      <trans-unit id="field_sourceField" resname="field_sourceField" approved="yes">
         <source>source field</source>
-        <target state="translated">kildefelt</target>
+        <target state="final">kildefelt</target>
       </trans-unit>
       <trans-unit id="field_destinationField" resname="field_destinationField">
         <source>destination field</source>
