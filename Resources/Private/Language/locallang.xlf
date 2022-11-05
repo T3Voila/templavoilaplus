@@ -4,7 +4,7 @@
         <header/>
         <body>
             <trans-unit id="cm1_title" xml:space="preserve">
-                <source>TemplaVoilà Plus</source>
+                <source>TemplaVoilà! Plus</source>
             </trans-unit>
             <trans-unit id="cm1_viewsubelements" xml:space="preserve">
                 <source>View: Sub elements</source>
