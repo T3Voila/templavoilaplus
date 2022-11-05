@@ -4,16 +4,16 @@
     <header/>
     <body>
       <trans-unit id="cm1_title" resname="cm1_title">
-        <source>TemplaVoilà Plus</source>
-        <target state="needs-translation">TemplaVoilà Plus</target>
+        <source>TemplaVoilà! Plus</source>
+        <target state="needs-translation">TemplaVoilà! Plus</target>
       </trans-unit>
       <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
         <source>View: Sub elements</source>
         <target state="needs-translation">View: Sub elements</target>
       </trans-unit>
       <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
-        <source>View: Flexform XML</source>
-        <target state="needs-translation">View: Flexform XML</target>
+        <source>View: FlexForm XML</source>
+        <target state="needs-translation">View: FlexForm XML</target>
       </trans-unit>
       <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
         <source>View: DS/TO</source>
