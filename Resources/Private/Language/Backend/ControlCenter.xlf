@@ -145,7 +145,7 @@
                 <source>Not mapped yet!</source>
             </trans-unit>
             <trans-unit id="updatemapping_info" resname="updatemapping_info">
-                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
+                <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà! Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
             </trans-unit>
             <trans-unit id="map" resname="map">
                 <source>Map</source>
