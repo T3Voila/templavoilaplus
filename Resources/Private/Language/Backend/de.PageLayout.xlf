@@ -7,9 +7,9 @@
         <source>Page</source>
         <target state="final">Seite</target>
       </trans-unit>
-      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr" approved="yes">
-        <source>This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà Plus".</source>
-        <target state="final">Dieses Modul erlaubt die Erstellung und Bearbeitung von Seiten. Es erlaubt das Template auszuwählen und unterstützt verschiedene Sprachen. Dieses Seitenmodul ist Teil der Erweiterung "TemplaVoilà Plus".</target>
+      <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+        <source>This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà! Plus".</source>
+        <target state="needs-translation">This module allows you to create and edit webpages. It provides a template selector and management for different languages. This page module is part of the extension "TemplaVoilà! Plus".</target>
       </trans-unit>
       <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
         <source>Create and edit pages</source>
