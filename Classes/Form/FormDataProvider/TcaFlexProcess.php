@@ -93,7 +93,8 @@ class TcaFlexProcess implements FormDataProviderInterface
         $pointerFields = GeneralUtility::trimExplode(',', $pointerFields);
         $flexformIdentifier = !empty($result['databaseRow'][$pointerFields[0]]) ? $result['databaseRow'][$pointerFields[0]] : '';
         if (
-            !empty($result['databaseRow'][$pointerFields[1]])
+            isset($pointerFields[1])
+            && !empty($result['databaseRow'][$pointerFields[1]])
             && $result['databaseRow'][$pointerFields[1]] !== 'list'
             && $result['databaseRow'][$pointerFields[1]] !== '*'
         ) {
@@ -686,7 +687,7 @@ class TcaFlexProcess implements FormDataProviderInterface
                                  $tcaNewColumns[$dataStructureFieldName] = $dataStructureFieldDefinition;
                              }
                              $tcaValueArrayLanguage[$langElementLevel][$dataStructureFieldName]
-                                 = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel];
+                                 = $dataValues['data'][$dataStructureSheetName][$langSheetLevel][$dataStructureFieldName][$langElementLevel] ?? '';
                          }
                      } // End of single element handling
                  }

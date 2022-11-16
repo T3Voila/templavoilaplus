@@ -964,7 +964,7 @@ class ProcessingService
         if (is_array($flexform) && is_array($flexform['data'])) {
             $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
             $fieldPart = ArrayUtility::isValidPath($sLangPart, $fieldPointerPath) ? ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath) : null;
-            $listOfUIDs = $fieldPart[$flexformPointer['vLang']];
+            $listOfUIDs = $fieldPart[$flexformPointer['vLang']] ?? '';
         }
 
         $arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
