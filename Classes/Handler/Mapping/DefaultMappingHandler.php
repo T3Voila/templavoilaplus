@@ -82,7 +82,7 @@ class DefaultMappingHandler
         }
 
         /** @TODO Need to support multiple processings */
-        switch ($instructions['valueProcessing']) {
+        switch ($instructions['valueProcessing'] ?? '') {
             case 'typoScript':
                 $processedValue = $this->processTypoScript($flexformData, $processedValue, $table, $row, $instructions['valueProcessing.typoScript'] ?? '');
                 break;

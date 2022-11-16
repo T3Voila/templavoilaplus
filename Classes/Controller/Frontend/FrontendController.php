@@ -280,7 +280,7 @@ class FrontendController extends AbstractPlugin
                     $processedDataValues[$fieldName] = $this->processDataValues($dataValues[$fieldName]['el'], $dsConf['el'], $valueKey);
                 }
             } else {
-                $processedDataValues[$fieldName] = $dataValues[$fieldName][$valueKey];
+                $processedDataValues[$fieldName] = $dataValues[$fieldName][$valueKey] ?? [];
             }
         }
 
@@ -291,7 +291,7 @@ class FrontendController extends AbstractPlugin
     {
         $childSelection = [];
 
-        if ($tsConf['childTemplate']) {
+        if ($tsConf['childTemplate'] ?? null) {
             $renderType = $tsConf['childTemplate'];
             if (substr($renderType, 0, 9) === 'USERFUNC:') {
                 $conf = [
