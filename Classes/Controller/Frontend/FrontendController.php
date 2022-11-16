@@ -280,7 +280,7 @@ class FrontendController extends AbstractPlugin
                     $processedDataValues[$fieldName] = $this->processDataValues($dataValues[$fieldName]['el'], $dsConf['el'], $valueKey);
                 }
             } else {
-                $processedDataValues[$fieldName] = $dataValues[$fieldName][$valueKey] ?? [];
+                $processedDataValues[$fieldName] = $dataValues[$fieldName][$valueKey] ?? '';
             }
         }
 
