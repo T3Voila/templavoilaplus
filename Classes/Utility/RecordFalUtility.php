@@ -40,7 +40,10 @@ final class RecordFalUtility
         $fields = [];
         if (isset($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $columnName => $columnConfig) {
-                if ($columnConfig['config']['foreign_table'] === 'sys_file_reference') {
+                if (
+                    isset($columnConfig['config']['foreign_table'])
+                    && $columnConfig['config']['foreign_table'] === 'sys_file_reference'
+                ) {
                     $fields[] = $columnName;
                 }
             }

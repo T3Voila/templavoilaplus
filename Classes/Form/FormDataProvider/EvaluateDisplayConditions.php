@@ -264,7 +264,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
             $columnConfiguration = $result['processedTca']['columns'][$columnName];
             foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
                 // Unset per sheet
-                if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
+                if (is_array($sheetConfiguration['ROOT']['displayCond'] ?? null)) {
                     unset(
                         $result['processedTca']['columns'][$columnName]['config']['ds']
                             ['sheets'][$sheetName]['ROOT']['displayCond']
@@ -273,7 +273,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
 
                 foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
                     // Unset per flex field
-                    if (is_array($flexConfiguration['displayCond'])) {
+                    if (is_array($flexConfiguration['displayCond'] ?? null)) {
                         unset(
                             $result['processedTca']['columns'][$columnName]['config']['ds']
                                 ['sheets'][$sheetName]['ROOT']
@@ -311,7 +311,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
         // Search for flex fields and evaluate sheet conditions throwing them away if needed
         $columnConfiguration = $result['processedTca']['columns'][$columnName];
         foreach ($columnConfiguration['config']['ds']['sheets'] as $sheetName => $sheetConfiguration) {
-            if (is_array($sheetConfiguration['ROOT']['displayCond'])) {
+            if (is_array($sheetConfiguration['ROOT']['displayCond'] ?? null)) {
                 if (!$this->evaluateConditionRecursiveByLanguage($sheetConfiguration['ROOT']['displayCond'], $langSheetLevel, $langElementLevel)) {
                     unset($result['processedTca']['columns'][$columnName]['config']['ds']['sheets'][$sheetName][$langElementLevel]);
                 }
@@ -325,7 +325,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                 if (is_array($sheetConfiguration['ROOT']['el'])) {
                     foreach ($sheetConfiguration['ROOT']['el'] as $flexField => $flexConfiguration) {
                         $conditionResult = true;
-                        if (is_array($flexConfiguration['displayCond'])) {
+                        if (is_array($flexConfiguration['displayCond'] ?? null)) {
                             $conditionResult = $this->evaluateConditionRecursiveByLanguage($flexConfiguration['displayCond'], $langSheetLevel, $langElementLevel);
                             if (!$conditionResult) {
                                 unset(

@@ -92,7 +92,7 @@ class FlexFormElementContainer extends AbstractContainer
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $sectionContainerResult);
             } elseif (
                 is_array($flexFormFieldArray['config']) // A list of single items and not a blind item
-                && $flexFormFieldArray['tx_templavoilaplus']['eType'] != 'none'
+                && ($flexFormFieldArray['tx_templavoilaplus']['eType'] ?? null) != 'none'
             ) {
                 $html = [];
                 foreach ($lkeys as $lkey) {
@@ -101,9 +101,9 @@ class FlexFormElementContainer extends AbstractContainer
                         'fieldConf' => array(
                             'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'])),
                             'config' => $flexFormFieldArray[$lkey]['config'],
-                            'children' => $flexFormFieldArray[$lkey]['children'],
-                            'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'],
-                            'onChange' => $flexFormFieldArray[$lkey]['onChange'],
+                            'children' => $flexFormFieldArray[$lkey]['children'] ?? null,
+                            'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'] ?? null,
+                            'onChange' => $flexFormFieldArray[$lkey]['onChange'] ?? null,
                         ),
                     );
 
@@ -131,8 +131,8 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
                     }
 
-                    $fakeParameterArray['onFocus'] = $parameterArray['onFocus'];
-                    $fakeParameterArray['label'] = $parameterArray['label'];
+                    $fakeParameterArray['onFocus'] = $parameterArray['onFocus'] ?? null;
+                    $fakeParameterArray['label'] = $parameterArray['label'] ?? null;
                     $originalFieldName = $parameterArray['itemFormElName'];
                     $fakeParameterArray['itemFormElName'] = $parameterArray['itemFormElName'] . $flexFormFormPrefix . '[' . $flexFormFieldName . '][' . $lkey . ']';
                     if ($fakeParameterArray['itemFormElName'] !== $originalFieldName) {
