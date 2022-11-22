@@ -62,7 +62,7 @@ class DefaultMappingHandler
             $GLOBALS['TSFE']->register['tx_templavoilaplus_pi1.current_field'] = $instructions['dataPath'];
         }
 
-        switch ($instructions['dataType']) {
+        switch ($instructions['dataType'] ?? null) {
             case 'row':
                 if (isset($row[$instructions['dataPath']])) {
                     $processedValue = $row[$instructions['dataPath']] ?? '';
