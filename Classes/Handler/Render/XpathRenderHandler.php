@@ -205,7 +205,7 @@ class XpathRenderHandler implements RenderHandlerInterface
             $processingNode->parentNode->removeChild($processingNode);
         }
 
-        switch ($mappingConfiguration['valueType']) {
+        switch ($mappingConfiguration['valueType'] ?? null) {
             case 'html':
                 if ($processedValues[$fieldName]) {
                     $tmpDoc = new \DOMDocument();
