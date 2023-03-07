@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -80,6 +81,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         } catch (InvalidParentRowLoopException $e) {
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
+        } catch (InvalidSinglePointerFieldException $e) {
         } catch (InvalidIdentifierException $e) {
         }
         // phpcs:enable
@@ -392,7 +394,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     1464116002
                 );
             }
-            list($foreignTableName, $foreignFieldName) = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
+            [$foreignTableName, $foreignFieldName] = GeneralUtility::trimExplode(':', $fieldTca['config']['ds_tableField']);
             $dataStructureIdentifier = [
                 'type' => $pointerType,
                 'tableName' => $foreignTableName,
