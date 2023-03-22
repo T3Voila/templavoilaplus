@@ -240,7 +240,7 @@ class EvaluateDisplayConditions extends \TYPO3\CMS\Backend\Form\FormDataProvider
                 }
             }
             // If field was not removed and if it is a flex field, add to list of flex fields to scan
-            if ($conditionResult && $columnConfiguration['config']['type'] === 'flex') {
+            if ($conditionResult && ($columnConfiguration['config']['type'] ?? null) === 'flex') {
                 $listOfFlexFieldNames[] = $columnName;
             }
         }
