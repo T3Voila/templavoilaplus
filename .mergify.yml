@@ -3,16 +3,5 @@ pull_request_rules:
     conditions:
       - base=main
     actions:
-      post_check:
-        success_conditions:
-          - "title~=^\\[(BUGFIX|FEATURE|DOC|RELEASE|TASK)\\]\\s"
-        title: |
-          {% if check_succeed %}
-          Title follows Conventional Commit
-          {% else %}
-          Title does not follow Conventional Commit
-          {% endif %}
-        summary: |
-          {% if not check_succeed %}
-          Your pull request title must start with [(BUGFIX|FEATURE|DOC|RELEASE|TASK)].
-          {% endif %}
+      merge:
+        method: merge
