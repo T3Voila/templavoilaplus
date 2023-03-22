@@ -71,6 +71,15 @@ class Record extends AbstractResponse
         $dataHandler->start($dataHandlerData, []);
         $dataHandler->process_datamap();
 
+        if (count($dataHandler->errorLog)) {
+            return new JsonResponse(
+                [
+                    'error' => $dataHandler->errorLog[0],
+                ],
+                400 /* Bad request */
+            );
+        }
+
         return new JsonResponse([
             'uid' => $uid,
             'nodeHtml' => '',

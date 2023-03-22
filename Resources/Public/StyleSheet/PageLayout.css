@@ -158,7 +158,7 @@ div.tvjs-dropzone {
 
 .tvp-node-header {
     align-items: center;
-    background-color: rgb(238, 238, 238) !important;
+    background-color: rgb(238, 238, 238);
     display: flex;
     flex-wrap: nowrap !important;
     margin-bottom: 0;
