@@ -1,15 +1,16 @@
 # TemplaVoilà! Plus
 
 [![license](https://img.shields.io/github/license/T3Voila/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
-[![version](https://img.shields.io/badge/TER_version-7.3.6-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
+[![version](https://img.shields.io/badge/TER_version-8.1.2-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 
 TemplaVoilà! Plus (TV+) is an extension for the TYPO3 content management system which adds an easy way to extend content elements and rendering to templates in Backend and Frontend.
 It is the follow up of the popular TemplaVoilà! extension from Kasper Skårhøj prepared for modern versions of TYPO3.
 
-## Language files
+## Translation and Documentation
 
-If you like to help with the translation of the extension, please visit https://github.com/T3Voila/templavoilaplus-languagefiles
+We are using crowdin for translation handling. Please visit https://crowdin.com/project/typo3-extension-templavoilaplu to check state. You can also help there to fix issues.
+But also our complete documentation needs a rewrite, please help there.
 
 ## The big TV+ 8 release
 
@@ -19,8 +20,8 @@ The first stable TV+ 8 release is 8.1.0 which changes many things on the base of
 
 * The point-and-click mapper as it is very hard to get all things together and it isn't the base so it may come back as extension later on.
 * MultiLanguage as this is very hard and partly confuse, we need a "data donation" for this. Also this isn't realy a core compatible way and so Language Fallback Support isn't easy possible.
-* Workspace Support is also missing, or better, not well tested, it may be buggy it may be working.
-* Documentational parts, please help here.
+* Workspace Support is only somewhat tested, it may be buggy it may be working.
+* Documentation and translation parts, please help here.
 
 ### On all this missing parts, what the hell is new/better?
 
@@ -34,7 +35,7 @@ The first stable TV+ 8 release is 8.1.0 which changes many things on the base of
 ## What may come next a.k.a. 8.2.0
 
 After 8.1.0 an update with fixes and readded missing features will come as 8.2.0, which may include support for workspaces, migration for multiple storage pids and maybe MultiLanguage, which depends on testers / data donators to try migration handling and output handling. Also eliminate dependency to fluid_styled_content and get "extending from theme" working.
-Afterwards a TV+ 9 release will be skipped as TYPO3 v9 is already out of support at this point. So a TV+ 10 release with support for TYPO3 v10/v11 and v12 is planned. Hopefully also a cleaner handling of flexforms.
+Afterwards a TV+ 9 release will be skipped as TYPO3 v9 is already out of support at this point. So a TV+ 11 release with support for TYPO3 v11 and v12 is planned. Hopefully also a cleaner handling of flexforms.
 
 ## How is the configuration handling differently
 
@@ -60,10 +61,8 @@ If you use deployment strategie you don't have to run the complete migration aga
     * For Data- and MappingConfiguration is only the list view implemented.
     * For TemplateConfiguration is only the list view implemented and very little information output.
     * There is a Debug screen which shows more about the internal configuration of the objects.
-* There is also a new PageLayout Modul, which isn't puzzled together yet while rewriting
-    * No support for multilanguage
-    * ~~No support for clipboard~~
-    * ~~No support of unused_elements~~
+* There is also a new PageLayout Modul
+    * No full support for multilanguage
     * No support for extending menu
 * Frontend rendering works for sDEF/lDEV/vDEF as you define
     * DataStructure will be taken into account
@@ -71,7 +70,6 @@ If you use deployment strategie you don't have to run the complete migration aga
     * Templates using the XPath Renderer (a.k.a. old TemplaVoilà! template handling)
     * You can also use the Fluid Renderer (https://github.com/T3Voila/tvplus_fluid)
     * Add Meta/CSS/JS informations from TemplateConfiguration
-    * ~~Subtemplates/Rendertypes not supported yet~~
 * Extending
     * You can extend TV+ 8 with new Places with their own handler to load data
     * You can add new renderer (for example Smarty, Twig)
@@ -81,7 +79,6 @@ If you use deployment strategie you don't have to run the complete migration aga
     * There is an Update Script which works quite well
     * You should select "creating new extension" also if it shows you a green extension to select
     * No support for multiple storage pids yet
-    * ~~The feature "ServerDeployment JSON" for better server upgrades isn't available yet~~
 
 ### What would help us:
 
