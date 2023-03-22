@@ -523,11 +523,11 @@ class ProcessingService
         $elementUid = $tce->substNEWwithIDs['NEW'];
 
         if (count($tce->errorLog)) {
-            throw new ProcessingException('Could not insert element: '.$tce->errorLog[0],1679526931767);
+            throw new ProcessingException('Could not insert element: ' . $tce->errorLog[0], 1679526931767);
         }
 
         if (!$elementUid) {
-            throw new ProcessingException('Could not insert element.',1679526931768);
+            throw new ProcessingException('Could not insert element.', 1679526931768);
         }
 
         // insert record into destination
