@@ -497,6 +497,7 @@ class ProcessingService
      * @param string $destinationPointerString Flexform pointer defining the parent location of the new element. Position refers to the element _after_ which the new element should be inserted. Position == 0 means before the first element.
      * @param array $elementRow Array of field keys and values for the new content element record
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
+     * @throws ProcessingException
      */
     public function insertElement(string $destinationPointerString, array $elementRow)
     {
@@ -521,8 +522,12 @@ class ProcessingService
         $tce->process_datamap();
         $elementUid = $tce->substNEWwithIDs['NEW'];
 
+        if (count($tce->errorLog)) {
+            throw new ProcessingException('Could not insert element: '.$tce->errorLog[0],1679526931767);
+        }
+
         if (!$elementUid) {
-            return false;
+            throw new ProcessingException('Could not insert element.',1679526931768);
         }
 
         // insert record into destination

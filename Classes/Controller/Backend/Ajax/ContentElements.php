@@ -41,24 +41,23 @@ class ContentElements extends AbstractResponse
 
         /** @TODO LanguageHandling! */
         /** @TODO Should we hide every element on create as it isn't configured yet? */
-        $result = $processingService->insertElement(
-            $parameters['destinationPointer'] ?? '',
-            $parameters['elementRow'] ?? []
-        );
-
-        if ($result) {
-            return new JsonResponse([
-                'uid' => $result,
-                'nodeHtml' => $this->record2html('tt_content', $result, $parameters['destinationPointer']),
-            ]);
-        } else {
+        try {
+            $result = $processingService->insertElement(
+                $parameters['destinationPointer'] ?? '',
+                $parameters['elementRow'] ?? []
+            );
+        } catch (ProcessingException $e) {
             return new JsonResponse(
                 [
-                    'error' => $result
+                    'error' => $e->getMessage()
                 ],
                 400 /* Bad request */
             );
         }
+        return new JsonResponse([
+            'uid' => $result,
+            'nodeHtml' => $this->record2html('tt_content', $result, $parameters['destinationPointer']),
+        ]);
     }
 
     /**
