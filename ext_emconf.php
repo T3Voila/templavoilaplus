@@ -2,9 +2,9 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'TemplaVoilà! Plus',
-    'description' => 'Building kit for custom  pages and content elements with individual fields, containers and backend layouts. Supporting drag\'n\'drop and multiple references.',
+    'description' => 'Building kit for custom pages and content elements with individual fields, containers and backend layouts. Supporting drag\'n\'drop and multiple references.',
     'category' => 'misc',
-    'version' => '8.1.2',
+    'version' => '8.1.3',
     'state' => 'stable',
     'uploadfolder' => 0,
     'createDirs' => 'uploads/tx_templavoilaplus/',
