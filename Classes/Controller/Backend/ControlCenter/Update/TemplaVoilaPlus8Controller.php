@@ -490,14 +490,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
     protected function getSystemPath(): string
     {
-        $systemPath = '/';
-
-        if (version_compare(TYPO3_version, '9.2.0', '>=')) {
-            $systemPath = \TYPO3\CMS\Core\Core\Environment::getPublicPath();
-        } else {
-            $systemPath = rtrim(PATH_site, '/');
-        }
-        return $systemPath . '/';
+        return \TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/';
     }
 
     /**
@@ -1634,12 +1627,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
     protected function getPackagePaths($extensionKey): string
     {
-        $packageBasePath = '';
-        if (version_compare(TYPO3_version, '9.4.0', '>=')) {
-            $packageBasePath = \TYPO3\CMS\Core\Core\Environment::getExtensionsPath();
-        } else {
-            $packageBasePath = PATH_typo3conf . 'ext';
-        }
+        $packageBasePath = \TYPO3\CMS\Core\Core\Environment::getExtensionsPath();
 
         return $packageBasePath . '/' . $extensionKey;
     }

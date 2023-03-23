@@ -79,10 +79,7 @@ final class TemplaVoilaUtility
         if (isset($GLOBALS['LANG'])) {
             return $GLOBALS['LANG'];
         }
-        if (version_compare(TYPO3_version, '9.3.0', '>=')) {
-            return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
-        }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Lang\LanguageService::class);
+        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
     }
 
     /**
@@ -90,10 +87,7 @@ final class TemplaVoilaUtility
      */
     public static function getCoreLangPath()
     {
-        if (version_compare(TYPO3_version, '9.3.0', '>=')) {
-            return 'core/Resources/Private/Language/';
-        }
-        return 'lang/Resources/Private/Language/';
+        return 'core/Resources/Private/Language/';
     }
 
     /**
@@ -140,19 +134,13 @@ final class TemplaVoilaUtility
             ];
         }
 
-        $languageRecords = [];
         $useSysLanguageRecords = false;
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $languageRecords = self::getUseableLanguages($id);
+        $languageRecords = self::getUseableLanguages($id);
 
-            if (empty($languageRecords)) {
-                // Since 9.0 we do not have pages_language_overlay anymore
-                $useSysLanguageRecords = true;
-                $languageRecords = static::getSysLanguageRows9($id);
-            }
-        } else {
+        if (empty($languageRecords)) {
+            // Since 9.0 we do not have pages_language_overlay anymore
             $useSysLanguageRecords = true;
-            $languageRecords = static::getSysLanguageRows8($id);
+            $languageRecords = static::getSysLanguageRows9($id);
         }
 
         if ($useSysLanguageRecords) {
@@ -490,11 +478,6 @@ final class TemplaVoilaUtility
             'ref_table' => $element['table'],
             'ref_uid' => (int)$element['uid'],
         ];
-
-        // No deleted field anymore in sys_refindex https://forge.typo3.org/issues/93029
-        if (version_compare(TYPO3_version, '11.0.0', '<=')) {
-            $selectArray['deleted'] = 0;
-        }
 
         $refrows = self::getConnectionPool()
             ->getConnectionForTable('sys_refindex')

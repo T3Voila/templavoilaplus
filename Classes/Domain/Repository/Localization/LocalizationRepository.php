@@ -94,9 +94,6 @@ class LocalizationRepository
 
     public static function getCurrentLanguage()
     {
-        if (version_compare(TYPO3_version, '9.4.0', '<=')) {
-            return $GLOBALS['TSFE']->sys_language_uid;
-        }
         return GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
     }
 }

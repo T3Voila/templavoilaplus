@@ -49,11 +49,9 @@ class ContentElementWizard extends AbstractResponse
                 'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-                'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
-                'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
-                'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
                 'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
                 'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+                'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
                 'TCA' => $GLOBALS['TCA'],
             ],
         ];
@@ -66,16 +64,12 @@ class ContentElementWizard extends AbstractResponse
 
     private function getContentElements(ServerRequestInterface $request): array
     {
-        if (version_compare(TYPO3_version, '11.2.0', '>=')) {
-            $extended = new ExtendedNewContentElementController(
-                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class),
-                GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class),
-                GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class),
-                GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplateFactory::class)
-            );
-        } else {
-            $extended = new ExtendedNewContentElementController();
-        }
+        $extended = new ExtendedNewContentElementController(
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class),
+            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class),
+            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class),
+            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplateFactory::class)
+        );
         return $extended->getWizardsByRequest($request);
     }
 

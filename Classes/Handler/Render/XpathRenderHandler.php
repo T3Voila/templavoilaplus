@@ -63,11 +63,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         // Meta
         if (isset($headerConfiguration['meta']) && is_array($headerConfiguration['meta'])) {
             foreach ($headerConfiguration['meta'] as $metaName => $metaConfiguration) {
-                if (version_compare(TYPO3_version, '9.3.0', '>=')) {
-                    $pageRenderer->setMetaTag('name', $metaName, $metaConfiguration['content']);
-                } else {
-                    $pageRenderer->addMetaTag('<meta name="' . $metaName . '" content="' . $metaConfiguration['content'] . '">');
-                }
+                $pageRenderer->setMetaTag('name', $metaName, $metaConfiguration['content']);
             }
         }
 

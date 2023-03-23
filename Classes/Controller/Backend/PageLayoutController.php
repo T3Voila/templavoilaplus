@@ -183,11 +183,9 @@ class PageLayoutController extends ActionController
             'localizationPossible' => $this->localizationPossible,
             'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
             'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-            'is8orNewer' => version_compare(TYPO3_version, '8.0.0', '>=') ? true : false,
-            'is9orNewer' => version_compare(TYPO3_version, '9.0.0', '>=') ? true : false,
-            'is10orNewer' => version_compare(TYPO3_version, '10.0.0', '>=') ? true : false,
             'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
             'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
+            'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
             'TCA' => $GLOBALS['TCA'],
         ];
     }
@@ -585,29 +583,17 @@ class PageLayoutController extends ActionController
                 );
                 break;
             default:
-                if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-                    /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-                    $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                    $url = $uriBuilder->buildUriFromRoute(
-                        $module,
-                        array_merge(
-                            $params,
-                            [
-                                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                            ]
-                        )
-                    );
-                } else {
-                    $url = BackendUtility::getModuleUrl(
-                        $module,
-                        array_merge(
-                            $params,
-                            [
-                                'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-                            ]
-                        )
-                    );
-                }
+                /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = $uriBuilder->buildUriFromRoute(
+                    $module,
+                    array_merge(
+                        $params,
+                        [
+                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                        ]
+                    )
+                );
         }
         $button = $buttonBar->makeLinkButton()
             ->setHref($url)

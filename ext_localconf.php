@@ -77,20 +77,13 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
 
 
 // Register install/update processes
-// 8LTS Update
+// 9LTS Update
 // Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
-if (version_compare(TYPO3_version, '9.5.0', '>=')) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-        [\Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class => \Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class],
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-    );
-} else {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-        [\Tvp\TemplaVoilaPlus\Updates\Typo3Lts8Update::class => \Tvp\TemplaVoilaPlus\Updates\Typo3Lts8Update::class],
-        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-    );
-}
-
+/** @TODO Needed anymore? */
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
+    [\Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class => \Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class],
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
+);
 
 // Since TV+ 8.0.0
 \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');

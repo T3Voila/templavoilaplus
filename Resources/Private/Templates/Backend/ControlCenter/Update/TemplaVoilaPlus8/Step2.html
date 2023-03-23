@@ -37,19 +37,17 @@
                     </div>
                 </div>
             </div>
-            <f:if condition="{is9orNewer}">
-                <div class="list-group-item list-group-item-danger" style="break-inside: avoid">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <input type="radio" name="selection" value="_new_" class="disabled" disabled="disabled">
-                            <label>Site Management</label>
-                        </div>
-                        <div class="col-sm-8">
-                            <span class="lead">Not implemented</span>
-                        </div>
+            <div class="list-group-item list-group-item-danger" style="break-inside: avoid">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <input type="radio" name="selection" value="_new_" class="disabled" disabled="disabled">
+                        <label>Site Management</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <span class="lead">Not implemented</span>
                     </div>
                 </div>
-            </f:if>
+            </div>
 
             <f:for each="{packagesQualified}" as="packageQualify">
                 <div class="list-group-item {f:if(condition='{packageQualify.qualify} < -50', then='list-group-item-danger')} {f:if(condition='{packageQualify.qualify} < 0', then='list-group-item-warning')} {f:if(condition='{packageQualify.qualify} < 10', then='list-group-item-info')} list-group-item-success" style="break-inside: avoid">

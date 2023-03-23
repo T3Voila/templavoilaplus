@@ -100,7 +100,6 @@ class ControlCenterController extends ActionController
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
-        $this->view->assign('is10orNewer', version_compare(TYPO3_version, '10.0.0', '>=') ? true : false);
     }
 
     public function debugAction()

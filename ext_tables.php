@@ -10,18 +10,8 @@ if (TYPO3_MODE === 'BE') {
         = 'EXT:templavoilaplus/Resources/Public/StyleSheet/Skin';
 
     $navigationComponentId = 'TYPO3/CMS/Backend/PageTree/PageTreeElement';
-    if (version_compare(TYPO3_version, '9.0.0', '<')) {
-        $navigationComponentId = 'typo3-pagetree';
-    }
 
-    $classPrefixForRegisterModule = '';
-    $classPostfixForRegisterModule = '';
-    $moduleName = 'Tvp.TemplaVoilaPlus';
-    if (version_compare(TYPO3_version, '10.0.0', '>=')) {
-        $classPrefixForRegisterModule = Tvp\TemplaVoilaPlus\Controller::class . '\\';
-        $classPostfixForRegisterModule = 'Controller';
-        $moduleName = 'TemplaVoilaPlus';
-    }
+    $moduleName = 'TemplaVoilaPlus';
 
     // Adding backend modules:
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerModule(
@@ -30,7 +20,7 @@ if (TYPO3_MODE === 'BE') {
         'Layout',
         'top',
         [
-            $classPrefixForRegisterModule . 'Backend\PageLayout' . $classPostfixForRegisterModule => 'show',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController::class => 'show',
         ],
         [
             'access' => 'user,group',
@@ -46,16 +36,16 @@ if (TYPO3_MODE === 'BE') {
         'ControlCenter',
         'bottom',
         [
-            $classPrefixForRegisterModule . 'Backend\ControlCenter' . $classPostfixForRegisterModule => 'show,debug',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\DataStructures' . $classPostfixForRegisterModule => 'list,info,delete',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Mappings' . $classPostfixForRegisterModule => 'list',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Templates' . $classPostfixForRegisterModule => 'list,info',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update' . $classPostfixForRegisterModule => 'info',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\TemplaVoilaPlus8' . $classPostfixForRegisterModule => 'stepStart,step1,step2,step3,step3NewExtension,step3ExistingExtension,step4,step5,stepFinal',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\ServerMigration' . $classPostfixForRegisterModule => 'stepStart',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV8' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV10' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
-            $classPrefixForRegisterModule . 'Backend\ControlCenter\Update\DataStructureV11' . $classPostfixForRegisterModule => 'stepStart,stepFinal',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenterController::class => 'show,debug',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\DataStructuresController::class => 'list,info,delete',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\MappingsController::class => 'list',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\TemplatesController::class => 'list,info',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\UpdateController::class => 'info',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\TemplaVoilaPlus8Controller::class => 'stepStart,step1,step2,step3,step3NewExtension,step3ExistingExtension,step4,step5,stepFinal',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\ServerMigrationController::class => 'stepStart',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV8Controller::class => 'stepStart,stepFinal',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV10Controller::class => 'stepStart,stepFinal',
+            \Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV11Controller::class => 'stepStart,stepFinal',
         ],
         [
             'access' => 'user,group',

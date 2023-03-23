@@ -1,37 +1,14 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-<f:if condition="{settings.configuration.is11orNewer}">
-    <f:then>
-        <f:be.pageRenderer
-            pageTitle="TemplaVoilà! Plus"
-            includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}''}"
-            includeRequireJsModules="{
+<f:be.pageRenderer
+    pageTitle="TemplaVoilà! Plus"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}''}"
+    includeRequireJsModules="{
         ControlCenter: 'TYPO3/CMS/Templavoilaplus/ControlCenter',
         Modal:'TYPO3/CMS/Backend/Modal',
         ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
         Tooltip: 'TYPO3/CMS/Backend/Tooltip'
     }"
-        />
-    </f:then>
-    <f:else>
-        <f:be.pageRenderer
-            pageTitle="{pageTitle}"
-            includeCssFiles="{
-            0: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-badge.css\', extensionName: \'templavoilaplus\')}',
-            1: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-button.css\', extensionName: \'templavoilaplus\')}',
-            2: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-card.css\', extensionName: \'templavoilaplus\')}',
-            3: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-caret.css\', extensionName: \'templavoilaplus\')}',
-            4: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/overrides.css\', extensionName: \'templavoilaplus\')}',
-            6: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'
-            }"
-            includeRequireJsModules="{
-        ControlCenter: 'TYPO3/CMS/Templavoilaplus/ControlCenter',
-        Modal:'TYPO3/CMS/Backend/Modal',
-        ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
-        Tooltip: 'TYPO3/CMS/Backend/Tooltip'
-    }"
-        />
-    </f:else>
-</f:if>
+/>
 
 <h1>{pageTitle}</h1>
 
@@ -40,8 +17,6 @@
 <f:section name="content">
 
     <h2>Configuration</h2>
-
-    <f:if condition="{is10orNewer}"><f:then>
 
     <div class="row bg-info border border-primary py-2">
         <div class="col-sm-3">
@@ -93,61 +68,6 @@
             </div>
         </div>
     </div>
-
-    </f:then><f:else>
-
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:datastructures"/></h3>
-                </div>
-                <div class="panel-body">
-                    <p class="panel-text"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:datastructures.description"/></p>
-                </div>
-                <ul class="list-group">
-                    <li class="list-group-item">Found <f:count subject="{dataStructurePlaces}" /> configurations</li>
-                </ul>
-                <div class="panel-footer">
-                    <f:link.action controller="Backend\ControlCenter\DataStructures" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View DataStructures</f:link.action>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:mappings"/></h3>
-                </div>
-                <div class="panel-body">
-                    <p class="panel-text"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:mappings.description"/></p>
-                </div>
-                <ul class="list-group">
-                    <li class="list-group-item">Found <f:count subject="{mappingPlaces}" /> configurations</li>
-                </ul>
-                <div class="panel-footer">
-                    <f:link.action controller="Backend\ControlCenter\Mappings" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View Mappings</f:link.action>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h5 class="panel-title"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:templates"/></h5>
-                </div>
-                <div class="panel-body">
-                    <p class="panel-text"><f:translate key="LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf:templates.description"/></p>
-                </div>
-                <ul class="list-group">
-                    <li class="list-group-item">Found <f:count subject="{templatePlaces}" /> configurations</li>
-                </ul>
-                <div class="panel-footer">
-                    <f:link.action controller="Backend\ControlCenter\Templates" action="list" class="btn btn-primary"><core:icon identifier="actions-view-go-forward" /> View Templates</f:link.action>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </f:else></f:if>
 
     <h2>Update</h2>
 

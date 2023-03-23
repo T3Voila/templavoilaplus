@@ -23,23 +23,11 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-// phpcs:disable
-if (version_compare(TYPO3_version, '10.0.0', '>=')) {
-    class CorePageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
-    {
-    }
-} else {
-    class CorePageRepository extends \TYPO3\CMS\Frontend\Page\PageRepository
-    {
-    }
-}
-
 /**
  * Repository for record localizations
  */
-class PageRepository extends CorePageRepository
+class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
 {
-// phpcs:enable
     /**
      * Get all pages where the content of a page $pageId is also shown on
      *
@@ -59,20 +47,18 @@ class PageRepository extends CorePageRepository
 
         $pages = $queryBuilder->execute()->fetchAll();
 
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            if ($pages) {
-                foreach ($pages as $key => $page) {
-                    // check if the page is a translation of another page
-                    // and has languageSynchronization enabled for content_for_pid
-                    if (
-                        $page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] > 0
-                        && $page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0
-                        && $page['l10n_state']
-                        && json_decode($page['l10n_state'], true)['content_from_pid']
-                        && json_decode($page['l10n_state'], true)['content_from_pid'] == 'parent'
-                    ) {
-                        unset($pages[$key]);
-                    }
+        if ($pages) {
+            foreach ($pages as $key => $page) {
+                // check if the page is a translation of another page
+                // and has languageSynchronization enabled for content_for_pid
+                if (
+                    $page[$GLOBALS['TCA']['pages']['ctrl']['languageField']] > 0
+                    && $page[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] > 0
+                    && $page['l10n_state']
+                    && json_decode($page['l10n_state'], true)['content_from_pid']
+                    && json_decode($page['l10n_state'], true)['content_from_pid'] == 'parent'
+                ) {
+                    unset($pages[$key]);
                 }
             }
         }

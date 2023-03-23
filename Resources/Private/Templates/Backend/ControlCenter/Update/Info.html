@@ -7,35 +7,13 @@
         <f:if condition="{is12orNewer}">
             <span class="text-warning">Your TYPO3 Version is beyond a currently released version, so you may run into some issue since we do not support this version yet.</span>
         </f:if>
-        <f:if condition="!{is8orNewer}">
-            <span class="text-danger">Your TYPO3 Version is very old, TV+ 8 does not support this version anymore. Please use the latest TV+ 7 version instead. Hopefully you are running an ELTS Version of TYPO3.</span>
+        <f:if condition="!{is11orNewer}">
+            <span class="text-danger">Your TYPO3 Version is very old, TV+ 11 does not support this version anymore. Please use the latest TV+ 8 version instead. Hopefully you are running an ELTS Version of TYPO3.</span>
         </f:if>
-        <f:if condition="{is8orNewer} && !{is9orNewer}">
-            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but please see the message box below.</span>
-        </f:if>
-        <f:if condition="{is9orNewer} && !{is10orNewer}">
-            <span class="text-warning">Your TYPO3 Version is supported by TV+ 8, but please see the message box below.</span>
-        </f:if>
-        <f:if condition="{is10orNewer} && !{is12orNewer}">
-            <span class="text-success mark">Your TYPO3 Version is supported by TV+ 8.</span>
+        <f:if condition="{is11orNewer} && !{is13orNewer}">
+            <span class="text-success mark">Your TYPO3 Version is supported by TV+ 11.</span>
         </f:if>
     </p>
-
-    <f:if condition="!{is10orNewer}">
-        <f:be.infobox title="You are using TYPO3 version {typo3Version}" state="1">
-            <ul>
-                <li>Your version of TYPO3 is out of normal maintenance support as of {f:if(condition: '!{is9orNewer}', then: 'March 31, 2020', else: 'September 31, 2021')}. You should upgrade to a newer version of TYPO3 or pay to get extended maintenance support time (ELTS Support). For more information follow this <a href="https://typo3.com/products/extended-support" target="_blank" style="text-decoration: underline dotted red">link</a>. If you need more information on the support times of the TYPO3 versions, take a look <a href="https://typo3.org/cms/roadmap" target="_blank" style="text-decoration: underline dotted red">here</a>.</li>
-                <f:if condition="!{is9orNewer}">
-                    <f:then>
-                        <li>Your TYPO3 v8, is missing the "Site Management" feature since it was introduced in "TYPO3 v9". So, unfortunately this feature isn't usable together with TemplaVoilà! Plus 8.</li>
-                    </f:then>
-                    <f:else>
-                        <li>TemplaVoilà! Plus 8 will work, but there may be some features which will only work with newer TYPO3 versions.</li>
-                    </f:else>
-                </f:if>
-            </ul>
-        </f:be.infobox>
-    </f:if>
 
     <h3 class="text-notice">Information</h3>
     <p class="lead">After upgrading your TYPO3 or your TV+ extension you may need to also run this update scripts so the structure of your data can also be updated to latest requirements. Partially this can be done while you run the TYPO3 Upgrade Wizards but mostly you will find them here, as TV+ wants to guide you through the update process with multiple steps and give you some natty informations. But, before you run any of the update scripts, we recommand to backup all your data of your TYPO3 instance. The update scipts are tested, but nobody knows if it works with your data and doesn't produce little hobbits which will run on your website afterwards.</p>
@@ -51,37 +29,37 @@
 
     <f:comment>@TODO Add check if it needs to be run</f:comment>
     <f:be.infobox title="You need to run this to update your configuration to be compatible with TemplaVoilà! Plus 8" state="-1" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\TemplaVoilaPlus8" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" /> Update configuration to TemplaVoilà! Plus 8</f:link.action>
+        <f:link.action controller="Backend\ControlCenter\Update\TemplaVoilaPlus8" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="actions-play" /> Update configuration to TemplaVoilà! Plus 8</f:link.action>
     </f:be.infobox>
 
     <f:if condition="{hasServerMigrationFile} && {isMigrationPossible}">
         <f:be.infobox title="ServerMigration" state="1" disableIcon="true">
-            <f:link.action controller="Backend\ControlCenter\Update\ServerMigration" action="stepStart" class="btn btn-warning btn-block btn-lg"><core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" /> Migrate Server with information from generated theme extension.</f:link.action>
+            <f:link.action controller="Backend\ControlCenter\Update\ServerMigration" action="stepStart" class="btn btn-warning btn-block btn-lg"><core:icon identifier="actions-play" /> Migrate Server with information from generated theme extension.</f:link.action>
         </f:be.infobox>
     </f:if>
 
-    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8/v9 LTS" state="{f:if(condition: '{is8orNewer}', then: '-1', else: '-2')}" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV8" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is8orNewer}', then: 'disabled')}">
-            <f:if condition="{is8orNewer}">
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8/v9 LTS" state="{f:if(condition: '{is11orNewer}', then: '-1', else: '-2')}" disableIcon="true">
+        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV8" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is11orNewer}', then: 'disabled')}">
+            <f:if condition="{is11orNewer}">
                 <f:then>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" />
+                    <core:icon identifier="actions-play" />
                 </f:then>
                 <f:else>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-ban', else: 'actions-close')}" />
+                    <core:icon identifier="actions-ban" />
                 </f:else>
             </f:if>
             Update DataStructure from TYPO3 v7 LTS to v8/v9 LTS
         </f:link.action>
     </f:be.infobox>
 
-    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v9 LTS and v10 LTS" state="{f:if(condition: '{is10orNewer}', then: '-1', else: '-2')}" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV10" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is10orNewer}', then: 'disabled')}">
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v9 LTS and v10 LTS" state="{f:if(condition: '{is11orNewer}', then: '-1', else: '-2')}" disableIcon="true">
+        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV10" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is11orNewer}', then: 'disabled')}">
             <f:if condition="{is10orNewer}">
                 <f:then>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" />
+                    <core:icon identifier="actions-play" />
                 </f:then>
                 <f:else>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-ban', else: 'actions-close')}" />
+                    <core:icon identifier="actions-ban" />
                 </f:else>
             </f:if>
             Update DataStructure from TYPO3 v9 LTS to v10 LTS
@@ -92,10 +70,10 @@
         <f:link.action controller="Backend\ControlCenter\Update\DataStructureV11" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is11orNewer}', then: 'disabled')}">
             <f:if condition="{is11orNewer}">
                 <f:then>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-play', else: 'actions-view-go-forward')}" />
+                    <core:icon identifier="actions-play" />
                 </f:then>
                 <f:else>
-                    <core:icon identifier="{f:if(condition: '{is9orNewer}', then: 'actions-ban', else: 'actions-close')}" />
+                    <core:icon identifier="actions-ban" />
                 </f:else>
             </f:if>
             Update DataStructure from TYPO3 v10 LTS to v11 LTS

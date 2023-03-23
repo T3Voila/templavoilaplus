@@ -52,27 +52,6 @@ class BackendConfiguration
 
     public function initDefaults()
     {
-        if (version_compare(TYPO3_version, '10.0.0', '>=')) {
-            $this->initDefaults10();
-        } else {
-            $this->initDefaults8();
-        }
-    }
-
-    public function initDefaults8()
-    {
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_DEFAULT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_LINK, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SHORTCUT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_BE_USER_SECTION, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_MOUNTPOINT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SPACER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_SYSFOLDER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Frontend\Page\PageRepository::DOKTYPE_RECYCLER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
-    }
-
-    public function initDefaults10()
-    {
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_DEFAULT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeDefaultHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_LINK, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeLinkHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SHORTCUT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeShortcutHandler::class);

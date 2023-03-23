@@ -19,18 +19,8 @@ class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\
      */
     public function getWizardsByRequest(ServerRequestInterface $request): array
     {
-        if (version_compare(TYPO3_version, '11.5.0', '>=')) {
-            $this->handleRequest($request);
-        } else {
-            $this->init($request);
-        }
-
-        $wizardItems = [];
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            $wizardItems = $this->getWizards();
-        } else {
-            $wizardItems = $this->wizardArray();
-        }
+        $this->handleRequest($request);
+        $wizardItems = $this->getWizards();
 
         // Hook for manipulating wizardItems, wrapper, onClickEvent etc.
         // Yes, thats done outside the function wich gathers the wizards!

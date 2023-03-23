@@ -44,23 +44,14 @@ class DoktypeMountpointHandler extends AbstractDoktypeHandler
 
         $mountSourcePageRecord = BackendUtility::getRecordWSOL('pages', $pageRecord['mount_pid']);
 
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-            $url = $uriBuilder->buildUriFromRoute(
-                'web_TemplaVoilaPlusLayout',
-                [
-                    'id' => $pageRecord['mount_pid'],
-                ]
-            );
-        } else {
-            $url = BackendUtility::getModuleUrl(
-                'web_TemplaVoilaPlusLayout',
-                [
-                    'id' => $pageRecord['mount_pid'],
-                ]
-            );
-        }
+        /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+        $url = $uriBuilder->buildUriFromRoute(
+            'web_TemplaVoilaPlusLayout',
+            [
+                'id' => $pageRecord['mount_pid'],
+            ]
+        );
 
         $controller->addFlashMessage(
             sprintf(

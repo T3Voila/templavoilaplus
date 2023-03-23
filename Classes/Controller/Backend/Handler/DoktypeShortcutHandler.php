@@ -53,13 +53,9 @@ class DoktypeShortcutHandler extends AbstractDoktypeHandler
             case $pageRepositoryClass::SHORTCUT_MODE_FIRST_SUBPAGE:
                 // First subpage of current/selected page
                 $pageRepository = GeneralUtility::makeInstance($pageRepositoryClass);
-                if (version_compare(TYPO3_version, '10.0.0', '>=')) {
-                    $subpages = $pageRepository->getMenu((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
-                    if (count($subpages)) {
-                        $result = array_values($subpages)[0];
-                    }
-                } else {
-                    $result = $pageRepository->getFirstWebPage((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                $subpages = $pageRepository->getMenu((int)$pageRecord['shortcut'] ?: (int)$pageRecord['uid']);
+                if (count($subpages)) {
+                    $result = array_values($subpages)[0];
                 }
                 if ($result) {
                     $targetUid = $result['uid'];
@@ -86,23 +82,14 @@ class DoktypeShortcutHandler extends AbstractDoktypeHandler
         $url = '';
         if ($targetUid) {
             $targetPageRecord = BackendUtility::getRecordWSOL('pages', $targetUid);
-            if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-                /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-                $url = $uriBuilder->buildUriFromRoute(
-                    'web_TemplaVoilaPlusLayout',
-                    [
-                        'id' => $targetUid,
-                    ]
-                );
-            } else {
-                $url = BackendUtility::getModuleUrl(
-                    'web_TemplaVoilaPlusLayout',
-                    [
-                        'id' => $targetUid,
-                    ]
-                );
-            }
+            /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+            $url = $uriBuilder->buildUriFromRoute(
+                'web_TemplaVoilaPlusLayout',
+                [
+                    'id' => $targetUid,
+                ]
+            );
         }
 
         $controller->addFlashMessage(

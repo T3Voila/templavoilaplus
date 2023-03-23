@@ -45,26 +45,15 @@ class ConfigurationService implements SingletonInterface
 
     public function __construct()
     {
-        if (version_compare(TYPO3_version, '9.0.0', '>=')) {
-            try {
-                $this->extConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-                    \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
-                )->get('templavoilaplus');
-            } catch (
-                \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
-                | \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException $e
-            ) {
-                $this->extConfig = [];
-            }
-        } else {
-            if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'])) {
-                $this->extConfig = $this->removeDotsFromArrayKeysRecursive(
-                    unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['templavoilaplus'], ['allowed_classes' => false])
-                );
-                if (!is_array($this->extConfig)) {
-                    $this->extConfig = [];
-                }
-            }
+        try {
+            $this->extConfig = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+                \TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class
+            )->get('templavoilaplus');
+        } catch (
+            \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
+            | \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException $e
+        ) {
+            $this->extConfig = [];
         }
     }
 

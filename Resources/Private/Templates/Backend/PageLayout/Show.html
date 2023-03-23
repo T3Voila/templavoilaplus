@@ -1,41 +1,16 @@
 <html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
 
-<f:if condition="{settings.configuration.is11orNewer}">
-    <f:then>
-        <f:be.pageRenderer
-            pageTitle="TemplaVoilà! Plus"
-            includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}', 1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
-            includeRequireJsModules="{
+<f:be.pageRenderer
+    pageTitle="TemplaVoilà! Plus"
+    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}', 1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
+    includeRequireJsModules="{
         PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
         Modal:'TYPO3/CMS/Backend/Modal',
         Notification:'TYPO3/CMS/Backend/Notification',
         ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
         Tooltip: 'TYPO3/CMS/Backend/Tooltip'
     }"
-        />
-    </f:then>
-    <f:else>
-        <f:be.pageRenderer
-            pageTitle="TemplaVoilà! Plus"
-            includeCssFiles="{
-            0: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-badge.css\', extensionName: \'templavoilaplus\')}',
-            1: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-button.css\', extensionName: \'templavoilaplus\')}',
-            2: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-card.css\', extensionName: \'templavoilaplus\')}',
-            3: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/bootstrap337-caret.css\', extensionName: \'templavoilaplus\')}',
-            4: '{f:uri.resource(path: \'StyleSheet/pre11LTScompat/overrides.css\', extensionName: \'templavoilaplus\')}',
-            5: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}',
-            6: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'
-            }"
-            includeRequireJsModules="{
-        PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
-        Modal:'TYPO3/CMS/Backend/Modal',
-        Notification:'TYPO3/CMS/Backend/Notification',
-        ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
-        Tooltip: 'TYPO3/CMS/Backend/Tooltip'
-    }"
-        />
-    </f:else>
-</f:if>
+/>
 
 <div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
     <core:icon identifier="spinner-circle-dark" size="default" />
@@ -135,16 +110,16 @@
                 <ul class="sidenav-menu">
                     <li class="sidenav-item disabled sidenav-item-green" id="navbarContentElementWizard" draggable="false"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardAriaLabel\')}',placement:'left')} >
-                        <tvp:icon identifier="actions-document-add" size="default"/>
+                        <core:icon identifier="actions-document-add" size="default"/>
                     </li>
                     <f:if condition="{settings.configuration.localizationPossible} && false">
                         <li class="sidenav-item disabled" id="navbarLanguages">
-                            <tvp:icon identifier="flags-multiple" size="default"/>
+                            <core:icon identifier="flags-multiple" size="default"/>
                         </li>
                     </f:if>
                     <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} sidenav-item-green" id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardAriaLabel\')}',placement:'left')} >
-                        <tvp:icon identifier="actions-clipboard" size="default"/>
+                        <core:icon identifier="actions-clipboard" size="default"/>
                         <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
                     </li>
                     <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash"  draggable="false" id="navbarTrash" data-unused-count="{unused.tt_content.count}"
@@ -154,7 +129,7 @@
                     </li>
                     <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:configAriaLabel\')}',placement:'left')} >
-                        <tvp:icon identifier="actions-cog-alt" size="default"/>
+                        <core:icon identifier="actions-cog-alt" size="default"/>
                     </li>
                 </ul>
             </nav>

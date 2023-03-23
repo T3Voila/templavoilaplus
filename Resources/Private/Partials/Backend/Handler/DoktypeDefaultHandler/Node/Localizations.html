@@ -2,7 +2,7 @@
 
 <f:if condition="{settings.configuration.moreThanOneLanguageShouldBeShown} && {node.raw.entity.sys_language_uid} != -1 && {node.raw.table} != pages">
 
-    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-footer')} card-footer tvp-localization-info">
+    <div class="card-footer tvp-localization-info">
         <strong>
             <f:translate key="{settings.configuration.lllFile}:labelLocalizations"/>:
         </strong>
@@ -10,14 +10,14 @@
             <f:if condition="{language.uid} > 0">
                     <f:if condition="{node.localization.{language.uid}}">
                         <f:then>
-                            <div class="tvp-node {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.localization.{language.uid}.rendering.stylingClasses}"
+                            <div class="tvp-node card {node.localization.{language.uid}.rendering.stylingClasses}"
                                  id="item{node.localization.{language.uid}.rendering.md5}" data-record-table="{node.localization.{language.uid}.raw.table}" data-record-uid="{node.localization.{language.uid}.raw.entity.uid}"
                                  data-parent-pointer="{node.localization.{language.uid}.rendering.parentPointer}">
                                 <a name="c{node.localization.{language.uid}.rendering.md5}{node.localization.{language.uid}.raw.entity.uid}"></a>
                                 <div class="card-header">
                                     <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: '{node.localization.{language.uid}}', isLocalization: 1}"/>
                                 </div>
-                                <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-body')} card-body">
+                                <div class="card-body">
                                     <div class="tvp-record-edit">
                                         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: '{node.localization.{language.uid}}'}"/>
                                     </div>
@@ -32,17 +32,10 @@
                             <div class="tvp-localization-row">
                                 <a href="{node.localizationActions.{language.uid}.actionUrl}">
                                     <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
-                                        <f:if condition="{settings.configuration.is10orNewer}">
-                                            <f:then>
-                                                <core:icon identifier="actions-document-add" size="small"/>
-                                            </f:then>
-                                            <f:else>
-                                                <core:icon identifier="actions-document-new" size="small"/>
-                                            </f:else>
-                                        </f:if>
+                                        <core:icon identifier="actions-document-add" size="small"/>
                                         <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
-                                                        <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
-                                                     </span>
+                                            <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
+                                        </span>
                                         <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation" arguments="{1:'{settings.configuration.allAvailableLanguages.{language.uid}.title}',2:'{settings.configuration.allAvailableLanguages.{language.uid}.ISOcode}'}" />
                                     </button>
                                 </a>

@@ -12,7 +12,7 @@
 
 
 <f:section name="TableNode">
-<div class="tvp-node sortableItem {f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel panel-default')} card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}" {node.rendering.additionalRecordData -> f:format.raw()}>
+<div class="tvp-node sortableItem card {node.rendering.stylingClasses}" id="item{node.rendering.md5}" data-record-table="{node.raw.table}" data-record-uid="{node.raw.entity.uid}" data-parent-pointer="{node.rendering.parentPointer}" {node.rendering.additionalRecordData -> f:format.raw()}>
     <a name="c{node.rendering.md5}{node.raw.entity.uid}"></a>
     <div class="card-header dragHandle">
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TitleBar" arguments="{node: node}" />
@@ -35,7 +35,7 @@
             warning_containerSeparate => modTSconfig['properties']['disableContainerElementLocalizationWarning']
         </f:comment>
     </div>
-    <div class="{f:if(condition: '{settings.configuration.is10orNewer}', then:'', else: 'panel-body')} card-body">
+    <div class="card-body">
         <div class="tvp-record-edit">
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
         </div>
