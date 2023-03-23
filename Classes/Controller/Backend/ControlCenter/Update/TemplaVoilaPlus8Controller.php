@@ -824,7 +824,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
 
                 // Create extension registration in ext_localconf.php
                 /** @TODO Remove later */
-                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');\n";
+                $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $newExtensionKey . "');\n";
                 GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
 
                 // Load package by package manager
@@ -842,7 +842,7 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
                 } else {
                     // Create extension registration in ext_localconf.php
                     /** @TODO Remove later */
-                    $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3_MODE') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $selection . "');\n";
+                    $extLocalconf = "<?php\n" . $fileDescription . "\ndefined('TYPO3') or die();\n\n" . "/** @TODO This line can be removed after cache is implemented */\n" . "\Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('" . $selection . "');\n";
                     GeneralUtility::writeFile($publicExtensionDirectory . '/ext_localconf.php', $extLocalconf . "\n");
                 }
             }

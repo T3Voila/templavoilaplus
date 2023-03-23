@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 // Unserializing the configuration so we can use it here
 
 // Register "XCLASS" of FlexFormTools for language parsing

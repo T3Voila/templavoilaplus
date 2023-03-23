@@ -1,6 +1,6 @@
 <?php
 
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
 // Adding the new content element, "Flexible Content":
 $tempColumns = [
