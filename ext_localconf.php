@@ -88,9 +88,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge
 // Since TV+ 8.0.0
 \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
 
-if (TYPO3_MODE === 'BE') {
-    // Hook to enrich tt_content form flex element with finisher settings and form list drop down
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
-        \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
-    ] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
-}
+// Hook to enrich tt_content form flex element with finisher settings and form list drop down
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
+    \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
+] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
