@@ -81,11 +81,12 @@ class AbstractUpdateController extends ActionController
 
     public function assignDefault()
     {
+        $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
         $this->view->assignMultiple([
-            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-            'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-            'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
-            'typo3Version' => TYPO3_version,
+            'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
+            'is12orNewer' => version_compare($typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
+            'is13orNewer' => version_compare($typo3Version->getVersion(), '13.0.0', '>=') ? true : false,
+            'typo3Version' => $typo3Version->getVersion(),
             'tvpVersion' => ExtensionManagementUtility::getExtensionVersion('templavoilaplus'),
             'useStaticDS' => ($this->extConf['staticDS']['enable']),
         ]);
