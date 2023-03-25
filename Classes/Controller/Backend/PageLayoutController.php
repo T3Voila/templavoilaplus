@@ -23,10 +23,13 @@ use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -151,13 +154,18 @@ class PageLayoutController extends ActionController
     /** @var PageRenderer */
     protected $pageRenderer;
 
+    /** @var IconFactory */
+    protected $iconFactory;
+
     public function __construct(
         Typo3Version $typo3Version,
-        ModuleTemplateFactory $moduleTemplateFactory
+        ModuleTemplateFactory $moduleTemplateFactory,
+        IconFactory $iconFactory
     ) {
         $this->typo3Version = $typo3Version;
         $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->configuration = new BackendConfiguration();
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -220,20 +228,10 @@ class PageLayoutController extends ActionController
     public function showAction()
     {
         $this->initializeTypo3Clipboard();
-        $this->registerDocheaderButtons();
-        // $this->addViewConfiguration($this->view->getModuleTemplate()->getView());
 
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        // $this->view = $this->moduleTemplateFactory->create($this->request);
-// \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view, null, 6);
-
         $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
-        if ($this->pageInfo !== false) {
-            // $this->view->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        }
-        // $this->view->setFlashMessageQueue($this->getFlashMessageQueue());
 
         $contentHeader = '';
         $contentBody = '';
@@ -310,10 +308,16 @@ class PageLayoutController extends ActionController
         $this->view->assign('settings', $this->settings);
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
+        if ($this->pageInfo !== false) {
+            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        }
+        $this->registerDocheaderButtons($moduleTemplate);
+
+        // $this->view->setFlashMessageQueue($this->getFlashMessageQueue());
+
         $moduleTemplate->setContent($this->view->render('Show'));
         return $this->htmlResponse($moduleTemplate->renderContent());
-
-        // return $this->view->renderResponse('Backend/PageLayout/Show');
     }
 
     /**
@@ -466,12 +470,13 @@ class PageLayoutController extends ActionController
      *
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocheaderButtons(ModuleTemplate $moduleTemplate)
     {
         $coreLangFile = 'LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:';
 
         // View page
         $this->addDocHeaderButton(
+            $moduleTemplate,
             'view',
             TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showPage'),
             'actions-document-view'
@@ -481,6 +486,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageNew()) {
                     // Create new page (wizard)
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'db_new',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'),
                         'actions-page-new',
@@ -496,6 +502,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageEdit()) {
                     // Edit page properties
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'record_edit',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'),
                         'actions-page-open',
@@ -509,6 +516,7 @@ class PageLayoutController extends ActionController
                     );
                     // Move page
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'move_element',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page'),
                         'actions-page-move',
@@ -524,6 +532,7 @@ class PageLayoutController extends ActionController
 
             // Page history
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'record_history',
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory'),
                 'actions-document-history-open',
@@ -542,6 +551,7 @@ class PageLayoutController extends ActionController
         // If access to Web>List for user, then link to that module.
         if (TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'web_list',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showList'),
                 'actions-system-list-open',
@@ -555,6 +565,7 @@ class PageLayoutController extends ActionController
 
         if ($this->pageId) {
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'tce_db',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.clear_cache'),
                 'actions-system-cache-clear',
@@ -579,6 +590,7 @@ class PageLayoutController extends ActionController
      * @param int $buttonGroup Number of the group the icon should go in
      */
     public function addDocHeaderButton(
+        ModuleTemplate $moduleTemplate,
         $module,
         $title,
         $icon,
@@ -587,42 +599,36 @@ class PageLayoutController extends ActionController
         $buttonGroup = 1
     ) {
         /** @var ButtonBar $buttonBar */
-        // $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        //
-        // $url = '#';
-        // $onClick = '';
-        //
-        // switch ($module) {
-        //     case 'view':
-        //         $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-        //         $onClick = BackendUtility::viewOnClick(
-        //             $this->pageId,
-        //             '',
-        //             BackendUtility::BEgetRootLine($this->pageId),
-        //             '',
-        //             '',
-        //             $viewAddGetVars
-        //         );
-        //         break;
-        //     default:
-        //         /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
-        //         $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
-        //         $url = $uriBuilder->buildUriFromRoute(
-        //             $module,
-        //             array_merge(
-        //                 $params,
-        //                 [
-        //                     'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
-        //                 ]
-        //             )
-        //         );
-        // }
-        // $button = $buttonBar->makeLinkButton()
-        //     ->setHref($url)
-        //     ->setOnClick($onClick)
-        //     ->setTitle($title)
-        //     ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon($icon, Icon::SIZE_SMALL));
-        // $buttonBar->addButton($button, $buttonPosition, $buttonGroup);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+
+        $url = '#';
+
+        switch ($module) {
+            case 'view':
+                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageId)
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageId))
+                    ->withLanguage($this->currentLanguageUid)
+                    ->buildDispatcherDataAttributes();
+                break;
+            default:
+                /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+                $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
+                $url = $uriBuilder->buildUriFromRoute(
+                    $module,
+                    array_merge(
+                        $params,
+                        [
+                            'returnUrl' => GeneralUtility::getIndpEnv('REQUEST_URI'),
+                        ]
+                    )
+                );
+        }
+        $button = $buttonBar->makeLinkButton()
+            ->setDataAttributes($previewDataAttributes ?? [])
+            ->setHref($url)
+            ->setTitle($title)
+            ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, $buttonPosition, $buttonGroup);
     }
 
     /**
