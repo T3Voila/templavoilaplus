@@ -1,4 +1,7 @@
-<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
+<html data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
 
 <f:be.pageRenderer
     pageTitle="TemplaVoilà! Plus"
@@ -43,7 +46,7 @@
 
 <f:section name="FlashMessage">
     <f:for each="{pageMessages}" as="message">
-        <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false">
+        <f:be.infobox title="{message.title}" state="1" disableIcon="false"><f:comment>{message.severity}</f:comment>
             {message.message}
             <f:if condition="{message.buttons}">
                 <br/>

@@ -1,0 +1,22 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Tvp\TemplaVoilaPlus\:
+    resource: '../Classes/*'
+
+  Tvp\TemplaVoilaPlus\Configuration\FlexForm\ParsingModifyEventListener:
+    tags:
+        - name: event.listener
+          identifier: 'templavoilaplus/handleFlexformIdentifier'
+          method: 'setDataStructure'
+          event: TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent
+
+  Tvp\TemplaVoilaPlus\Form\RegisterFormEngine:
+    tags:
+        - name: event.listener
+          identifier: 'templavoilaplus/bootComplete/registerFormEngine'
+          method: 'processEvent'
+          event: TYPO3\CMS\Core\Core\Event\BootCompletedEvent

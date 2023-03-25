@@ -43,6 +43,9 @@ class ApiService
      */
     protected $cachedModWebTSconfig = [];
 
+    /** @var IconFactory */
+    protected $iconFactory;
+
     /**
      * @param string $rootTable Usually the root table is "pages" but another table can be specified (eg. "tt_content")
      */
