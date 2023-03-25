@@ -959,16 +959,22 @@ class ProcessingService
                 $baseDataStructure = $baseDataStructure[$fieldName];
             }
         }
-        if (!is_array($baseDataStructure) && !is_array($baseDataStructure['TCEforms']) && !is_array($baseDataStructure['TCEforms']['config']) && $baseDataStructure['TCEforms']['config']['type'] === 'group') {
+        if (!is_array($baseDataStructure) || ($baseDataStructure['config']['type'] ?? '') !== 'group') {
             return null;
         }
-        $innerTable = $baseDataStructure['TCEforms']['config']['allowed'];
+        $innerTable = $baseDataStructure['config']['allowed'];
 
         $listOfUIDs = '';
         if (is_array($flexform) && is_array($flexform['data'])) {
             $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
-            $fieldPart = ArrayUtility::isValidPath($sLangPart, $fieldPointerPath) ? ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath) : null;
-            $listOfUIDs = $fieldPart[$flexformPointer['vLang']] ?? '';
+
+            try {
+                $fieldPart = ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath);
+                $listOfUIDs = $fieldPart[$flexformPointer['vLang']] ?? '';
+            } catch (\TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException) {
+                $fieldPart = null;
+                $listOfUIDs = '';
+            }
         }
 
         $arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);
