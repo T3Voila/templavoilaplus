@@ -20,3 +20,9 @@ services:
           identifier: 'templavoilaplus/bootComplete/registerFormEngine'
           method: 'processEvent'
           event: TYPO3\CMS\Core\Core\Event\BootCompletedEvent
+
+  Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElementWizard:
+    tags: [ 'backend.controller' ]
+
+  Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ExtendedNewContentElementController:
+    tags: [ 'backend.controller' ]

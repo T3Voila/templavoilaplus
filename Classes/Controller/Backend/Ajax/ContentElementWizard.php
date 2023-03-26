@@ -65,12 +65,7 @@ class ContentElementWizard extends AbstractResponse
 
     private function getContentElements(ServerRequestInterface $request): array
     {
-        $extended = new ExtendedNewContentElementController(
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplateFactory::class)
-        );
+        $extended = GeneralUtility::makeInstance(ExtendedNewContentElementController::class);
         return $extended->getWizardsByRequest($request);
     }
 
@@ -187,9 +182,11 @@ class ContentElementWizard extends AbstractResponse
             foreach ($tabConfig['contentElements'] as $_key => $contentElement) {
                 $contentElement['element-row'] = [];
 
-                parse_str($contentElement['params'], $contentElementParams);
-                if (isset($contentElementParams['defVals']['tt_content'])) {
-                    $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
+                if (isset($contentElement['params'])) {
+                    parse_str($contentElement['params'], $contentElementParams);
+                    if (isset($contentElementParams['defVals']['tt_content'])) {
+                        $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
+                    }
                 }
                 $contentElementsConfig[$tabKey]['contentElements'][$_key] = $contentElement;
             }

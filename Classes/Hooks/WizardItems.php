@@ -65,6 +65,8 @@ class WizardItems implements NewContentElementWizardHookInterface
                     ) {
                         continue;
                     }
+                    /** @TODO Var missing? */
+                    $iconIdentifier = null;
                     $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
                         'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
                         'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
@@ -89,8 +91,8 @@ class WizardItems implements NewContentElementWizardHookInterface
     protected function isWizardItemAvailable(int $currentPageId, string $combinedMappingIdentifier, string $wizardLabel): bool
     {
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
-        $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
-        $fcePageTsConfig = $pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'];
+        $tvpPageTsConfig = ($pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'] ?? []);
+        $fcePageTsConfig = ($pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'] ?? []);
         if (ItemsProcFunc::isMappingPlaceVisible($tvpPageTsConfig, $combinedMappingIdentifier)) {
             if (isset($fcePageTsConfig['show']) && $fcePageTsConfig['show']) {
                 return $fcePageTsConfig['show'] === '*'
