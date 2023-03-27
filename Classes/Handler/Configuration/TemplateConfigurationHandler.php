@@ -55,6 +55,9 @@ class TemplateConfigurationHandler extends AbstractConfigurationHandler
         if (isset($configuration['tvp-template']['header']) && is_array($configuration['tvp-template']['header'])) {
             $templateConfiguration->setHeader($configuration['tvp-template']['header']);
         }
+        if (isset($configuration['tvp-template']['body']) && is_array($configuration['tvp-template']['body'])) {
+            $templateConfiguration->setBody($configuration['tvp-template']['body']);
+        }
         if (isset($configuration['tvp-template']['mapping']) && is_array($configuration['tvp-template']['mapping'])) {
             $templateConfiguration->setMapping($configuration['tvp-template']['mapping']);
         }

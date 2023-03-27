@@ -46,8 +46,4 @@ class MarkerBasedRenderHandler implements RenderHandlerInterface
 
         return $content;
     }
-
-    public function processHeaderInformation(TemplateConfiguration $templateConfiguration)
-    {
-    }
 }
