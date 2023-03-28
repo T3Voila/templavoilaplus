@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Form\Container;
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -95,7 +96,7 @@ class FlexFormEntryContainer extends AbstractContainer
                 $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $flexFormTabsContainerResult);
             }
         }
-        $resultArray['requireJsModules'][] = 'TYPO3/CMS/Templavoilaplus/FormEngineFlexForm';
+        $resultArray['requireJsModules'][] = JavaScriptModuleInstruction::forRequireJS('TYPO3/CMS/Templavoilaplus/FormEngineFlexForm');
 
         return $resultArray;
     }
