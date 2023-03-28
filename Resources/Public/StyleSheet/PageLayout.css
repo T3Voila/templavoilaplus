@@ -43,6 +43,7 @@ div.tvjs-dropzone {
 
 .tvp-childs-table .col.t3-grid-cell {
     padding: 0;
+    background-color: #fafafa;
 }
 
 .tvp-record-edit:empty + .row.tvp-childs-table {

@@ -5,10 +5,10 @@
         </f:if>
         <f:if condition="{doktypeDefault.nodeTree.node.raw.table} == 'pages'">
             <f:then>
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
             </f:then>
             <f:else>
-                <f:render p@artial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: doktypeDefault.nodeTree.node, beLayout: doktypeDefault.beLayout}" />
             </f:else>
         </f:if>
     </f:then>

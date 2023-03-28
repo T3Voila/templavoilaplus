@@ -5,7 +5,9 @@
 
 <f:be.pageRenderer
     pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}', 1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
+    includeCssFiles="{
+        0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}',
+        1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
     includeRequireJsModules="{
         PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
         Modal:'TYPO3/CMS/Backend/Modal',
@@ -79,10 +81,10 @@
 <f:section name="Header">
     <f:if condition="{node}">
         <f:format.raw>{contentHeader}</f:format.raw>
+        <h1 id="tvpPageTitle" data-identifier="tvpPageTitle">{pageTitle}</h1>
         <f:if condition="{pageDescription}">
             <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
         </f:if>
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}"/>
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
     </f:if>
 </f:section>
