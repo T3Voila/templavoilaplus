@@ -16,10 +16,14 @@ return [
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\ModalHelperController::class . '::closeAction',
     ],
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 	
 >>>>>>> 98f9183f ([BUGFIX] fixes #502)
+=======
+
+>>>>>>> 21984ab9 (correct whitespaces)
     // Overwrite from core
     // Register link wizard
     'wizard_link' => [
