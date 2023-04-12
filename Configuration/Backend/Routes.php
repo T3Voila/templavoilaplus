@@ -15,7 +15,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\ModalHelperController::class . '::closeAction',
     ],
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 98f9183f ([BUGFIX] fixes #502)
     // Overwrite from core
     // Register link wizard
     'wizard_link' => [
