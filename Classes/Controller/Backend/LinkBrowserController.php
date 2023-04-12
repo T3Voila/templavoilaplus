@@ -18,12 +18,17 @@ class LinkBrowserController extends CoreLinkBrowserController
         parent::initDocumentTemplate();
         
 <<<<<<< HEAD
+<<<<<<< HEAD
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addRequireJsConfiguration(
 =======
 		$pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 		$pageRenderer->addRequireJsConfiguration(
 >>>>>>> 885d9325 ([BUGFIX] fixes #502)
+=======
+        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+        $pageRenderer->addRequireJsConfiguration(
+>>>>>>> 541a3b72 (correct whitespaces)
             [
                 'map' => [
                     '*' => ['TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter' => PathUtility::getRelativePathTo(ExtensionManagementUtility::extPath('templavoilaplus')) . '/Resources/Public/JavaScript/FormEngineLinkBrowserAdapter']
