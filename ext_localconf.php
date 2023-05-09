@@ -8,8 +8,8 @@ defined('TYPO3') or die();
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
     = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::class]['className']
-    = Tvp\TemplaVoilaPlus\Core\Page\JavaScriptModuleInstruction::class;
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][TYPO3\CMS\Backend\Controller\LinkBrowserController::class]['className']
+    = Tvp\TemplaVoilaPlus\Controller\Backend\LinkBrowserController::class;
 
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
