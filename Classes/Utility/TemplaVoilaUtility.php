@@ -179,8 +179,8 @@ final class TemplaVoilaUtility
             if (isset($languages[0])) {
                 // If default Language already is set
                 // Take title and flag from default language
-                $languages[0]['title'] = $languageRecords[0]['title'];
-                $languages[0]['flagIcon'] = $languageRecords[0]['flagIcon'];
+                $languages[0]['title'] = $languageRecords[array_key_first($languageRecords)]['title'];
+                $languages[0]['flagIcon'] = $languageRecords[array_key_first($languageRecords)]['flagIcon'];
                 unset($languageRecords[0]);
             }
             $languages += $languageRecords;
