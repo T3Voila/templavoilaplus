@@ -282,8 +282,8 @@ class DataHandler
         if ($neighbourFlexformPointer['position'] == 1 && $sourceFlexformPointer['position'] == 2) {
             $neighbourFlexformPointer['position'] = 0;
         }
-
-        $templaVoilaAPI->moveElement_setElementReferences($sourceFlexformPointer, $neighbourFlexformPointer);
+        $processingService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ProcessingService::class);
+        $processingService->moveElement($sourceFlexformPointer, $neighbourFlexformPointer);
     }
 
     /**
