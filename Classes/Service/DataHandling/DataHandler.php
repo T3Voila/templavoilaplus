@@ -221,7 +221,10 @@ class DataHandler
                 'vLang' => 'vDEF',
                 'position' => 0,
             ];
-            $templaVoilaAPI->moveElement_setElementReferences($sourceFlexformPointer, $destinationFlexformPointer);
+            $processingService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ProcessingService::class);
+            $sourceFlexformPointerString = $processingService->getParentPointerAsString($sourceFlexformPointer);
+            $destinationFlexformPointerString = $processingService->getParentPointerAsString($destinationFlexformPointer);
+            $processingService->moveElement($sourceFlexformPointerString, $destinationFlexformPointerString);
         }
     }
 
@@ -283,7 +286,17 @@ class DataHandler
             $neighbourFlexformPointer['position'] = 0;
         }
         $processingService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ProcessingService::class);
-        $processingService->moveElement($sourceFlexformPointer, $neighbourFlexformPointer);
+        $sourceFlexformPointerString = $processingService->getParentPointerAsString($sourceFlexformPointer);
+        $neighbourFlexformPointerString = $processingService->getParentPointerAsString($neighbourFlexformPointer);
+
+        // it could be that $neighbourFlexformPointerString is empty, e.g. element not referenced in TVP
+        if ($sourceFlexformPointerString && $neighbourFlexformPointerString) {
+            try {
+                $processingService->moveElement($sourceFlexformPointerString, $neighbourFlexformPointerString);
+            } catch (ProcessingException $e) {
+                // there are a lot of reasons for this, creating a helpful message is hard
+            }
+        }
     }
 
     /**
