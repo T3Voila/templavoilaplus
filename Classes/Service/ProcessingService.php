@@ -839,6 +839,9 @@ class ProcessingService
             // We are starting from 0, so max is count elements - 1
             $maxPosition--;
         }
+        if ($flexformPointer['position'] > $maxPosition) {
+            return null;
+        }
         $flexformPointer['foundFieldReferences'] = $elementReferences;
 
         /** @TODO Check md5 of flexform/record? Move may not a Flexform field*/
