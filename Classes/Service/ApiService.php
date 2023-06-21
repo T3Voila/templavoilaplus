@@ -122,7 +122,14 @@ class ApiService
                             foreach ($fieldsArr as $fieldName => $valuesArr) {
                                 if (is_array($valuesArr)) {
                                     foreach ($valuesArr as $valueName => $value) {
-                                        if ($expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName]['tx_templavoilaplus']['eType'] == 'ce') { /** @TODO What the hell? */
+                                        $fieldDS = $expandedDataStructure[$sheetKey]['ROOT']['el'][$fieldName];
+                                        if (
+                                            ($fieldDS['tx_templavoilaplus']['eType'] ?? '') === 'ce' /** @TODO What the hell? */
+                                            || (
+                                                ($fieldDS['TCEforms']['config']['allowed'] ?? '') === 'tt_content'
+                                                && ($fieldDS['TCEforms']['config']['internal_type'] ?? '') === 'db'
+                                             )
+                                        ) {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
                                             if (is_array($valueItems)) {
                                                 $position = 1;
