@@ -149,11 +149,13 @@ class DataHandler
                         /** @TODO getNodeWithTree is strange to get all usedElements and their pointers */
                         $nodes = $processingService->getNodeWithTree('pages', $page, $parentPointer, $record['pid'], $usedElements);
 
-                        foreach ($usedElements[$table] as $usedUid => $elementConfig) {
-                            if ($id == $usedUid) {
-                                /** @TODO We should unlink every pointer but the position inside pointer will change after first unlink */
-                                if (isset($elementConfig['parentPointers'][0])) {
-                                    $processingService->unlinkElement($elementConfig['parentPointers'][0]);
+                        if (isset($usedElements[$table]) && is_array($usedElements[$table])) {
+                            foreach ($usedElements[$table] as $usedUid => $elementConfig) {
+                                if ($id == $usedUid) {
+                                    /** @TODO We should unlink every pointer but the position inside pointer will change after first unlink */
+                                    if (isset($elementConfig['parentPointers'][0])) {
+                                        $processingService->unlinkElement($elementConfig['parentPointers'][0]);
+                                    }
                                 }
                             }
                         }
