@@ -449,10 +449,8 @@ class DataHandler
             $res = 1;
             foreach ($data as $field => $value) {
                 if (
-                    in_array(
-                        $table . '-' . $field,
-                        $pObj->getExcludeListArray()
-                    ) || $pObj->data_disableFields[$table][$id][$field]
+                    in_array($table . '-' . $field, $pObj->getExcludeListArray())
+                    || ($pObj->data_disableFields[$table][$id][$field] ?? false)
                 ) {
                     continue;
                 }
