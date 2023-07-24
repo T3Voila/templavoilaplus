@@ -99,8 +99,8 @@ class FlexFormElementContainer extends AbstractContainer
                     // Set up options for single element
                     $fakeParameterArray = array(
                         'fieldConf' => array(
-                            'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'])),
-                            'config' => $flexFormFieldArray[$lkey]['config'],
+                            'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'] ?? '')),
+                            'config' => $flexFormFieldArray[$lkey]['config'] ?? null,
                             'children' => $flexFormFieldArray[$lkey]['children'] ?? null,
                             'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'] ?? null,
                             'onChange' => $flexFormFieldArray[$lkey]['onChange'] ?? null,
@@ -164,7 +164,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $options['renderType'] = $flexFormFieldArray[$lkey]['config']['renderType'];
                     } else {
                         // Fallback to type if no renderType is given
-                        $options['renderType'] = $flexFormFieldArray[$lkey]['config']['type'];
+                        $options['renderType'] = $flexFormFieldArray[$lkey]['config']['type'] ?? null;
                     }
 
                     // After all we may a TemplaVoila type which do not have any rendering.
