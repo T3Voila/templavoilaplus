@@ -1,13 +1,14 @@
 <?php
-$targetWizardLink = \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::mainAction';
-if (version_compare(TYPO3_version, '11.0.0', '<')) {
-    $targetWizardLink = \Tvp\TemplaVoilaPlus\Controller\Backend\LinkBrowserController::class . '::mainAction';
-}
 
 /**
  * Definitions for routes provided by EXT:templavoilaplus
  * Contains all "regular" routes for entry points
  */
+
+$targetWizardLink = \TYPO3\CMS\Backend\Controller\LinkBrowserController::class . '::mainAction';
+if (version_compare(TYPO3_version, '11.0.0', '<')) {
+    $targetWizardLink = \Tvp\TemplaVoilaPlus\Controller\Backend\LinkBrowserController::class . '::mainAction';
+}
 
 return [
     'templavoilaplus_modalhelper_close' => [

@@ -4,6 +4,7 @@
  * Definitions for routes provided by EXT:templavoilaplus
  * Contains all "ajax" routes for entry points
  */
+
 return [
     'templavoilaplus_displayFileContent' => [
         'path' => '/templavoilaplus/fileContent',
