@@ -11,21 +11,6 @@ parameters:
 			path: Classes/Configuration/FlexForm/FlexFormTools8.php
 
 		-
-			message: "#^Class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController constructor invoked with 0 parameters, 4 required\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Ajax/ContentElementWizard.php
-
-		-
-			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController\\:\\:init\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Ajax/ExtendedNewContentElementController.php
-
-		-
-			message: "#^Call to an undefined method Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Ajax\\\\ExtendedNewContentElementController\\:\\:wizardArray\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Ajax/ExtendedNewContentElementController.php
-
-		-
 			message: "#^Undefined variable\\: \\$countStatic$#"
 			count: 1
 			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV10Controller.php
@@ -41,19 +26,9 @@ parameters:
 			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV8Controller.php
 
 		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
-
-		-
 			message: "#^Call to static method makeInstance\\(\\) on an unknown class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\GeneralUtility\\.$#"
 			count: 1
 			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/Handler/DoktypeShortcutHandler.php
 
 		-
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$configuration\\.$#"
@@ -64,16 +39,6 @@ parameters:
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$pageRenderer\\.$#"
 			count: 3
 			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
-			count: 1
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
-			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\Utility\\\\BackendUtility\\:\\:getModuleUrl\\(\\)\\.$#"
-			count: 1
-			path: Classes/Hooks/BackendControllerHook.php
 
 		-
 			message: "#^Class TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\TcaFlexFetch not found\\.$#"
@@ -94,8 +59,3 @@ parameters:
 			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Updates\\\\Typo3Lts9Update\\:\\:\\$extConf\\.$#"
 			count: 1
 			path: Classes/Updates/Typo3Lts9Update.php
-
-		-
-			message: "#^Class TYPO3\\\\CMS\\\\Lang\\\\LanguageService not found\\.$#"
-			count: 1
-			path: Classes/Utility/TemplaVoilaUtility.php
