@@ -34,7 +34,8 @@ class Access implements SingletonInterface
      */
     public function recordEditAccessInternals($params, $backendUser)
     {
-        if ($params['table'] == 'tt_content'
+        if (
+            $params['table'] == 'tt_content'
             && is_array($params['idOrRow'] ?? null)
             && $params['idOrRow']['CType'] == 'templavoilaplus_pi1'
         ) {
