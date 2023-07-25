@@ -31,7 +31,11 @@
 		"codeception/module-webdriver": "^2",
 		"ergebnis/composer-normalize": "^2.19.0",
 		"friendsofphp/php-cs-fixer": "^3.4.0",
+<<<<<<< HEAD
 		"helhum/typo3-console": "^v6.7.2 || ^v7.1.1",
+=======
+		"helhum/typo3-console": "^8.0.0 || ^v7.1.1",
+>>>>>>> 43e9a08c ([TASK] update typo3/testing-framework to stable)
 		"helmich/typo3-typoscript-lint": "^2.5.2",
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"jpmschuler/tvplus_test_theme": "*@dev",
@@ -45,11 +49,19 @@
 		"seld/jsonlint": "^1.9.0",
 		"squizlabs/php_codesniffer": "^3.6.2",
 		"symfony/yaml": "^4.4.29 || ^5.3.6 || ^6.0",
+<<<<<<< HEAD
 		"typo3/cms-impexp": "^10.4.28 || ^11.5.10",
 		"typo3/cms-lowlevel": "^10.4.28 || ^11.5.10",
 		"typo3/coding-standards": "^0.5.2",
 		"typo3/minimal": "v10.4.0 || v11.5.0",
 		"typo3/testing-framework": "^6.15.3"
+=======
+		"typo3/cms-impexp": "^11.5.10 || ^12.2.0",
+		"typo3/cms-lowlevel": "^11.5.10 || ^12.2.0",
+		"typo3/coding-standards": "^0.7.1",
+		"typo3/minimal": "^12.2.0 || v11.5.0",
+		"typo3/testing-framework": "^7.0.2"
+>>>>>>> 43e9a08c ([TASK] update typo3/testing-framework to stable)
 	},
 	"replace": {
 		"typo3-ter/templavoilaplus": "self.version"
