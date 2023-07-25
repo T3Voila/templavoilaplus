@@ -457,7 +457,7 @@ class DataHandler
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {
-                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
+                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'] ?? null)) {
                         $res = null;
                         break;
                     }
