@@ -695,7 +695,7 @@ class PageLayoutController extends ActionController
         if (TemplaVoilaUtility::getBackendUser()->isAdmin()) {
             $hasEditRights = true;
         } else {
-            $id = $record[($table == 'pages' ? 'uid' : 'pid')];
+            $id = $record[($table == 'pages' ? 'uid' : 'pid')] ?? 0;
             $pageRecord = BackendUtility::getRecordWSOL('pages', $id);
 
             $mayEditPage = TemplaVoilaUtility::getBackendUser()->doesUserHaveAccess($pageRecord, 16);
