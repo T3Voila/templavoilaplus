@@ -12,13 +12,16 @@ use TYPO3\CMS\Backend\Controller\LinkBrowserController as CoreLinkBrowserControl
 
 class LinkBrowserController extends CoreLinkBrowserController
 {
-
     protected function initDocumentTemplate()
     {
         parent::initDocumentTemplate();
+<<<<<<< HEAD
         
 <<<<<<< HEAD
 <<<<<<< HEAD
+=======
+
+>>>>>>> b596a8ab ([LINT] remove code sniff errors)
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
         $pageRenderer->addRequireJsConfiguration(
 =======
@@ -35,5 +38,5 @@ class LinkBrowserController extends CoreLinkBrowserController
                 ]
             ]
         );
-	}
+    }
 }

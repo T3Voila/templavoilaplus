@@ -293,11 +293,13 @@ class DataHandler
 
         // it could be that $neighbourFlexformPointerString is empty, e.g. element not referenced in TVP
         if ($sourceFlexformPointerString && $neighbourFlexformPointerString) {
+            // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
             try {
                 $processingService->moveElement($sourceFlexformPointerString, $neighbourFlexformPointerString);
             } catch (ProcessingException $e) {
                 // there are a lot of reasons for this, creating a helpful message is hard
             }
+            // phpcs:enable
         }
     }
 
