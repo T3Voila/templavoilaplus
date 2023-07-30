@@ -35,6 +35,9 @@ class TemplateConfiguration extends AbstractConfiguration
     protected $header = [];
 
     /** @var array */
+    protected $body = [];
+
+    /** @var array */
     protected $mapping = [];
 
     /**
@@ -66,7 +69,7 @@ class TemplateConfiguration extends AbstractConfiguration
     /**
      * Retrieve the options of the RenderHandler for this template
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->options;
     }
@@ -77,9 +80,9 @@ class TemplateConfiguration extends AbstractConfiguration
     }
 
     /**
-     * Retrieve the header of the template
+     * Retrieve the header configuration of the template
      */
-    public function getHeader()
+    public function getHeader(): array
     {
         return $this->header;
     }
@@ -87,6 +90,19 @@ class TemplateConfiguration extends AbstractConfiguration
     public function setHeader(array $header): void
     {
         $this->header = $header;
+    }
+
+    /**
+     * Retrieve the body configuration of the template
+     */
+    public function getBody(): array
+    {
+        return $this->body;
+    }
+
+    public function setBody(array $body): void
+    {
+        $this->body = $body;
     }
 
     /**

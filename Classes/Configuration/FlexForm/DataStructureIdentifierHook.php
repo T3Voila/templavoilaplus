@@ -55,7 +55,7 @@ class DataStructureIdentifierHook
                     )
                 )
                 ->execute()
-                ->fetchColumn(0);
+                ->fetchOne();
             try {
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($mappingIdentifier);
                 $dataStructure = ApiHelperUtility::getDataStructure($mappingConfiguration->getCombinedDataStructureIdentifier());

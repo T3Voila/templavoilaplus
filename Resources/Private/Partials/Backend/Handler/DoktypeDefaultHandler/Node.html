@@ -3,7 +3,7 @@
 
 <f:if condition="{node.raw.table} == sys_file">
     <f:then>
-        <tvp:thumbnail src="{node.raw.entity.uid}" height="64" width="64" />
+        <be:thumbnail src="{node.raw.entity.uid}" height="64" width="64" />
     </f:then>
     <f:else>
         <f:render section="TableNode" arguments="{_all}" />

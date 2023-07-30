@@ -321,7 +321,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                 $rowCount = $queryBuilder
                     ->count('uid')
                     ->execute()
-                    ->fetchColumn(0);
+                    ->fetchOne(0);
                 if ($rowCount !== 1) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
@@ -341,7 +341,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                     );
                 }
                 BackendUtility::workspaceOL($tableName, $row);
-                BackendUtility::fixVersioningPid($tableName, $row, true);
                 // New pointer value: This is the "subField" value if given, else the field value
                 // ds_pointerField_searchParent_subField is the "template on next level" structure from templavoila
                 if ($pointerSubFieldName && $row[$pointerSubFieldName]) {

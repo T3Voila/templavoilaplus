@@ -41,7 +41,7 @@ class FormFlexAjaxController extends \TYPO3\CMS\Backend\Controller\FormFlexAjaxC
      * @param ResponseInterface $response
      * @return ResponseInterface
      */
-    public function containerAdd(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function containerAdd(ServerRequestInterface $request): ResponseInterface
     {
         $queryParameters = $request->getParsedBody();
 

@@ -62,6 +62,7 @@ class FlexFormElementContainer extends AbstractContainer
         } else {
             $lkeys = array('vDEF');
         }
+        $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
 
         foreach ($flexFormDataStructureArray as $flexFormFieldName => $flexFormFieldArray) {
             if (
@@ -140,7 +141,11 @@ class FlexFormElementContainer extends AbstractContainer
                         // change the originalFieldName in TBE_EDITOR_fieldChanged. This is
                         // especially relevant for wizards writing their content back to hidden fields
                         if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
-                            $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
+                            if (version_compare($typo3Version->getVersion(), '12.0.0', '>=')) {
+                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']->withElementName($fakeParameterArray['itemFormElName']);
+                            } else {
+                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
+                            }
                         }
                     }
                     $fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
@@ -198,8 +203,7 @@ class FlexFormElementContainer extends AbstractContainer
                         $html[] = $languageIcon;
                     }
 
-                    $html[] = BackendUtility::wrapInHelp($parameterArray['_cshKey'], $flexFormFieldName, $processedTitle);
-                    $html[] = '</label>';
+                    $html[] = $processedTitle. '</label>';
                     $html[] = '<div class="t3js-formengine-field-item">';
                     $html[] = $childResult['html'];
                     $html[] = implode(LF, $defInfo);

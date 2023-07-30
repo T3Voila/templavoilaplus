@@ -215,7 +215,7 @@ class ProcessingService
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
-                'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
+                'description' => ($row[($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? '')] ?? ''),
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']]['count'],
                 'errorNoMapping' => ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1' && !$row['tx_templavoilaplus_map']),
@@ -232,7 +232,7 @@ class ProcessingService
 
     public function getMappingConfiguration(string $table, array $row): ?MappingConfiguration
     {
-        $map = $row['tx_templavoilaplus_map'];
+        $map = ($row['tx_templavoilaplus_map'] ?? null);
         $mappingConfiguration = null;
 
         // find mappingConfiguration in root line if current page doesn't have one
@@ -295,7 +295,7 @@ class ProcessingService
     public function getFlexformForNode(array $node): array
     {
         $emptyFlexform = $this->getEmptyFlexformForNode($node);
-        if ($node['raw']['entity']['tx_templavoilaplus_flex'] === null) {
+        if (($node['raw']['entity']['tx_templavoilaplus_flex'] ?? null) === null) {
             return $emptyFlexform;
         }
 
@@ -385,7 +385,6 @@ class ProcessingService
         ) {
             return $childs;
         }
-
         // Traverse each sheet in the FlexForm Structure:
         foreach ($node['datastructure']['sheets'] as $sheetKey => $sheetData) {
             // Traverse the sheet's elements:
@@ -409,7 +408,7 @@ class ProcessingService
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
-            if (isset($fieldConfig['type']) && $fieldConfig['type'] === 'array') {
+            if (($fieldConfig['config']['type'] ?? '') === 'array') {
                 if ($fieldConfig['section']) {
                     if (isset($values[$fieldKey]['el'])) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
@@ -422,11 +421,11 @@ class ProcessingService
             } else {
                 // If the current field points to another table, process it if not sys_file or sys_file_reference:
                 if (
-                    $fieldConfig['TCEforms']['config']['type'] === 'group'
-                    && $fieldConfig['TCEforms']['config']['internal_type'] === 'db'
+                    isset($fieldConfig['config'])
+                    && ($fieldConfig['config']['type'] ?? '') === 'group'
                 ) {
                     /** @TODO allowed can be multiple tables */
-                    $table = $fieldConfig['TCEforms']['config']['allowed'];
+                    $table = $fieldConfig['config']['allowed'];
                     foreach ($vKeys as $vKey) {
                         $listOfSubElementUids = $values[$fieldKey][$vKey];
                         if ($listOfSubElementUids) {
@@ -960,16 +959,22 @@ class ProcessingService
                 $baseDataStructure = $baseDataStructure[$fieldName];
             }
         }
-        if (!is_array($baseDataStructure) && !is_array($baseDataStructure['TCEforms']) && !is_array($baseDataStructure['TCEforms']['config']) && $baseDataStructure['TCEforms']['config']['type'] === 'group') {
+        if (!is_array($baseDataStructure) || ($baseDataStructure['config']['type'] ?? '') !== 'group') {
             return null;
         }
-        $innerTable = $baseDataStructure['TCEforms']['config']['allowed'];
+        $innerTable = $baseDataStructure['config']['allowed'];
 
         $listOfUIDs = '';
         if (is_array($flexform) && is_array($flexform['data'])) {
             $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
-            $fieldPart = ArrayUtility::isValidPath($sLangPart, $fieldPointerPath) ? ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath) : null;
-            $listOfUIDs = $fieldPart[$flexformPointer['vLang']] ?? '';
+
+            try {
+                $fieldPart = ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath);
+                $listOfUIDs = $fieldPart[$flexformPointer['vLang']] ?? '';
+            } catch (\TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException) {
+                $fieldPart = null;
+                $listOfUIDs = '';
+            }
         }
 
         $arrayOfUIDs = GeneralUtility::intExplode(',', $listOfUIDs);

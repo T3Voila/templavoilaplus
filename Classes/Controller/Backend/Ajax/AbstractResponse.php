@@ -36,7 +36,6 @@ abstract class AbstractResponse
         /** @var StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateFile));
-        $view->getRequest()->setControllerExtensionName('Backend');
 
         $view->setPartialRootPaths([
             10 => 'EXT:templavoilaplus/Resources/Private/Partials/',
@@ -73,6 +72,7 @@ abstract class AbstractResponse
 
     protected function getSettings()
     {
+        $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
         return [
@@ -80,9 +80,9 @@ abstract class AbstractResponse
                 'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-                'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
+                'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
+                'is12orNewer' => version_compare($typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
+                'is13orNewer' => version_compare($typo3Version->getVersion(), '13.0.0', '>=') ? true : false,
                 'TCA' => $GLOBALS['TCA'],
             ],
         ];

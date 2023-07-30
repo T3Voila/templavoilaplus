@@ -1,8 +1,13 @@
-<html data-namespace-typo3-fluid="true" xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
+<html data-namespace-typo3-fluid="true"
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
 
 <f:be.pageRenderer
     pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}', 1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
+    includeCssFiles="{
+        0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}',
+        1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'}"
     includeRequireJsModules="{
         PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
         Modal:'TYPO3/CMS/Backend/Modal',
@@ -13,7 +18,7 @@
 />
 
 <div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
-    <core:icon identifier="spinner-circle-dark" size="default" />
+    <core:icon identifier="spinner-circle-dark" size="medium" />
     <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
 </div>
 <div id="moduleShadowing"></div>
@@ -43,7 +48,7 @@
 
 <f:section name="FlashMessage">
     <f:for each="{pageMessages}" as="message">
-        <f:be.infobox title="{message.title}" state="{message.severity}" disableIcon="false">
+        <f:be.infobox title="{message.title}" state="1" disableIcon="false"><f:comment>{message.severity}</f:comment>
             {message.message}
             <f:if condition="{message.buttons}">
                 <br/>
@@ -76,10 +81,10 @@
 <f:section name="Header">
     <f:if condition="{node}">
         <f:format.raw>{contentHeader}</f:format.raw>
+        <h1 id="tvpPageTitle" data-identifier="tvpPageTitle">{pageTitle}</h1>
         <f:if condition="{pageDescription}">
             <f:be.infobox title=""><f:format.nl2br>{pageDescription}</f:format.nl2br></f:be.infobox>
         </f:if>
-        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/TitleBar" arguments="{node: node}"/>
         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page/Localizations" arguments="{node: node, settings: settings}" />
     </f:if>
 </f:section>
@@ -110,26 +115,26 @@
                 <ul class="sidenav-menu">
                     <li class="sidenav-item disabled sidenav-item-green" id="navbarContentElementWizard" draggable="false"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newCeWizardAriaLabel\')}',placement:'left')} >
-                        <core:icon identifier="actions-document-add" size="default"/>
+                        <core:icon identifier="actions-document-add" size="medium"/>
                     </li>
                     <f:if condition="{settings.configuration.localizationPossible} && false">
                         <li class="sidenav-item disabled" id="navbarLanguages">
-                            <core:icon identifier="flags-multiple" size="default"/>
+                            <core:icon identifier="flags-multiple" size="medium"/>
                         </li>
                     </f:if>
                     <li class="sidenav-item {f:if(condition:'!{clipboard.tt_content.count}', then: 'disabled')} sidenav-item-green" id="navbarClipboard" draggable="false" data-clipboard-count="{clipboard.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:clipboardAriaLabel\')}',placement:'left')} >
-                        <core:icon identifier="actions-clipboard" size="default"/>
+                        <core:icon identifier="actions-clipboard" size="medium"/>
                         <span class="position-absolute translate-middle badge rounded-pill bg-success">{clipboard.tt_content.count}</span>
                     </li>
                     <li class="sidenav-item {f:if(condition:'!{unused.tt_content.count}', then: 'disabled')} sidenav-item-trash"  draggable="false" id="navbarTrash" data-unused-count="{unused.tt_content.count}"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:trashAriaLabel\')}',placement:'left')} >
-                        <core:icon identifier="actions-delete" size="default"/>
+                        <core:icon identifier="actions-delete" size="medium"/>
                         <span class="position-absolute translate-middle badge rounded-pill bg-danger">{unused.tt_content.count}</span>
                     </li>
                     <li class="sidenav-item sidenav-item-config" id="navbarConfig" data-tooltip-content="#navbarConfigTooltip"
                         {tvp:toolTipAttributes(text:'{f:translate(key:\'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:configAriaLabel\')}',placement:'left')} >
-                        <core:icon identifier="actions-cog-alt" size="default"/>
+                        <core:icon identifier="actions-cog-alt" size="medium"/>
                     </li>
                 </ul>
             </nav>

@@ -6,8 +6,21 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\View\BackendViewFactory;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
+
+#[Controller]
 class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController
 {
+    public function __construct(
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly DependencyOrderingService $dependencyOrderingService,
+    ) {
+    }
     /**
      * Returns the array of elements in the wizard display.
      * For the plugin section there is support for adding elements there from a global variable.

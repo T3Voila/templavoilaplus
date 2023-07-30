@@ -23,27 +23,23 @@ use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Mvc\View\ViewInterface;
 
 class PageLayoutController extends ActionController
 {
-    /**
-     * Default View Container
-     *
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * We define BackendTemplateView above so we will get it.
      *
@@ -146,9 +142,30 @@ class PageLayoutController extends ActionController
     protected $rootElementTable;
     protected $rootElementRecord;
 
-    public function __construct()
-    {
+    /** @var BackendConfiguration */
+    protected $configuration;
+
+    /** @var Typo3Version */
+    protected $typo3Version;
+
+    /** @var ModuleTemplateFactory  */
+    protected $moduleTemplateFactory;
+
+    /** @var PageRenderer */
+    protected $pageRenderer;
+
+    /** @var IconFactory */
+    protected $iconFactory;
+
+    public function __construct(
+        Typo3Version $typo3Version,
+        ModuleTemplateFactory $moduleTemplateFactory,
+        IconFactory $iconFactory
+    ) {
+        $this->typo3Version = $typo3Version;
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
         $this->configuration = new BackendConfiguration();
+        $this->iconFactory = $iconFactory;
     }
 
     /**
@@ -183,9 +200,9 @@ class PageLayoutController extends ActionController
             'localizationPossible' => $this->localizationPossible,
             'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
             'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-            'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-            'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-            'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
+            'is11orNewer' => version_compare($this->typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
+            'is12orNewer' => version_compare($this->typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
+            'is13orNewer' => version_compare($this->typo3Version->getVersion(), '13.0.0', '>=') ? true : false,
             'TCA' => $GLOBALS['TCA'],
         ];
     }
@@ -211,15 +228,10 @@ class PageLayoutController extends ActionController
     public function showAction()
     {
         $this->initializeTypo3Clipboard();
-        $this->registerDocheaderButtons();
-        $this->addViewConfiguration($this->view->getModuleTemplate()->getView());
 
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        if ($this->pageInfo !== false) {
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        }
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->getFlashMessageQueue());
+        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
 
         $contentHeader = '';
         $contentBody = '';
@@ -292,6 +304,20 @@ class PageLayoutController extends ActionController
         $this->view->assign('contentHeader', $contentHeader);
         $this->view->assign('contentBody', $contentBody);
         $this->view->assign('contentFooter', $contentFooter);
+
+        $this->view->assign('settings', $this->settings);
+
+        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
+        if ($this->pageInfo !== false) {
+            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        }
+        $this->registerDocheaderButtons($moduleTemplate);
+
+        // $this->view->setFlashMessageQueue($this->getFlashMessageQueue());
+
+        $moduleTemplate->setContent($this->view->render('Show'));
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -389,9 +415,9 @@ class PageLayoutController extends ActionController
 
     /**
      * Taken from ActionController but extended to ADD module configuration
-     * @param ViewInterface $view
+     * @param $view
      */
-    protected function addViewConfiguration(ViewInterface $view)
+    protected function addViewConfiguration($view)
     {
         // Template Path Override
         $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
@@ -444,12 +470,13 @@ class PageLayoutController extends ActionController
      *
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocheaderButtons(ModuleTemplate $moduleTemplate)
     {
         $coreLangFile = 'LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:';
 
         // View page
         $this->addDocHeaderButton(
+            $moduleTemplate,
             'view',
             TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showPage'),
             'actions-document-view'
@@ -459,6 +486,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageNew()) {
                     // Create new page (wizard)
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'db_new',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'),
                         'actions-page-new',
@@ -474,6 +502,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageEdit()) {
                     // Edit page properties
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'record_edit',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'),
                         'actions-page-open',
@@ -487,6 +516,7 @@ class PageLayoutController extends ActionController
                     );
                     // Move page
                     $this->addDocHeaderButton(
+                        $moduleTemplate,
                         'move_element',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page'),
                         'actions-page-move',
@@ -502,6 +532,7 @@ class PageLayoutController extends ActionController
 
             // Page history
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'record_history',
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory'),
                 'actions-document-history-open',
@@ -520,6 +551,7 @@ class PageLayoutController extends ActionController
         // If access to Web>List for user, then link to that module.
         if (TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'web_list',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showList'),
                 'actions-system-list-open',
@@ -533,6 +565,7 @@ class PageLayoutController extends ActionController
 
         if ($this->pageId) {
             $this->addDocHeaderButton(
+                $moduleTemplate,
                 'tce_db',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.clear_cache'),
                 'actions-system-cache-clear',
@@ -557,6 +590,7 @@ class PageLayoutController extends ActionController
      * @param int $buttonGroup Number of the group the icon should go in
      */
     public function addDocHeaderButton(
+        ModuleTemplate $moduleTemplate,
         $module,
         $title,
         $icon,
@@ -565,22 +599,16 @@ class PageLayoutController extends ActionController
         $buttonGroup = 1
     ) {
         /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $url = '#';
-        $onClick = '';
 
         switch ($module) {
             case 'view':
-                $viewAddGetVars = $this->currentLanguageUid ? '&L=' . $this->currentLanguageUid : '';
-                $onClick = BackendUtility::viewOnClick(
-                    $this->pageId,
-                    '',
-                    BackendUtility::BEgetRootLine($this->pageId),
-                    '',
-                    '',
-                    $viewAddGetVars
-                );
+                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageId)
+                    ->withRootLine(BackendUtility::BEgetRootLine($this->pageId))
+                    ->withLanguage($this->currentLanguageUid)
+                    ->buildDispatcherDataAttributes();
                 break;
             default:
                 /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
@@ -596,10 +624,10 @@ class PageLayoutController extends ActionController
                 );
         }
         $button = $buttonBar->makeLinkButton()
+            ->setDataAttributes($previewDataAttributes ?? [])
             ->setHref($url)
-            ->setOnClick($onClick)
             ->setTitle($title)
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon($icon, Icon::SIZE_SMALL));
+            ->setIcon($this->iconFactory->getIcon($icon, Icon::SIZE_SMALL));
         $buttonBar->addButton($button, $buttonPosition, $buttonGroup);
     }
 
@@ -609,12 +637,12 @@ class PageLayoutController extends ActionController
     public function addCshButton($fieldName)
     {
         /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-
-        $contextSensitiveHelpButton = $buttonBar->makeHelpButton()
-            ->setModuleName('_MOD_Backend\PageLayout')
-            ->setFieldName($fieldName);
-        $buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        // $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        //
+        // $contextSensitiveHelpButton = $buttonBar->makeHelpButton()
+        //     ->setModuleName('_MOD_Backend\PageLayout')
+        //     ->setFieldName($fieldName);
+        // $buttonBar->addButton($contextSensitiveHelpButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -623,24 +651,24 @@ class PageLayoutController extends ActionController
     public function addShortcutButton()
     {
         /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-
-        $shortcutButton = $buttonBar->makeShortcutButton()
-            ->setModuleName('Backend\PageLayout')
-            ->setGetVariables(
-                [
-                    'id',
-                    'M',
-                    'edit_record',
-                    'pointer',
-                    'new_unique_uid',
-                    'search_field',
-                    'search_levels',
-                    'showLimit',
-                ]
-            )
-            ->setSetVariables([]/*array_keys($this->MOD_MENU) @TODO*/);
-        $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
+        // $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        //
+        // $shortcutButton = $buttonBar->makeShortcutButton()
+        //     ->setModuleName('Backend\PageLayout')
+        //     ->setGetVariables(
+        //         [
+        //             'id',
+        //             'M',
+        //             'edit_record',
+        //             'pointer',
+        //             'new_unique_uid',
+        //             'search_field',
+        //             'search_levels',
+        //             'showLimit',
+        //         ]
+        //     )
+        //     ->setSetVariables([]/*array_keys($this->MOD_MENU) @TODO*/);
+        // $buttonBar->addButton($shortcutButton, ButtonBar::BUTTON_POSITION_RIGHT);
     }
 
     /**
@@ -849,17 +877,5 @@ class PageLayoutController extends ActionController
         );
 
         $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
-    }
-
-    /**
-     * getFlashMessageQueue is in the ActionController starting with 11LTS, before it is in the ControllerContext
-     */
-    protected function getFlashMessageQueue(string $identifier = null): FlashMessageQueue
-    {
-        if (version_compare(TYPO3_version, '11.5.0', '>=')) {
-            return parent::getFlashMessageQueue($identifier);
-        } else {
-            return $this->controllerContext->getFlashMessageQueue($identifier);
-        }
     }
 }

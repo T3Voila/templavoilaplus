@@ -42,6 +42,7 @@ class ContentElementWizard extends AbstractResponse
         $contentElementsConfig = $this->modifyContentElementsConfig($contentElementsConfig);
         $contentElementsConfig = $this->convertParamsValue($contentElementsConfig);
 
+        $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
         $settings = [
@@ -49,9 +50,9 @@ class ContentElementWizard extends AbstractResponse
                 'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
-                'is11orNewer' => version_compare(TYPO3_version, '11.0.0', '>=') ? true : false,
-                'is12orNewer' => version_compare(TYPO3_version, '12.0.0', '>=') ? true : false,
-                'is13orNewer' => version_compare(TYPO3_version, '13.0.0', '>=') ? true : false,
+                'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
+                'is12orNewer' => version_compare($typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
+                'is13orNewer' => version_compare($typo3Version->getVersion(), '13.0.0', '>=') ? true : false,
                 'TCA' => $GLOBALS['TCA'],
             ],
         ];
@@ -64,12 +65,7 @@ class ContentElementWizard extends AbstractResponse
 
     private function getContentElements(ServerRequestInterface $request): array
     {
-        $extended = new ExtendedNewContentElementController(
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconFactory::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class),
-            GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Template\ModuleTemplateFactory::class)
-        );
+        $extended = GeneralUtility::makeInstance(ExtendedNewContentElementController::class);
         return $extended->getWizardsByRequest($request);
     }
 
@@ -186,9 +182,11 @@ class ContentElementWizard extends AbstractResponse
             foreach ($tabConfig['contentElements'] as $_key => $contentElement) {
                 $contentElement['element-row'] = [];
 
-                parse_str($contentElement['params'], $contentElementParams);
-                if (isset($contentElementParams['defVals']['tt_content'])) {
-                    $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
+                if (isset($contentElement['params'])) {
+                    parse_str($contentElement['params'], $contentElementParams);
+                    if (isset($contentElementParams['defVals']['tt_content'])) {
+                        $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
+                    }
                 }
                 $contentElementsConfig[$tabKey]['contentElements'][$_key] = $contentElement;
             }

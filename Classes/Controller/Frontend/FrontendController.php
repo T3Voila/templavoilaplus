@@ -197,9 +197,8 @@ class FrontendController extends AbstractPlugin
             $renderHandlerIdentifier = $templateConfiguration->getRenderHandlerIdentifier();
             $renderer = $configurationService->getHandler($renderHandlerIdentifier);
 
-            // Manipulate header data
-            // @TODO The renderer? Not realy or?
-            $renderer->processHeaderInformation($templateConfiguration);
+            // Manipulate header/body data
+            PageBasicsHandler::processConfiguration($templateConfiguration, $this->frontendController);
 
             // give TemplateData to renderer and return result
             return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);

@@ -17,8 +17,6 @@ class ApiHelperUtilityTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        // phpcs:ignore
-        defined('TYPO3_version') || define('TYPO3_version', '11.5.0');
         $this->resetSingletonInstances = true;
     }
 
