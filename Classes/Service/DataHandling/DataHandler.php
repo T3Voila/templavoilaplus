@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Service\DataHandling;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -149,11 +150,13 @@ class DataHandler
                         /** @TODO getNodeWithTree is strange to get all usedElements and their pointers */
                         $nodes = $processingService->getNodeWithTree('pages', $page, $parentPointer, $record['pid'], $usedElements);
 
-                        foreach ($usedElements[$table] as $usedUid => $elementConfig) {
-                            if ($id == $usedUid) {
-                                /** @TODO We should unlink every pointer but the position inside pointer will change after first unlink */
-                                if (isset($elementConfig['parentPointers'][0])) {
-                                    $processingService->unlinkElement($elementConfig['parentPointers'][0]);
+                        if (isset($usedElements[$table]) && is_array($usedElements[$table])) {
+                            foreach ($usedElements[$table] as $usedUid => $elementConfig) {
+                                if ($id == $usedUid) {
+                                    /** @TODO We should unlink every pointer but the position inside pointer will change after first unlink */
+                                    if (isset($elementConfig['parentPointers'][0])) {
+                                        $processingService->unlinkElement($elementConfig['parentPointers'][0]);
+                                    }
                                 }
                             }
                         }
@@ -221,7 +224,10 @@ class DataHandler
                 'vLang' => 'vDEF',
                 'position' => 0,
             ];
-            $templaVoilaAPI->moveElement_setElementReferences($sourceFlexformPointer, $destinationFlexformPointer);
+            $processingService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ProcessingService::class);
+            $sourceFlexformPointerString = $processingService->getParentPointerAsString($sourceFlexformPointer);
+            $destinationFlexformPointerString = $processingService->getParentPointerAsString($destinationFlexformPointer);
+            $processingService->moveElement($sourceFlexformPointerString, $destinationFlexformPointerString);
         }
     }
 
@@ -282,8 +288,20 @@ class DataHandler
         if ($neighbourFlexformPointer['position'] == 1 && $sourceFlexformPointer['position'] == 2) {
             $neighbourFlexformPointer['position'] = 0;
         }
+        $processingService = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Service\ProcessingService::class);
+        $sourceFlexformPointerString = $processingService->getParentPointerAsString($sourceFlexformPointer);
+        $neighbourFlexformPointerString = $processingService->getParentPointerAsString($neighbourFlexformPointer);
 
-        $templaVoilaAPI->moveElement_setElementReferences($sourceFlexformPointer, $neighbourFlexformPointer);
+        // it could be that $neighbourFlexformPointerString is empty, e.g. element not referenced in TVP
+        if ($sourceFlexformPointerString && $neighbourFlexformPointerString) {
+            // phpcs:disable Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+            try {
+                $processingService->moveElement($sourceFlexformPointerString, $neighbourFlexformPointerString);
+            } catch (ProcessingException $e) {
+                // there are a lot of reasons for this, creating a helpful message is hard
+            }
+            // phpcs:enable
+        }
     }
 
     /**
@@ -434,10 +452,8 @@ class DataHandler
             $res = 1;
             foreach ($data as $field => $value) {
                 if (
-                    in_array(
-                        $table . '-' . $field,
-                        $pObj->getExcludeListArray()
-                    ) || $pObj->data_disableFields[$table][$id][$field]
+                    in_array($table . '-' . $field, $pObj->getExcludeListArray())
+                    || ($pObj->data_disableFields[$table][$id][$field] ?? false)
                 ) {
                     continue;
                 }
@@ -459,7 +475,7 @@ class DataHandler
                 $currentRecord = BackendUtility::getRecord($table, $id);
                 $dataStructArray = TemplaVoilaUtility::getFlexFormDS($conf, $currentRecord, $table, $field);
                 foreach ($data[$field]['data'] as $sheetData) {
-                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'])) {
+                    if (!is_array($sheetData) || !is_array($dataStructArray['ROOT']['el'] ?? null)) {
                         $res = null;
                         break;
                     }
