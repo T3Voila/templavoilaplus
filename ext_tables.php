@@ -76,11 +76,8 @@ $iconsSvg = [
     'datastructure-default' => 'EXT:templavoilaplus/Resources/Public/Icons/DataStructureDefault.svg',
     'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
     'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
+    'unlink' => 'EXT:templavoilaplus/Resources/Public/Icons/Unlink.svg',
 ];
-$iconsFontAwesome = [
-    'unlink' => 'unlink',
-];
-
 
 $iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 foreach ($iconsBitmap as $identifier => $file) {
@@ -96,13 +93,5 @@ foreach ($iconsSvg as $identifier => $file) {
         'extensions-templavoila-' . $identifier,
         \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         ['source' => $file]
-    );
-}
-
-foreach ($iconsFontAwesome as $identifier => $name) {
-    $iconRegistry->registerIcon(
-        'extensions-templavoila-' . $identifier,
-        \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-        ['name' => $name]
     );
 }
