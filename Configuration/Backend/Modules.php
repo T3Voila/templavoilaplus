@@ -1,19 +1,19 @@
 <?php
 
 return [
-    'web_layouttvp' => [
+    'web_layout' => [
         'parent' => 'web',
         'position' => 'top',
         'access' => 'user',
         'workspaces' => 'live',
-        'path' => 'module/web/layouttvp',
+        'path' => 'module/web/layout',
         'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
         'iconIdentifier' => 'extensions-templavoila-pagemodule',
         'extensionName' => 'Templavoilaplus',
         'navigationComponentId' => 'TYPO3/CMS/Backend/PageTree/PageTreeElement',
         'controllerActions' => [
             \Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController::class => [
-                'flash', 'tree', 'clipboard', 'links', 'fileReference', 'fileReferenceCreate',
+                'show',
             ],
         ],
     ],
@@ -23,7 +23,7 @@ return [
         'access' => 'user',
         'workspaces' => 'live',
         'path' => '/module/tools/controlcenter',
-        'labels' => 'LLL:EXT:examples/Resources/Private/Language/AdminModule/locallang_mod.xlf',
+        'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf',
         'iconIdentifier' => 'extensions-templavoila-administrationmodule',
         'extensionName' => 'Templavoilaplus',
         'inheritNavigationComponentFromMainModule' => false,
