@@ -54,9 +54,11 @@ $moduleName = 'TemplaVoilaPlus';
     ]
 );
 
-$GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
-unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
-
+if (isset($GLOBALS['TBE_MODULES']['web'])) {
+    // <=12LTS only
+    $GLOBALS['TBE_MODULES']['web'] = str_replace(',,', ',', str_replace('layout', '', $GLOBALS['TBE_MODULES']['web']));
+    unset ($GLOBALS['TBE_MODULES']['_PATHS']['web_layout']);
+}
 
 // complex condition to make sure the icons are available during frontend editing...
 /** @TODO This is done in Configuration since TYPO3 v12 */
