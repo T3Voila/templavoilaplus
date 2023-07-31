@@ -141,7 +141,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         switch ($mappingConfiguration['mappingType']) {
             case 'attrib':
-                $processingNode->setAttribute($mappingConfiguration['attribName'], (string)$processedValues[$fieldName]);
+                $processingNode->setAttribute($mappingConfiguration['attribName'], (string) ($processedValues[$fieldName] ?? ''));
                 break;
             case 'inner':
                 $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
@@ -212,7 +212,7 @@ class XpathRenderHandler implements RenderHandlerInterface
 
         switch ($mappingConfiguration['valueType']) {
             case 'html':
-                if ($processedValues[$fieldName]) {
+                if ($processedValues[$fieldName] ?? false) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
                     /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
