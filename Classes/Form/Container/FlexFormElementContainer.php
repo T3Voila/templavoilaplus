@@ -99,19 +99,11 @@ class FlexFormElementContainer extends AbstractContainer
                     // Set up options for single element
                     $fakeParameterArray = array(
                         'fieldConf' => array(
-<<<<<<< HEAD
-                            'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'])),
-                            'config' => $flexFormFieldArray[$lkey]['config'],
-                            'children' => $flexFormFieldArray[$lkey]['children'],
-                            'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'],
-                            'onChange' => $flexFormFieldArray[$lkey]['onChange'],
-=======
                             'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'] ?? '')),
                             'config' => $flexFormFieldArray[$lkey]['config'] ?? null,
                             'children' => $flexFormFieldArray[$lkey]['children'] ?? null,
                             'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'] ?? null,
                             'onChange' => $flexFormFieldArray[$lkey]['onChange'] ?? null,
->>>>>>> afecec12 ([BUGFIX] php8 undefined array key)
                         ),
                     );
 
