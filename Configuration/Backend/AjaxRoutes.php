@@ -11,6 +11,7 @@ if (version_compare(TYPO3_version, '9.0.0', '>=')) {
  * Definitions for routes provided by EXT:templavoilaplus
  * Contains all "ajax" routes for entry points
  */
+
 return [
     'templavoilaplus_displayFileContent' => [
         'path' => '/templavoilaplus/fileContent',
