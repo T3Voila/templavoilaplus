@@ -30,7 +30,7 @@
 		"codeception/module-asserts": "^2",
 		"codeception/module-cli": "^2",
 		"codeception/module-webdriver": "^2",
-		"ergebnis/composer-normalize": "^2.19.0",
+		"ergebnis/composer-normalize": "2.28.3",
 		"friendsofphp/php-cs-fixer": "^3.4.0",
 		"helhum/typo3-console": "^8.0.0 || ^v7.1.1",
 		"helmich/typo3-typoscript-lint": "^2.5.2",
