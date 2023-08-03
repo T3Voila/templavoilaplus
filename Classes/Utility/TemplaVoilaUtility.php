@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Utility;
 
 use Psr\Log\LoggerAwareInterface;
 use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
+use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\LanguageAspect;
@@ -27,6 +28,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\BackendWorkspaceRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\PseudoSiteFinder;
@@ -72,14 +75,24 @@ final class TemplaVoilaUtility
     }
 
     /**
-     * @return \TYPO3\CMS\Lang\LanguageService
+     * @return LanguageService
+     * @throws ProcessingException
      */
-    public static function getLanguageService()
+    public static function getLanguageService(): LanguageService
     {
+        // for backend
         if (isset($GLOBALS['LANG'])) {
             return $GLOBALS['LANG'];
         }
-        return GeneralUtility::makeInstance(\TYPO3\CMS\Core\Localization\LanguageService::class);
+        // for frontend
+        if (isset($GLOBALS['TYPO3_REQUEST'])) {
+            $languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+            return $languageServiceFactory->createFromSiteLanguage(
+                $GLOBALS['TYPO3_REQUEST']->getAttribute('language')
+                ?? $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getDefaultLanguage()
+            );
+        }
+       throw new ProcessingException('Trying to instantiate LanguageService failed',1691061481968);
     }
 
     /**
