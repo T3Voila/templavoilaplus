@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
  * The TYPO3 project - inspiring people to share!
  */
 
+use RuntimeException;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
@@ -67,7 +68,6 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      * @param string $fieldName The field name
      * @param array $row The data row
      * @return string Identifier string
-     * @throws \RuntimeException If TCA is misconfigured
      */
     public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): string
     {
@@ -83,6 +83,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidSinglePointerFieldException $e) {
         } catch (InvalidIdentifierException $e) {
+        } catch (RuntimeException $e) {
         }
         // phpcs:enable
         return '';
@@ -115,7 +116,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
      *
      * @param string $identifier String to find the data structure location
      * @return array Parsed and normalized data structure
-     * @throws InvalidIdentifierException
+     * @throws InvalidIdentifierException|RuntimeException
      */
     public function parseDataStructureByIdentifier(string $identifier): array
     {
@@ -175,6 +176,7 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         } catch (InvalidParentRowRootException $e) {
         } catch (InvalidPointerFieldValueException $e) {
         } catch (InvalidIdentifierException $e) {
+        } catch (RuntimeException $e) {
         }
         // phpcs:enable
 
