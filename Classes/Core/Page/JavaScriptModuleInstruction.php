@@ -36,7 +36,9 @@ class JavaScriptModuleInstruction extends CoreJavaScriptModuleInstruction
      */
     public function __construct(string $name, int $flags)
     {
-        $name = preg_replace($this->pattern, $this->replace, $name);
+        if (version_compare(TYPO3_version, '10.4', '<=')) {
+            $name = preg_replace($this->pattern, $this->replace, $name);
+        }
         parent::__construct($name, $flags);
     }
 }
