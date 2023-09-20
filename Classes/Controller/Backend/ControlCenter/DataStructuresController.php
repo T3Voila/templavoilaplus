@@ -17,24 +17,20 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class DataStructuresController extends ActionController
 {
-    /**
-     * Default View Container
-     *
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * We define BackendTemplateView above so we will get it.
      *
@@ -56,11 +52,9 @@ class DataStructuresController extends ActionController
     /**
      * Displays the page with layout and content elements
      */
-    public function listAction()
+    public function listAction(): ResponseInterface
     {
-        $this->registerDocheaderButtons();
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation([]);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -75,6 +69,14 @@ class DataStructuresController extends ActionController
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
 
         $this->view->assign('dataStructurePlacesByScope', $dataStructurePlacesByScope);
+
+        $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
+        $this->registerDocheaderButtons($moduleTemplate);
+        $moduleTemplate->setContent($this->view->render('List'));
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
@@ -82,18 +84,18 @@ class DataStructuresController extends ActionController
      *
      * @throws \InvalidArgumentException
      */
-    protected function registerDocheaderButtons()
+    protected function registerDocheaderButtons(ModuleTemplate $moduleTemplate)
     {
-        /** @var ButtonBar $buttonBar */
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $getVars = $this->request->getArguments();
 
         if (isset($getVars['action']) && $getVars['action'] === 'list') {
             $backButton = $buttonBar->makeLinkButton()
                 ->setDataAttributes(['identifier' => 'backButton'])
-                ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
+                ->setHref($this->uriBuilder->uriFor('show', [], 'Backend\ControlCenter'))
                 ->setTitle(TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:' . TemplaVoilaUtility::getCoreLangPath() . 'locallang_core.xlf:labels.goBack'))
-                ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+                ->setIcon($iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
             $buttonBar->addButton($backButton, ButtonBar::BUTTON_POSITION_LEFT, 1);
         }
     }
@@ -105,7 +107,7 @@ class DataStructuresController extends ActionController
      * @param string $placeIdentifier Uuid of dataStructurePlace
      * @param string $configurationIdentifier Identifier inside the dataStructurePlace
      */
-    public function deleteAction($placeIdentifier, $configurationIdentifier)
+    public function deleteAction($placeIdentifier, $configurationIdentifier): ResponseInterface
     {
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);

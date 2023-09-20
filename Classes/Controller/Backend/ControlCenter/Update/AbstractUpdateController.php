@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
@@ -31,13 +32,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class AbstractUpdateController extends ActionController
 {
-    /**
-     * Default View Container
-     *
-     * @var BackendTemplateView
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * We define BackendTemplateView above so we will get it.
      *

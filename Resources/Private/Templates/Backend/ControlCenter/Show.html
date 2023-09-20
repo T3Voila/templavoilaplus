@@ -1,7 +1,9 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
 <f:be.pageRenderer
     pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}''}"
+    includeCssFiles="{
+        0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'
+    }"
     includeRequireJsModules="{
         ControlCenter: 'TYPO3/CMS/Templavoilaplus/ControlCenter',
         Modal:'TYPO3/CMS/Backend/Modal',

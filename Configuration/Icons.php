@@ -17,6 +17,7 @@ $iconsSvg = [
     'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
     'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
     'page-module' => 'EXT:templavoilaplus/Resources/Public/Icons/PageModuleIcon.svg',
+    'admin-module' => 'EXT:templavoilaplus/Resources/Public/Icons/AdministrationModuleIcon.svg',
     'unlink' => 'EXT:templavoilaplus/Resources/Public/Icons/Unlink.svg',
 ];
 

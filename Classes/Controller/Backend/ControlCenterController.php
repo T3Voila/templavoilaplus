@@ -17,25 +17,21 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class ControlCenterController extends ActionController
 {
-    /**
-     * Default View Container
-     *
-     * @var string
-     */
-    protected $defaultViewObjectName = BackendTemplateView::class;
-
     /**
      * We define BackendTemplateView above so we will get it.
      *
@@ -76,10 +72,9 @@ class ControlCenterController extends ActionController
     /**
      * Displays the menu cards
      */
-    public function showAction()
+    public function showAction(): ResponseInterface
     {
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
+        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -100,19 +95,18 @@ class ControlCenterController extends ActionController
         $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
         $this->view->assign('mappingPlaces', $mappingPlaces);
         $this->view->assign('templatePlaces', $templatePlaces);
+
+        $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+        $moduleTemplate->setContent($this->view->render('Show'));
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
-    public function debugAction()
+    public function debugAction(): ResponseInterface
     {
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
-        $buttonBar = $this->view->getModuleTemplate()->getDocHeaderComponent()->getButtonBar();
-        $button = $buttonBar->makeLinkButton()
-            ->setHref($this->getControllerContext()->getUriBuilder()->uriFor('show', [], 'Backend\ControlCenter'))
-            ->setTitle('Back')
-            ->setIcon($this->view->getModuleTemplate()->getIconFactory()->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
-        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -125,6 +119,22 @@ class ControlCenterController extends ActionController
 
         $this->view->assign('availablePlaces', $availablePlaces);
         $this->view->assign('availableHandler', $availableHandler);
+
+        $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
+        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $button = $buttonBar->makeLinkButton()
+            ->setHref($this->uriBuilder->uriFor('show', [], 'Backend\ControlCenter'))
+            ->setTitle('Back')
+            ->setIcon($iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
+        $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
+
+        $moduleTemplate->setContent($this->view->render('Debug'));
+
+        return $this->htmlResponse($moduleTemplate->renderContent());
     }
 
     /**
