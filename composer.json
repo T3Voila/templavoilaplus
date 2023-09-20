@@ -30,7 +30,7 @@
 		"codeception/module-asserts": "^2.0 || ^3.0.0",
 		"codeception/module-cli": "^2",
 		"codeception/module-webdriver": "^2 || ^3.0.0",
-		"ergebnis/composer-normalize": "^2.19.0",
+		"ergebnis/composer-normalize": "2.28.3",
 		"friendsofphp/php-cs-fixer": "^3.4.0",
 		"helhum/typo3-console": "^8.0.0 || ^v7.1.1",
 		"helmich/typo3-typoscript-lint": "^2.5.2 || ^v3.1.0",
@@ -77,6 +77,7 @@
 			"ergebnis/composer-normalize": true,
 			"phpstan/extension-installer": true
 		},
+		"bin-dir": ".Build/bin",
 		"preferred-install": {
 			"*": "dist"
 		},
@@ -95,33 +96,45 @@
 	},
 	"scripts": {
 		"post-autoload-dump": [
-			"@link-extension",
-			"TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
+			"@link-extension"
 		],
 		"ci": [
 			"@ci:static"
 		],
 		"ci:composer:normalize": "@composer normalize --dry-run",
-		"ci:json:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.json' | xargs -r php .Build/vendor/bin/jsonlint -q",
+		"ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr",
+		"ci:coverage": [
+			"@ci:coverage:unit",
+			"@ci:coverage:functional"
+		],
+		"ci:coverage:functional": [
+			"@coverage:create-directories",
+			".Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml --whitelist Classes --coverage-php=.Build/coverage/functional.cov Tests/Functional"
+		],
+		"ci:coverage:merge": [
+			"@coverage:create-directories",
+			"@php tools/phpcov merge --clover=./.Build/logs/clover.xml ./.Build/coverage/"
+		],
+		"ci:coverage:unit": [
+			"@coverage:create-directories",
+			".Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml --whitelist Classes --coverage-php=.Build/coverage/unit.cov Tests/Unit"
+		],
+		"ci:dynamic": [
+			"@ci:tests"
+		],
+		"ci:json:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.json' | xargs -r php .Build/bin/jsonlint -q",
 		"ci:php": [
-			"@ci:php:copypaste",
 			"@ci:php:cs-fixer",
 			"@ci:php:lint",
 			"@ci:php:sniff",
 			"@ci:php:stan"
 		],
-		"ci:php:copypaste": [
-			"@ci:php:copypaste:baseline",
-			"@ci:php:copypaste:ignored"
-		],
-		"ci:php:copypaste:baseline": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates --exclude Classes/Controller/Backend/ControlCenter/MappingsController.php --exclude Classes/Utility/TemplaVoilaUtility.php --exclude Classes/Service/ApiService.php  --exclude Classes/Controller/Backend/ControlCenter/Update/ServerMigrationController.php  --exclude Classes/Controller/Backend/ControlCenter/Update/TemplaVoilaPlus8Controller.php Classes",
-		"ci:php:copypaste:ignored": "@php ./tools/phpcpd --exclude Classes/Form --exclude Classes/Updates Classes || true",
 		"ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff",
-		"ci:php:lint": "@ci:php:lint:local",
-		"ci:php:lint:docker:php74": "tools/runTests.sh -s lint -p 7.4",
-		"ci:php:lint:docker:php80": "tools/runTests.sh -s lint -p 8.0",
-		"ci:php:lint:docker:php81": "tools/runTests.sh -s lint -p 8.1",
-		"ci:php:lint:local": "find *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+		"ci:php:lint": "find .*.php *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
+		"ci:php:lint:docker:php74": "tools/runTests.sh -s lintPhp -p 7.4",
+		"ci:php:lint:docker:php80": "tools/runTests.sh -s lintPhp -p 8.0",
+		"ci:php:lint:docker:php81": "tools/runTests.sh -s lintPhp -p 8.1",
+		"ci:php:lint:local": "@ci:php:lint",
 		"ci:php:singleFile": "tools/codeStyleCheckSingleFile.sh",
 		"ci:php:sniff": [
 			"@ci:php:sniff:failOnErrors",
@@ -136,7 +149,6 @@
 		"ci:static": [
 			"@ci:composer:normalize",
 			"@ci:json:lint",
-			"@ci:php:copypaste",
 			"@ci:php:cs-fixer",
 			"@ci:php:lint",
 			"@ci:php:sniff",
@@ -182,7 +194,7 @@
 		"ci:tests:functional:docker:php74": "tools/runTests.sh -s functional -p 7.4",
 		"ci:tests:functional:docker:php80": "tools/runTests.sh -s functional -p 8.0",
 		"ci:tests:functional:docker:php81": "tools/runTests.sh -s functional -p 8.1",
-		"ci:tests:functional:local": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
+		"ci:tests:functional:local": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
 		"ci:tests:local": [
 			"@ci:tests:unit:local",
 			"@ci:tests:functional:local",
@@ -193,16 +205,24 @@
 		"ci:tests:unit:docker:php74": "tools/runTests.sh -s unit -p 7.4",
 		"ci:tests:unit:docker:php80": "tools/runTests.sh -s unit -p 8.0",
 		"ci:tests:unit:docker:php81": "tools/runTests.sh -s unit -p 8.1",
-		"ci:tests:unit:local": ".Build/vendor/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit",
+		"ci:tests:unit:local": ".Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit",
 		"ci:ts:lint": "typoscript-lint -c Configuration/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration/TypoScript",
-		"ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.yml' | xargs -r php ./.Build/vendor/bin/yaml-lint",
+		"ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -regextype egrep -regex '.*.ya?ml$' | xargs -r php ./.Build/bin/yaml-lint",
 		"composer:init": [
 			"composer install"
 		],
 		"coverage:create-directories": "mkdir -p build/logs .Build/coverage",
 		"docs:generate": [
-			"docker run --rm t3docs/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
+			"docker run --rm ghcr.io/t3docs/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
 		],
+		"docs:generate:docker": [
+			"tools/runTests.sh -s docsGenerate"
+		],
+		"docs:generate:pullimage": [
+			"docker pull ghcr.io/t3docs/render-documentation || true",
+			"docker tag ghcr.io/t3docs/render-documentation t3docs/render-documentation || true"
+		],
+		"fix:composer:normalize": "@composer normalize --no-check-lock",
 		"fix:php": [
 			"@fix:php:cs",
 			"@fix:php:sniff"
@@ -226,7 +246,7 @@
 		"npm:init": [
 			"@yarn:init"
 		],
-		"phpstan:baseline": ".Build/vendor/bin/phpstan  --generate-baseline=phpstan-baseline.neon",
+		"phpstan:baseline": ".Build/bin/phpstan  --generate-baseline=phpstan-baseline.neon",
 		"prepare-release": [
 			"rm .gitignore",
 			"rm -rf .Build",
@@ -235,9 +255,12 @@
 			"rm -rf .gitlab",
 			"rm -rf Tests",
 			"rm -rf tools",
+			"rm .crowdin.yml",
 			"rm .editorconfig",
 			"rm .gitattributes",
+			"rm .mergify.yml",
 			"rm .php-cs-fixer.php",
+			"rm .phpstorm.meta.php",
 			"rm .eslintignore",
 			"rm .eslintrc.json",
 			"rm .prettierrc.js",
@@ -246,7 +269,8 @@
 			"rm phive.xml",
 			"rm phpstan-baseline.neon",
 			"rm phpstan.neon",
-			"rm phpcs.xml"
+			"rm phpcs.xml",
+			"rm stylelint.config.js"
 		],
 		"style:lint": [
 			"npm run lint:style"

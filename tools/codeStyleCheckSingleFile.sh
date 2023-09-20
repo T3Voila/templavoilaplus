@@ -10,6 +10,6 @@ if [ ! -f "$FILENAME" ]; then
   exit 1
 fi
 echo "Processing $FILENAME"
-./.Build/vendor/bin/php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff $FILENAME
-./.Build/vendor/bin/phpcs $FILENAME
-./.Build/vendor/bin/phpstan --no-progress analyse --level 0 $FILENAME
+./.Build/bin/php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff $FILENAME
+./.Build/bin/phpcs $FILENAME
+./.Build/bin/phpstan --no-progress analyse --level 0 $FILENAME
