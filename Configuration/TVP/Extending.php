@@ -43,5 +43,9 @@ return [
             'name' => 'Marker Based Renderer',
             'handlerClass' => \Tvp\TemplaVoilaPlus\Handler\Render\MarkerBasedRenderHandler::class,
         ],
+        \Tvp\TemplaVoilaPlus\Handler\Render\FluidRenderHandler::$identifier => [
+            'name' => 'Fluid Renderer',
+            'handlerClass' => \Tvp\TemplaVoilaPlus\Handler\Render\FluidRenderHandler::class,
+        ],
     ],
 ];
