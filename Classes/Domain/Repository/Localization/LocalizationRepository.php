@@ -18,8 +18,11 @@ namespace Tvp\TemplaVoilaPlus\Domain\Repository\Localization;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -43,13 +46,17 @@ class LocalizationRepository
 
         if (BackendUtility::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-
+            if (self::getBackendUserAuthentication()) {
+                $workspace = self::getBackendUserAuthentication()->workspace ?? 0;
+            } else {
+                $workspace = 0;
+            }
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace ?? 0));
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspace));
 
             $queryBuilder->select('*')
                 ->from($table)
@@ -83,7 +90,7 @@ class LocalizationRepository
         }
         $baseRecord = BackendUtility::getRecordWSOL($table, $uid, '*', ' AND ' . $hiddenField . '=0');
         if ($language > 0 && $baseRecord) {
-            $l10nRecord = BackendUtility::getRecordLocalization($table, $uid, $language)[0] ?? null;
+            $l10nRecord = static::getRecordLocalization($table, $uid, $language)[0] ?? null;
             // sadly $l10nRecord doesn't allow additionalWhere, so we check for hidden afterwards
             if ($l10nRecord && $l10nRecord[$hiddenField] === 0) {
                 return $l10nRecord;
@@ -96,4 +103,72 @@ class LocalizationRepository
     {
         return GeneralUtility::makeInstance(Context::class)->getAspect('language')->getId();
     }
+    /**
+     * Fetches the localization for a given record.
+     *
+     * @param string $table Table name present in $GLOBALS['TCA']
+     * @param int $uid The uid of the record
+     * @param int $language The uid of the language record in sys_language
+     * @param string $andWhereClause Optional additional WHERE clause (default: '')
+     * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
+     */
+    public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '')
+    {
+        $recordLocalization = false;
+
+        if (self::isTableLocalizable($table)) {
+            $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+            if (self::getBackendUserAuthentication()) {
+                $workspace = self::getBackendUserAuthentication()->workspace ?? 0;
+            } else {
+                $workspace = 0;
+            }
+
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $workspace));
+
+            $queryBuilder->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['translationSource'] ?? $tcaCtrl['transOrigPointerField'],
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $tcaCtrl['languageField'],
+                        $queryBuilder->createNamedParameter((int)$language, Connection::PARAM_INT)
+                    )
+                )
+                ->setMaxResults(1);
+
+            if ($andWhereClause) {
+                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($andWhereClause));
+            }
+
+            $recordLocalization = $queryBuilder->executeQuery()->fetchAllAssociative();
+        }
+
+        return $recordLocalization;
+    }
+
+    /**
+     * Determines whether a table is localizable and has the languageField and transOrigPointerField set in $GLOBALS['TCA'].
+     *
+     * @param string $table The table to check
+     * @return bool Whether a table is localizable
+     */
+    public static function isTableLocalizable($table): bool
+    {
+        $isLocalizable = false;
+        if (isset($GLOBALS['TCA'][$table]['ctrl']) && is_array($GLOBALS['TCA'][$table]['ctrl'])) {
+            $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
+            $isLocalizable = isset($tcaCtrl['languageField']) && $tcaCtrl['languageField'] && isset($tcaCtrl['transOrigPointerField']) && $tcaCtrl['transOrigPointerField'];
+        }
+        return $isLocalizable;
+    }
+
 }
