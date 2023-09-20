@@ -11,7 +11,7 @@ return [
     'web_TemplaVoilaPlusLayout' => [
         'parent' => 'web',
         'position' => ['top'],
-        'access' => 'user,group',
+        'access' => 'user',
         'path' => '/module/web/templavoilaplus/',
         'iconIdentifier' => 'extensions-templavoila-page-module',
         'labels' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',

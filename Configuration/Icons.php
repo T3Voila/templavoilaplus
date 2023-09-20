@@ -3,7 +3,7 @@
 $myIcons = [];
 
 $iconsBitmap = [
-    'paste' =>  'EXT:templavoilaplus/Resources/Public/Icon/clip_pasteafter.gif',
+    'paste' => 'EXT:templavoilaplus/Resources/Public/Icon/clip_pasteafter.gif',
     'pasteSubRef' => 'EXT:templavoilaplus/Resources/Public/Icon/clip_pastesubref.gif',
     'makelocalcopy' => 'EXT:templavoilaplus/Resources/Public/Icon/makelocalcopy.gif',
     'clip_ref' => 'EXT:templavoilaplus/Resources/Public/Icon/clip_ref.gif',
@@ -17,9 +17,7 @@ $iconsSvg = [
     'folder' => 'EXT:templavoilaplus/Resources/Public/Icons/Folder.svg',
     'menu-item' => 'EXT:templavoilaplus/Resources/Public/Icons/MenuItem.svg',
     'page-module' => 'EXT:templavoilaplus/Resources/Public/Icons/PageModuleIcon.svg',
-];
-$iconsFontAwesome = [
-    'unlink' => 'unlink',
+    'unlink' => 'EXT:templavoilaplus/Resources/Public/Icons/Unlink.svg',
 ];
 
 foreach ($iconsBitmap as $identifier => $file) {
@@ -34,11 +32,5 @@ foreach ($iconsSvg as $identifier => $file) {
         'source' => $file,
     ];
 }
-// foreach ($iconsFontAwesome as $identifier => $name) {
-//     $myIcons['extensions-templavoila-' . $identifier] = [
-//         'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\FontawesomeIconProvider::class,
-//         'name' => $name,
-//     ];
-// }
 
 return $myIcons;
