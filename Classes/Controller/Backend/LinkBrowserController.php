@@ -16,12 +16,21 @@ class LinkBrowserController extends CoreLinkBrowserController
     {
         parent::initDocumentTemplate();
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->addRequireJsConfiguration(
-            [
-                'map' => [
-                    '*' => ['TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter' => PathUtility::getRelativePathTo(ExtensionManagementUtility::extPath('templavoilaplus')) . '/Resources/Public/JavaScript/FormEngineLinkBrowserAdapter']
+        if (version_compare(TYPO3_version, '10.4', '<=')) {
+            $pageRenderer->addRequireJsConfiguration(
+                [
+                    'map' => [
+                        '*' => [
+                            'TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter' => PathUtility::getRelativePathTo(
+                                    ExtensionManagementUtility::extPath('templavoilaplus')
+                                ) .
+                                '/Resources/Public/JavaScript/FormEngineLinkBrowserAdapter'
+                        ]
+                    ]
                 ]
-            ]
-        );
+            );
+        } else {
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/Templavoilaplus/ParentWindow');
+        }
     }
 }
