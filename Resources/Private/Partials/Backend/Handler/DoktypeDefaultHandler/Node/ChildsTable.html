@@ -83,7 +83,7 @@
                 <f:if condition="{childElements.{fieldKey}}">
                     <f:then>
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
-                            <div class="tvjs-dropzone" data-parent-pointer="{parentPointer}#{fieldKey}:vDEF" data-child-allowed="{subFieldConfig.TCEforms.config.allowed}">
+                            <div class="tvjs-dropzone" data-parent-pointer="{parentPointer}#{fieldKey}:vDEF" data-child-allowed="{subFieldConfig.TCEforms.config.allowed}{subFieldConfig.config.allowed}">
                             <f:for each="{childElements.{fieldKey}.vDEF}" as="element">
                                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: element.node}" />
                             </f:for>
