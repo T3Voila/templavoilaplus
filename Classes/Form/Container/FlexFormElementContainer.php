@@ -15,6 +15,8 @@ namespace Tvp\TemplaVoilaPlus\Form\Container;
  * The TYPO3 project - inspiring people to share!
  */
 
+use TYPO3\CMS\Backend\Form\Behavior\ReloadOnFieldChange;
+use TYPO3\CMS\Backend\Form\Behavior\UpdateValueOnFieldChange;
 use TYPO3\CMS\Backend\Form\Container\AbstractContainer;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -98,38 +100,25 @@ class FlexFormElementContainer extends AbstractContainer
                 $html = [];
                 foreach ($lkeys as $lkey) {
                     // Set up options for single element
-                    $fakeParameterArray = array(
-                        'fieldConf' => array(
+                    $fakeParameterArray = [
+                        'fieldConf' => [
                             'label' => $languageService->sL(trim($flexFormFieldArray[$lkey]['label'] ?? '')),
-                            'config' => $flexFormFieldArray[$lkey]['config'] ?? null,
-                            'children' => $flexFormFieldArray[$lkey]['children'] ?? null,
-                            'defaultExtras' => $flexFormFieldArray[$lkey]['defaultExtras'] ?? null,
-                            'onChange' => $flexFormFieldArray[$lkey]['onChange'] ?? null,
-                        ),
-                    );
+                            'config' => $flexFormFieldArray[$lkey]['config'] ?? [],
+                            'children' => $flexFormFieldArray[$lkey]['children'] ?? [],
+                            // https://docs.typo3.org/m/typo3/reference-tca/main/en-us/Columns/Properties/OnChange.html
+                            'onChange' => $flexFormFieldArray[$lkey]['onChange'] ?? '',
+                        ],
+                        'fieldChangeFunc' => $parameterArray['fieldChangeFunc'],
+                        'label' => $parameterArray['label'] ?? '',
+                    ];
 
-                    $alertMsgOnChange = '';
-                    if (
-                        $fakeParameterArray['fieldConf']['onChange'] === 'reload'
-                        || !empty($GLOBALS['TCA'][$table]['ctrl']['type']) && $GLOBALS['TCA'][$table]['ctrl']['type'] === $flexFormFieldName
-                        || !empty($GLOBALS['TCA'][$table]['ctrl']['requestUpdate']) && GeneralUtility::inList($GLOBALS['TCA'][$table]['ctrl']['requestUpdate'], $flexFormFieldName)
-                    ) {
-                        if ($this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE)) {
-                            $alertMsgOnChange = 'top.TYPO3.Modal.confirm('
-                                    . 'TYPO3.lang["FormEngine.refreshRequiredTitle"],'
-                                    . ' TYPO3.lang["FormEngine.refreshRequiredContent"]'
-                                . ')'
-                                . '.on('
-                                    . '"button.clicked",'
-                                    . ' function(e) { if (e.target.name == "ok" && TBE_EDITOR.checkSubmit(-1)) { TBE_EDITOR.submitForm() } top.TYPO3.Modal.dismiss(); }'
-                                . ');';
-                        } else {
-                            $alertMsgOnChange = 'if (TBE_EDITOR.checkSubmit(-1)){ TBE_EDITOR.submitForm();}';
-                        }
+                    if (isset($flexFormFieldArray[$lkey]['description']) && !empty($flexFormFieldArray[$lkey]['description'])) {
+                        $fakeParameterArray['fieldConf']['description'] = $flexFormFieldArray[$lkey]['description'];
                     }
-                    $fakeParameterArray['fieldChangeFunc'] = $parameterArray['fieldChangeFunc'];
-                    if ($alertMsgOnChange) {
-                        $fakeParameterArray['fieldChangeFunc']['alert'] = $alertMsgOnChange;
+
+                    if (isset($fakeParameterArray['fieldConf']['onChange']) && $fakeParameterArray['fieldConf']['onChange'] === 'reload') {
+                        $confirmation = $this->getBackendUserAuthentication()->jsConfirmation(JsConfirmation::TYPE_CHANGE);
+                        $fakeParameterArray['fieldChangeFunc']['alert'] = new ReloadOnFieldChange($confirmation);
                     }
 
                     $fakeParameterArray['onFocus'] = $parameterArray['onFocus'] ?? null;
@@ -142,7 +131,8 @@ class FlexFormElementContainer extends AbstractContainer
                         // especially relevant for wizards writing their content back to hidden fields
                         if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
                             if (version_compare($typo3Version->getVersion(), '12.0.0', '>=')) {
-                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']->withElementName($fakeParameterArray['itemFormElName']);
+                                $onFieldChange = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] ?? null;
+                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
                             } else {
                                 $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
                             }
