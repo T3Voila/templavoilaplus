@@ -130,12 +130,8 @@ class FlexFormElementContainer extends AbstractContainer
                         // change the originalFieldName in TBE_EDITOR_fieldChanged. This is
                         // especially relevant for wizards writing their content back to hidden fields
                         if (!empty($fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'])) {
-                            if (version_compare($typo3Version->getVersion(), '12.0.0', '>=')) {
-                                $onFieldChange = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] ?? null;
-                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
-                            } else {
-                                $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = str_replace($originalFieldName, $fakeParameterArray['itemFormElName'], $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged']);
-                            }
+                            $onFieldChange = $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] ?? null;
+                            $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
                         }
                     }
                     $fakeParameterArray['itemFormElID'] = $fakeParameterArray['itemFormElName'];
