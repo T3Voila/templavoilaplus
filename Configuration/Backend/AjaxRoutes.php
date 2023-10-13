@@ -96,16 +96,4 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\UserSettings::class . '::setClipboardMode',
     ],
-
-    // Overwrite from core
-    // Fetch the tree-structured data from a record for the tree selection
-    'record_tree_data' => [
-        'path' => '/record/tree/fetchData',
-        'target' => Tvp\TemplaVoilaPlus\Form\Controller\FormSelectTreeAjaxController9::class . '::fetchDataAction',
-    ],
-    // Add a flex form section container
-    'record_flex_container_add' => [
-        'path' => '/record/flex/containeradd',
-        'target' => Tvp\TemplaVoilaPlus\Form\Controller\FormFlexAjaxController9::class . '::containerAdd',
-    ],
 ];
