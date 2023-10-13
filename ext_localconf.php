@@ -3,11 +3,6 @@
 defined('TYPO3') or die();
 // Unserializing the configuration so we can use it here
 
-// Register "XCLASS" of FlexFormTools for language parsing
-// Done also in TableConfigurationPostProcessingHook!
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-    = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
-
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::class]['className']
     = Tvp\TemplaVoilaPlus\Core\Page\JavaScriptModuleInstruction::class;
 
