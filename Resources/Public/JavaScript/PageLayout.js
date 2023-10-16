@@ -35,7 +35,7 @@ define([
 
         window.addEventListener('message', function(event) {
             if (PageLayout.myModal) {
-                PageLayout.myModal.find('.t3js-modal-iframe').get(0).contentWindow.postMessage(event.data, event.source);
+                $('.t3js-modal-iframe', PageLayout.myModal).get(0).contentWindow.postMessage(event.data, event.source);
             }
         });
 
