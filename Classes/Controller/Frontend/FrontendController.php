@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
+use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
@@ -170,6 +171,7 @@ class FrontendController extends AbstractPlugin
             if (is_string($flexformData)) {
                 throw new \Exception('Could not load flex data: "' . $flexformData . '"');
             }
+
             $flexformValues = $this->getFlexformData($dataStructure, $flexformData);
 
             /** @TODO
@@ -240,10 +242,6 @@ class FrontendController extends AbstractPlugin
     {
         $flexformValues = [];
 
-        /** @TODO sheet selection */
-        $sheet = 'sDEF';
-
-        /** @TODO This is only correct, if there are no sheets defined */
         /** We should look forward to define at minimum the sDEF default sheet */
         $dataStruct = $dataStructure->getDataStructure();
 
@@ -251,12 +249,11 @@ class FrontendController extends AbstractPlugin
         $lKey = 'lDEF';
         $vKey = 'vDEF';
 
-        $flexformLkeyValues = [];
-        if (isset($flexformData['data'][$sheet][$lKey]) && is_array($flexformData['data'][$sheet][$lKey])) {
-            $flexformLkeyValues = $flexformData['data'][$sheet][$lKey];
+        foreach ($dataStruct['sheets'] as $sheetKey => $sheetConfig) {
+            if (isset($flexformData['data'][$sheetKey])) {
+                $flexformValues[$sheetKey] = $this->processDataValues($flexformData['data'][$sheetKey][$lKey], $sheetConfig['ROOT']['el'], $vKey);
+            }
         }
-
-        $flexformValues = $this->processDataValues($flexformLkeyValues, $dataStruct['ROOT']['el'], $vKey);
 
         return $flexformValues;
     }

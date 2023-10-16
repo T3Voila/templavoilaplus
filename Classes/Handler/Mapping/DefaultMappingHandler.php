@@ -22,6 +22,7 @@ use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Utility\RecordFalUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
@@ -41,7 +42,6 @@ class DefaultMappingHandler
         $containerInstructions = $mappingConfiguration->getMappingToTemplate();
 
         /** @TODO $table, $row are more global vars, they are given from function to function */
-
         $processedMapping = $this->processContainer($flexformData, $table, $row, $containerInstructions);
 
         return $processedMapping;
@@ -69,8 +69,12 @@ class DefaultMappingHandler
                 }
                 break;
             case 'flexform':
-                if (isset($flexformData[$instructions['dataPath']])) {
-                    $processedValue = $flexformData[$instructions['dataPath']] ?? '';
+                $path = str_getcsv($instructions['dataPath'],  '.');
+                if (count($path) === 1) {
+                    array_unshift($path, 'sDEF');
+                }
+                if (ArrayUtility::isValidPath($flexformData, $path)) {
+                    $processedValue = ArrayUtility::getValueByPath($flexformData, $path);
                 }
                 break;
             case 'typoscriptObjectPath':
@@ -172,7 +176,8 @@ class DefaultMappingHandler
     {
         $postprocessedValue = [];
         foreach ($flexformData as $key => $preProcessedValue) {
-            $postprocessedValue[$key] = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
+            $processedValue = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
+            $postprocessedValue = ArrayUtility::setValueByPath($postprocessedValue, $templateFieldName, $processedValue, '.');
         }
         return $postprocessedValue;
     }
@@ -181,7 +186,8 @@ class DefaultMappingHandler
     {
         $postprocessedValue = [];
         foreach ($containerInstructions as $templateFieldName => $instructions) {
-            $postprocessedValue[$templateFieldName] = $this->valueProcessing($instructions, $flexformData, $table, $row);
+            $processedValue = $this->valueProcessing($instructions, $flexformData, $table, $row);
+            $postprocessedValue = ArrayUtility::setValueByPath($postprocessedValue, $templateFieldName, $processedValue, '.');
         }
         return $postprocessedValue;
     }

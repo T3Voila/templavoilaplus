@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  */
 
 use Symfony\Component\Finder\SplFileInfo;
+use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
 
@@ -28,6 +29,8 @@ class DataConfigurationHandler extends AbstractConfigurationHandler
     public function createConfigurationFromConfigurationArray(array $dataStructure, string $identifier, SplFileInfo $file): AbstractConfiguration
     {
         $dataConfiguration = new DataConfiguration($identifier, $this->place, $this, $file);
+
+        $dataStructure = (new FlexFormTools8())->prepareFlexform($dataStructure);
 
         // Read title from XML file and set, if not empty or ROOT
         if (
