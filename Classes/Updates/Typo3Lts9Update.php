@@ -38,7 +38,7 @@ class Typo3Lts9Update implements UpgradeWizardInterface
     {
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
-        $this->extConf = $configurationService->getExtensionConfig();
+        $this->extConfig = $configurationService->getExtensionConfig();
     }
 
     public function getIdentifier(): string
