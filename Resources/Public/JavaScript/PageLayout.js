@@ -632,17 +632,18 @@ define([
             buttons: [],
             size: Modal.sizes.full,
             ajaxCallback: function() {
-                Modal.currentModal.addClass('tvp-modal-record-edit');
-                Modal.currentModal.find('.t3js-modal-iframe').on('load', function() {
-                  var iframeDocument = Modal.currentModal.find('.t3js-modal-iframe').get(0).contentDocument;
+                var $current = $(Modal.currentModal);
+                $current.addClass('tvp-modal-record-edit');
+                $current.find('.t3js-modal-iframe').on('load', function() {
+                  var iframeDocument = $current.find('.t3js-modal-iframe').get(0).contentDocument;
                     var form = iframeDocument.getElementById('EditDocumentController');
                     if (form) {
-                        Modal.currentModal.find('.t3js-modal-title').html(form.querySelector('h1').innerHTML);
+                        $current.find('.t3js-modal-title').html(form.querySelector('h1').innerHTML);
                         form.querySelector('h1').style.display = 'none';
                     }
                     var closeModal = iframeDocument.getElementById('CloseModal');
                     if (closeModal) {
-                        Modal.currentModal.trigger('modal-dismiss');
+                        Modal.currentModal.bootstrapModal.hide();
                         PageLayout.reloadRecord(table, uid);
                         PageLayout.myModal = null;
                     }
