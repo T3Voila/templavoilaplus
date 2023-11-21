@@ -175,7 +175,7 @@ class DefaultMappingHandler
     protected function processRepeatable(array $flexformData, string $table, array $row, array $containerInstructions): array
     {
         $postprocessedValue = [];
-        foreach ($flexformData as $key => $preProcessedValue) {
+        foreach ($flexformData as $templateFieldName => $preProcessedValue) {
             $processedValue = $this->processContainer($preProcessedValue, $table, $row, $containerInstructions);
             $postprocessedValue = ArrayUtility::setValueByPath($postprocessedValue, $templateFieldName, $processedValue, '.');
         }
