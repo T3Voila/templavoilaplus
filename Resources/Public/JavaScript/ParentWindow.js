@@ -5,7 +5,8 @@ define([
   const getParent = () => {
 	if (
       typeof window.parent !== 'undefined' &&
-      typeof window.parent.document.list_frame !== 'undefined' &&
+      typeof window.parent.frames !== 'undefined' &&
+      typeof window.parent.frames.list_frame !== 'undefined' &&
       window.parent.frames.list_frame.parent.document.querySelector('.t3js-modal-iframe') !== null &&
       window.parent.frames.list_frame.parent.document.querySelectorAll('.t3js-modal-iframe').length > 1
     ) {
