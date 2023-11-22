@@ -1,10 +1,6 @@
 <?php
 
 defined('TYPO3') or die();
-// Unserializing the configuration so we can use it here
-
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][TYPO3\CMS\Core\Page\JavaScriptModuleInstruction::class]['className']
-    = Tvp\TemplaVoilaPlus\Core\Page\JavaScriptModuleInstruction::class;
 
 // Language diff updating in flex
 $GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase'] = true;
