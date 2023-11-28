@@ -182,16 +182,13 @@ Options:
             - 14    maintained until 2026-11-12
             - 15    maintained until 2027-11-11
 
-    -t <11.5|12.4>
+    -t <12.4>
         Only with -s composerInstall|composerInstallMin|composerInstallMax
         Specifies the TYPO3 CORE Version to be used
-            - 11: (default) use TYPO3 v11 with typo3/cms-composer-installers ^3
-            - 12: use TYPO3 v12 with typo3/cms-composer-installers ^5
+            - 12: (default) use TYPO3 v12 with typo3/cms-composer-installers ^5
 
-    -p <7.4|8.0|8.1|8.2>
+    -p <8.1|8.2>
         Specifies the PHP minor version to be used
-            - 7.4: use PHP 7.4
-            - 8.0: use PHP 8.0
             - 8.1: (default) use PHP 8.1
             - 8.2: use PHP 8.2
 
@@ -267,7 +264,7 @@ fi
 
 # Option defaults
 TEST_SUITE="unit"
-CORE_VERSION="11.5"
+CORE_VERSION="12.4"
 DBMS="sqlite"
 PHP_VERSION="8.1"
 PHP_XDEBUG_ON=0
@@ -318,7 +315,7 @@ while getopts "a:s:d:i:j:k:p:e:t:xy:o:nhu" OPT; do
             ;;
         p)
             PHP_VERSION=${OPTARG}
-            if ! [[ ${PHP_VERSION} =~ ^(7.4|8.0|8.1|8.2|8.3)$ ]]; then
+            if ! [[ ${PHP_VERSION} =~ ^(8.1|8.2|8.3)$ ]]; then
                 INVALID_OPTIONS+=("p ${OPTARG}")
             fi
             ;;
@@ -327,7 +324,7 @@ while getopts "a:s:d:i:j:k:p:e:t:xy:o:nhu" OPT; do
             ;;
         t)
             CORE_VERSION=${OPTARG}
-            if ! [[ ${CORE_VERSION} =~ ^(11.5|12.4)$ ]]; then
+            if ! [[ ${CORE_VERSION} =~ ^(12.4)$ ]]; then
                 INVALID_OPTIONS+=("t ${OPTARG}")
             fi
             ;;
