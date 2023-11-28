@@ -92,7 +92,7 @@ final class TemplaVoilaUtility
                 ?? $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getDefaultLanguage()
             );
         }
-       throw new ProcessingException('Trying to instantiate LanguageService failed',1691061481968);
+        throw new ProcessingException('Trying to instantiate LanguageService failed', 1691061481968);
     }
 
     /**

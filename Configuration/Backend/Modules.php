@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Definitions for modules provided by EXT:backend
+ */
+
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenterController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\DataStructuresController;
@@ -7,9 +11,6 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\MappingsController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\TemplatesController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\UpdateController;
 
-/**
- * Definitions for modules provided by EXT:backend
- */
 return [
     'web_layout' => [
     ],

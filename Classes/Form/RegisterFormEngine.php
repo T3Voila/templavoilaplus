@@ -17,7 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Form;
  * The TYPO3 project - inspiring people to share!
  */
 
-use \TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
+use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
 
 class RegisterFormEngine
 {

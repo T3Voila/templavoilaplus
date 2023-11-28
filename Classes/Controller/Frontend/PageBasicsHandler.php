@@ -54,7 +54,7 @@ class PageBasicsHandler
         $bodyConfiguration = $templateConfiguration->getBody();
 
         if (isset($bodyConfiguration['disableBodyTag'])) {
-            $controller->config['config']['disableBodyTag'] = filter_var($bodyConfiguration['disableBodyTag'], FILTER_VALIDATE_BOOL);;
+            $controller->config['config']['disableBodyTag'] = filter_var($bodyConfiguration['disableBodyTag'], FILTER_VALIDATE_BOOL);
         }
         if (isset($bodyConfiguration['bodyTag']) && is_string($bodyConfiguration['bodyTag'])) {
             $controller->pSetup['bodyTag'] = ($bodyConfiguration['bodyTag']);

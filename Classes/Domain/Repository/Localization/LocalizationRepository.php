@@ -170,5 +170,4 @@ class LocalizationRepository
         }
         return $isLocalizable;
     }
-
 }
