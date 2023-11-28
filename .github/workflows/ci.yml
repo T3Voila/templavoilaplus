@@ -99,8 +99,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Check composer before installing
+        run: tools/runTests.sh -p ${{ matrix.php }} -s checkComposer
+
       - name: Install testing system
-        run: tools/runTests.sh -p ${{ matrix.php }} -s composerUpdate
+        run: tools/runTests.sh -p ${{ matrix.php }} -s composerInstall
 
       - name: Composer validate
         run: tools/runTests.sh -p ${{ matrix.php }} -s composerValidate
