@@ -6,11 +6,6 @@ parameters:
 			path: Classes/Configuration/BackendConfiguration.php
 
 		-
-			message: "#^Undefined variable\\: \\$dataStructArray$#"
-			count: 2
-			path: Classes/Configuration/FlexForm/FlexFormTools8.php
-
-		-
 			message: "#^Undefined variable\\: \\$countStatic$#"
 			count: 1
 			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV10Controller.php
@@ -31,31 +26,11 @@ parameters:
 			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
 
 		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$configuration\\.$#"
-			count: 3
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\PageLayoutController\\:\\:\\$pageRenderer\\.$#"
-			count: 3
-			path: Classes/Controller/Backend/PageLayoutController.php
-
-		-
 			message: "#^Class TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\TcaFlexFetch not found\\.$#"
 			count: 1
 			path: Classes/Hooks/TableConfigurationPostProcessingHook.php
 
 		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Service\\\\ApiService\\:\\:\\$iconFactory\\.$#"
-			count: 1
-			path: Classes/Service/ApiService.php
-
-		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
 			count: 4
 			path: Classes/Service/DataHandling/DataHandler.php
-
-		-
-			message: "#^Access to an undefined property Tvp\\\\TemplaVoilaPlus\\\\Updates\\\\Typo3Lts9Update\\:\\:\\$extConf\\.$#"
-			count: 1
-			path: Classes/Updates/Typo3Lts9Update.php

@@ -4,6 +4,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
