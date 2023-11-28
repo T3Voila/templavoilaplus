@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use Tvp\TemplaVoilaPlus\Utility\DataStructureUtility;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -24,6 +25,7 @@ use TYPO3\CMS\Core\Package\Exception\UnknownPackageException;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 
 /**
  * Controller to migrate/update from TV+ 7 to TV+ 8
@@ -579,19 +581,19 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
      * Validate an existing extension (writable, already theme extension, overwrite or add)
      * or verify extension key and collect information for the new Extension
      */
-    protected function step3Action()
+    protected function step3Action(): ResponseInterface
     {
         $selection = $_POST['selection'];
 
         if ($selection === '_new_') {
-            $this->forward('step3NewExtension');
+            return new ForwardResponse('step3NewExtension');
         }
         if (!empty($selection)) {
-            $this->forward('step3ExistingExtension');
+            return new ForwardResponse('step3ExistingExtension');
         }
 
-        $this->forward('step2');
         // Return to step 2
+        return new ForwardResponse('step2');
     }
 
     protected function step3NewExtensionAction()
@@ -1672,10 +1674,8 @@ class TemplaVoilaPlus8Controller extends AbstractUpdateController
         // If we come from ServerMigration to step5 the extension is already installed
         if (!$extensionAlreadyInstalled) {
             // Register extensions
-            /** @var \TYPO3\CMS\Extbase\Object\ObjectManager */
-            $objectManager = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
             /** @var \TYPO3\CMS\Extensionmanager\Utility\InstallUtility */
-            $installUtility = $objectManager->get(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
+            $installUtility = GeneralUtility::makeInstance(\TYPO3\CMS\Extensionmanager\Utility\InstallUtility::class);
 
             try {
                 $installUtility->install($selection);

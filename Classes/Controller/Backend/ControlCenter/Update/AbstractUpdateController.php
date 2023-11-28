@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update;
 use Psr\Http\Message\ResponseInterface;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\View\BackendTemplateView;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,8 +49,16 @@ class AbstractUpdateController extends ActionController
     protected $extConf = [];
 
 
-    public function __construct()
-    {
+    /** @var ModuleTemplateFactory  */
+    protected $moduleTemplateFactory;
+
+    protected $moduleTemplate;
+
+    public function __construct(
+        ModuleTemplateFactory $moduleTemplateFactory
+    ) {
+        $this->moduleTemplateFactory = $moduleTemplateFactory;
+
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $this->extConf = $configurationService->getExtensionConfig();
@@ -65,11 +74,14 @@ class AbstractUpdateController extends ActionController
         );
     }
 
-    protected function initializeView(\TYPO3\CMS\Extbase\Mvc\View\ViewInterface $view)
+    protected function initializeView(\TYPO3Fluid\Fluid\View\ViewInterface $view)
     {
-        if ($this->view->getModuleTemplate()) {
-            $this->view->getModuleTemplate()->getDocHeaderComponent()->disable();
-        }
+        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
+
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate->getDocHeaderComponent()->disable();
+        $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
+
         $this->assignDefault();
     }
 

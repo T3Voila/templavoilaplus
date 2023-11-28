@@ -3,15 +3,15 @@
 <div class="callout">
     <h2 class="text-primary">TemplaVoilà! Plus (TV+)</h2>
     <p class="lead text-primary"><b>Welcome to the Update Script collection to get your DataStructures, Mapping- and TemplateConfigurations updated to the latest state for your running TYPO3 and TV+ version.</b></p>
-    <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.
-        <f:if condition="{is12orNewer}">
+    <p class="lead">Your system runs TYPO3 {typo3Version} and TV+ {tvpVersion}.<br/>
+        <f:if condition="{is13orNewer}">
             <span class="text-warning">Your TYPO3 Version is beyond a currently released version, so you may run into some issue since we do not support this version yet.</span>
         </f:if>
-        <f:if condition="!{is11orNewer}">
-            <span class="text-danger">Your TYPO3 Version is very old, TV+ 11 does not support this version anymore. Please use the latest TV+ 8 version instead. Hopefully you are running an ELTS Version of TYPO3.</span>
+        <f:if condition="!{is12orNewer}">
+            <span class="text-danger">Your TYPO3 Version is very old, TV+ 12 does not support this version anymore. Please use the latest TV+ 8 version instead. Hopefully you are running an ELTS Version of TYPO3.</span>
         </f:if>
-        <f:if condition="{is11orNewer} && !{is13orNewer}">
-            <span class="text-success mark">Your TYPO3 Version is supported by TV+ 11.</span>
+        <f:if condition="{is12orNewer} && !{is13orNewer}">
+            <span class="text-success mark">Your TYPO3 Version is supported by TV+ 12.</span>
         </f:if>
     </p>
 

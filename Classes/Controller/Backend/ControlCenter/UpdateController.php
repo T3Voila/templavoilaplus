@@ -15,6 +15,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,14 +29,14 @@ class UpdateController extends Update\AbstractUpdateController
     /**
      * List all available configurations for templates
      */
-    public function infoAction()
+    public function infoAction(): ResponseInterface
     {
-        $this->view->getModuleTemplate()->getDocHeaderComponent()->disable();
-        $this->view->getModuleTemplate()->setFlashMessageQueue($this->controllerContext->getFlashMessageQueue());
-
         $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
         $this->view->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
         $this->view->assign('isMigrationPossible', $this->isMigrationPossible());
+
+        $this->moduleTemplate->setContent($this->view->render('info'));
+        return $this->htmlResponse($this->moduleTemplate->renderContent());
     }
 
     protected function hasServerMigrationFile(): bool
