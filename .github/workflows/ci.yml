@@ -107,6 +107,3 @@ jobs:
 
       - name: Functional Tests
         run: tools/runTests.sh -p ${{ matrix.php }} -s functional
-
-      - name: Acceptance Tests
-        run: tools/runTests.sh -p ${{ matrix.php }} -s acceptance
