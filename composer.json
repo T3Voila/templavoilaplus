@@ -14,8 +14,8 @@
     "authors": [
         {
             "name": "Alexander Opitz",
-            "email": "alexander.opitz@davitec.de",
-            "homepage": "https://www.davitec.de",
+            "email": "alexander.opitz@googlemail.com",
+            "homepage": "https://www.templavoila.plus",
             "role": "Developer"
         }
     ],
@@ -131,9 +131,8 @@
         ],
         "ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff",
         "ci:php:lint": "find .*.php *.php Classes Configuration Tests -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
-        "ci:php:lint:docker:php74": "tools/runTests.sh -s lintPhp -p 7.4",
-        "ci:php:lint:docker:php80": "tools/runTests.sh -s lintPhp -p 8.0",
         "ci:php:lint:docker:php81": "tools/runTests.sh -s lintPhp -p 8.1",
+        "ci:php:lint:docker:php82": "tools/runTests.sh -s lintPhp -p 8.2",
         "ci:php:lint:local": "@ci:php:lint",
         "ci:php:singleFile": "tools/codeStyleCheckSingleFile.sh",
         "ci:php:sniff": [
@@ -141,7 +140,7 @@
             "@ci:php:sniff:continueOnWarnings"
         ],
         "ci:php:sniff:continueOnWarnings": "phpcs Classes Configuration Tests || true",
-        "ci:php:sniff:docker:php74": "phpcs Classes Configuration Tests",
+        "ci:php:sniff:docker:php81": "phpcs Classes Configuration Tests",
         "ci:php:sniff:failOnErrors": "phpcs -n Classes Configuration Tests",
         "ci:php:sniff:failOnWarnings": "phpcs Classes Configuration Tests",
         "ci:php:stan": "phpstan --no-progress analyse --level 0",
@@ -159,41 +158,33 @@
         "ci:tests": "@ci:tests:local",
         "ci:tests:acceptance": "@ci:tests:acceptance:docker",
         "ci:tests:acceptance:clean": "rm -rf .Build/public/typo3temp/var/tests/AcceptanceReports",
-        "ci:tests:acceptance:docker": "@ci:tests:acceptance:docker:php74",
-        "ci:tests:acceptance:docker:php74": "tools/runTests.sh -s acceptance -p 7.4",
-        "ci:tests:acceptance:docker:php80": "tools/runTests.sh -s acceptance -p 8.0",
+        "ci:tests:acceptance:docker": "@ci:tests:acceptance:docker:php81",
         "ci:tests:acceptance:docker:php81": "tools/runTests.sh -s acceptance -p 8.1",
+        "ci:tests:acceptance:docker:php82": "tools/runTests.sh -s acceptance -p 8.2",
         "ci:tests:acceptance:local": "echo \"acceptance tests can't be run locally\"",
         "ci:tests:docker": [
             "@ci:tests:unit:docker",
             "@ci:tests:functional:docker",
             "@ci:tests:acceptance:docker"
         ],
-        "ci:tests:docker:php74": [
-            "@ci:tests:unit:docker:php74",
-            "@ci:tests:functional:docker:php74",
-            "@ci:tests:acceptance:docker:php74"
-        ],
-        "ci:tests:docker:php80": [
-            "@ci:tests:unit:docker:php80",
-            "@ci:tests:functional:docker:php80",
-            "@ci:tests:acceptance:docker:php80"
-        ],
         "ci:tests:docker:php81": [
             "@ci:tests:unit:docker:php81",
             "@ci:tests:functional:docker:php81",
             "@ci:tests:acceptance:docker:php81"
         ],
+        "ci:tests:docker:php81": [
+            "@ci:tests:unit:docker:php82",
+            "@ci:tests:functional:docker:php82",
+            "@ci:tests:acceptance:docker:php82"
+        ],
         "ci:tests:docker:phpall": [
-            "@ci:tests:docker:php74",
-            "@ci:tests:docker:php80",
             "@ci:tests:docker:php81"
+            "@ci:tests:docker:php82"
         ],
         "ci:tests:functional": "@ci:tests:functional:local",
-        "ci:tests:functional:docker": "@ci:tests:functional:docker:php74",
-        "ci:tests:functional:docker:php74": "tools/runTests.sh -s functional -p 7.4",
-        "ci:tests:functional:docker:php80": "tools/runTests.sh -s functional -p 8.0",
+        "ci:tests:functional:docker": "@ci:tests:functional:docker:php81",
         "ci:tests:functional:docker:php81": "tools/runTests.sh -s functional -p 8.1",
+        "ci:tests:functional:docker:php82": "tools/runTests.sh -s functional -p 8.2",
         "ci:tests:functional:local": "find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/FunctionalTests.xml {}';",
         "ci:tests:local": [
             "@ci:tests:unit:local",
@@ -201,10 +192,9 @@
             "@ci:tests:acceptance:local"
         ],
         "ci:tests:unit": "@ci:tests:unit:local",
-        "ci:tests:unit:docker": "@ci:tests:unit:docker:php74",
-        "ci:tests:unit:docker:php74": "tools/runTests.sh -s unit -p 7.4",
-        "ci:tests:unit:docker:php80": "tools/runTests.sh -s unit -p 8.0",
+        "ci:tests:unit:docker": "@ci:tests:unit:docker:php81",
         "ci:tests:unit:docker:php81": "tools/runTests.sh -s unit -p 8.1",
+        "ci:tests:unit:docker:php82": "tools/runTests.sh -s unit -p 8.2",
         "ci:tests:unit:local": ".Build/bin/phpunit -c .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTests.xml Tests/Unit",
         "ci:ts:lint": "typoscript-lint -c Configuration/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration/TypoScript",
         "ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -regextype egrep -regex '.*.ya?ml$' | xargs -r php ./.Build/bin/yaml-lint",
