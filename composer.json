@@ -282,7 +282,6 @@
         "ci:dynamic": "Runs all PHPUnit tests (unit and functional).",
         "ci:json:lint": "Lints the JSON files.",
         "ci:php": "Runs all static checks for the PHP files.",
-        "ci:php:copypaste": "Checks for copy'n'pasted PHP code.",
         "ci:php:cs-fixer": "Checks the code style with the PHP Coding Standards Fixer (PHP-CS-Fixer).",
         "ci:php:lint": "Lints the PHP files for syntax errors.",
         "ci:php:sniff": "Checks the code style with PHP_CodeSniffer (PHPCS).",
