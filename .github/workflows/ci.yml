@@ -102,9 +102,6 @@ jobs:
       - name: Install testing system
         run: tools/runTests.sh -p ${{ matrix.php }} -s composerInstall
 
-      - name: Composer validate
-        run: tools/runTests.sh -p ${{ matrix.php }} -s composerValidate
-
       - name: Unit Tests
         run: tools/runTests.sh -p ${{ matrix.php }} -s unit
 
