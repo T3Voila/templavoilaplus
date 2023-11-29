@@ -408,8 +408,8 @@ class ProcessingService
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
-            if (($fieldConfig['config']['type'] ?? '') === 'array') {
-                if ($fieldConfig['section']) {
+            if (($fieldConfig['type'] ?? '') === 'array') {
+                if ($fieldConfig['section'] ?? '' === 1) {
                     if (isset($values[$fieldKey]['el'])) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
                             $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
