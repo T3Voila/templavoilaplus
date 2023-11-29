@@ -66,16 +66,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess']['templavoilaplus']
     = \Tvp\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
 
-
-// Register install/update processes
-// 9LTS Update
-// Add us as first Update process, so we can run before DatabaseRowsUpdateWizard
-/** @TODO Needed anymore? */
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update'] = array_merge(
-    [\Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class => \Tvp\TemplaVoilaPlus\Updates\Typo3Lts9Update::class],
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/install']['update']
-);
-
 // Since TV+ 8.0.0
 \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
 
