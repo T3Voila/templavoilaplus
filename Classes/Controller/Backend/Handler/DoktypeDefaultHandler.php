@@ -62,7 +62,7 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
             );
             if (!empty($pageRecord['tx_templavoilaplus_ds']) || !empty($pageRecord['tx_templavoilaplus_next_ds'])) {
                 $controller->addFlashMessage(
-                    'Older configuration found. Did you upgrade to "TemplaVoilà! Plus 8" but forgot to run the upgrade scripts?',
+                    'Older configuration found. Did you upgrade to "TemplaVoilà! Plus v12" but forgot to run the upgrade scripts?',
                     'Did you forget to Upgrade',
                     \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
                     false
