@@ -49,27 +49,4 @@ class FormEngineUtility
 
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'][$group] = $groupProvider;
     }
-
-    /**
-     * In TYPO3 8 LTS TcaFlexFetch was merged into TcaFlexPrepare, so we need to add our TcaFlexFetch back,
-     * as we support also TYPO3 7 LTS. We can merge our side if we start TV+ 8
-     * Call after replaceInFormDataGroups!
-     *
-     * @TODO remove with TV+ 8
-     */
-    public static function addTcaFlexFetch()
-    {
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['formDataGroup'] as $group => &$groupConfig) {
-            if (
-                !isset($groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class])
-                && isset($groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class])
-            ) {
-                $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class]
-                    = $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class];
-                $groupConfig[\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexPrepare::class] = [
-                    'depends' => [\Tvp\TemplaVoilaPlus\Form\FormDataProvider\TcaFlexFetch::class],
-                ];
-            }
-        }
-    }
 }
