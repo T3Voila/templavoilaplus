@@ -413,48 +413,6 @@ class PageLayoutController extends ActionController
         return $clipBoard;
     }
 
-    /**
-     * Taken from ActionController but extended to ADD module configuration
-     * @param $view
-     */
-    protected function addViewConfiguration($view)
-    {
-        // Template Path Override
-        $extbaseFrameworkConfiguration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
-        );
-
-        $templatePaths = $view->getRenderingContext()->getTemplatePaths();
-
-        // set TemplateRootPaths
-        $setting = 'templateRootPaths';
-        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-        // no need to bother if there is nothing to set
-        if ($parameter) {
-            $parameter = $templatePaths->getTemplateRootPaths() + $parameter;
-            $templatePaths->setTemplateRootPaths($parameter);
-        }
-
-        // set LayoutRootPaths
-        $viewSetFunctionName = 'setLayoutRootPaths';
-        $setting = 'layoutRootPaths';
-        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-        // no need to bother if there is nothing to set
-        if ($parameter) {
-            $parameter = $templatePaths->getLayoutRootPaths() + $parameter;
-            $templatePaths->setLayoutRootPaths($parameter);
-        }
-
-        // set PartialRootPaths
-        $setting = 'partialRootPaths';
-        $parameter = $this->getViewProperty($extbaseFrameworkConfiguration, $setting);
-        // no need to bother if there is nothing to set
-        if ($parameter) {
-            $parameter = $templatePaths->getPartialRootPaths() + $parameter;
-            $templatePaths->setPartialRootPaths($parameter);
-        }
-    }
-
     public function addContentPartial($contentPart, $partialName)
     {
         $this->contentPartials[$contentPart][] = $partialName;

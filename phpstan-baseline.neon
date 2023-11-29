@@ -26,11 +26,6 @@ parameters:
 			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php
 
 		-
-			message: "#^Class TYPO3\\\\CMS\\\\Backend\\\\Form\\\\FormDataProvider\\\\TcaFlexFetch not found\\.$#"
-			count: 1
-			path: Classes/Hooks/TableConfigurationPostProcessingHook.php
-
-		-
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
 			count: 4
 			path: Classes/Service/DataHandling/DataHandler.php
