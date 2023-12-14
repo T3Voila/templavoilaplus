@@ -237,6 +237,7 @@
             "rm .gitignore",
             "rm -rf .Build",
             "rm -rf .ddev",
+            "rm -rf .git",
             "rm -rf .github",
             "rm -rf .gitlab",
             "rm -rf Tests",
@@ -255,8 +256,7 @@
             "rm phive.xml",
             "rm phpstan-baseline.neon",
             "rm phpstan.neon",
-            "rm phpcs.xml",
-            "rm stylelint.config.js"
+            "rm phpcs.xml"
         ],
         "style:lint": [
             "npm run lint:style"
