@@ -23,6 +23,7 @@ use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\IconUtility;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Controller\Event\ModifyPageLayoutContentEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -243,12 +244,6 @@ class PageLayoutController extends ActionController
             $this->calcPerms = $this->getCalcPerms($this->pageInfo['uid']);
             $this->checkContentFromPid();
 
-            // Additional header content
-            $contentHeader = $this->renderFunctionHook('renderHeader');
-
-            // get body content
-            $contentBody = $this->renderFunctionHook('renderBody', [], true);
-
             $activePage = $this->pageInfo;
             if ($this->currentLanguageUid !== 0) {
                 $row = BackendUtility::getRecordLocalization('pages', $this->pageId, $this->currentLanguageUid);
@@ -259,9 +254,6 @@ class PageLayoutController extends ActionController
             $pageTitle = BackendUtility::getRecordTitle('pages', $activePage);
 
             $contentBody .= $this->callHandler(BackendConfiguration::HANDLER_DOCTYPE, $activePage['doktype'], $activePage);
-
-            // Additional footer content
-            $contentFooter = $this->renderFunctionHook('renderFooter');
         } else {
             $pageTitle = '';
             if (GeneralUtility::_GP('id') === null || GeneralUtility::_GP('id') === '0') {
@@ -299,15 +291,14 @@ class PageLayoutController extends ActionController
 
         $this->view->assign('localization', LocalizationRepository::fetchRecordLocalizations('pages', $this->pageId));
         $this->view->assign('contentPartials', $this->contentPartials);
-        // @TODO Deprecate following parts and the renderFunctionHooks? Replace them with Handlers?
-        // Or use these hooks so they can add Partials?
-        $this->view->assign('contentHeader', $contentHeader);
-        $this->view->assign('contentBody', $contentBody);
-        $this->view->assign('contentFooter', $contentFooter);
 
         $this->view->assign('settings', $this->settings);
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+
+        $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($this->request, $moduleTemplate));
+        $this->view->assign('contentHeader', $event->getHeaderContent());
+        $this->view->assign('contentFooter', $event->getFooterContent());
 
         if ($this->pageInfo !== false) {
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
