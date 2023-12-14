@@ -1,14 +1,18 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 {namespace be=TYPO3\CMS\Backend\ViewHelpers}
 
-<f:if condition="{node.raw.table} == sys_file">
-    <f:then>
+<f:switch expression="{node.raw.table}">
+    <f:case value="sys_file">
         <be:thumbnail src="{node.raw.entity.uid}" height="64" width="64" />
-    </f:then>
-    <f:else>
+    </f:case>
+    <f:case value="sys_file_reference">
+        <f:comment>be:thumbnails do not work with references https://forge.typo3.org/issues/102571</f:comment>
+        <f:image src="{node.raw.entity.uid}" height="64" width="64" treatIdAsReference="1" />
+    </f:case>
+    <f:defaultCase>
         <f:render section="TableNode" arguments="{_all}" />
-    </f:else>
-</f:if>
+    </f:defaultCase>
+</f:switch>
 
 
 <f:section name="TableNode">
@@ -39,7 +43,7 @@
         <div class="tvp-record-edit">
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
         </div>
-        <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
+        <f:if condition="{f:count(subject: node.childNodes)} > 0">
             <f:if condition="{node.rendering.beLayout}">
                 <f:variable name="beLayout" value="{node.rendering.beLayout}" />
             </f:if>

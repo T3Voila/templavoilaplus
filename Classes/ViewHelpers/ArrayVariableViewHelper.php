@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
@@ -40,7 +41,7 @@ class ArrayVariableViewHelper extends AbstractViewHelper
             $container = $renderingContext->getVariableProvider()->get($arguments['name']);
         }
 
-        $container[$arguments['key']] = $value;
+        $container = ArrayUtility::setValueByPath($container, $arguments['key'], $value, '.');
 
         $renderingContext->getVariableProvider()->add($arguments['name'], $container);
     }

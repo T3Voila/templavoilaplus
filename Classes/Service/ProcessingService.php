@@ -419,21 +419,31 @@ class ProcessingService
                     $childs[$fieldKey] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
                 }
             } else {
-                // If the current field points to another table, process it if not sys_file or sys_file_reference:
+                // If the current field points to another table
                 if (
-                    isset($fieldConfig['config'])
-                    && ($fieldConfig['config']['type'] ?? '') === 'group'
+                    isset($fieldConfig['config']['type'])
                 ) {
-                    /** @TODO allowed can be multiple tables */
-                    $table = $fieldConfig['config']['allowed'];
-                    foreach ($vKeys as $vKey) {
-                        $listOfSubElementUids = $values[$fieldKey][$vKey];
-                        if ($listOfSubElementUids) {
-                            $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, $vKey);
-                            $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
-                        } else {
-                            $childs[$fieldKey][$vKey] = [];
-                        }
+                    switch ($fieldConfig['config']['type']) {
+                        case 'group':
+                            /** @TODO allowed can be multiple tables */
+                            $table = $fieldConfig['config']['allowed'];
+                            foreach ($vKeys as $vKey) {
+                                $listOfSubElementUids = $values[$fieldKey][$vKey];
+                                if ($listOfSubElementUids) {
+                                    $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, $vKey);
+                                    $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
+                                } else {
+                                    $childs[$fieldKey][$vKey] = [];
+                                }
+                            }
+                            break;
+                        case 'file':
+                            $listOfSubElementUids = (string) $baseNode['raw']['entity']['uid'];
+                            $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, 'vDEF');
+                            $childs[$fieldKey]['vDEF'] = $this->getNodesFromListWithTree('', $parentPointer, 0, 'sys_file_reference', $usedElements, '', $baseNode['raw']['entity']['uid'], $baseNode['raw']['table'], $fieldConfig['config']);
+                            break;
+                        default:
+                            // Empty as we have no default extra processing
                     }
                 }
             }
@@ -462,7 +472,7 @@ class ProcessingService
         return 'tt_content:' . $row['uid'];
     }
 
-    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, string $table, array &$usedElements): array
+    public function getNodesFromListWithTree(string $listOfNodes, array $parentPointer, int $basePid, string $table, array &$usedElements, $MMtable = '', $MMuid = 0, string $currentTable = '', array $config = []): array
     {
         $nodes = [];
 
@@ -470,14 +480,13 @@ class ProcessingService
         /** @var RelationHandler $dbAnalysis */
         $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
 
-        $dbAnalysis->start($listOfNodes, $table);
+        $dbAnalysis->start($listOfNodes, $table, $MMtable, $MMuid, $currentTable, $config);
 
         // Traverse records:
         // Note: key in $dbAnalysis->itemArray is not a valid counter! It is in 'tt_content_xx' format!
         $counter = 1;
         foreach ($dbAnalysis->itemArray as $position => $recIdent) {
             $contentRow = BackendUtility::getRecordWSOL($table, $recIdent['id']);
-
             $parentPointer['position'] = $position;
 
             // Only do it if the element referenced was not deleted! - or hidden :-)

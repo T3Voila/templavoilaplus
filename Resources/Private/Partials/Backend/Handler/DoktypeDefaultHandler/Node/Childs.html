@@ -1,21 +1,23 @@
-<f:if condition="{node.childNodes.sDEF.lDEF}">
-    <f:if condition="{node.rendering.beLayout}">
-        <f:then>
-            <f:if condition="{node.rendering.beLayoutDesign}">
-                <f:then>
-                    <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsDesign" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', node: node}" />
-                </f:then>
-                <f:else>
-                    <f:render
-                        partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsBeLayouts"
-                        section="renderChildElements"
-                        arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', beLayout: '{node.rendering.beLayout}', subpart: 'CHILD'}"
-                    />
-                </f:else>
-            </f:if>
-        </f:then>
-        <f:else>
-            <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsTable" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.sDEF.ROOT.el}', childElements: '{node.childNodes.sDEF.lDEF}', childFlexformData: '{node.flexform.data.sDEF.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:sDEF:lDEF:', subpart: 'CHILD'}" />
-        </f:else>
+<f:for as="childNodesPerSheet" each="{node.childNodes}" key="sheetKey">
+    <f:if condition="{childNodesPerSheet.lDEF}">
+        <f:if condition="{node.rendering.beLayout}">
+            <f:then>
+                <f:if condition="{node.rendering.beLayoutDesign}">
+                    <f:then>
+                        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsDesign" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', node: node}" />
+                    </f:then>
+                    <f:else>
+                        <f:render
+                            partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsBeLayouts"
+                            section="renderChildElements"
+                            arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', beLayout: '{node.rendering.beLayout}', subpart: 'CHILD'}"
+                        />
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsTable" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', subpart: 'CHILD'}" />
+            </f:else>
+        </f:if>
     </f:if>
-</f:if>
+</f:for>

@@ -7,7 +7,7 @@
         <div class="tvp-record-edit">
             <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/TypeInformation" arguments="{node: node}" />
         </div>
-        <f:if condition="{f:count(subject: node.childNodes.sDEF)} > 0">
+        <f:if condition="{f:count(subject: node.childNodes)} > 0">
             <f:if condition="{node.rendering.beLayout}">
                 <f:variable name="beLayout" value="{node.rendering.beLayout}" />
             </f:if>
