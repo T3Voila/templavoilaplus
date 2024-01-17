@@ -699,36 +699,6 @@ class PageLayoutController extends ActionController
         return $this->view;
     }
 
-    /**
-     * Calls defined hooks from TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook']
-     * and returns there result as combined string.
-     *
-     * @param string $hookName Name of the hook to call
-     * @param array $params Paremeters to give to the called hook function
-     * @param bool $stopOnConsume stop calling more function hooks if a result is not false/empty
-     *
-     * @return string
-     */
-    protected function renderFunctionHook($hookName, $params = [], $stopOnConsume = false)
-    {
-        $result = '';
-
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook'])) {
-            $renderFunctionHook = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['templavoilaplus']['PageLayout'][$hookName . 'FunctionHook'];
-            if (is_array($renderFunctionHook)) {
-                foreach ($renderFunctionHook as $hook) {
-                    $params = [];
-                    $result .= (string)GeneralUtility::callUserFunction($hook, $params, $this);
-                    if ($stopOnConsume && $result) {
-                        break;
-                    }
-                }
-            }
-        }
-
-        return $result;
-    }
-
     protected function callHandler($type, $key, ...$param)
     {
         if ($this->configuration->haveItem($type, $key)) {
