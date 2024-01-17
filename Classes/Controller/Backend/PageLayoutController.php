@@ -296,9 +296,11 @@ class PageLayoutController extends ActionController
 
         $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
 
-        $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($this->request, $moduleTemplate));
-        $this->view->assign('contentHeader', $event->getHeaderContent());
-        $this->view->assign('contentFooter', $event->getFooterContent());
+        if (isset($this->pageInfo['uid'])) {
+            $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($this->request, $moduleTemplate));
+            $this->view->assign('contentHeader', $event->getHeaderContent());
+            $this->view->assign('contentFooter', $event->getFooterContent());
+        }
 
         if ($this->pageInfo !== false) {
             $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
