@@ -11,21 +11,6 @@ parameters:
 			path: Classes/Configuration/FlexForm/FlexFormTools8.php
 
 		-
-			message: "#^Undefined variable\\: \\$countStatic$#"
-			count: 1
-			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV10Controller.php
-
-		-
-			message: "#^Undefined variable\\: \\$countStatic$#"
-			count: 1
-			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV11Controller.php
-
-		-
-			message: "#^Undefined variable\\: \\$countStatic$#"
-			count: 1
-			path: Classes/Controller/Backend/ControlCenter/Update/DataStructureV8Controller.php
-
-		-
 			message: "#^Call to static method makeInstance\\(\\) on an unknown class Tvp\\\\TemplaVoilaPlus\\\\Controller\\\\Backend\\\\Handler\\\\GeneralUtility\\.$#"
 			count: 1
 			path: Classes/Controller/Backend/Handler/DoktypeMountpointHandler.php

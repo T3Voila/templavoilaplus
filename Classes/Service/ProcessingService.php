@@ -215,7 +215,7 @@ class ProcessingService
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
-                'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']] ?? ''),
+                'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? null] ?? ''),
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']]['count'],
                 'errorNoMapping' => ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1' && !$row['tx_templavoilaplus_map']),
@@ -232,7 +232,7 @@ class ProcessingService
 
     public function getMappingConfiguration(string $table, array $row): ?MappingConfiguration
     {
-        $map = $row['tx_templavoilaplus_map'];
+        $map = $row['tx_templavoilaplus_map'] ?? null;
         $mappingConfiguration = null;
 
         // find mappingConfiguration in root line if current page doesn't have one
@@ -295,7 +295,7 @@ class ProcessingService
     public function getFlexformForNode(array $node): array
     {
         $emptyFlexform = $this->getEmptyFlexformForNode($node);
-        if ($node['raw']['entity']['tx_templavoilaplus_flex'] === null) {
+        if (($node['raw']['entity']['tx_templavoilaplus_flex'] ?? null) === null) {
             return $emptyFlexform;
         }
 

@@ -75,7 +75,6 @@ class DataStructureV8Controller extends AbstractUpdateController
         );
 
         $this->view->assignMultiple([
-            'countStatic' => $countStatic,
             'count' => $count,
             'errors' => $this->errors,
         ]);

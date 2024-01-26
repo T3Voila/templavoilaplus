@@ -48,7 +48,6 @@ class DataStructureV11Controller extends AbstractUpdateController
         );
 
         $this->view->assignMultiple([
-            'countStatic' => $countStatic,
             'count' => $count,
             'errors' => $this->errors,
         ]);
@@ -62,8 +61,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     {
         $changed = false;
         if (
-            (string)($element['TCEforms']['config']['type']) === 'select'
-            && (string)($element['TCEforms']['config']['special']) === 'languages'
+            (string)($element['TCEforms']['config']['type'] ?? '') === 'select'
+            && (string)($element['TCEforms']['config']['special'] ?? '') === 'languages'
         ) {
             $element['TCEforms']['config'] = [
                 'type' => 'language',
@@ -77,7 +76,7 @@ class DataStructureV11Controller extends AbstractUpdateController
     {
         $changed = false;
         if (
-            (string)($element['TCEforms']['config']['type']) === 'inline'
+            (string)($element['TCEforms']['config']['type'] ?? '') === 'inline'
             && isset($element['TCEforms']['config']['appearance']['showRemovedLocalizationRecords'])
         ) {
             unset($element['TCEforms']['config']['appearance']['showRemovedLocalizationRecords']);
@@ -94,7 +93,7 @@ class DataStructureV11Controller extends AbstractUpdateController
     {
         $changed = false;
         if (
-            (string)($element['TCEforms']['config']['type']) === 'select'
+            (string)($element['TCEforms']['config']['type'] ?? '') === 'select'
             && isset($element['TCEforms']['config']['fileFolder'])
         ) {
             $element['TCEforms']['config']['fileFolderConfig'] = [
@@ -128,8 +127,8 @@ class DataStructureV11Controller extends AbstractUpdateController
     {
         $changed = false;
         if (
-            (string)($element['TCEforms']['config']['type']) === 'inline'
-            && (string)($element['TCEforms']['config']['appearance']['levelLinksPosition']) === 'none'
+            (string)($element['TCEforms']['config']['type'] ?? '') === 'inline'
+            && (string)($element['TCEforms']['config']['appearance']['levelLinksPosition'] ?? '') === 'none'
         ) {
             unset($element['TCEforms']['config']['appearance']['levelLinksPosition']);
             $element['TCEforms']['config']['appearance']['showAllLocalizationLink'] = false;
@@ -149,7 +148,7 @@ class DataStructureV11Controller extends AbstractUpdateController
         $changed = false;
         if (
             (int)($element['TCEforms']['config']['treeConfig']['rootUid'] ?? 0) !== 0
-            && in_array((string)($element['TCEforms']['config']['type']), ['select', 'category'], true)
+            && in_array((string)($element['TCEforms']['config']['type'] ?? ''), ['select', 'category'], true)
         ) {
             $element['TCEforms']['config']['treeConfig']['startingPoints'] = (string)(int)($element['TCEforms']['config']['treeConfig']['rootUid']);
             unset($element['TCEforms']['config']['treeConfig']['rootUid']);
