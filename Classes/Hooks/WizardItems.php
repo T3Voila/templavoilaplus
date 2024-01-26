@@ -68,7 +68,8 @@ class WizardItems implements NewContentElementWizardHookInterface
                     /** @TODO Var missing? */
                     $iconIdentifier = null;
                     $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
-                        'iconIdentifier' => ($iconIdentifier ?: 'extensions-templavoila-template-default'),
+                        /* @TODO $iconIdentifier = $iconIdentifier->getIconIdentifier() */
+                        'iconIdentifier' => ($iconIdentifier ?? 'extensions-templavoila-template-default'),
                         'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
                             TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                         'title' => $mappingConfiguration->getName(),

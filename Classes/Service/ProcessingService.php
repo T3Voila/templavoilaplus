@@ -215,7 +215,7 @@ class ProcessingService
                 'shortTitle' => GeneralUtility::fixed_lgd_cs($title, 50),
                 'fullTitle' => $title,
                 'hintTitle' => BackendUtility::getRecordIconAltText($row, $table),
-                'description' => ($row[($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? '')] ?? ''),
+                'description' => ($row[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn'] ?? null] ?? ''),
                 'belongsToCurrentPage' => ($basePid === $onPid),
                 'countUsedOnPage' => $usedElements[$table][$row['uid']]['count'],
                 'errorNoMapping' => ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1' && !$row['tx_templavoilaplus_map']),

@@ -139,7 +139,7 @@ class XpathRenderHandler implements RenderHandlerInterface
 
     protected function processValue($processingNode, $fieldName, array $mappingConfiguration, array $processedValues)
     {
-        switch ($mappingConfiguration['mappingType']) {
+        switch ($mappingConfiguration['mappingType'] ?? null) {
             case 'attrib':
                 $processingNode->setAttribute($mappingConfiguration['attribName'], (string) ($processedValues[$fieldName] ?? ''));
                 break;
@@ -210,7 +210,7 @@ class XpathRenderHandler implements RenderHandlerInterface
             return;
         }
 
-        switch ($mappingConfiguration['valueType']) {
+        switch ($mappingConfiguration['valueType'] ?? null) {
             case 'html':
                 if ($processedValues[$fieldName] ?? false) {
                     $tmpDoc = new \DOMDocument();
