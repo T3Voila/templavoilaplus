@@ -102,7 +102,9 @@ class DefaultMappingHandler
                 }
                 break;
             case 'rowList':
-                $processedValue = $this->processRowList($processedValue, $table, $row);
+                if (is_array($processedValue)) {
+                    $processedValue = $this->processRowList($processedValue, $table, $row);
+                }
                 break;
             case 'stdWrap':
                 break;
