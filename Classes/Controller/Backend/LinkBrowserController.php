@@ -22,9 +22,8 @@ class LinkBrowserController extends CoreLinkBrowserController
                     'map' => [
                         '*' => [
                             'TYPO3/CMS/Backend/FormEngineLinkBrowserAdapter' => PathUtility::getRelativePathTo(
-                                    ExtensionManagementUtility::extPath('templavoilaplus')
-                                ) .
-                                '/Resources/Public/JavaScript/FormEngineLinkBrowserAdapter'
+                                ExtensionManagementUtility::extPath('templavoilaplus')
+                            ) . '/Resources/Public/JavaScript/FormEngineLinkBrowserAdapter'
                         ]
                     ]
                 ]
