@@ -94,6 +94,8 @@ class DefaultMappingHandler
             case 'repeatable':
                 if (is_array($processedValue)) {
                     $processedValue = $this->processRepeatable($processedValue, $table, $row, $instructions['container']);
+                } else {
+                    $processedValue = [];
                 }
                 break;
             case 'container':
