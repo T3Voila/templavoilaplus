@@ -21,6 +21,13 @@ services:
           method: 'processEvent'
           event: TYPO3\CMS\Core\Core\Event\BootCompletedEvent
 
+  Tvp\TemplaVoilaPlus\Configuration\ContentElementWizardItems:
+    tags:
+        - name: event.listener
+          identifier: 'templavoilaplus/newContentElementWizardItems/modify'
+          method: 'processEvent'
+          event: TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent
+
   Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElementWizard:
     tags: [ 'backend.controller' ]
 

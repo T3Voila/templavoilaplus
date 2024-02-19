@@ -161,7 +161,7 @@ class ContentElementWizard extends AbstractResponse
 
         // Do dependency ordering inside the tabs or unset tab if empty */
         foreach ($newContentElementsConfig as $tabKey => $tabConfig) {
-            if (count($newContentElementsConfig[$tabKey]['contentElements']) === 0) {
+            if (count(($newContentElementsConfig[$tabKey]['contentElements'] ?? [])) === 0) {
                 unset($newContentElementsConfig[$tabKey]);
             } else {
                 $newContentElementsConfig[$tabKey]['contentElements']
@@ -182,11 +182,17 @@ class ContentElementWizard extends AbstractResponse
             foreach ($tabConfig['contentElements'] as $_key => $contentElement) {
                 $contentElement['element-row'] = [];
 
+                /** @TODO Backward compatibility, remove wit TYPO3 v13+ only */
+                /** Feature-97201-PSR-14EventForModifyingNewContentElementWizardItems.rst */
                 if (isset($contentElement['params'])) {
                     parse_str($contentElement['params'], $contentElementParams);
                     if (isset($contentElementParams['defVals']['tt_content'])) {
                         $contentElement['element-row'] = $contentElementParams['defVals']['tt_content'];
                     }
+                }
+                /** ENDE */
+                if (isset($contentElement['tt_content_defValues']) && is_array($contentElement['tt_content_defValues'])) {
+                    $contentElement['element-row'] = $contentElement['tt_content_defValues'];
                 }
                 $contentElementsConfig[$tabKey]['contentElements'][$_key] = $contentElement;
             }

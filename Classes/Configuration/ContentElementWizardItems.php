@@ -1,27 +1,23 @@
 <?php
 
-namespace Tvp\TemplaVoilaPlus\Hooks;
+namespace Tvp\TemplaVoilaPlus\Configuration;
 
 use Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ExtendedNewContentElementController;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Service\ItemsProcFunc;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Controller\Event\ModifyNewContentElementWizardItemsEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\Wizard\NewContentElementWizardHookInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class WizardItems implements NewContentElementWizardHookInterface
+class ContentElementWizardItems
 {
-    /**
-     * Modifies WizardItems of the NewContentElementWizard array
-     *
-     * @param array $wizardItems Array of Wizard Items
-     * @param \TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController $parentObject Parent object New Content element wizard
-     */
-    public function manipulateWizardItems(&$wizardItems, &$parentObject)
+    public function processEvent(ModifyNewContentElementWizardItemsEvent $event): void
     {
+        $wizardItems = $event->getWizardItems();
+
         $fceWizardItems = [
             'fce' => [
                 'header' => $this->getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:newContentElementWizard.fce'),
@@ -47,12 +43,7 @@ class WizardItems implements NewContentElementWizardHookInterface
                     $wizardLabel = 'fce_' . $combinedMappingIdentifier;
 
                     // try to get pid, either from out Controller if available or from URL
-                    $pageId = 0;
-                    if ($parentObject instanceof ExtendedNewContentElementController) {
-                        $pageId = $parentObject->getPageId();
-                    } elseif ((int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id') > 0) {
-                        $pageId = (int)\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('id');
-                    }
+                    $pageId = ($event->getPageInfo()['uid'] ?? 0);
 
                     // if pid is available check PageTSconfig, if pid unavailable or pageTSconfig forbids: skip this fce
                     if (
@@ -73,13 +64,15 @@ class WizardItems implements NewContentElementWizardHookInterface
                         'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
                             TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
                         'title' => $mappingConfiguration->getName(),
-                        'params' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
+                        'tt_content_defValues' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
                     ];
                 }
             }
         }
         $wizardItems = $fceWizardItems + $wizardItems;
         $wizardItems = GeneralUtility::makeInstance(DependencyOrderingService::class)->orderByDependencies($wizardItems);
+
+        $event->setWizardItems($wizardItems);
     }
 
     /**
@@ -111,10 +104,12 @@ class WizardItems implements NewContentElementWizardHookInterface
      * @param string $combinedMappingIdentifier
      * @return string additional URL arguments with configured default values for DataHandler/TCEForms
      */
-    public function getDataHandlerDefaultValues(string $combinedMappingIdentifier)
+    public function getDataHandlerDefaultValues(string $combinedMappingIdentifier): array
     {
-        $dsValues = '&defVals[tt_content][CType]=templavoilaplus_pi1'
-            . '&defVals[tt_content][tx_templavoilaplus_map]=' . $combinedMappingIdentifier;
+        $ttcontentDefVals = [
+            'CType' => 'templavoilaplus_pi1',
+            'tx_templavoilaplus_map' => $combinedMappingIdentifier,
+        ];
 
         /** @TODO We should push the DataStructure TCEForms defaults into the values? Or is this processed automagically already? */
 //         $dsStructure = $toObj->getLocalDataprotArray();
@@ -125,7 +120,7 @@ class WizardItems implements NewContentElementWizardHookInterface
 //             }
 //         }
 
-        return $dsValues;
+        return $ttcontentDefVals;
     }
 
     /**
