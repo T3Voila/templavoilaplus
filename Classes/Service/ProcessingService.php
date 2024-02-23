@@ -975,7 +975,7 @@ class ProcessingService
 
         $listOfUIDs = '';
         if (is_array($flexform) && is_array($flexform['data'])) {
-            $sLangPart = $flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']];
+            $sLangPart = ($flexform['data'][$flexformPointer['sheet']][$flexformPointer['sLang']] ?? []);
 
             try {
                 $fieldPart = ArrayUtility::getValueByPath($sLangPart, $fieldPointerPath);
