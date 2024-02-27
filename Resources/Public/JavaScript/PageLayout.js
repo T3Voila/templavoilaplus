@@ -155,7 +155,7 @@ define([
           dragable: '.sortableItem',
           animation: 150,
           swapThreshold: 0.65,
-          emptyInsertThreshold: 30,
+          emptyInsertThreshold: 5,
           onUpdate: function (/**Event*/evt) {
             console.log('onUpdate');
             // Move inside field
