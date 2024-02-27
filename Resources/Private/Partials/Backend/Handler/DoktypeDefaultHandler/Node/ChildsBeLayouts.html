@@ -15,9 +15,9 @@
         <f:if condition="{childElements.{fieldKey}}">
             <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
                 <strong>
-                    <f:if condition="{subFieldConfig.TCEforms.label}">
+                    <f:if condition="{subFieldConfig.label}">
                         <f:then>
-                            <f:translate key="{subFieldConfig.TCEforms.label}" default="{subFieldConfig.TCEforms.label}" />
+                            <f:translate key="{subFieldConfig.label}" default="{subFieldConfig.label}" />
                         </f:then>
                         <f:else>
                             <f:if condition="{subFieldConfig.title}">
@@ -51,7 +51,7 @@
                 <f:if condition="{childElements.{fieldKey}}">
                     <f:then>
                         <tvp:arrayVariable name="layoutFields" key="{fieldKey}">
-                            <div class="tvjs-dropzone" data-parent-pointer="{parentPointer}#{fieldKey}:vDEF" data-child-allowed="{subFieldConfig.TCEforms.config.allowed}{subFieldConfig.config.allowed}">
+                            <div class="tvjs-dropzone" data-parent-pointer="{parentPointer}#{fieldKey}:vDEF" data-child-allowed="{subFieldConfig.config.allowed}{subFieldConfig.config.allowed}">
                             <f:for each="{childElements.{fieldKey}.vDEF}" as="element">
                                 <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: element.node}" />
                             </f:for>
@@ -61,9 +61,9 @@
                     <f:else>
                         <tvp:arrayVariable name="layoutHeaders" key="{fieldKey}">
                             <strong>
-                                <f:if condition="{subFieldConfig.TCEforms.label}">
+                                <f:if condition="{subFieldConfig.label}">
                                     <f:then>
-                                        <f:translate key="{subFieldConfig.TCEforms.label}" default="{subFieldConfig.TCEforms.label}" />
+                                        <f:translate key="{subFieldConfig.label}" default="{subFieldConfig.label}" />
                                     </f:then>
                                     <f:else>
                                         <f:if condition="{subFieldConfig.title}">

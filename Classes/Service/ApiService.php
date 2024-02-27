@@ -129,8 +129,8 @@ class ApiService
                                         if (
                                             ($fieldDS['tx_templavoilaplus']['eType'] ?? '') === 'ce' /** @TODO What the hell? */
                                             || (
-                                                ($fieldDS['TCEforms']['config']['allowed'] ?? '') === 'tt_content'
-                                                && ($fieldDS['TCEforms']['config']['internal_type'] ?? '') === 'db'
+                                                ($fieldDS['config']['allowed'] ?? '') === 'tt_content'
+                                                && ($fieldDS['config']['internal_type'] ?? '') === 'db'
                                              )
                                         ) {
                                             $valueItems = GeneralUtility::intExplode(',', $value);
