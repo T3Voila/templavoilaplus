@@ -1,7 +1,7 @@
-<f:for as="childNodesPerSheet" each="{node.childNodes}" key="sheetKey">
-    <f:if condition="{childNodesPerSheet.lDEF}">
-        <f:if condition="{node.rendering.beLayout}">
-            <f:then>
+<f:if condition="{node.rendering.beLayout}">
+    <f:then>
+        <f:for as="childNodesPerSheet" each="{node.childNodes}" key="sheetKey">
+            <f:if condition="{childNodesPerSheet.lDEF}">
                 <f:if condition="{node.rendering.beLayoutDesign}">
                     <f:then>
                         <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsDesign" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', node: node}" />
@@ -14,10 +14,33 @@
                         />
                     </f:else>
                 </f:if>
-            </f:then>
-            <f:else>
-                <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsTable" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', subpart: 'CHILD'}" />
-            </f:else>
-        </f:if>
-    </f:if>
-</f:for>
+            </f:if>
+        </f:for>
+    </f:then>
+    <f:else>
+        <div class="row">
+            <f:variable name="count">0</f:variable>
+            <f:for as="childNodesPerSheet" each="{node.childNodes}" key="sheetKey">
+                <f:if condition="{childNodesPerSheet.lDEF}">
+                    <f:variable name="count">{count + 1}</f:variable>
+                </f:if>
+            </f:for>
+            <f:switch expression="{count}">
+                <f:case value="1">{f:variable(name: 'colwidthclass', value: 'col col-lg-12')}</f:case>
+                <f:case value="2">{f:variable(name: 'colwidthclass', value: 'col col-lg-6')}</f:case>
+                <f:case value="3">{f:variable(name: 'colwidthclass', value: 'col col-lg-4')}</f:case>
+                <f:case value="4">{f:variable(name: 'colwidthclass', value: 'col col-lg-3')}</f:case>
+                <f:case value="6">{f:variable(name: 'colwidthclass', value: 'col col-lg-2')}</f:case>
+                <f:defaultCase>{f:variable(name: 'colwidthclass', value: 'col')}</f:defaultCase>
+            </f:switch>
+            <f:for as="childNodesPerSheet" each="{node.childNodes}" key="sheetKey">
+                <f:if condition="{childNodesPerSheet.lDEF}">
+                    <div class="{colwidthclass}">
+                        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node/ChildsTable" section="renderChildElements" arguments="{fieldConfig: '{node.datastructure.sheets.{sheetKey}.ROOT.el}', childElements: '{childNodesPerSheet.lDEF}', childFlexformData: '{node.flexform.data.{sheetKey}.lDEF}', parentPointer: '{node.raw.table}:{node.raw.entity.uid}:{sheetKey}:lDEF:', subpart: 'CHILD'}" />
+                    </div>
+                </f:if>
+            </f:for>
+        </div>
+    </f:else>
+</f:if>
+
