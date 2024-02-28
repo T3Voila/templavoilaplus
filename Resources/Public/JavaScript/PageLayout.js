@@ -154,7 +154,8 @@ define([
           ghostClass: "iAmGhost",
           dragable: '.sortableItem',
           animation: 150,
-          swapThreshold: 0.65,
+          swapThreshold: 0.95,
+          invertedSwapThreshold: 0.25,
           emptyInsertThreshold: 5,
           onUpdate: function (/**Event*/evt) {
             console.log('onUpdate');
