@@ -391,7 +391,7 @@ class ProcessingService
             if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
                 foreach ($lKeys as $lKey) {
                     // in seldom cases we could have no flexform data, e.g. if a FCE exists but has empty mapping
-                    if ($node['flexform']['data'][$sheetKey][$lKey] !== null) {
+                    if (($node['flexform']['data'][$sheetKey][$lKey] ?? null) !== null) {
                         $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                     }
                 }
@@ -410,7 +410,7 @@ class ProcessingService
         foreach ($elements as $fieldKey => $fieldConfig) {
             if (($fieldConfig['type'] ?? '') === 'array') {
                 if ($fieldConfig['section'] ?? '' === 1) {
-                    if (isset($values[$fieldKey]['el'])) {
+                    if (is_array($values[$fieldKey]['el'] ?? null)) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
                             $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
                         }
