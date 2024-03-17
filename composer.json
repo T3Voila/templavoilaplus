@@ -232,7 +232,7 @@
         "npm:init": [
             "@yarn:init"
         ],
-        "phpstan:baseline": ".Build/bin/phpstan  --generate-baseline=phpstan-baseline.neon",
+        "phpstan:baseline": ".Build/bin/phpstan  --generate-baseline=phpstan-baseline.neon --level 0",
         "prepare-release": [
             "rm .gitignore",
             "rm -rf .Build",
