@@ -697,7 +697,7 @@ class ProcessingService
      * @return mixed The UID of the newly created record or FALSE if operation was not successful
      * @throws ProcessingException
      */
-    public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid)
+    public function copyElement(string $destinationPointerString, string $sourceElementTable, int $sourceElementUid, bool $neverHideAtCopy = false)
     {
         // Check and get all information about the source position:
         $destinationPointer = $this->getValidPointer($destinationPointerString, true);
@@ -718,6 +718,7 @@ class ProcessingService
 
         /** @var DataHandler */
         $tce = GeneralUtility::makeInstance(DataHandler::class);
+        $tce->neverHideAtCopy = $neverHideAtCopy;
         $tce->start([], $cmdArray);
         $tce->process_cmdmap();
 
@@ -726,6 +727,24 @@ class ProcessingService
         // Insert new uid into reference
         $newReferences = $this->insertElementReferenceIntoList($destinationPointer['foundFieldReferences']['references'], $destinationPointer['position'], $newElementUid);
         $this->storeElementReferencesListInRecord($newReferences, $destinationPointer);
+
+        return $newElementUid;
+    }
+
+    public function makeLocalCopy(string $sourcePointerString)
+    {
+        // Check and get all information about the source position:
+        $sourcePointer = $this->getValidPointer($sourcePointerString);
+
+        $sourceElementTable = $sourcePointer['foundFieldReferences']['referenceTable'];
+        $sourceElementUid = $sourcePointer['foundFieldReferences']['references'][$sourcePointer['position']];
+
+        $newElementUid = $this->copyElement($sourcePointerString, $sourceElementTable, $sourceElementUid, true);
+
+        // pointer to the element which should be unlinked is now one position higher
+        $sourcePointer['position'] += 1;
+        $sourcePointerString = $this->getParentPointerAsString($sourcePointer);
+        $this->unlinkElement($sourcePointerString);
 
         return $newElementUid;
     }
