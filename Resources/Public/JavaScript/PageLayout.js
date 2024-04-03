@@ -126,6 +126,7 @@ define([
         PageLayout.initSortable(base);
         PageLayout.initEditRecordListener(base);
         PageLayout.initClipboardAddListener(base);
+        PageLayout.initMakeLocalCopy(base);
         PageLayout.initSwitchVisibilityListener(base);
     }
 
@@ -531,6 +532,17 @@ define([
         }
     }
 
+    PageLayout.initMakeLocalCopy = function(base) {
+        var allItems = base.querySelectorAll('div.tvp-node .tvp-make-localcopy');
+
+        for (const item of allItems) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node');
+                PageLayout.makeLocalCopy(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
     PageLayout.initSwitchVisibilityListener = function(base) {
         var allItems = base.querySelectorAll('div.tvp-node  button.tvp-record-switch-visibility');
 
@@ -720,6 +732,29 @@ define([
             url: TYPO3.settings.ajaxUrls['templavoilaplus_clipboard_add'],
             success: function(data) {
                 PageLayout.updateClipboardNumber(data.clipboard);
+            },
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                PageLayout.showError(items);
+            }
+        });
+    }
+
+    PageLayout.makeLocalCopy = function(table, uid) {
+        var items = $('div.tvp-node[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
+        PageLayout.showInProgress(items);
+
+        $.ajax({
+            type: 'POST',
+            data: {
+                sourcePointer: items[0].dataset.parentPointer,
+            },
+            url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_makelocal'],
+            success: function(data) {
+                var div = document.createElement('div');
+                div.innerHTML = data.nodeHtml;
+                PageLayout.initElements(div.firstElementChild);
+                PageLayout.showSuccess(div.firstElementChild);
+                items[0].parentNode.replaceChild(div.firstElementChild, items[0]);
             },
             error: function(XMLHttpRequest, textStatus, errorThrown) {
                 PageLayout.showError(items);

@@ -31,6 +31,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::remove',
     ],
+    'templavoilaplus_contentElement_makelocal' => [
+        'path' => '/templavoilaplus/contentElement/makelocalcopy',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\ContentElements::class . '::makelocalcopy',
+    ],
     'templavoilaplus_contentElementWizard' => [
         'path' => '/templavoilaplus/contentElementWizard',
         'access' => 'user,group',

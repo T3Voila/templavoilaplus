@@ -135,4 +135,42 @@ class ContentElements extends AbstractResponse
 
         return new JsonResponse([$result]);
     }
+
+    /**
+     * @param ServerRequestInterface $request the current request
+     * @return ResponseInterface the response with the content
+     */
+    public function makeLocalCopy(ServerRequestInterface $request): ResponseInterface
+    {
+        /** @var ProcessingService */
+        $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+
+        $parameters = $request->getParsedBody();
+        try {
+            $result = $processingService->makeLocalCopy(
+                $parameters['sourcePointer'] ?? ''
+            );
+
+            if ($result) {
+                return new JsonResponse([
+                    'uid' => $result,
+                    'nodeHtml' => $this->record2html('tt_content', $result, $parameters['sourcePointer']),
+                ]);
+            } else {
+                return new JsonResponse(
+                    [
+                        'error' => $result
+                    ],
+                    400 /* Bad request */
+                );
+            }
+        } catch (ProcessingException $e) {
+            return new JsonResponse(
+                [
+                    'error' => $e->getMessage()
+                ],
+                400 /* Bad request */
+            );
+        }
+    }
 }
