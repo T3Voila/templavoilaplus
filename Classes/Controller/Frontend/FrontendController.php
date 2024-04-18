@@ -15,6 +15,7 @@ use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
@@ -193,6 +194,8 @@ class FrontendController extends AbstractPlugin
             $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class);
             $processedValues = $mappingHandler->process($mappingConfiguration, $flexformValues, $table, $row);
 
+            $processedValues = $this->addSettings($processedValues, $conf);
+
             // get renderer from templateConfiguration
             /** @var ConfigurationService */
             $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -225,6 +228,15 @@ class FrontendController extends AbstractPlugin
             // if FE has debugging disabled return nothing for the element to not break output.
             return '';
         }
+    }
+
+    protected function addSettings(array $processedValues, array $conf): array
+    {
+        if (isset($conf['settings.'])) {
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $processedValues['settings'] = $typoScriptService->convertTypoScriptArrayToPlainArray($conf['settings.']);
+        }
+        return $processedValues;
     }
 
     public function checkFeDebugging(): bool
