@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use TYPO3\CMS\Core\Service\MarkerBasedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -25,7 +26,7 @@ class MarkerBasedRenderHandler implements RenderHandlerInterface
 {
     public static $identifier = 'TVP\Renderer\MarkerBased';
 
-    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row, ServerRequestInterface $request): string
     {
         /** @var MarkerBasedTemplateService */
         $markerBasedTemplateService = GeneralUtility::makeInstance(MarkerBasedTemplateService::class);

@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use Tvp\TemplaVoilaPlus\Handler\Render\RenderHandlerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -26,13 +27,14 @@ class FluidRenderHandler implements RenderHandlerInterface
 {
     public static $identifier = 'TVP\Renderer\Fluid';
 
-    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row, ServerRequestInterface $request): string
     {
         /** @var StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $path = GeneralUtility::getFileAbsFileName($templateConfiguration->getPlace()->getEntryPoint());
         $options = $templateConfiguration->getOptions();
 
+        $view->setRequest($request);
         /** @TODO Check if template file otherwise bad error messages will happen */
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateConfiguration->getTemplateFileName()));
 

@@ -57,6 +57,6 @@ class RenderLayoutViewHelper extends AbstractViewHelper
 
         $backendLayoutConfiguration = ApiHelperUtility::getBackendLayoutConfiguration($combinedConfigurationIdentifier);
         $renderer = $configurationService->getHandler($backendLayoutConfiguration->getRenderHandlerIdentifier());
-        return $renderer->renderTemplate($backendLayoutConfiguration, $variables, []);
+        return $renderer->renderTemplate($backendLayoutConfiguration, $variables, [], $renderingContext->getRequest());
     }
 }

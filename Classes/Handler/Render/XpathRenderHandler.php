@@ -16,6 +16,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,7 +30,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     protected $domDocument;
     protected $domXpath;
 
-    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row, ServerRequestInterface $request): string
     {
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);

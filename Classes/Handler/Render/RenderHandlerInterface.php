@@ -17,9 +17,10 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 
 interface RenderHandlerInterface
 {
-    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string;
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row, ServerRequestInterface $request): string;
 }

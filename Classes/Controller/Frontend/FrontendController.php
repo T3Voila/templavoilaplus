@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Controller\Frontend;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
@@ -57,7 +58,7 @@ class FrontendController extends AbstractPlugin
      *             page.10.userFunc = Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage
      */
     // phpcs:disable
-    public function main_page($content, $conf)
+    public function main_page($content, $conf, ServerRequestInterface $request)
     {
         // phpcs:enable
         trigger_error(
@@ -66,7 +67,7 @@ class FrontendController extends AbstractPlugin
             'please change to "Tvp\TemplaVoilaPlus\Controller\Frontend\FrontendController->renderPage"',
             E_USER_DEPRECATED
         );
-        return $this->renderPage($content, $conf);
+        return $this->renderPage($content, $conf, $request);
     }
 
     /**
@@ -78,7 +79,7 @@ class FrontendController extends AbstractPlugin
      * @return string HTML content for the Flexible Content elements.
      * @throws \InvalidArgumentException
      */
-    public function renderPage($content, $conf)
+    public function renderPage($content, $conf, ServerRequestInterface $request)
     {
         /** @var ApiService */
         $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
@@ -122,12 +123,12 @@ class FrontendController extends AbstractPlugin
             );
         }
 
-        return $this->renderElement($pageRecord, 'pages', $conf);
+        return $this->renderElement($pageRecord, 'pages', $conf, $request);
     }
 
-    public function renderContent($content, $conf)
+    public function renderContent($content, $conf, ServerRequestInterface $request)
     {
-        return $this->renderElement($this->cObj->data, 'tt_content', $conf);
+        return $this->renderElement($this->cObj->data, 'tt_content', $conf, $request);
     }
 
     /**
@@ -142,7 +143,7 @@ class FrontendController extends AbstractPlugin
      * @throws \Exception
      *
      */
-    public function renderElement($row, $table, array $conf)
+    public function renderElement($row, $table, array $conf, ServerRequestInterface $request)
     {
         try {
             // pages where checked for empty map already, but not tt_content
@@ -206,7 +207,7 @@ class FrontendController extends AbstractPlugin
             PageBasicsHandler::processConfiguration($templateConfiguration, $this->frontendController);
 
             // give TemplateData to renderer and return result
-            return $renderer->renderTemplate($templateConfiguration, $processedValues, $row);
+            return $renderer->renderTemplate($templateConfiguration, $processedValues, $row, $request);
         } catch (\Exception $e) {
             // only log if $table is tt_content and exception is for tt_content, because elso it will be logged twice
             if ($e instanceof ContentElementWithoutMapException && $table == 'tt_content') {
