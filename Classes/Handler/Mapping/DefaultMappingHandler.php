@@ -156,7 +156,7 @@ class DefaultMappingHandler
         return $processedValue;
     }
 
-    protected function processDataProcessing(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript): array
+    protected function processDataProcessing(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript)
     {
         /** @var TypoScriptParser $tsparserObj */
         $tsparserObj = $this->getTypoScriptParser();
@@ -167,7 +167,7 @@ class DefaultMappingHandler
         $dataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
         $processedValue = $dataProcessor->process($cObj, ['dataProcessing.' => $tsparserObj->setup], $flexformData + $row);
 
-        if (isset($processedValue['_processedValue_']) && is_array($processedValue['_processedValue_'])) {
+        if (isset($processedValue['_processedValue_'])) {
             return $processedValue['_processedValue_'];
         }
 
