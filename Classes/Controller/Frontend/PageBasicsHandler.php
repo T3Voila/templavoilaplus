@@ -41,13 +41,20 @@ class PageBasicsHandler
         // CSS
         if (isset($headerConfiguration['css']) && is_array($headerConfiguration['css'])) {
             foreach ($headerConfiguration['css'] as $cssConfiguration) {
-                $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media']);
+                $cssConfiguration['rel'] = ($cssConfiguration['rel'] ?? 'stylesheet');
+                $cssConfiguration['media'] = ($cssConfiguration['media'] ?? 'all');
+                $cssConfiguration['compress'] = (bool) ($cssConfiguration['compress'] ?? true);
+                $cssConfiguration['forceOnTop'] = (bool) ($cssConfiguration['forceOnTop'] ?? false);
+                $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media'], '', $cssConfiguration['compress'], $cssConfiguration['forceOnTop']);
             }
         }
         // Javascript
         if (isset($headerConfiguration['javascript']) && is_array($headerConfiguration['javascript'])) {
             foreach ($headerConfiguration['javascript'] as $jsConfiguration) {
-                $pageRenderer->addJsFile($jsConfiguration['src']);
+                $jsConfiguration['type'] = ($jsConfiguration['type'] ?? 'text/javascript');
+                $jsConfiguration['compress'] = (bool) ($jsConfiguration['compress'] ?? true);
+                $jsConfiguration['forceOnTop'] = (bool) ($jsConfiguration['forceOnTop'] ?? false);
+                $pageRenderer->addJsFile($jsConfiguration['src'], $jsConfiguration['type'], $jsConfiguration['compress'], $jsConfiguration['forceOnTop']);
             }
         }
 
