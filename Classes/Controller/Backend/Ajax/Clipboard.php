@@ -103,7 +103,7 @@ class Clipboard extends AbstractResponse
             if ($result) {
                 return new JsonResponse([
                     'uid' => $result,
-                    'nodeHtml' => $this->record2html('tt_content', $result),
+                    'nodeHtml' => $this->record2html('tt_content', $result, $request),
                     'clipboard' => $this->clipboard2fluid(),
                 ]);
             } else {
@@ -142,7 +142,7 @@ class Clipboard extends AbstractResponse
         if ($result) {
             return new JsonResponse([
                 'uid' => $result,
-                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid']),
+                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid'], $request),
                 'clipboard' => $this->clipboard2fluid(),
             ]);
         } else {
@@ -173,7 +173,7 @@ class Clipboard extends AbstractResponse
         if ($result) {
             return new JsonResponse([
                 'uid' => $result,
-                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid']),
+                'nodeHtml' => $this->record2html('tt_content', (int) $parameters['uid'], $request),
                 'clipboard' => $this->clipboard2fluid(),
             ]);
         } else {

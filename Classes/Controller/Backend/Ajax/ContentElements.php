@@ -56,7 +56,7 @@ class ContentElements extends AbstractResponse
         }
         return new JsonResponse([
             'uid' => $result,
-            'nodeHtml' => $this->record2html('tt_content', $result, $parameters['destinationPointer']),
+            'nodeHtml' => $this->record2html('tt_content', $result, $request, $parameters['destinationPointer']),
         ]);
     }
 
@@ -70,7 +70,7 @@ class ContentElements extends AbstractResponse
 
         if ($parameters['table'] && (int)$parameters['uid'] > 0) {
             return new JsonResponse([
-                'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid']),
+                'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid'], $request),
             ]);
         } else {
             return new JsonResponse(
@@ -154,7 +154,7 @@ class ContentElements extends AbstractResponse
             if ($result) {
                 return new JsonResponse([
                     'uid' => $result,
-                    'nodeHtml' => $this->record2html('tt_content', $result, $parameters['sourcePointer']),
+                    'nodeHtml' => $this->record2html('tt_content', $result, $request, $parameters['sourcePointer']),
                 ]);
             } else {
                 return new JsonResponse(

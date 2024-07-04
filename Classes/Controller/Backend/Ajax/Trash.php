@@ -78,7 +78,7 @@ class Trash extends AbstractResponse
         if ($result) {
             return new JsonResponse([
                 'uid' => $result,
-                'nodeHtml' => $this->record2html($sourceTable, $result),
+                'nodeHtml' => $this->record2html($sourceTable, $result, $request),
                 'trash' => $this->trash2fluid((int)$parameters['pid']),
             ]);
         } else {

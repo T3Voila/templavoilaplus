@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
@@ -31,10 +32,11 @@ abstract class AbstractResponse
      * @return StandaloneView
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    protected function getFluidTemplateObject(string $templateFile, array $settings = []): StandaloneView
+    protected function getFluidTemplateObject(string $templateFile, ServerRequestInterface $request, array $settings = []): StandaloneView
     {
         /** @var StandaloneView */
         $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $view->setRequest($request);
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateFile));
 
         $view->setPartialRootPaths([
@@ -49,7 +51,7 @@ abstract class AbstractResponse
         return $view;
     }
 
-    protected function record2html(string $table, int $uid, string $parentPointer = null): string
+    protected function record2html(string $table, int $uid, ServerRequestInterface $request, string $parentPointer = null): string
     {
         $row = BackendUtility::getRecord($table, $uid);
 
@@ -64,7 +66,7 @@ abstract class AbstractResponse
             $nodeTree['node']['rendering']['parentPointer'] = $parentPointer;
         }
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $this->getSettings());
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $request, $this->getSettings());
         $view->assign('nodeTree', $nodeTree);
 
         return $view->render();
