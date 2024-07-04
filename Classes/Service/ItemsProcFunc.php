@@ -22,9 +22,9 @@ class ItemsProcFunc
 {
     /**
      * @param array $params Parameters to the itemsProcFunc
-     * @param \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj Calling object
+     * @param Object $pObj Calling object
      */
-    public function mapItems(array $params, \TYPO3\CMS\Backend\Form\FormDataProvider\TcaSelectItems $pObj)
+    public function mapItems(array $params, Object $pObj)
     {
         $scope = $this->getScope($params);
 
