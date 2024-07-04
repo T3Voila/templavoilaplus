@@ -22,9 +22,9 @@ class ItemsProcFunc
 {
     /**
      * @param array $params Parameters to the itemsProcFunc
-     * @param Object $pObj Calling object
+     * @param object $pObj Calling object
      */
-    public function mapItems(array $params, Object $pObj)
+    public function mapItems(array $params, object $pObj)
     {
         $scope = $this->getScope($params);
 
