@@ -47,7 +47,7 @@ class FlexFormNoTabsContainer extends AbstractContainer
         // Determine this single sheet name, most often it ends up with sDEF, except if only one sheet was defined
         $flexFormSheetNames = array_keys($flexFormDataStructureArray['sheets']);
         $sheetName = array_pop($flexFormSheetNames);
-        $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage];
+        $flexFormRowDataSubPart = $flexFormRowData['data'][$sheetName][$flexFormCurrentLanguage]  ?? [];
 
         // That was taken from GeneralUtility::resolveSheetDefInDS - no idea if it is important
         unset($flexFormDataStructureArray['meta']);
@@ -59,7 +59,7 @@ class FlexFormNoTabsContainer extends AbstractContainer
 
         // Assemble key for loading the correct CSH file
         // @TODO what is that good for? That is for the title of single elements ... see FlexFormElementContainer!
-        $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'], true);
+        $dsPointerFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['ds_pointerField'] ?? '', true);
         $parameterArray['_cshKey'] = $table . '.' . $fieldName;
         foreach ($dsPointerFields as $key) {
             if (is_string($row[$key]) && $row[$key] !== '') {
