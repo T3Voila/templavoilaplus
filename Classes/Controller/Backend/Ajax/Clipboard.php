@@ -69,7 +69,7 @@ class Clipboard extends AbstractResponse
             }
         }
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Clipboard.html', $this->getSettings());
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Clipboard.html', $request, $this->getSettings());
         $view->assign('clipboardData', $clipboardData);
 
         return new HtmlResponse($view->render());

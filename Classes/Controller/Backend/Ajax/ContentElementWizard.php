@@ -57,7 +57,7 @@ class ContentElementWizard extends AbstractResponse
             ],
         ];
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html', $settings);
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/ContentElements.html', $request, $settings);
         $view->assign('contentElementsConfig', $contentElementsConfig);
 
         return new HtmlResponse($view->render());
