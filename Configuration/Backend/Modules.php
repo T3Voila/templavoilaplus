@@ -32,6 +32,7 @@ return [
             'language' => 0,
             'showHidden' => true,
         ],
+        'aliases' => ['web_layout'],
     ],
     'web_TemplaVoilaPlusControlCenter' => [
         'parent' => 'tools',
