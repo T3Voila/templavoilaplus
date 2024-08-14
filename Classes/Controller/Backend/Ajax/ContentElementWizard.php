@@ -118,7 +118,7 @@ class ContentElementWizard extends AbstractResponse
             foreach ($newContentElementWizardConfiguration['overwrites'] as $tabKey => $overwrite) {
                 if (!isset($contentElementsConfig[$tabKey])) {
                     $newContentElementsConfig[$tabKey] = [
-                        'label' => $tabKey,
+                        'label' => isset($overwrite['label']) ? TemplaVoilaUtility::getLanguageService()->sL($overwrite['label']) : $tabKey,
                     ];
                 }
                 // Manage unset of an tab/menu

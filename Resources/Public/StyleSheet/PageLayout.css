@@ -399,9 +399,8 @@ div.tvjs-dropzone {
 
 /** Tooltipster own light mode */
 
-/** Fix issue with trackingTooltip option, it can't see resizing as it gets a max-size */
 .tooltipster-sidetip .tooltipster-content {
-    max-height: none;
+    max-height: 90vh;
 }
 
 .tooltipster-sidetip .tooltipster-content h2 {
