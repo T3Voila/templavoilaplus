@@ -1,6 +1,5 @@
 {namespace tvp=Tvp\TemplaVoilaPlus\ViewHelpers}
 
-<f:debug>{_all}</f:debug>
 <f:variable name="itemLabel" value="{tvp:backend.itemLabel(table:'tt_content', fieldName:'list_type')}" />
 <f:variable name="labelFromItemlist" value="{tvp:backend.labelFromItemlist(table:'tt_content', fieldName:'list_type', key:'{node.raw.entity.list_type}')}" />
 <f:if condition="{itemLabel}">
