@@ -41,20 +41,59 @@ class PageBasicsHandler
         // CSS
         if (isset($headerConfiguration['css']) && is_array($headerConfiguration['css'])) {
             foreach ($headerConfiguration['css'] as $cssConfiguration) {
-                $cssConfiguration['rel'] = ($cssConfiguration['rel'] ?? 'stylesheet');
-                $cssConfiguration['media'] = ($cssConfiguration['media'] ?? 'all');
+                $cssConfiguration['rel'] = (string) ($cssConfiguration['rel'] ?? 'stylesheet');
+                $cssConfiguration['media'] = (string) ($cssConfiguration['media'] ?? 'all');
+                $cssConfiguration['title'] = (string) ($cssConfiguration['title'] ?? 'all');
                 $cssConfiguration['compress'] = (bool) ($cssConfiguration['compress'] ?? true);
                 $cssConfiguration['forceOnTop'] = (bool) ($cssConfiguration['forceOnTop'] ?? false);
-                $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media'], '', $cssConfiguration['compress'], $cssConfiguration['forceOnTop']);
+                $cssConfiguration['allWrap'] = (string) ($cssConfiguration['allWrap'] ?? '');
+                $cssConfiguration['excludeFromConcatenation'] = (bool) ($cssConfiguration['excludeFromConcatenation'] ?? false);
+                $cssConfiguration['splitChar'] = (string) ($cssConfiguration['splitChar'] ?? '|');
+                $cssConfiguration['tagAttributes'] = (array) ($cssConfiguration['tagAttributes'] ?? []);
+                $pageRenderer->addCssFile(
+                    $cssConfiguration['href'],
+                    $cssConfiguration['rel'],
+                    $cssConfiguration['media'],
+                    $cssConfiguration['title'],
+                    $cssConfiguration['compress'],
+                    $cssConfiguration['forceOnTop'],
+                    $cssConfiguration['allWrap'],
+                    $cssConfiguration['excludeFromConcatenation'],
+                    $cssConfiguration['splitChar'],
+                    false,
+                    $cssConfiguration['tagAttributes']
+                );
             }
         }
         // Javascript
         if (isset($headerConfiguration['javascript']) && is_array($headerConfiguration['javascript'])) {
             foreach ($headerConfiguration['javascript'] as $jsConfiguration) {
-                $jsConfiguration['type'] = ($jsConfiguration['type'] ?? 'text/javascript');
+                $jsConfiguration['type'] = (string) ($jsConfiguration['type'] ?? 'text/javascript');
                 $jsConfiguration['compress'] = (bool) ($jsConfiguration['compress'] ?? true);
                 $jsConfiguration['forceOnTop'] = (bool) ($jsConfiguration['forceOnTop'] ?? false);
-                $pageRenderer->addJsFile($jsConfiguration['src'], $jsConfiguration['type'], $jsConfiguration['compress'], $jsConfiguration['forceOnTop']);
+                $jsConfiguration['allWrap'] = (string) ($jsConfiguration['allWrap'] ?? '');
+                $jsConfiguration['excludeFromConcatenation'] = (bool) ($jsConfiguration['excludeFromConcatenation'] ?? false);
+                $jsConfiguration['splitChar'] = (string) ($jsConfiguration['splitChar'] ?? '|');
+                $jsConfiguration['async'] = (bool) ($jsConfiguration['async'] ?? false);
+                $jsConfiguration['sri'] = (string) ($jsConfiguration['sri'] ?? '');
+                $jsConfiguration['defer'] = (bool) ($jsConfiguration['defer'] ?? false);
+                $jsConfiguration['cors'] = ($jsConfiguration['cors'] ?? '');
+                $jsConfiguration['noModule'] = (bool) ($jsConfiguration['noModule'] ?? false);
+                $jsConfiguration['tagAttributes'] = (array) ($jsConfiguration['tagAttributes'] ?? []);
+                $pageRenderer->addJsFile(
+                    $jsConfiguration['src'],
+                    $jsConfiguration['type'],
+                    $jsConfiguration['compress'],
+                    $jsConfiguration['forceOnTop'],
+                    $jsConfiguration['allWrap'],
+                    $jsConfiguration['excludeFromConcatenation'],
+                    $jsConfiguration['splitChar'],
+                    $jsConfiguration['async'],
+                    $jsConfiguration['sri'],
+                    $jsConfiguration['defer'],
+                    $jsConfiguration['noModule'],
+                    $jsConfiguration['tagAttributes']
+                );
             }
         }
 
