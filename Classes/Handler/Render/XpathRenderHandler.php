@@ -53,6 +53,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         return '';
     }
 
+<<<<<<< HEAD
     public function processHeaderInformation(TemplateConfiguration $templateConfiguration)
     {
         $headerConfiguration = $templateConfiguration->getHeader();
@@ -86,6 +87,9 @@ class XpathRenderHandler implements RenderHandlerInterface
     }
 
     protected function processContainer($node, $mappingConfiguration, $processedValues, $containerType, $mappingType = 'inner')
+=======
+    protected function processContainer(\DOMNode $node, array $mappingConfiguration, array $processedValues, string $containerType, string $mappingType = 'inner')
+>>>>>>> 07939f42 ([BUGFIX] XPathRenderer: Gurentee calling container process with array of processed values)
     {
         switch ($containerType) {
             case 'repeatable':
@@ -189,6 +193,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     protected function processValueInner(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName)
     {
         if (isset($mappingConfiguration['container']) && is_array($mappingConfiguration['container'])) {
+            $processedFieldValues = (is_array($processedValues[$fieldName]) ? $processedValues[$fieldName] : []);
             $this->processContainer($processingNode, $mappingConfiguration['container'], $processedValues[$fieldName], $mappingConfiguration['containerType'], 'inner');
             return;
         }
@@ -233,6 +238,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     protected function processValueOuter(array $mappingConfiguration, \DOMNode $processingNode, array $processedValues, string $fieldName): void
     {
         if (isset($mappingConfiguration['container']) && is_array($mappingConfiguration['container'])) {
+            $processedFieldValues = (is_array($processedValues[$fieldName]) ? $processedValues[$fieldName] : []);
             $this->processContainer($processingNode, $mappingConfiguration['container'], $processedValues[$fieldName], $mappingConfiguration['containerType'], 'outer');
             return;
         }
