@@ -16,6 +16,8 @@ namespace Tvp\TemplaVoilaPlus\Handler\Render;
  *
  * The TYPO3 project - inspiring people to share!
  */
+
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\TemplateConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -28,7 +30,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     protected $domDocument;
     protected $domXpath;
 
-    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row): string
+    public function renderTemplate(TemplateConfiguration $templateConfiguration, array $processedValues, array $row, ServerRequestInterface $request): string
     {
         $this->domDocument = new \DOMDocument();
         libxml_use_internal_errors(true);
@@ -53,7 +55,6 @@ class XpathRenderHandler implements RenderHandlerInterface
         return '';
     }
 
-<<<<<<< HEAD
     public function processHeaderInformation(TemplateConfiguration $templateConfiguration)
     {
         $headerConfiguration = $templateConfiguration->getHeader();
@@ -86,10 +87,7 @@ class XpathRenderHandler implements RenderHandlerInterface
         }
     }
 
-    protected function processContainer($node, $mappingConfiguration, $processedValues, $containerType, $mappingType = 'inner')
-=======
     protected function processContainer(\DOMNode $node, array $mappingConfiguration, array $processedValues, string $containerType, string $mappingType = 'inner')
->>>>>>> 07939f42 ([BUGFIX] XPathRenderer: Gurentee calling container process with array of processed values)
     {
         switch ($containerType) {
             case 'repeatable':
@@ -177,7 +175,7 @@ class XpathRenderHandler implements RenderHandlerInterface
     {
         switch ($mappingConfiguration['mappingType'] ?? null) {
             case 'attrib':
-                $processingNode->setAttribute($mappingConfiguration['attribName'], (string)$processedValues[$fieldName]);
+                $processingNode->setAttribute($mappingConfiguration['attribName'], (string) ($processedValues[$fieldName] ?? ''));
                 break;
             case 'inner':
                 $this->processValueInner($mappingConfiguration, $processingNode, $processedValues, $fieldName);
@@ -250,7 +248,7 @@ class XpathRenderHandler implements RenderHandlerInterface
 
         switch ($mappingConfiguration['valueType'] ?? null) {
             case 'html':
-                if ($processedValues[$fieldName]) {
+                if ($processedValues[$fieldName] ?? false) {
                     $tmpDoc = new \DOMDocument();
                     /** Add own tag to prevent automagical adding of <p> Tag around Tagless content */
                     /** Use LIBXML_HTML_NOIMPLIED and LIBXML_HTML_NODEFDTD so we don't get confused by extra added doctype, html and body nodes */
