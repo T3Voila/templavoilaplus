@@ -50,9 +50,11 @@
 </f:section>
 
 <f:section name="section">
-    <ul>
-    <f:for each="{fieldsData}" as="fieldData">
-        <li><f:render section="elements" arguments="{fieldsDs: fieldsDs, fieldsData: fieldData}" /></li>
-    </f:for>
-    </ul>
+    <f:if condition="{fieldsData}">
+        <ul>
+        <f:for each="{fieldsData}" as="fieldData">
+            <li><f:render section="elements" arguments="{fieldsDs: fieldsDs, fieldsData: fieldData}" /></li>
+        </f:for>
+        </ul>
+    </f:if>
 </f:section>
