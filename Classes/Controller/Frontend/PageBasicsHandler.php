@@ -43,7 +43,7 @@ class PageBasicsHandler
             foreach ($headerConfiguration['css'] as $cssConfiguration) {
                 $cssConfiguration['rel'] = (string) ($cssConfiguration['rel'] ?? 'stylesheet');
                 $cssConfiguration['media'] = (string) ($cssConfiguration['media'] ?? 'all');
-                $cssConfiguration['title'] = (string) ($cssConfiguration['title'] ?? 'all');
+                $cssConfiguration['title'] = (string) ($cssConfiguration['title'] ?? '');
                 $cssConfiguration['compress'] = (bool) ($cssConfiguration['compress'] ?? true);
                 $cssConfiguration['forceOnTop'] = (bool) ($cssConfiguration['forceOnTop'] ?? false);
                 $cssConfiguration['allWrap'] = (string) ($cssConfiguration['allWrap'] ?? '');
