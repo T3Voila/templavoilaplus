@@ -334,35 +334,4 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
         }
         return $dataStructureIdentifier;
     }
-
-    /***********************************
-     *
-     * Processing functions
-     *
-     ***********************************/
-    /**
-     * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
-     * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
-     *
-     * @param array $dsArr Data structure for the current value
-     * @param mixed $data Current value
-     * @param array $PA Additional configuration used in calling function
-     * @param string $path Path of value in DS structure
-     * @param FlexFormTools $pObj caller
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
-    {
-        // phpcs:enable
-        // Just setting value in our own result array, basically replicating the structure:
-        ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path, $data);
-        // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
-            $vDEFbase = ArrayUtility::getValueByPath($pObj->traverseFlexFormXMLData_Data, $path . '.vDEFbase');
-            if (isset($vDEFbase)) {
-                ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path . '.vDEFbase', $vDEFbase);
-            }
-        }
-    }
-
 }
