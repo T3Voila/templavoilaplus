@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -354,13 +355,14 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
     {
         // phpcs:enable
         // Just setting value in our own result array, basically replicating the structure:
-        $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
+        ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path, $data);
         // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
         if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
-            $vDEFbase = $pObj->getArrayValueByPath($path . '.vDEFbase', $pObj->traverseFlexFormXMLData_Data);
+            $vDEFbase = ArrayUtility::getValueByPath($pObj->traverseFlexFormXMLData_Data, $path . '.vDEFbase');
             if (isset($vDEFbase)) {
-                $pObj->setArrayValueByPath($path . '.vDEFbase', $this->cleanFlexFormXML, $vDEFbase);
+                ArrayUtility::setValueByPath($this->cleanFlexFormXML, $path . '.vDEFbase', $vDEFbase);
             }
         }
     }
+
 }
