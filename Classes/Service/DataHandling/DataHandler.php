@@ -264,7 +264,7 @@ class DataHandler
                 [$table, $uid, $destPid, $origDestPid, $sourceRecordBeforeMove, $updateFields]
             );
         }
-        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain']) {
+        if ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ?? false) {
             return;
         }
         if ($table != 'tt_content') {

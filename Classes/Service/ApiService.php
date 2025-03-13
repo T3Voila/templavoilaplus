@@ -338,7 +338,7 @@ class ApiService
      */
     public function getTCEmainRunningFlag()
     {
-        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ? true : false;
+        return $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ?? false;
     }
 
 
