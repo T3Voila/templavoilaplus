@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldExc
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -332,35 +333,5 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
             ];
         }
         return $dataStructureIdentifier;
-    }
-
-    /***********************************
-     *
-     * Processing functions
-     *
-     ***********************************/
-    /**
-     * Call back function for \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools class
-     * Basically just setting the value in a new array (thus cleaning because only values that are valid are visited!)
-     *
-     * @param array $dsArr Data structure for the current value
-     * @param mixed $data Current value
-     * @param array $PA Additional configuration used in calling function
-     * @param string $path Path of value in DS structure
-     * @param FlexFormTools $pObj caller
-     */
-    // phpcs:disable PSR1.Methods.CamelCapsMethodName
-    public function cleanFlexFormXML_callBackFunction($dsArr, $data, $PA, $path, $pObj)
-    {
-        // phpcs:enable
-        // Just setting value in our own result array, basically replicating the structure:
-        $pObj->setArrayValueByPath($path, $this->cleanFlexFormXML, $data);
-        // Looking if an "extension" called ".vDEFbase" is found and if so, accept that too:
-        if ($GLOBALS['TYPO3_CONF_VARS']['BE']['flexFormXMLincludeDiffBase']) {
-            $vDEFbase = $pObj->getArrayValueByPath($path . '.vDEFbase', $pObj->traverseFlexFormXMLData_Data);
-            if (isset($vDEFbase)) {
-                $pObj->setArrayValueByPath($path . '.vDEFbase', $this->cleanFlexFormXML, $vDEFbase);
-            }
-        }
     }
 }
