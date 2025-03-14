@@ -390,10 +390,11 @@ class ProcessingService
             // Traverse the sheet's elements:
             if (is_array($sheetData) && is_array($sheetData['ROOT']['el'])) {
                 foreach ($lKeys as $lKey) {
-                    // in seldom cases we could have no flexform data, e.g. if a FCE exists but has empty mapping
-                    if (($node['flexform']['data'][$sheetKey][$lKey] ?? null) !== null) {
-                        $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
+                    if (!isset($node['flexform']['data'][$sheetKey][$lKey]) || !is_array($node['flexform']['data'][$sheetKey][$lKey])) {
+                        $node['flexform']['data'][$sheetKey][$lKey] = [];
+
                     }
+                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                 }
             }
         }
@@ -428,7 +429,7 @@ class ProcessingService
                             /** @TODO allowed can be multiple tables */
                             $table = $fieldConfig['config']['allowed'];
                             foreach ($vKeys as $vKey) {
-                                $listOfSubElementUids = $values[$fieldKey][$vKey];
+                                $listOfSubElementUids = ($values[$fieldKey][$vKey] ?? null);
                                 if ($listOfSubElementUids) {
                                     $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, $vKey);
                                     $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
