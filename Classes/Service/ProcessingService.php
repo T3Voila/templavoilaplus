@@ -936,6 +936,14 @@ class ProcessingService
 
         $elementReferences = $this->getElementReferencesFromXml($pointerRecord['tx_templavoilaplus_flex'], $flexformPointer);
 
+        if ($elementReferences === null)
+        {
+            if ($flexformPointer['position'] == 0) {
+                return $flexformPointer;
+            }
+            return null;
+        }
+
         // position should between 0 and count of existing elements for possible adding elements
         $maxPosition = count($elementReferences['references']);
         if (!$newPositionPossible) {
@@ -985,7 +993,12 @@ class ProcessingService
                 if (isset($baseDataStructure['section']) && $baseDataStructure['section']) {
                     $lastWasSection = true;
                 }
-                $baseDataStructure = $baseDataStructure[$fieldName];
+                if (isset($baseDataStructure[$fieldName])) {
+                    $baseDataStructure = $baseDataStructure[$fieldName];
+                } else {
+                    $baseDataStructure = null;
+                    break;
+                }
             }
         }
         if (!is_array($baseDataStructure) || ($baseDataStructure['config']['type'] ?? '') !== 'group') {
