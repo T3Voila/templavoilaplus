@@ -73,3 +73,5 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostPro
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
     \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
 ] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
+
+$GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['templavoilaplus'] = 'EXT:templavoilaplus/Resources/Public/StyleSheet/Skin';
