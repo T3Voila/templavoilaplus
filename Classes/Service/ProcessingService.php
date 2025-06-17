@@ -648,15 +648,20 @@ class ProcessingService
                     // Move childs if there any
                     $parentPointer = [];
                     $usedElements = [];
-                    $baseNode = $this->getNodeWithTree($sourcePointer['table'], $sourcePointer['foundRecord'], $parentPointer, $sourcePid, $usedElements);
+                    // Need complete row here
+                    $row = BackendUtility::getRecordWSOL($sourcePointer['table'], $sourcePointer['foundRecord']['uid']);
+                    $baseNode = $this->getNodeWithTree($sourcePointer['table'], $row, $parentPointer, $sourcePid, $usedElements);
                     foreach ($usedElements['tt_content'] as $uid => $_unused) {
                         $cmdArray['tt_content'][$uid]['move'] = $destinationPid;
                     }
 
+                    $backup = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] ?? false;
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] = true;
                     $tce = GeneralUtility::makeInstance(DataHandler::class);
                     $tce->stripslashes_values = 0;
                     $tce->start([], $cmdArray);
                     $tce->process_cmdmap();
+                    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tx_templavoilaplus_api']['apiIsRunningTCEmain'] = $backup;
                 }
             }
         }

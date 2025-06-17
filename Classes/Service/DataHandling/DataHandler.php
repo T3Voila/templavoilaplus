@@ -211,10 +211,10 @@ class DataHandler
             $uid,
             $sourceRecordBeforeMove['pid']
         );
-        $sourceFlexformPointer = $sourceFlexformPointersArr[0];
+        $sourceFlexformPointer = ($sourceFlexformPointersArr[0] ?? '');
 
         $mainContentAreaFieldName = $templaVoilaAPI->ds_getFieldNameByColumnPosition($destPid, 0);
-        if ($mainContentAreaFieldName !== false) {
+        if ($sourceFlexformPointer !=='' && $mainContentAreaFieldName !== false) {
             $destinationFlexformPointer = [
                 'table' => 'pages',
                 'uid' => $destPid,

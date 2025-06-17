@@ -28,7 +28,7 @@ class UserSettings
     {
         $backendUser = TemplaVoilaUtility::getBackendUser();
 
-        $userconfig = $backendUser->uc['templavoilaplus'];
+        $userconfig = ($backendUser->uc['templavoilaplus'] ?? []);
         $userconfig['enableDarkMode'] = (bool)$request->getQueryParams()['enable'];
         $backendUser->uc['templavoilaplus'] = $userconfig;
         $backendUser->writeUC();
@@ -39,7 +39,7 @@ class UserSettings
     {
         $backendUser = TemplaVoilaUtility::getBackendUser();
 
-        $userconfig = $backendUser->uc['templavoilaplus'];
+        $userconfig = ($backendUser->uc['templavoilaplus'] ?? []);
         $userconfig['clipboardMode'] = $request->getQueryParams()['mode'];
         $backendUser->uc['templavoilaplus'] = $userconfig;
         $backendUser->writeUC();
