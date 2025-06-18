@@ -69,7 +69,7 @@ class DefaultMappingHandler
                 }
                 break;
             case 'flexform':
-                $path = str_getcsv($instructions['dataPath'], '.');
+                $path = str_getcsv($instructions['dataPath'], '.', '"', '');
                 if (count($path) === 1 && isset($flexformData['sDEF'])) {
                     array_unshift($path, 'sDEF');
                 }
