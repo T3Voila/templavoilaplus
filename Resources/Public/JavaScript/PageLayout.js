@@ -643,7 +643,10 @@ define([
             content: url + separator + params,
             severity: Severity.notice,
             buttons: [],
+            staticBackdrop: true,
+            hideCloseButton: true,
             size: Modal.sizes.full,
+            callback: function(typo3modal) { typo3modal.bootstrapModal._config.keyboard = false; },
             ajaxCallback: function() {
                 var $current = $(Modal.currentModal);
                 $current.addClass('tvp-modal-record-edit');
