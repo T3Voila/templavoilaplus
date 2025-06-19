@@ -62,7 +62,7 @@ class ControlCenterController extends ActionController
         );
 
         // determine id parameter
-        $this->pageId = (int)GeneralUtility::_GP('id');
+        $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
 
         // if pageId is available the row will be inside pageInfo

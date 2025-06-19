@@ -19,10 +19,20 @@ use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
-class FrontendController extends AbstractPlugin
+class FrontendController
 {
+    protected ?ContentObjectRenderer $cObj = null;
+
+    /**
+     * Property for accessing TypoScriptFrontendController centrally
+     *
+     * @var TypoScriptFrontendController
+     */
+    protected $frontendController;
+
     /**
      * Same as class name
      * @TODO Rename?
@@ -43,10 +53,19 @@ class FrontendController extends AbstractPlugin
      */
     public $logger;
 
-    public function __construct()
+    public function __construct($_ = null, ?TypoScriptFrontendController $frontendController = null)
     {
-        AbstractPlugin::__construct();
+        $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);
+    }
+
+    /**
+     * This setter is called when the plugin is called from UserContentObject (USER)
+     * via ContentObjectRenderer->callUserFunction().
+     */
+    public function setContentObjectRenderer(ContentObjectRenderer $cObj): void
+    {
+        $this->cObj = $cObj;
     }
 
     /**
@@ -183,7 +202,7 @@ class FrontendController extends AbstractPlugin
              */
 
             // Second Look for child selection and overload the base mappingConfiguration
-            $childsSelection = $this->getChildsSelection($conf, $mappingConfiguration, $flexformValues, $table, $row);
+            $childsSelection = $this->getChildsSelection($conf, $mappingConfiguration, $flexformValues, $table, $row, $request);
             $mappingConfiguration = ApiHelperUtility::getOverloadedMappingConfiguration($mappingConfiguration, $childsSelection);
 
             // getTemplateConfiguration from MappingConfiguration
@@ -296,7 +315,14 @@ class FrontendController extends AbstractPlugin
         return $processedDataValues;
     }
 
-    private function getChildsSelection(array $tsConf, MappingConfiguration $mappingConfiguration, array $flexformData, string $table, array $row): array
+    private function getChildsSelection(
+        array $tsConf,
+        MappingConfiguration $mappingConfiguration,
+        array $flexformData,
+        string $table,
+        array $row,
+        ServerRequestInterface $request
+    ): array
     {
         $childSelection = [];
 
@@ -311,7 +337,7 @@ class FrontendController extends AbstractPlugin
             }
             $childSelection[] = $renderType;
         }
-        if (GeneralUtility::_GP('print')) {
+        if ($request->getParsedBody()['print'] ?? $request->getQueryParams()['print'] ?? false) {
             $childSelection[] = 'print';
         }
 

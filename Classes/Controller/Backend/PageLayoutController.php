@@ -179,7 +179,7 @@ class PageLayoutController extends ActionController
         );
 
         // determine id parameter
-        $this->pageId = (int)GeneralUtility::_GP('id');
+        $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
         // @TODO Get rid of this properties key
         $this->modSharedTSconfig['properties'] = $pageTsConfig['mod.']['SHARED.'] ?? null;
@@ -256,7 +256,7 @@ class PageLayoutController extends ActionController
             $contentBody .= $this->callHandler(BackendConfiguration::HANDLER_DOCTYPE, $activePage['doktype'], $activePage);
         } else {
             $pageTitle = '';
-            if (GeneralUtility::_GP('id') === null || GeneralUtility::_GP('id') === '0') {
+            if ($this->pageId === '0') {
                 //  no page selected
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->getLL('infoDefaultIntroduction'),
@@ -718,9 +718,7 @@ class PageLayoutController extends ActionController
         $this->allExistingPageLanguages = TemplaVoilaUtility::getExistingPageLanguages($this->pageId, true, true, $this->modSharedTSconfig);
         $languageFromSession = (int)TemplaVoilaUtility::getBackendUser()->getSessionData('templavoilaplus.language');
         // determine language parameter
-        $this->currentLanguageUid = (int)GeneralUtility::_GP('language') > 0
-            ? (int)GeneralUtility::_GP('language')
-            : $languageFromSession;
+        $this->currentLanguageUid = (int)($this->request->getParsedBody()['language'] ?? $this->request->getQueryParams()['language'] ?? $languageFromSession);
         if ($this->request->hasArgument('language')) {
             $this->currentLanguageUid = (int)$this->request->getArgument('language');
         }
