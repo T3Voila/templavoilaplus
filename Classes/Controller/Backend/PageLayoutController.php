@@ -88,13 +88,6 @@ class PageLayoutController extends ActionController
     protected $modSharedTSconfig = [];
 
     /**
-     * Contains the currently selected language key (Example: DEF or DE)
-     *
-     * @var string
-     */
-    protected $currentLanguageKey;
-
-    /**
      * Contains the currently selected language uid (Example: -1, 0, 1, 2, ...)
      *
      * @var int
@@ -107,7 +100,7 @@ class PageLayoutController extends ActionController
     protected $languageAspect = null;
 
     /**
-     * Contains records of all available languages (not hidden, with ISOcode), including the default
+     * Contains records of all available languages (not hidden), including the default
      * language and multiple languages. Used for displaying the flags for content elements, set in init().
      *
      * @var array
@@ -733,7 +726,6 @@ class PageLayoutController extends ActionController
                 $this->currentLanguageUid
             );
         }
-        $this->currentLanguageKey = $this->allAvailableLanguages[$this->currentLanguageUid]['ISOcode'];
 
         $this->languageAspect = TemplaVoilaUtility::fetchLanguageAspect($this->pageId, $this->currentLanguageUid);
     }

@@ -131,7 +131,6 @@ final class TemplaVoilaUtility
                 'title' => !empty($modSharedTSconfig['properties']['defaultLanguageLabel'])
                     ? $modSharedTSconfig['properties']['defaultLanguageLabel']
                     : static::getLanguageService()->getLL('defaultLanguage'),
-                'ISOcode' => 'DEF',
                 'flagIcon' => !empty($modSharedTSconfig['properties']['defaultLanguageFlag'])
                     ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag']
                     : 'mimetypes-x-sys_language',
@@ -142,7 +141,6 @@ final class TemplaVoilaUtility
             $languages[-1] = [
                 'uid' => -1,
                 'title' => static::getLanguageService()->getLL('multipleLanguages'),
-                'ISOcode' => 'DEF',
                 'flagIcon' => 'flags-multiple',
             ];
         }
@@ -150,42 +148,14 @@ final class TemplaVoilaUtility
         $useSysLanguageRecords = false;
         $languageRecords = self::getUseableLanguages($id);
 
-        if (empty($languageRecords)) {
-            // Since 9.0 we do not have pages_language_overlay anymore
-            $useSysLanguageRecords = true;
-            $languageRecords = static::getSysLanguageRows9($id);
+        if (isset($languages[0])) {
+            // If default Language already is set
+            // Take title and flag from default language
+            $languages[0]['title'] = $languageRecords[array_key_first($languageRecords)]['title'];
+            $languages[0]['flagIcon'] = $languageRecords[array_key_first($languageRecords)]['flagIcon'];
+            unset($languageRecords[0]);
         }
-
-        if ($useSysLanguageRecords) {
-            foreach ($languageRecords as $languageRecord) {
-                $languages[$languageRecord['uid']] = $languageRecord;
-                $languages[$languageRecord['uid']]['ISOcode'] = strtoupper($languageRecord['language_isocode']);
-
-                // @TODO This should probably resolve language_isocode too and throw a deprecation if not filled
-                if ($languageRecord['static_lang_isocode'] && $useStaticInfoTables) {
-                    $staticLangRow = BackendUtility::getRecord('static_languages', $languageRecord['static_lang_isocode'], 'lg_iso_2');
-                    if ($staticLangRow['lg_iso_2']) {
-                        $languages[$languageRecord['uid']]['ISOcode'] = $staticLangRow['lg_iso_2'];
-                    }
-                }
-                if ($languageRecord['flag'] !== '') {
-                    $languages[$languageRecord['uid']]['flagIcon'] = 'flags-' . $languageRecord['flag'];
-                }
-
-                if (!isset($languages[$languageRecord['uid']]['ISOcode'])) {
-                    unset($languages[$languageRecord['uid']]);
-                }
-            }
-        } else {
-            if (isset($languages[0])) {
-                // If default Language already is set
-                // Take title and flag from default language
-                $languages[0]['title'] = $languageRecords[array_key_first($languageRecords)]['title'];
-                $languages[0]['flagIcon'] = $languageRecords[array_key_first($languageRecords)]['flagIcon'];
-                unset($languageRecords[0]);
-            }
-            $languages += $languageRecords;
-        }
+        $languages += $languageRecords;
 
         if (isset($modSharedTSconfig['properties']['disableLanguages'])) {
             $disableLanguages = GeneralUtility::trimExplode(',', $modSharedTSconfig['properties']['disableLanguages'], 1);
@@ -375,83 +345,12 @@ final class TemplaVoilaUtility
             $useableLanguages[$languageId] = [
                 'uid' => $languageId,
                 'title' => $language->getTitle(),
-                'ISOcode' => $language->getTwoLetterIsoCode(),
                 'flagIcon' => $language->getFlagIdentifier(),
             ];
         }
 
         ksort($useableLanguages);
         return $useableLanguages;
-    }
-
-    // Partielly taken from \TYPO3\CMS\Backend\Controller\EditDocumentController::getLanguages
-    private static function getSysLanguageRows8($id = 0)
-    {
-        // add the additional languages from database records
-        $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $queryBuilder = $queryBuilder
-            ->select('s.*')
-            ->from('sys_language', 's')
-            ->orderBy('s.sorting');
-
-        if ($id) {
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            if (!static::getBackendUser()->isAdmin()) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            }
-
-            // Add join with pages_language_overlay table to only show active languages
-            $queryBuilder->from('pages_language_overlay', 'o')
-                ->where(
-                    $queryBuilder->expr()->eq('o.sys_language_uid', $queryBuilder->quoteIdentifier('s.uid')),
-                    $queryBuilder->expr()->eq('o.pid', $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-                );
-        }
-
-        $languageRecords = $queryBuilder
-            ->execute()
-            ->fetchAll();
-
-        return $languageRecords;
-    }
-
-    // Partielly taken from \TYPO3\CMS\Backend\Controller\EditDocumentController::getLanguages
-    private static function getSysLanguageRows9($id = 0)
-    {
-        // add the additional languages from database records
-        $queryBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Database\ConnectionPool::class)->getQueryBuilderForTable('sys_language');
-        $queryBuilder = $queryBuilder
-            ->select('s.*')
-            ->from('sys_language', 's')
-            ->orderBy('s.sorting');
-
-        if ($id) {
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(BackendWorkspaceRestriction::class));
-
-            if (!static::getBackendUser()->isAdmin()) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-            }
-
-            // Add join with pages translations to only show active languages
-            $queryBuilder->from('pages', 'o')
-                ->where(
-                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['languageField'], $queryBuilder->quoteIdentifier('s.uid')),
-                    $queryBuilder->expr()->eq('o.' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'], $queryBuilder->createNamedParameter($id, \PDO::PARAM_INT))
-                );
-        }
-
-        $languageRecords = $queryBuilder
-            ->execute()
-            ->fetchAll();
-
-        return $languageRecords;
     }
 
     /**
