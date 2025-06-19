@@ -11,7 +11,7 @@ on:
 jobs:
   php-lint:
     name: "PHP linter"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
           - 8.2
   code-quality:
     name: "Code quality checks"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
@@ -67,7 +67,7 @@ jobs:
         php-version: [ '8.1', '8.2' ]
   code-quality-frontend:
     name: "Code quality frontend checks"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -82,7 +82,7 @@ jobs:
         run: "yarn lint:${{ matrix.command }}"
   xliff-lint:
     name: "Xliff linter"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: "Checkout"
         uses: actions/checkout@v3
@@ -90,7 +90,7 @@ jobs:
         uses: TYPO3-Continuous-Integration/TYPO3-CI-Xliff-Lint@v1
   tests:
     name: "Tests"
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs: php-lint
     strategy:
       matrix:
