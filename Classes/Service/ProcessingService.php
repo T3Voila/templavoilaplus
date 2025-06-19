@@ -392,7 +392,6 @@ class ProcessingService
                 foreach ($lKeys as $lKey) {
                     if (!isset($node['flexform']['data'][$sheetKey][$lKey]) || !is_array($node['flexform']['data'][$sheetKey][$lKey])) {
                         $node['flexform']['data'][$sheetKey][$lKey] = [];
-
                     }
                     $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                 }
@@ -941,8 +940,7 @@ class ProcessingService
 
         $elementReferences = $this->getElementReferencesFromXml($pointerRecord['tx_templavoilaplus_flex'], $flexformPointer);
 
-        if ($elementReferences === null)
-        {
+        if ($elementReferences === null) {
             if ($flexformPointer['position'] == 0) {
                 return $flexformPointer;
             }
