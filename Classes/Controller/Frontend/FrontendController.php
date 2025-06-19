@@ -322,8 +322,7 @@ class FrontendController
         string $table,
         array $row,
         ServerRequestInterface $request
-    ): array
-    {
+    ): array {
         $childSelection = [];
 
         if ($tsConf['childTemplate'] ?? null) {
