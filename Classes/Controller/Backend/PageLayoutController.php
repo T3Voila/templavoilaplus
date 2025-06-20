@@ -310,12 +310,18 @@ class PageLayoutController extends ActionController
      */
     protected function checkContentFromPid()
     {
+        /** @var $uriBuilder \TYPO3\CMS\Backend\Routing\UriBuilder */
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         // If content from different pid is displayed
         if ($this->pageInfo['content_from_pid']) {
             $contentPage = (array)BackendUtility::getRecord('pages', (int)$this->pageInfo['content_from_pid']);
-            $linkToPage = GeneralUtility::linkThisScript(['id' => $this->pageInfo['content_from_pid']]);
-            $title = BackendUtility::getRecordTitle('pages', $contentPage)
-                . ' [' . $contentPage['uid'] . ']';
+            $linkToPage = $uriBuilder->buildUriFromRoute(
+                'web_TemplaVoilaPlusLayout',
+                [
+                    'id' => $this->pageInfo['content_from_pid'],
+                ]
+            );
+            $title = BackendUtility::getRecordTitle('pages', $contentPage) . ' [' . $contentPage['uid'] . ']';
 
             $this->addFlashMessage(
                 sprintf(
@@ -342,11 +348,15 @@ class PageLayoutController extends ActionController
             $titles = [];
             $buttons = [];
             foreach ($pages as $contentPage) {
-                $title = BackendUtility::getRecordTitle('pages', $contentPage)
-                . ' [' . $contentPage['uid'] . ']';
+                $title = BackendUtility::getRecordTitle('pages', $contentPage) . ' [' . $contentPage['uid'] . ']';
                 $titles[] = $title;
                 $buttons[] = [
-                    'url' => $linkToPage = GeneralUtility::linkThisScript(['id' => $contentPage['uid']]),
+                    'url' => $uriBuilder->buildUriFromRoute(
+                        'web_TemplaVoilaPlusLayout',
+                        [
+                            'id' => $contentPage['uid'],
+                        ]
+                    ),
                     'label' => $title,
                     'icon' => IconUtility::getRecordIconIdentifier('pages', $contentPage['uid'], 'apps-pagetree-page-shortcut'),
                 ];
