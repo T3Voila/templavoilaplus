@@ -24,8 +24,10 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 class PageBasicsHandler
 {
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     public static function processConfiguration(TemplateConfiguration $templateConfiguration, TypoScriptFrontendController $controller)
     {
+        // phpcs:enable
         $headerConfiguration = $templateConfiguration->getHeader();
 
         /** @var PageRenderer */
