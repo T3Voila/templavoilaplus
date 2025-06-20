@@ -128,8 +128,10 @@ class DataHandler
                     )
                 ) {
                     $reference->newlog(
-                        sprintf($this->getLanguageService()->sL(
-                            'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_access.xlf:access_noModifyAccess'),
+                        sprintf(
+                            $this->getLanguageService()->sL(
+                                'LLL:EXT:templavoilaplus/Resources/Private/Language/locallang_access.xlf:access_noModifyAccess'
+                            ),
                             $table,
                             $id
                         ),
