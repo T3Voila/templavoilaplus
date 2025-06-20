@@ -130,7 +130,7 @@ final class TemplaVoilaUtility
                 'uid' => 0,
                 'title' => !empty($modSharedTSconfig['properties']['defaultLanguageLabel'])
                     ? $modSharedTSconfig['properties']['defaultLanguageLabel']
-                    : static::getLanguageService()->getLL('defaultLanguage'),
+                    : static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:defaultLanguage'),
                 'flagIcon' => !empty($modSharedTSconfig['properties']['defaultLanguageFlag'])
                     ? 'flags-' . $modSharedTSconfig['properties']['defaultLanguageFlag']
                     : 'mimetypes-x-sys_language',
@@ -140,7 +140,7 @@ final class TemplaVoilaUtility
         if ($setMulti) {
             $languages[-1] = [
                 'uid' => -1,
-                'title' => static::getLanguageService()->getLL('multipleLanguages'),
+                'title' => static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
                 'flagIcon' => 'flags-multiple',
             ];
         }

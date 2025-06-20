@@ -61,8 +61,8 @@ class ContentElementWizardItems
                     $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
                         /* @TODO $iconIdentifier = $iconIdentifier->getIconIdentifier() */
                         'iconIdentifier' => ($iconIdentifier ?? 'extensions-templavoila-template-default'),
-                        'description' => /** @TODO $mappingConfiguration->getDescription() ?? */
-                            TemplaVoilaUtility::getLanguageService()->getLL('template_nodescriptionavailable'),
+                        'description' => '',/** @TODO $mappingConfiguration->getDescription() ?? */
+                            //TemplaVoilaUtility::getLanguageService()->sL($mappingConfiguration->getDescription()),
                         'title' => $mappingConfiguration->getName(),
                         'tt_content_defValues' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
                     ];

@@ -94,15 +94,15 @@ class DoktypeShortcutHandler extends AbstractDoktypeHandler
 
         $controller->addFlashMessage(
             sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeShortcutCannotEdit' . $shortcutMode),
+                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeShortcutCannotEdit' . $shortcutMode),
                 $targetPageRecord ? BackendUtility::getRecordTitle('pages', $targetPageRecord) : ''
             ),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeShortcut'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeShortcut'),
             FlashMessage::INFO,
             false,
             [[
                 'url' => (string)$url,
-                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeShortcutJumpToDestination', true),
+                'label' => TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:hintDoktypeShortcutJumpToDestination'),
                 'icon' => 'apps-pagetree-page-shortcut',
             ]]
         );

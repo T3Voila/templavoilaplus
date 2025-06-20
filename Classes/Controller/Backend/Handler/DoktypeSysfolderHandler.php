@@ -42,13 +42,13 @@ class DoktypeSysfolderHandler extends AbstractDoktypeHandler
         }
 
         $controller->addFlashMessage(
-            TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeSysfolderCannotEdit'),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeSysfolder'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeSysfolderCannotEdit'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeSysfolder'),
             FlashMessage::INFO,
             false,
             [[
                 'url' => (string)$listModuleUrl,
-                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeSysfolderOpen', true),
+                'label' => TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:hintDoktypeSysfolderOpen'),
                 'icon' => 'actions-system-list-open',
             ]]
         );

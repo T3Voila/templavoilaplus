@@ -44,9 +44,6 @@ class DataStructuresController extends ActionController
      */
     protected function initializeAction()
     {
-        TemplaVoilaUtility::getLanguageService()->includeLLFile(
-            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter/DataStructures.xlf'
-        );
     }
 
     /**

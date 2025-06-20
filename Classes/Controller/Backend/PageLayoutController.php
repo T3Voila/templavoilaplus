@@ -167,10 +167,6 @@ class PageLayoutController extends ActionController
      */
     protected function initializeAction()
     {
-        TemplaVoilaUtility::getLanguageService()->includeLLFile(
-            'EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf'
-        );
-
         // determine id parameter
         $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
@@ -252,16 +248,16 @@ class PageLayoutController extends ActionController
             if ($this->pageId === '0') {
                 //  no page selected
                 $this->addFlashMessage(
-                    TemplaVoilaUtility::getLanguageService()->getLL('infoDefaultIntroduction'),
-                    TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDefaultIntroduction'),
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
                     FlashMessage::INFO
                 );
                 $this->view->assign('tutorial', true);
             } else {
                 // NOt found or no show access
                 $this->addFlashMessage(
-                    TemplaVoilaUtility::getLanguageService()->getLL('infoPageNotFound'),
-                    TemplaVoilaUtility::getLanguageService()->getLL('title'),
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoPageNotFound'),
+                    TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
                     FlashMessage::INFO
                 );
             }

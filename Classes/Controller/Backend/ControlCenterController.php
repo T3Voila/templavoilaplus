@@ -57,10 +57,6 @@ class ControlCenterController extends ActionController
      */
     protected function initializeAction()
     {
-        TemplaVoilaUtility::getLanguageService()->includeLLFile(
-            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter.xlf'
-        );
-
         // determine id parameter
         $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);

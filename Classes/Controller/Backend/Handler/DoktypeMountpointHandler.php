@@ -56,15 +56,15 @@ class DoktypeMountpointHandler extends AbstractDoktypeHandler
 
         $controller->addFlashMessage(
             sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeMountpointCannotEdit'),
+                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeMountpointCannotEdit'),
                 $mountSourcePageRecord['title']
             ),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeMountpoint'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeMountpoint'),
             FlashMessage::INFO,
             false,
             [[
                 'url' => (string)$url,
-                'label' => TemplaVoilaUtility::getLanguageService()->getLL('hintDoktypeMountpointOpen', true),
+                'label' => TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:hintDoktypeMountpointOpen'),
                 'icon' => 'apps-pagetree-page-mountpoint',
             ]]
         );

@@ -69,9 +69,6 @@ class AbstractUpdateController extends ActionController
      */
     protected function initializeAction()
     {
-        TemplaVoilaUtility::getLanguageService()->includeLLFile(
-            'EXT:templavoilaplus/Resources/Private/Language/Backend/ControlCenter/Update.xlf'
-        );
     }
 
     protected function initializeView(\TYPO3Fluid\Fluid\View\ViewInterface $view)

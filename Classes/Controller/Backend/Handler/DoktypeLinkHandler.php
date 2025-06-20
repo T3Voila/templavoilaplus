@@ -37,10 +37,10 @@ class DoktypeLinkHandler extends AbstractDoktypeHandler
         self::addLocalizationInformationForPage($controller, $pageRecord);
         $controller->addFlashMessage(
             sprintf(
-                TemplaVoilaUtility::getLanguageService()->getLL('infoDoktypeLinkCannotEdit', true),
+                TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeLinkCannotEdit'),
                 htmlspecialchars($pageRecord['url'])
             ),
-            TemplaVoilaUtility::getLanguageService()->getLL('titleDoktypeLink'),
+            TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeLink'),
             FlashMessage::INFO
         );
 
