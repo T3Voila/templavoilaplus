@@ -166,7 +166,7 @@ class ProcessingService
             );
         }
 
-        $row = $queryBuilder->execute()->fetchAll(\PDO::FETCH_ASSOC);
+        $row = $queryBuilder->executeQuery()->fetchAll(\PDO::FETCH_ASSOC);
 
         return $row;
     }

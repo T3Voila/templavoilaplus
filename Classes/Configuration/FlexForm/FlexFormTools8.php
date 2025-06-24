@@ -227,10 +227,10 @@ class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTool
                             $queryBuilder->createNamedParameter($row[$parentFieldName], \PDO::PARAM_INT)
                         )
                     )
-                    ->execute();
+                    ->executeQuery();
                 $rowCount = $queryBuilder
                     ->count('uid')
-                    ->execute()
+                    ->executeQuery()
                     ->fetchOne(0);
                 if ($rowCount !== 1) {
                     throw new InvalidParentRowException(

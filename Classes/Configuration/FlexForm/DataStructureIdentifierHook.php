@@ -54,7 +54,7 @@ class DataStructureIdentifierHook
                         $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
                     )
                 )
-                ->execute()
+                ->executeQuery()
                 ->fetchOne();
             try {
                 $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($mappingIdentifier);

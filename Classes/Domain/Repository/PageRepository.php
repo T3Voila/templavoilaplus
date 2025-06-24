@@ -45,7 +45,7 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
             ->from('pages')
             ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
 
-        $pages = $queryBuilder->execute()->fetchAll();
+        $pages = $queryBuilder->executeQuery()->fetchAll();
 
         if ($pages) {
             foreach ($pages as $key => $page) {

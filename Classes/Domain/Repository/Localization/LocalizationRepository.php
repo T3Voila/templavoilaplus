@@ -68,7 +68,7 @@ class LocalizationRepository
                     $queryBuilder->expr()->gt($tcaCtrl['languageField'], 0)
                 );
 
-            $result = $queryBuilder->execute()->fetchAll();
+            $result = $queryBuilder->executeQuery()->fetchAll();
         }
 
         return $result;
