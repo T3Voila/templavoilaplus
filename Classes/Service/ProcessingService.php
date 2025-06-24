@@ -361,12 +361,25 @@ class ProcessingService
     {
         $localizationActions = [];
         $existingLocalizations = array_keys($node['localization']);
+        $uriBuilder = GeneralUtility::makeInstance(\TYPO3\CMS\Backend\Routing\UriBuilder::class);
         $availableLanguages = TemplaVoilaUtility::getAvailableLanguages($pid);
         $availableLanguageKeys = array_keys($availableLanguages);
         foreach ($availableLanguageKeys as $languageId) {
             if ($languageId > 0 && !in_array($languageId, $existingLocalizations)) {
                 $params = '&cmd[' . $node['raw']['table'] . '][' . $node['raw']['entity']['uid'] . '][localize]=' . $languageId;
-                $localizationActions[$languageId]['actionUrl'] = BackendUtility::getLinkToDataHandlerAction($params);
+                $localizationActions[$languageId]['actionUrl'] = (string)$uriBuilder->buildUriFromRoute(
+                    'tce_db',
+                    [
+                        'cmd' => [
+                            $node['raw']['table'] => [
+                                $node['raw']['entity']['uid'] => [
+                                    'localize' => $languageId,
+                                ],
+                            ],
+                        ],
+                        'redirect' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+                    ]
+                );
             }
         }
         return $localizationActions;
