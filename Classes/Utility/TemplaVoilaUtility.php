@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
-use TYPO3\CMS\Core\Site\PseudoSiteFinder;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -326,12 +325,7 @@ final class TemplaVoilaUtility
             try {
                 $site = $siteFinder->getSiteByPageId((int)$pageId);
             } catch (\TYPO3\CMS\Core\Exception\SiteNotFoundException $e) {
-                if (class_exists(PseudoSiteFinder::class)) {
-                    $pseudoSiteFinder = GeneralUtility::makeInstance(PseudoSiteFinder::class);
-                    $site = $pseudoSiteFinder->getSiteByPageId($pageId);
-                } else {
-                    $site = GeneralUtility::makeInstance(NullSite::class);
-                }
+                $site = GeneralUtility::makeInstance(NullSite::class);
             }
             if ($backendUserAuth) {
                 $foundLanguages = $site->getAvailableLanguages($backendUserAuth);
