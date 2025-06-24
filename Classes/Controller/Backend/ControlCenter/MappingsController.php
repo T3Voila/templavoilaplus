@@ -42,8 +42,6 @@ class MappingsController extends ActionController
      */
     public function listAction(): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -54,16 +52,15 @@ class MappingsController extends ActionController
         $placesService->loadConfigurationsByPlaces($mappingPlaces);
         $mappingPlacesByScope = $placesService->reorderPlacesByScope($mappingPlaces);
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Mappings List');
-        $this->view->assign('mappingPlacesByScope', $mappingPlacesByScope);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Mappings List');
+        $moduleTemplate->assign('mappingPlacesByScope', $mappingPlacesByScope);
+
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render('List'));
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('List');
     }
 
     /**

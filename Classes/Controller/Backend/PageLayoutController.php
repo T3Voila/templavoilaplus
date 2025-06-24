@@ -42,14 +42,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class PageLayoutController extends ActionController
 {
     /**
-     * We define BackendTemplateView above so we will get it.
-     *
-     * @var BackendTemplateView
-     * @api
-     */
-    protected $view;
-
-    /**
      * @var int the id of current page
      */
     protected $pageId = 0;
@@ -151,6 +143,9 @@ class PageLayoutController extends ActionController
     /** @var IconFactory */
     protected $iconFactory;
 
+    /** @var ModuleTemplate */
+    protected $moduleTemplate;
+
     public function __construct(
         Typo3Version $typo3Version,
         ModuleTemplateFactory $moduleTemplateFactory,
@@ -167,6 +162,7 @@ class PageLayoutController extends ActionController
      */
     protected function initializeAction()
     {
+        $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         // determine id parameter
         $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
         $pageTsConfig = BackendUtility::getPagesTSconfig($this->pageId);
@@ -221,8 +217,6 @@ class PageLayoutController extends ActionController
 
         $this->pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
 
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         $contentHeader = '';
         $contentBody = '';
         $contentFooter = '';
@@ -252,7 +246,7 @@ class PageLayoutController extends ActionController
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
                     FlashMessage::INFO
                 );
-                $this->view->assign('tutorial', true);
+                $this->moduleTemplate->assign('tutorial', true);
             } else {
                 // NOt found or no show access
                 $this->addFlashMessage(
@@ -266,40 +260,37 @@ class PageLayoutController extends ActionController
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_core.xlf');
         $this->pageRenderer->addInlineLanguageLabelFile('EXT:core/Resources/Private/Language/locallang_misc.xlf');
 
-        $this->view->assign('pageId', $this->pageId);
-        $this->view->assign('pageInfo', $this->pageInfo);
-        $this->view->assign('pageTitle', $pageTitle);
-        $this->view->assign('pageDescription', $activePage[$GLOBALS['TCA']['pages']['ctrl']['descriptionColumn']] ?? '');
-        $this->view->assign('pageDoktype', $activePage['doktype'] ?? null);
-        $this->view->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
+        $this->moduleTemplate->assign('pageId', $this->pageId);
+        $this->moduleTemplate->assign('pageInfo', $this->pageInfo);
+        $this->moduleTemplate->assign('pageTitle', $pageTitle);
+        $this->moduleTemplate->assign('pageDescription', $activePage[$GLOBALS['TCA']['pages']['ctrl']['descriptionColumn']] ?? '');
+        $this->moduleTemplate->assign('pageDoktype', $activePage['doktype'] ?? null);
+        $this->moduleTemplate->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
 
-        $this->view->assign('calcPerms', $this->calcPerms);
-        $this->view->assign('basicEditRights', $this->hasBasicEditRights(isset($this->pageInfo['uid']) ? 'pages' : null, isset($this->pageInfo['uid']) ? $this->pageInfo : null));
-        $this->view->assign('clipboard', $this->clipboard2fluid());
+        $this->moduleTemplate->assign('calcPerms', $this->calcPerms);
+        $this->moduleTemplate->assign('basicEditRights', $this->hasBasicEditRights(isset($this->pageInfo['uid']) ? 'pages' : null, isset($this->pageInfo['uid']) ? $this->pageInfo : null));
+        $this->moduleTemplate->assign('clipboard', $this->clipboard2fluid());
 
 
-        $this->view->assign('localization', LocalizationRepository::fetchRecordLocalizations('pages', $this->pageId));
-        $this->view->assign('contentPartials', $this->contentPartials);
+        $this->moduleTemplate->assign('localization', LocalizationRepository::fetchRecordLocalizations('pages', $this->pageId));
+        $this->moduleTemplate->assign('contentPartials', $this->contentPartials);
 
-        $this->view->assign('settings', $this->settings);
-
-        $moduleTemplate = $this->moduleTemplateFactory->create($this->request);
+        $this->moduleTemplate->assign('settings', $this->settings);
 
         if (isset($this->pageInfo['uid'])) {
-            $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($this->request, $moduleTemplate));
-            $this->view->assign('contentHeader', $event->getHeaderContent());
-            $this->view->assign('contentFooter', $event->getFooterContent());
+            $event = $this->eventDispatcher->dispatch(new ModifyPageLayoutContentEvent($this->request, $this->moduleTemplate));
+            $this->moduleTemplate->assign('contentHeader', $event->getHeaderContent());
+            $this->moduleTemplate->assign('contentFooter', $event->getFooterContent());
         }
 
         if ($this->pageInfo !== false) {
-            $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+            $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         }
-        $this->registerDocheaderButtons($moduleTemplate);
+        $this->registerDocheaderButtons($this->moduleTemplate);
 
         // $this->view->setFlashMessageQueue($this->getFlashMessageQueue());
 
-        $moduleTemplate->setContent($this->view->render('Show'));
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('Show');
     }
 
     /**
@@ -426,7 +417,7 @@ class PageLayoutController extends ActionController
 
         // View page
         $this->addDocHeaderButton(
-            $moduleTemplate,
+            $this->moduleTemplate,
             'view',
             TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showPage'),
             'actions-document-view'
@@ -436,7 +427,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageNew()) {
                     // Create new page (wizard)
                     $this->addDocHeaderButton(
-                        $moduleTemplate,
+                        $this->moduleTemplate,
                         'db_new',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newPage'),
                         'actions-page-new',
@@ -452,7 +443,7 @@ class PageLayoutController extends ActionController
                 if ($this->permissionPageEdit()) {
                     // Edit page properties
                     $this->addDocHeaderButton(
-                        $moduleTemplate,
+                        $this->moduleTemplate,
                         'record_edit',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageProperties'),
                         'actions-page-open',
@@ -466,7 +457,7 @@ class PageLayoutController extends ActionController
                     );
                     // Move page
                     $this->addDocHeaderButton(
-                        $moduleTemplate,
+                        $this->moduleTemplate,
                         'move_element',
                         TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:move_page'),
                         'actions-page-move',
@@ -482,7 +473,7 @@ class PageLayoutController extends ActionController
 
             // Page history
             $this->addDocHeaderButton(
-                $moduleTemplate,
+                $this->moduleTemplate,
                 'record_history',
                 TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:recordHistory'),
                 'actions-document-history-open',
@@ -501,7 +492,7 @@ class PageLayoutController extends ActionController
         // If access to Web>List for user, then link to that module.
         if (TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list')) {
             $this->addDocHeaderButton(
-                $moduleTemplate,
+                $this->moduleTemplate,
                 'web_list',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.showList'),
                 'actions-system-list-open',
@@ -515,7 +506,7 @@ class PageLayoutController extends ActionController
 
         if ($this->pageId) {
             $this->addDocHeaderButton(
-                $moduleTemplate,
+                $this->moduleTemplate,
                 'tce_db',
                 TemplaVoilaUtility::getLanguageService()->sL($coreLangFile . 'labels.clear_cache'),
                 'actions-system-cache-clear',
@@ -549,7 +540,7 @@ class PageLayoutController extends ActionController
         $buttonGroup = 1
     ) {
         /** @var ButtonBar $buttonBar */
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
+        $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
 
         $url = '#';
 
@@ -697,7 +688,7 @@ class PageLayoutController extends ActionController
 
     public function getView()
     {
-        return $this->view;
+        return $this->moduleTemplate;
     }
 
     protected function callHandler($type, $key, ...$param)

@@ -1,20 +1,25 @@
 {namespace core = TYPO3\CMS\Core\ViewHelpers}
-<f:be.pageRenderer
-    pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{
-        0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'
-    }"
-    includeRequireJsModules="{
-        ControlCenter: 'TYPO3/CMS/Templavoilaplus/ControlCenter',
-        Modal:'TYPO3/CMS/Backend/Modal',
-        ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
-        Tooltip: 'TYPO3/CMS/Backend/Tooltip'
-    }"
-/>
 
-<h1>{pageTitle}</h1>
+<f:layout name="Module" />
 
-<f:render section="content" arguments="{_all}" />
+<f:section name="Content">
+    <f:be.pageRenderer
+        pageTitle="TemplaVoilà! Plus"
+        includeCssFiles="{
+            0: '{f:uri.resource(path: \'StyleSheet/ControlCenter.css\', extensionName: \'templavoilaplus\')}'
+        }"
+        includeRequireJsModules="{
+            ControlCenter: 'TYPO3/CMS/Templavoilaplus/ControlCenter',
+            Modal:'TYPO3/CMS/Backend/Modal',
+            ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
+            Tooltip: 'TYPO3/CMS/Backend/Tooltip'
+        }"
+    />
+
+    <h1>{pageTitle}</h1>
+
+    <f:render section="content" arguments="{_all}" />
+</f:section>
 
 <f:section name="content">
 

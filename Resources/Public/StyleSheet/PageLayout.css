@@ -174,12 +174,6 @@ div.tvjs-dropzone {
     width: 100%;
 }
 
-.module-docheader-bar-navigation .module-docheader-bar-column-right {
-    width: 100%;
-    white-space: nowrap;
-    text-align: right;
-}
-
 .tvp-record-edit {
     cursor: pointer;
 }

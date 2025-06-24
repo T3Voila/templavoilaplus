@@ -3,49 +3,53 @@
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     xmlns:tvp="Tvp\TemplaVoilaPlus\ViewHelpers">
 
-<f:be.pageRenderer
-    pageTitle="TemplaVoilà! Plus"
-    includeCssFiles="{
-        0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}',
-        1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'
-    }"
-    includeRequireJsModules="{
-        PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
-        Modal:'TYPO3/CMS/Backend/Modal',
-        Notification:'TYPO3/CMS/Backend/Notification',
-        ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
-        Tooltip: 'TYPO3/CMS/Backend/Tooltip'
-    }"
-/>
+<f:layout name="Module" />
 
-<div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
-    <core:icon identifier="spinner-circle-dark" size="medium" />
-    <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
-</div>
-<div id="moduleShadowing"></div>
-<f:render section="FlashMessage" arguments="{_all}" />
-<section style="display:none" id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
-    <f:render section="SidebarContentTree"/>
-</section>
-<div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}"
-     data-tvp-usersettings="{settings.configuration.userSettings -> f:format.json()}">
-    <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
-        <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
-            <header id="tvp-component-stage-header">
-                <f:render section="Header" arguments="{_all}"/>
-            </header>
-            <div id="tvp-component-stage-content">
-                <f:render section="Stage" arguments="{_all}"/>
-            </div>
-            <f:if condition="{tutorial}">
-                <f:render partial="Backend/Tutorial" arguments="{_all}"/>
-            </f:if>
-        </div>
+<f:section name="Content">
+    <f:be.pageRenderer
+        pageTitle="TemplaVoilà! Plus"
+        includeCssFiles="{
+            0: '{f:uri.resource(path: \'StyleSheet/Tooltipster.css\', extensionName: \'templavoilaplus\')}',
+            1: '{f:uri.resource(path: \'StyleSheet/PageLayout.css\', extensionName: \'templavoilaplus\')}'
+        }"
+        includeRequireJsModules="{
+            PageLayout: 'TYPO3/CMS/Templavoilaplus/PageLayout',
+            Modal:'TYPO3/CMS/Backend/Modal',
+            Notification:'TYPO3/CMS/Backend/Notification',
+            ContextMenu:'TYPO3/CMS/Backend/ContextMenu',
+            Tooltip: 'TYPO3/CMS/Backend/Tooltip'
+        }"
+    />
+
+    <div id="moduleLoadingIndicator" data-identifier="moduleLoadingIndicator" class="tvp-loading-spinner">
+        <core:icon identifier="spinner-circle-dark" size="medium" />
+        <div class="tvp-loading-spinner-label"><f:translate key="LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.loading" /></div>
+    </div>
+    <div id="moduleShadowing"></div>
+    <f:render section="FlashMessage" arguments="{_all}" />
+    <section style="display:none" id="tvp-component-sidebar-left" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+        <f:render section="SidebarContentTree"/>
     </section>
-</div>
-<section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
-    <f:render section="SidebarContentManipulation" arguments="{_all}" />
-</section>
+    <div id="moduleWrapper" data-identifier="moduleWrapper" class="hidden" data-tvp-page-id="{pageId}" data-tvp-page-edit-rights="{basicEditRights}" data-tvp-page-dok-type="{pageDoktype}"
+        data-tvp-usersettings="{settings.configuration.userSettings -> f:format.json()}">
+        <section id="tvp-component-stage-container" data-identifier="tvpComponentStageContainer">
+            <div id="tvp-component-stage-container-inner" data-identifier="tvpComponentStageContainerInner">
+                <header id="tvp-component-stage-header">
+                    <f:render section="Header" arguments="{_all}"/>
+                </header>
+                <div id="tvp-component-stage-content">
+                    <f:render section="Stage" arguments="{_all}"/>
+                </div>
+                <f:if condition="{tutorial}">
+                    <f:render partial="Backend/Tutorial" arguments="{_all}"/>
+                </f:if>
+            </div>
+        </section>
+    </div>
+    <section id="tvp-component-sidebar-right" class="tvp-component-sidebar" data-identifier="tvpComponentSidebarLeft">
+        <f:render section="SidebarContentManipulation" arguments="{_all}" />
+    </section>
+</f:section>
 
 <f:section name="FlashMessage">
     <f:for each="{pageMessages}" as="message">

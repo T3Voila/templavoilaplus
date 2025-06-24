@@ -33,14 +33,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class ControlCenterController extends ActionController
 {
     /**
-     * We define BackendTemplateView above so we will get it.
-     *
-     * @var BackendTemplateView
-     * @api
-     */
-    protected $view;
-
-    /**
      * @var int the id of current page
      */
     protected $pageId = 0;
@@ -70,8 +62,6 @@ class ControlCenterController extends ActionController
      */
     public function showAction(): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -86,24 +76,22 @@ class ControlCenterController extends ActionController
             \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');
-
-        $this->view->assign('dataStructurePlaces', $dataStructurePlaces);
-        $this->view->assign('mappingPlaces', $mappingPlaces);
-        $this->view->assign('templatePlaces', $templatePlaces);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
-        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
-        $moduleTemplate->setContent($this->view->render('Show'));
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
 
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Control Center');
+
+        $moduleTemplate->assign('dataStructurePlaces', $dataStructurePlaces);
+        $moduleTemplate->assign('mappingPlaces', $mappingPlaces);
+        $moduleTemplate->assign('templatePlaces', $templatePlaces);
+
+        $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
+
+        return $moduleTemplate->renderResponse('Show');
     }
 
     public function debugAction(): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -111,13 +99,14 @@ class ControlCenterController extends ActionController
 
         $availableHandler = $configurationService->getAvailableHandlers();
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
-
-        $this->view->assign('availablePlaces', $availablePlaces);
-        $this->view->assign('availableHandler', $availableHandler);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Control Center - Debug');
+
+        $moduleTemplate->assign('availablePlaces', $availablePlaces);
+        $moduleTemplate->assign('availableHandler', $availableHandler);
+
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
 
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
@@ -128,9 +117,7 @@ class ControlCenterController extends ActionController
             ->setIcon($iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
-        $moduleTemplate->setContent($this->view->render('Debug'));
-
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Debug');
     }
 
     /**

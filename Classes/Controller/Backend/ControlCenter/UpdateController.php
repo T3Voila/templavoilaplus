@@ -31,12 +31,11 @@ class UpdateController extends Update\AbstractUpdateController
      */
     public function infoAction(): ResponseInterface
     {
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
-        $this->view->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
-        $this->view->assign('isMigrationPossible', $this->isMigrationPossible());
+        $this->moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
+        $this->moduleTemplate->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
+        $this->moduleTemplate->assign('isMigrationPossible', $this->isMigrationPossible());
 
-        $this->moduleTemplate->setContent($this->view->render('info'));
-        return $this->htmlResponse($this->moduleTemplate->renderContent());
+        return $this->moduleTemplate->renderResponse('info');
     }
 
     protected function hasServerMigrationFile(): bool

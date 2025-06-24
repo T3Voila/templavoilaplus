@@ -33,14 +33,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
  */
 class AbstractUpdateController extends ActionController
 {
-    /**
-     * We define BackendTemplateView above so we will get it.
-     *
-     * @var BackendTemplateView
-     * @api
-     */
-    protected $view;
-
     /** @var int the id of current page */
     protected $pageId = 0;
 
@@ -73,8 +65,6 @@ class AbstractUpdateController extends ActionController
 
     protected function initializeView(\TYPO3Fluid\Fluid\View\ViewInterface $view)
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         $this->moduleTemplate->getDocHeaderComponent()->disable();
         $this->moduleTemplate->setFlashMessageQueue($this->getFlashMessageQueue());
@@ -85,7 +75,7 @@ class AbstractUpdateController extends ActionController
     public function assignDefault()
     {
         $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
             'is12orNewer' => version_compare($typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
             'is13orNewer' => version_compare($typo3Version->getVersion(), '13.0.0', '>=') ? true : false,

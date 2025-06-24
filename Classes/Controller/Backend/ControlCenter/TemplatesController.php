@@ -42,8 +42,6 @@ class TemplatesController extends ActionController
      */
     public function listAction(): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -54,17 +52,17 @@ class TemplatesController extends ActionController
         $placesService->loadConfigurationsByPlaces($templatePlace);
         $templatePlacesByScope = $placesService->reorderPlacesByScope($templatePlace);
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
-
-        $this->view->assign('templatePlacesByScope', $templatePlacesByScope);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Templates List');
+
+        $moduleTemplate->assign('templatePlacesByScope', $templatePlacesByScope);
+
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render('List'));
 
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('List');
     }
 
     /**
@@ -75,8 +73,6 @@ class TemplatesController extends ActionController
      */
     public function infoAction($placeIdentifier, $configurationIdentifier): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -88,18 +84,18 @@ class TemplatesController extends ActionController
         $placesService->loadConfigurationsByPlace($templatePlace);
         $templateConfiguration = $templatePlace->getConfiguration($configurationIdentifier);
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
-
-        $this->view->assign('templatePlace', $templatePlace);
-        $this->view->assign('templateConfiguration', $templateConfiguration);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Templates Info');
+
+        $moduleTemplate->assign('templatePlace', $templatePlace);
+        $moduleTemplate->assign('templateConfiguration', $templateConfiguration);
+
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render('Info'));
 
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('Info');
     }
 
     /**

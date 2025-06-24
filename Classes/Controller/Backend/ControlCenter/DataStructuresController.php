@@ -51,8 +51,6 @@ class DataStructuresController extends ActionController
      */
     public function listAction(): ResponseInterface
     {
-        $this->view->getRenderingContext()->getTemplatePaths()->fillDefaultsByPackageName('templavoilaplus');
-
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placesService = $configurationService->getPlacesService();
@@ -63,17 +61,17 @@ class DataStructuresController extends ActionController
         $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
         $dataStructurePlacesByScope = $placesService->reorderPlacesByScope($dataStructurePlaces);
 
-        $this->view->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
-
-        $this->view->assign('dataStructurePlacesByScope', $dataStructurePlacesByScope);
-
         $moduleTemplateFactory = GeneralUtility::makeInstance(ModuleTemplateFactory::class);
-        $moduleTemplate = $moduleTemplateFactory->create($GLOBALS['TYPO3_REQUEST']);
+        $moduleTemplate = $moduleTemplateFactory->create($this->request);
+
+        $moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - DataStructure List');
+
+        $moduleTemplate->assign('dataStructurePlacesByScope', $dataStructurePlacesByScope);
+
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
-        $moduleTemplate->setContent($this->view->render('List'));
 
-        return $this->htmlResponse($moduleTemplate->renderContent());
+        return $moduleTemplate->renderResponse('List');
     }
 
     /**
