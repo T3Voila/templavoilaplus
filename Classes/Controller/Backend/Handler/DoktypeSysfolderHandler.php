@@ -19,9 +19,12 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
 
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
+use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DoktypeSysfolderHandler extends AbstractDoktypeHandler
 {
@@ -38,7 +41,9 @@ class DoktypeSysfolderHandler extends AbstractDoktypeHandler
         self::addLocalizationInformationForPage($controller, $pageRecord);
         $listModuleUrl = '';
         if ($this->userHasAccessToListModule()) {
-            $listModuleUrl = 'javascript:top.goToModule(\'web_list\',1);';
+            /** @var \TYPO3\CMS\Backend\Routing\UriBuilder */
+            $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+            $listModuleUrl = (string)$uriBuilder->buildUriFromRoute('web_list', ['id' => $pageRecord['uid']]);
         }
 
         $controller->addFlashMessage(
@@ -63,10 +68,7 @@ class DoktypeSysfolderHandler extends AbstractDoktypeHandler
      */
     protected function userHasAccessToListModule()
     {
-        if (!BackendUtility::isModuleSetInTBE_MODULES('web_list')) {
-            return false;
-        }
-        return TemplaVoilaUtility::getBackendUser()->isAdmin()
-            || TemplaVoilaUtility::getBackendUser()->check('modules', 'web_list');
+        $moduleProvider = GeneralUtility::makeInstance(ModuleProvider::class);
+        return $moduleProvider->accessGranted('web_list', TemplaVoilaUtility::getBackendUser());
     }
 }
