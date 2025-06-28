@@ -34,22 +34,8 @@
         </f:be.infobox>
     </f:if>
 
-    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v7 LTS and v8/v9 LTS" state="{f:if(condition: '{is11orNewer}', then: '-1', else: '-2')}" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV8" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is11orNewer}', then: 'disabled')}">
-            <f:if condition="{is11orNewer}">
-                <f:then>
-                    <core:icon identifier="actions-play" />
-                </f:then>
-                <f:else>
-                    <core:icon identifier="actions-ban" />
-                </f:else>
-            </f:if>
-            Update DataStructure from TYPO3 v7 LTS to v8/v9 LTS
-        </f:link.action>
-    </f:be.infobox>
-
-    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v9 LTS and v10 LTS" state="{f:if(condition: '{is11orNewer}', then: '-1', else: '-2')}" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV10" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is11orNewer}', then: 'disabled')}">
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v8/v9 LTS and v10 LTS" state="{f:if(condition: '{is10orNewer}', then: '-1', else: '-2')}" disableIcon="true">
+        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV10" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is10orNewer}', then: 'disabled')}">
             <f:if condition="{is10orNewer}">
                 <f:then>
                     <core:icon identifier="actions-play" />
