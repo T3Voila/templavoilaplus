@@ -4,7 +4,7 @@
     <h2 class="text-primary">Update configuration on Server System</h2>
 
     <form action="#" method="POST">
-        <input type="hidden" name="update" value="TemplaVoilaPlus8">
+        <input type="hidden" name="update" value="ServerMigration">
         <input type="hidden" name="extensionAlreadyInstalled" value="1">
         <input type="hidden" name="covertingInstructionsJson" value="{covertingInstructionsJson}">
 
@@ -49,8 +49,8 @@
                 </f:link.action>
             </div>
             <div class="col-sm-4">
-                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\Update\\TemplaVoilaPlus8\', action: \'step5\')}'}">
-                    <core:icon identifier="actions-view-go-forward" /> Continue with step 5 of "Update configuration to TemplaVoilà! Plus 8"
+                <f:form.button class="btn btn-primary btn-block btn-lg {f:if(condition='{hasError} || {hasWarning}', then='disabled')}" type="{f:if(condition='{hasError} || {hasWarning}', then='button', else='submit')}" id="continueButton" additionalAttributes="{formaction: '{f:uri.action(controller: \'Backend\\ControlCenter\\Update\\ServerMigration\', action: \'step5\')}'}">
+                    <core:icon identifier="actions-view-go-forward" /> Continue with step 5 of "Update your Server configuration"
                 </f:form.button>
             </div>
         </div>

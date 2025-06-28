@@ -33,7 +33,6 @@ class UpdateController extends Update\AbstractUpdateController
     {
         $this->moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
         $this->moduleTemplate->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
-        $this->moduleTemplate->assign('isMigrationPossible', $this->isMigrationPossible());
 
         return $this->moduleTemplate->renderResponse('info');
     }
@@ -45,21 +44,6 @@ class UpdateController extends Update\AbstractUpdateController
             if (is_file($path . '/ServerMigration.json')) {
                 return true;
             }
-        }
-        return false;
-    }
-
-    /**
-     * Only basic check, more inside TemplaVoilaPlus8Controller
-     */
-    protected function isMigrationPossible(): bool
-    {
-        $columns = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('tx_templavoilaplus_datastructure')
-            ->getSchemaManager()
-            ->listTableColumns('tx_templavoilaplus_datastructure');
-        if (count($columns) !== 0) {
-            return true;
         }
         return false;
     }

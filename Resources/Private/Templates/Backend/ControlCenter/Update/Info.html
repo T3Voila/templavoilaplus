@@ -27,11 +27,7 @@
 
     <h3>Please select an update script</h3>
 
-    <f:comment>@TODO Add check if it needs to be run</f:comment>
-    <f:be.infobox title="You need to run this to update your configuration to be compatible with TemplaVoilà! Plus 8" state="-1" disableIcon="true">
-        <f:link.action controller="Backend\ControlCenter\Update\TemplaVoilaPlus8" action="stepStart" class="btn btn-primary btn-block btn-lg"><core:icon identifier="actions-play" /> Update configuration to TemplaVoilà! Plus 8</f:link.action>
-    </f:be.infobox>
-
+    <f:comment>This won't be true, but let it here for the moment, as we may integrate this for other moments.</f:comment>
     <f:if condition="{hasServerMigrationFile} && {isMigrationPossible}">
         <f:be.infobox title="ServerMigration" state="1" disableIcon="true">
             <f:link.action controller="Backend\ControlCenter\Update\ServerMigration" action="stepStart" class="btn btn-warning btn-block btn-lg"><core:icon identifier="actions-play" /> Migrate Server with information from generated theme extension.</f:link.action>
