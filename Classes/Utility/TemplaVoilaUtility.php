@@ -369,12 +369,12 @@ final class TemplaVoilaUtility
      * @param int $recursion recursion limiter
      * @param array &$references array containing a list of the actual references
      *
-     * @return bool true if there are other references for this element
+     * @return array Returns every existing reference beside the source pid
      */
-    public static function getElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
+    public static function getElementForeignReferences(array $element, int $pid, int $recursion = 99, ?array &$references = null): array
     {
         if (!$recursion) {
-            return false;
+            return [];
         }
         if (!is_array($references)) {
             $references = [];
@@ -432,7 +432,7 @@ final class TemplaVoilaUtility
      *
      * @return bool true if there are other references for this element
      */
-    public static function hasElementForeignReferences($element, $pid, $recursion = 99, &$references = null)
+    public static function hasElementForeignReferences(array $element, int $pid, int $recursion = 99, ?array &$references = null): bool
     {
         $references = self::getElementForeignReferences($element, $pid, $recursion, $references);
         $foreignRefs = false;

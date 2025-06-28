@@ -51,7 +51,7 @@ abstract class AbstractResponse
         return $view;
     }
 
-    protected function record2html(string $table, int $uid, ServerRequestInterface $request, string $parentPointer = null): string
+    protected function record2html(string $table, int $uid, ServerRequestInterface $request, ?string $parentPointer = null): string
     {
         $row = BackendUtility::getRecord($table, $uid);
 

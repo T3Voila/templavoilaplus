@@ -53,7 +53,7 @@ class FrontendController
      */
     public $logger;
 
-    public function __construct($_ = null, ?TypoScriptFrontendController $frontendController = null)
+    public function __construct(mixed $_ = null, ?TypoScriptFrontendController $frontendController = null)
     {
         $this->frontendController = $frontendController ?: $GLOBALS['TSFE'];
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(self::class);

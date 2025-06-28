@@ -652,7 +652,7 @@ class PageLayoutController extends ActionController
      *
      * @return bool
      */
-    protected function hasBasicEditRights($table = null, array $record = null)
+    protected function hasBasicEditRights(?string $table = null, ?array $record = null)
     {
         if ($table == null) {
             $table = $this->rootElementTable;
