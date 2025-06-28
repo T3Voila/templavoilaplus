@@ -20,7 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class DoktypeLinkHandler extends AbstractDoktypeHandler
 {
@@ -41,7 +41,7 @@ class DoktypeLinkHandler extends AbstractDoktypeHandler
                 htmlspecialchars($pageRecord['url'])
             ),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeLink'),
-            FlashMessage::INFO
+            ContextualFeedbackSeverity::INFO
         );
 
         return '';

@@ -23,6 +23,7 @@ use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DoktypeDefaultHandler extends AbstractDoktypeHandler
@@ -57,14 +58,14 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
             $controller->addFlashMessage(
                 'No mapping configuration found for this page. Please edit the page properties and select one.',
                 'No mapping configuration found',
-                \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+                ContextualFeedbackSeverity::ERROR,
                 false
             );
             if (!empty($pageRecord['tx_templavoilaplus_ds']) || !empty($pageRecord['tx_templavoilaplus_next_ds'])) {
                 $controller->addFlashMessage(
                     'Older configuration found. Did you upgrade to "TemplaVoilà! Plus v12" but forgot to run the upgrade scripts?',
                     'Did you forget to Upgrade',
-                    \TYPO3\CMS\Core\Messaging\AbstractMessage::WARNING,
+                    ContextualFeedbackSeverity::WARNING,
                     false
                 );
             }
@@ -104,7 +105,7 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
                 $controller->addFlashMessage(
                     'The page has a layout defined, which seems to be missing on this system. The error was: ' . $e->getMessage(),
                     'Template Configuration not loadable',
-                    \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR,
+                    ContextualFeedbackSeverity::ERROR,
                     false
                 );
             }

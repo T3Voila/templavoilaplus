@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -244,7 +245,7 @@ class PageLayoutController extends ActionController
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDefaultIntroduction'),
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 );
                 $this->moduleTemplate->assign('tutorial', true);
             } else {
@@ -252,7 +253,7 @@ class PageLayoutController extends ActionController
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoPageNotFound'),
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
-                    FlashMessage::INFO
+                    ContextualFeedbackSeverity::INFO
                 );
             }
         }
@@ -320,7 +321,7 @@ class PageLayoutController extends ActionController
                     $title
                 ),
                 '',
-                FlashMessage::INFO,
+                ContextualFeedbackSeverity::INFO,
                 false,
                 [[
                     'url' => (string)$linkToPage,
@@ -359,7 +360,7 @@ class PageLayoutController extends ActionController
                     implode(', ', $titles)
                 ),
                 '',
-                FlashMessage::INFO,
+                ContextualFeedbackSeverity::INFO,
                 false,
                 $buttons
             );
@@ -770,7 +771,7 @@ class PageLayoutController extends ActionController
     public function addFlashMessage(
         $messageBody,
         $messageTitle = '',
-        $severity = FlashMessage::OK,
+        $severity = ContextualFeedbackSeverity::OK,
         $storeInSession = false,
         array $buttons = []
     ) {

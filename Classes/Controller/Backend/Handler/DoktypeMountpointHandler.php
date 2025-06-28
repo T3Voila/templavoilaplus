@@ -21,7 +21,7 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DoktypeMountpointHandler extends AbstractDoktypeHandler
@@ -60,7 +60,7 @@ class DoktypeMountpointHandler extends AbstractDoktypeHandler
                 $mountSourcePageRecord['title']
             ),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeMountpoint'),
-            FlashMessage::INFO,
+            ContextualFeedbackSeverity::INFO,
             false,
             [[
                 'url' => (string)$url,

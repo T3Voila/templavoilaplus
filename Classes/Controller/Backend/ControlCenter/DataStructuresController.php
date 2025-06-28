@@ -25,7 +25,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
@@ -119,7 +119,7 @@ class DataStructuresController extends ActionController
         $this->addFlashMessage(
             'DataStructure ' . $configurationIdentifier . ' (not yet) deleted.',
             '',
-            FlashMessage::INFO
+            ContextualFeedbackSeverity::INFO
         );
 
         $this->redirect('list');

@@ -22,7 +22,7 @@ use Tvp\TemplaVoilaPlus\Domain\Repository\PageRepository;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class DoktypeShortcutHandler extends AbstractDoktypeHandler
@@ -98,7 +98,7 @@ class DoktypeShortcutHandler extends AbstractDoktypeHandler
                 $targetPageRecord ? BackendUtility::getRecordTitle('pages', $targetPageRecord) : ''
             ),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeShortcut'),
-            FlashMessage::INFO,
+            ContextualFeedbackSeverity::INFO,
             false,
             [[
                 'url' => (string)$url,

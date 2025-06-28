@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\Core\Messaging;
 
-use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessage as CoreFlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -68,7 +68,7 @@ class FlashMessage extends CoreFlashMessage
             static::class,
             (string)$data['message'],
             (string)($data['title'] ?? ''),
-            (int)($data['severity'] ?? AbstractMessage::OK),
+            (int)($data['severity'] ?? ContextualFeedbackSeverity::OK),
             (bool)($data['storeInSession'] ?? false),
             (array)($data['buttons'] ?? [])
         );

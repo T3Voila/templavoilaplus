@@ -21,7 +21,7 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class DoktypeSysfolderHandler extends AbstractDoktypeHandler
 {
@@ -44,7 +44,7 @@ class DoktypeSysfolderHandler extends AbstractDoktypeHandler
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeSysfolderCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeSysfolder'),
-            FlashMessage::INFO,
+            ContextualFeedbackSeverity::INFO,
             false,
             [[
                 'url' => (string)$listModuleUrl,

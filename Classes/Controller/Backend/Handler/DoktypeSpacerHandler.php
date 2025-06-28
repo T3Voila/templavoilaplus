@@ -19,7 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Handler;
 
 use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 
 class DoktypeSpacerHandler extends AbstractDoktypeHandler
 {
@@ -37,7 +37,7 @@ class DoktypeSpacerHandler extends AbstractDoktypeHandler
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeSpacerCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeSpacer'),
-            FlashMessage::INFO
+            ContextualFeedbackSeverity::INFO
         );
 
         return '';
