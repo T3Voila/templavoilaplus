@@ -30,6 +30,7 @@ class DataStructureV11Controller extends AbstractUpdateController
 
     protected function stepStartAction()
     {
+        return $this->moduleTemplate->renderResponse('stepStart');
     }
 
     protected function stepFinalAction()
@@ -51,6 +52,7 @@ class DataStructureV11Controller extends AbstractUpdateController
             'count' => $count,
             'errors' => $this->errors,
         ]);
+        return $this->moduleTemplate->renderResponse('stepFinal');
     }
 
     /**

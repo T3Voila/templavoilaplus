@@ -79,6 +79,7 @@ class AbstractUpdateController extends ActionController
             'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
             'is12orNewer' => version_compare($typo3Version->getVersion(), '12.0.0', '>=') ? true : false,
             'is13orNewer' => version_compare($typo3Version->getVersion(), '13.0.0', '>=') ? true : false,
+            'is14orNewer' => version_compare($typo3Version->getVersion(), '14.0.0', '>=') ? true : false,
             'typo3Version' => $typo3Version->getVersion(),
             'tvpVersion' => ExtensionManagementUtility::getExtensionVersion('templavoilaplus'),
             'useStaticDS' => ($this->extConf['staticDS']['enable']),
