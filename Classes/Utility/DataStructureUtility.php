@@ -45,7 +45,10 @@ final class DataStructureUtility
             0,
             'T3DataStructure',
             $indentation,
-            ['useCDATA' => 1]
+            [
+                'useCDATA' => 1,
+                'disableTypeAttrib' => 2,
+            ]
         )
         . LF;
     }

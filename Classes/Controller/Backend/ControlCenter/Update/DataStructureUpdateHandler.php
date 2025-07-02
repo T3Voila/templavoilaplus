@@ -58,7 +58,6 @@ class DataStructureUpdateHandler
         $dataStructure = $dataConfiguration->getDataStructure();
 
         $changed = $this->processUpdate($dataStructure, $rootCallbacks, $elementCallbacks);
-        $changed = true;
         if ($changed) {
             $dataConfiguration->setDataStructure($dataStructure);
             $dataStructurePlace->setConfiguration($dataConfiguration->getIdentifier(), $dataConfiguration);
@@ -75,7 +74,7 @@ class DataStructureUpdateHandler
     ) {
         $changed = false;
 
-        if (empty($data)) {
+        if (empty($data) || !isset($data['sheets'])) {
             return false;
         }
 
@@ -87,10 +86,13 @@ class DataStructureUpdateHandler
             }
         }
 
-        foreach ($data['ROOT']['el'] as &$element) {
-            $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+        foreach($data['sheets'] as $sheetName => &$sheetData) {
+            if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
+                foreach ($sheetData['ROOT']['el'] as &$element) {
+                    $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+                }
+            }
         }
-
         return $changed;
     }
 

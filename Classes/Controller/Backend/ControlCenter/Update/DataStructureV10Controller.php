@@ -56,11 +56,16 @@ class DataStructureV10Controller extends AbstractUpdateController
     /**
      * Find columns fields that don't have a 'config' section at all, add
      * ['config']['type'] = 'none'; for those to enforce config
+     *
+     * As TCEforms get removed, do not convert all, which are already transformed
      */
     public function migrateColumnsConfig(array &$element): bool
     {
         $changed = false;
-        if ((!isset($element['TCEforms']['config']) || !is_array($element['TCEforms']['config'])) && !isset($element['TCEforms']['type'])) {
+        if (
+            ((!isset($element['config']) || !is_array($element['config'])) && !isset($element['type']))
+            && ((!isset($element['TCEforms']['config']) || !is_array($element['TCEforms']['config'])) && !isset($element['TCEforms']['type']))
+        ) {
             $element['TCEforms']['config'] = [
                 'type' => 'none',
             ];
