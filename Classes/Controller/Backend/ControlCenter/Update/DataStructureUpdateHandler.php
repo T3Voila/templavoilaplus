@@ -86,7 +86,7 @@ class DataStructureUpdateHandler
             }
         }
 
-        foreach($data['sheets'] as $sheetName => &$sheetData) {
+        foreach ($data['sheets'] as $sheetName => &$sheetData) {
             if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
                 foreach ($sheetData['ROOT']['el'] as &$element) {
                     $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;

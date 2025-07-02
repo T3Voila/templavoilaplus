@@ -48,8 +48,9 @@ class DataStructureV11Controller extends AbstractUpdateController
             ]
         );
 
-        $this->view->assignMultiple([
+        $this->moduleTemplate->assignMultiple([
             'count' => $count,
+            'hasErrors' => !empty($this->errors),
             'errors' => $this->errors,
         ]);
         return $this->moduleTemplate->renderResponse('stepFinal');

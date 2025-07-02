@@ -12,6 +12,7 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\TemplatesController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\UpdateController;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV10Controller;
 use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV11Controller;
+use Tvp\TemplaVoilaPlus\Controller\Backend\ControlCenter\Update\DataStructureV12Controller;
 
 return [
     'web_layout' => [
@@ -64,6 +65,9 @@ return [
                 'stepStart', 'stepFinal'
             ],
             DataStructureV11Controller::class => [
+                'stepStart', 'stepFinal'
+            ],
+            DataStructureV12Controller::class => [
                 'stepStart', 'stepFinal'
             ],
         ],
