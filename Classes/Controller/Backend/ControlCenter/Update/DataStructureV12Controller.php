@@ -199,6 +199,8 @@ class DataStructureV12Controller extends AbstractUpdateController
         return $changed;
     }
 
+
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     /**
      * Migrates [config][renderType] = 'inputLink' to [config][type] = 'link'.
      * Migrates the [config][fieldConfig][linkPopup] to type specific configuration.
@@ -278,6 +280,7 @@ class DataStructureV12Controller extends AbstractUpdateController
         }
         return $changed;
     }
+    // phpcs:enable
 
     /**
      * Migrates [config][eval] = 'password' and [config][eval] = 'saltedPassword' to [config][type] = 'password'
@@ -502,6 +505,7 @@ class DataStructureV12Controller extends AbstractUpdateController
         return $changed;
     }
 
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     /**
      * Migrates type='inline' with foreign_table='sys_file_reference' to type='file'.
      * Removes table relation related options.
@@ -620,6 +624,7 @@ class DataStructureV12Controller extends AbstractUpdateController
         }
         return $changed;
     }
+    // phpcs:enable
 
 
     /**
