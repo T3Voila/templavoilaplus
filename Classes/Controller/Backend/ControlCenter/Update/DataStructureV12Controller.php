@@ -41,6 +41,9 @@ class DataStructureV12Controller extends AbstractUpdateController
             [],
             [
                 [$this, 'migrateInternalTypeFolderToTypeFolder'],
+                [$this, 'migrateRequiredFlag'],
+                [$this, 'migrateNullFlag'],
+                [$this, 'migrateEmailFlagToEmailType'],
             ]
         );
 
@@ -65,6 +68,93 @@ class DataStructureV12Controller extends AbstractUpdateController
             }
             unset($element['config']['internal_type']);
             $changed = true;
+        }
+        return $changed;
+    }
+
+    /**
+     * Migrates [config][eval] = 'required' to [config][required] = true and removes 'required' from [config][eval].
+     * If [config][eval] becomes empty, it will be removed completely.
+     */
+    public function migrateRequiredFlag(array &$element): bool
+    {
+        $changed = false;
+        if (GeneralUtility::inList($element['config']['eval'] ?? '', 'required')) {
+            $evalList = GeneralUtility::trimExplode(',', $element['config']['eval'], true);
+            // Remove "required" from $evalList
+            $evalList = array_filter($evalList, static function (string $eval) {
+                return $eval !== 'required';
+            });
+            if ($evalList !== []) {
+                // Write back filtered 'eval'
+                $element['config']['eval'] = implode(',', $evalList);
+            } else {
+                // 'eval' is empty, remove whole configuration
+                unset($element['config']['eval']);
+            }
+
+            $element['config']['required'] = true;
+        }
+        return $changed;
+    }
+
+    /**
+     * Migrates [config][eval] = 'null' to [config][nullable] = true and removes 'null' from [config][eval].
+     * If [config][eval] becomes empty, it will be removed completely.
+     */
+    public function migrateNullFlag(array &$element): bool
+    {
+        $changed = false;
+        if (GeneralUtility::inList($element['config']['eval'] ?? '', 'null')) {
+            $evalList = GeneralUtility::trimExplode(',', $element['config']['eval'], true);
+            // Remove "null" from $evalList
+            $evalList = array_filter($evalList, static function (string $eval) {
+                return $eval !== 'null';
+            });
+            if ($evalList !== []) {
+                // Write back filtered 'eval'
+                $element['config']['eval'] = implode(',', $evalList);
+            } else {
+                // 'eval' is empty, remove whole configuration
+                unset($element['config']['eval']);
+            }
+
+            $element['config']['nullable'] = true;
+        }
+        return $changed;
+    }
+
+    /**
+     * Migrates [config][eval] = 'email' to [config][type] = 'email' and removes 'email' from [config][eval].
+     * If [config][eval] contains 'trim', it will also be removed. If [config][eval] becomes empty, the option
+     * will be removed completely.
+     */
+    public function migrateEmailFlagToEmailType(array &$element): bool
+    {
+        $changed = false;
+        if (($element['config']['type'] ?? '') === 'input'
+            && GeneralUtility::inList($element['config']['eval'] ?? '', 'email')
+        ) {
+            // Set the TCA type to "email"
+            $element['config']['type'] = 'email';
+
+            // Unset "max"
+            unset($element['config']['max']);
+
+            $evalList = GeneralUtility::trimExplode(',', $element['config']['eval'], true);
+            $evalList = array_filter($evalList, static function (string $eval) {
+                // Remove anything except "unique" and "uniqueInPid" from eval
+                return in_array($eval, ['unique', 'uniqueInPid'], true);
+            });
+
+            if ($evalList !== []) {
+                // Write back filtered 'eval'
+                $element['config']['eval'] = implode(',', $evalList);
+            } else {
+                // 'eval' is empty, remove whole configuration
+                unset($element['config']['eval']);
+            }
+
         }
         return $changed;
     }
