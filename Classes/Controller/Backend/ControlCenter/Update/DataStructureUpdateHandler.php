@@ -27,7 +27,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class DataStructureUpdateHandler
 {
-    public function updateAllDs(array $rootCallbacks, array $elementCallbacks)
+    public function updateAllDs(array $rootCallbacks, array $elementCallbacks): int
     {
         $count = 0;
 
@@ -71,10 +71,10 @@ class DataStructureUpdateHandler
         array &$data,
         array $rootCallbacks,
         array $elementCallbacks
-    ) {
+    ): bool {
         $changed = false;
 
-        if (empty($data) || !isset($data['sheets'])) {
+        if (empty($data)) {
             return false;
         }
 
@@ -84,6 +84,10 @@ class DataStructureUpdateHandler
             } else {
                 throw new \Exception('Callback function "' . $callback[1] . '" not available. Cann\'t update DataStructure.');
             }
+        }
+
+        if (!isset($data['sheets'])) {
+            return $changed;
         }
 
         foreach ($data['sheets'] as $sheetName => &$sheetData) {
@@ -96,7 +100,7 @@ class DataStructureUpdateHandler
         return $changed;
     }
 
-    protected function fixPerElement(array &$element, array $elementCallbacks)
+    protected function fixPerElement(array &$element, array $elementCallbacks): bool
     {
         $changed = false;
 

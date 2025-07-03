@@ -19,7 +19,7 @@ use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * Controller to migrate/update the DataStructure for TYPO3 v12 LTS
@@ -40,7 +40,11 @@ class DataStructureV12Controller extends AbstractUpdateController
         /** @var DataStructureUpdateHandler */
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
         $count = $handler->updateAllDs(
-            [],
+            [
+                [$this, 'removeAlwaysDescription'],
+                [$this, 'removeCtrlCruserId'],
+                [$this, 'removeAllowLanguageSynchronizationFromColumnsOverrides'],
+            ],
             [
                 [$this, 'migrateInternalTypeFolderToTypeFolder'],
                 [$this, 'migrateRequiredFlag'],
@@ -54,15 +58,12 @@ class DataStructureV12Controller extends AbstractUpdateController
                 [$this, 'migrateAuthMode'],
                 [$this, 'migrateRenderTypeColorpickerToTypeColor'],
                 [$this, 'migrateRenderTypeInputDateTimeToTypeDatetime'],
-            //                [$this, 'removeAlwaysDescription'],
                 [$this, 'migrateFalHandlingInInlineToTypeFile'],
-            //                [$this, 'removeCtrlCruserId'],
                 [$this, 'removeFalRelatedElementBrowserOptions'],
                 [$this, 'removeFalRelatedOptionsFromTypeInline'],
                 [$this, 'removePassContentFromTypeNone'],
                 [$this, 'migrateItemsToAssociativeArray'],
                 [$this, 'removeMmInsertFields'],
-            //                [$this, 'removeAllowLanguageSynchronizationFromColumnsOverrides'],
             ]
         );
 
@@ -72,6 +73,57 @@ class DataStructureV12Controller extends AbstractUpdateController
             'errors' => $this->errors,
         ]);
         return $this->moduleTemplate->renderResponse('stepFinal');
+    }
+
+    /**
+     * Removes ['interface']['always_description'] and also ['interface']
+     * if `always_description` was the only key in the array.
+     */
+    protected function removeAlwaysDescription(array &$tableDefinition): bool
+    {
+        $changed = false;
+        if (isset($tableDefinition['interface']['always_description'])) {
+            unset($tableDefinition['interface']['always_description']);
+            if ($tableDefinition['interface'] === []) {
+                unset($tableDefinition['interface']);
+            }
+            $changed = true;
+        }
+        return $changed;
+    }
+
+    /**
+     * Remove ['ctrl']['cruser_id'].
+     */
+    protected function removeCtrlCruserId(array &$tableDefinition): bool
+    {
+        $changed = false;
+        if (!isset($tableDefinition['ctrl']['cruser_id'])) {
+            unset($tableDefinition['ctrl']['cruser_id']);
+            $changed = true;
+        }
+        return $changed;
+    }
+
+    /**
+     * Setting "allowLanguageSynchronization" for columns via columnsOverride is currently not supported
+     * see Localization\State and therefore leads to an exception in the LocalizationStateSelector wizard.
+     * Therefore, the setting is removed for now and the integrator is informed accordingly.
+     */
+    protected function removeAllowLanguageSynchronizationFromColumnsOverrides(array &$tableDefinition): bool
+    {
+        $changed = false;
+        if (is_array($tableDefinition['types'] ?? false)) {
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                foreach ($typeConfig['columnsOverrides'] ?? [] as $columnOverride => $columnOverrideConfig) {
+                    if (isset($columnOverrideConfig['config']['behaviour']['allowLanguageSynchronization'])) {
+                        unset($tableDefinition['types'][$typeName]['columnsOverrides'][$columnOverride]['config']['behaviour']['allowLanguageSynchronization']);
+                        $changed = true;
+                    }
+                }
+            }
+        }
+        return $changed;
     }
 
     /**
@@ -783,9 +835,7 @@ class DataStructureV12Controller extends AbstractUpdateController
             //             *Enable* the commented unset line in v13 when removing MM_insert_fields deprecations.
             //             *Enable* the disabled unit test set.
             // unset($tca[$table]['columns'][$fieldName]['config']['MM_insert_fields']);
-            $this->errors[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
-                . '\'MM_insert_fields\'. This config key is obsolete and should be removed. '
-                . 'Please adjust your TCA accordingly.';
+            $this->errors[] = 'A FlexForm/DataStructure uses MM_insert_fields. This config key is obsolete and should be removed.';
         }
         return $changed;
     }
