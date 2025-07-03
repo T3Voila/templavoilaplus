@@ -54,15 +54,15 @@ class DataStructureV12Controller extends AbstractUpdateController
                 [$this, 'migrateAuthMode'],
                 [$this, 'migrateRenderTypeColorpickerToTypeColor'],
                 [$this, 'migrateRenderTypeInputDateTimeToTypeDatetime'],
-//                [$this, 'removeAlwaysDescription'],
+            //                [$this, 'removeAlwaysDescription'],
                 [$this, 'migrateFalHandlingInInlineToTypeFile'],
-//                [$this, 'removeCtrlCruserId'],
+            //                [$this, 'removeCtrlCruserId'],
                 [$this, 'removeFalRelatedElementBrowserOptions'],
                 [$this, 'removeFalRelatedOptionsFromTypeInline'],
                 [$this, 'removePassContentFromTypeNone'],
                 [$this, 'migrateItemsToAssociativeArray'],
                 [$this, 'removeMmInsertFields'],
-//                [$this, 'removeAllowLanguageSynchronizationFromColumnsOverrides'],
+            //                [$this, 'removeAllowLanguageSynchronizationFromColumnsOverrides'],
             ]
         );
 
@@ -155,7 +155,8 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateEmailFlagToEmailType(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'input'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'input'
             && GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'email')
         ) {
             // Set the TCA type to "email"
@@ -190,7 +191,6 @@ class DataStructureV12Controller extends AbstractUpdateController
     {
         $changed = false;
         if (($fieldConfig['config']['type'] ?? '') === 'none' && array_key_exists('cols', $fieldConfig['config'])) {
-
             $fieldConfig['config']['size'] = $fieldConfig['config']['cols'];
             unset($fieldConfig['config']['cols']);
 
@@ -209,7 +209,8 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateRenderTypeInputLinkToTypeLink(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'input'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'input'
             && ($fieldConfig['config']['renderType'] ?? '') === 'inputLink'
         ) {
             // Set the TCA type to "link"
@@ -288,11 +289,11 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateRenderTypeInputDateTimeToTypeDatetime(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'input'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'input'
             && (GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'password')
                 || GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'saltedPassword'))
         ) {
-
             // Set the TCA type to "password"
             $fieldConfig['config']['type'] = 'password';
 
@@ -326,10 +327,10 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migratePasswordAndSaltedPasswordToPasswordType(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'input'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'input'
             && ($fieldConfig['config']['renderType'] ?? '') === 'inputDateTime'
         ) {
-
             // Set the TCA type to "datetime"
             $fieldConfig['config']['type'] = 'datetime';
 
@@ -423,7 +424,8 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateAuthMode(array &$fieldConfig): bool
     {
         $changed = false;
-        if (array_key_exists('authMode', $fieldConfig['config'] ?? [])
+        if (
+            array_key_exists('authMode', $fieldConfig['config'] ?? [])
             && $fieldConfig['config']['authMode'] !== 'explicitAllow'
         ) {
             $fieldConfig['config']['authMode'] = 'explicitAllow';
@@ -439,7 +441,8 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateRenderTypeColorpickerToTypeColor(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'input'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'input'
             && ($fieldConfig['config']['renderType'] ?? '') === 'colorpicker'
         ) {
             // Set the TCA type to "color"
@@ -474,7 +477,6 @@ class DataStructureV12Controller extends AbstractUpdateController
                 || GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'double2')
             )
         ) {
-
             // Set the TCA type to "number"
             $fieldConfig['config']['type'] = 'number';
 
@@ -511,10 +513,10 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function migrateFalHandlingInInlineToTypeFile(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'inline'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'inline'
             && ($fieldConfig['config']['foreign_table'] ?? '') === 'sys_file_reference'
         ) {
-
             // Place to add additional information, which will later be appended to the deprecation message
             $additionalInformation = '';
 
@@ -627,13 +629,13 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function removeFalRelatedElementBrowserOptions(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'group'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'group'
             && (
                 isset($fieldConfig['config']['appearance']['elementBrowserType'])
                 || isset($fieldConfig['config']['appearance']['elementBrowserAllowed'])
             )
         ) {
-
             unset(
                 $fieldConfig['config']['appearance']['elementBrowserType'],
                 $fieldConfig['config']['appearance']['elementBrowserAllowed']
@@ -657,14 +659,14 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function removeFalRelatedOptionsFromTypeInline(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'inline'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'inline'
             && (
                 isset($fieldConfig['config']['appearance']['headerThumbnail'])
                 || isset($fieldConfig['config']['appearance']['fileUploadAllowed'])
                 || isset($fieldConfig['config']['appearance']['fileByUrlAllowed'])
             )
         ) {
-
             unset(
                 $fieldConfig['config']['appearance']['headerThumbnail'],
                 $fieldConfig['config']['appearance']['fileUploadAllowed'],
@@ -687,7 +689,8 @@ class DataStructureV12Controller extends AbstractUpdateController
     public function removePassContentFromTypeNone(array &$fieldConfig): bool
     {
         $changed = false;
-        if (($fieldConfig['config']['type'] ?? '') === 'none'
+        if (
+            ($fieldConfig['config']['type'] ?? '') === 'none'
             && array_key_exists('pass_content', $fieldConfig['config'] ?? [])
         ) {
             unset($fieldConfig['config']['pass_content']);
