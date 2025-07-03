@@ -30,7 +30,11 @@ class DataConfigurationHandler extends AbstractConfigurationHandler
     {
         $dataConfiguration = new DataConfiguration($identifier, $this->place, $this, $file);
 
-        $dataStructure = (new FlexFormTools8())->prepareFlexform($dataStructure);
+        $options = $this->place->getOptions();
+
+        if ($options['dataConfigurationHandler']['flexformPrepare'] ?? true) {
+            $dataStructure = (new FlexFormTools8())->prepareFlexform($dataStructure);
+        }
 
         // Read title from XML file and set, if not empty or ROOT
         if (

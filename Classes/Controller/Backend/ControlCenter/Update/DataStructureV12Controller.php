@@ -41,11 +41,23 @@ class DataStructureV12Controller extends AbstractUpdateController
         $handler = GeneralUtility::makeInstance(DataStructureUpdateHandler::class);
         $count = $handler->updateAllDs(
             [
+                // FlexForm prepare migrations
+                [$this, 'ensureDefaultSheet'],
+                [$this, 'removeElementTceFormsRecursiveSheet'],
+                // TCA migrations
                 [$this, 'removeAlwaysDescription'],
                 [$this, 'removeCtrlCruserId'],
                 [$this, 'removeAllowLanguageSynchronizationFromColumnsOverrides'],
             ],
             [
+                // FlexForm prepare migrations
+                [$this, 'removeElementTceFormsRecursiveElement'],
+                // What the hell, is this preparation also done for TCA?
+                // If yes, why does this not happen inside backend form?
+                // Yes, done in TYPO3\CMS\Core\Preparations\TcaPreparation
+                // [$this, 'prepareCategoryFields'],
+                // [$this, 'prepareFileFields'],
+                // TCA migrations
                 [$this, 'migrateInternalTypeFolderToTypeFolder'],
                 [$this, 'migrateRequiredFlag'],
                 [$this, 'migrateNullFlag'],
@@ -75,11 +87,53 @@ class DataStructureV12Controller extends AbstractUpdateController
         return $this->moduleTemplate->renderResponse('stepFinal');
     }
 
+
+    /**
+     * Remove "TCEforms" key from all elements in data structure to simplify further parsing.
+     *
+     * ['ROOT']['TCEforms']['sheetTitle'] becomes
+     * ['ROOT']['sheetTitle']
+     */
+    public function removeElementTceFormsRecursiveSheet(array &$dataStructure): bool
+    {
+        $changed = false;
+        foreach ($dataStructure['sheets'] as &$sheetDefinition) {
+            if (isset($sheetDefinition['ROOT']['TCEforms'])) {
+                if (is_array($sheetDefinition['ROOT']['TCEforms']) && !empty($sheetDefinition['ROOT']['TCEforms'])) {
+                    $sheetDefinition['ROOT'] = array_merge($sheetDefinition['ROOT'], $sheetDefinition['ROOT']['TCEforms']);
+                }
+                unset($sheetDefinition['ROOT']['TCEforms']);
+                $changed = true;
+            }
+        }
+        return $changed;
+    }
+
+    /**
+     * Ensures a data structure has a default sheet, and no duplicate data
+     */
+    public function ensureDefaultSheet(array &$dataStructure): bool
+    {
+        $changed = false;
+        if (isset($dataStructure['ROOT']) && isset($dataStructure['sheets'])) {
+            throw new \RuntimeException(
+                'Parsed data structure has both ROOT and sheets on top level. That is invalid.',
+                1440676540
+            );
+        }
+        if (isset($dataStructure['ROOT']) && is_array($dataStructure['ROOT'])) {
+            $dataStructure['sheets']['sDEF']['ROOT'] = $dataStructure['ROOT'];
+            unset($dataStructure['ROOT']);
+            $changed = true;
+        }
+        return $changed;
+    }
+
     /**
      * Removes ['interface']['always_description'] and also ['interface']
      * if `always_description` was the only key in the array.
      */
-    protected function removeAlwaysDescription(array &$tableDefinition): bool
+    public function removeAlwaysDescription(array &$tableDefinition): bool
     {
         $changed = false;
         if (isset($tableDefinition['interface']['always_description'])) {
@@ -95,10 +149,10 @@ class DataStructureV12Controller extends AbstractUpdateController
     /**
      * Remove ['ctrl']['cruser_id'].
      */
-    protected function removeCtrlCruserId(array &$tableDefinition): bool
+    public function removeCtrlCruserId(array &$tableDefinition): bool
     {
         $changed = false;
-        if (!isset($tableDefinition['ctrl']['cruser_id'])) {
+        if (isset($tableDefinition['ctrl']['cruser_id'])) {
             unset($tableDefinition['ctrl']['cruser_id']);
             $changed = true;
         }
@@ -110,7 +164,7 @@ class DataStructureV12Controller extends AbstractUpdateController
      * see Localization\State and therefore leads to an exception in the LocalizationStateSelector wizard.
      * Therefore, the setting is removed for now and the integrator is informed accordingly.
      */
-    protected function removeAllowLanguageSynchronizationFromColumnsOverrides(array &$tableDefinition): bool
+    public function removeAllowLanguageSynchronizationFromColumnsOverrides(array &$tableDefinition): bool
     {
         $changed = false;
         if (is_array($tableDefinition['types'] ?? false)) {
@@ -122,6 +176,24 @@ class DataStructureV12Controller extends AbstractUpdateController
                     }
                 }
             }
+        }
+        return $changed;
+    }
+
+    /**
+     * Remove "TCEforms" key from all elements in data structure to simplify further parsing.
+     *
+     * Example config:
+     * ['sheets']['sDEF']['ROOT']['el']['anElement']['TCEforms']['label'] becomes
+     * ['sheets']['sDEF']['ROOT']['el']['anElement']['label']
+     */
+    public function removeElementTceFormsRecursiveElement(array &$fieldConfig): bool
+    {
+        $changed = false;
+        if (isset($fieldConfig['TCEforms'])) {
+            $fieldConfig = array_merge($fieldConfig, $fieldConfig['TCEforms']);
+            unset($fieldConfig['TCEforms']);
+            $changed = true;
         }
         return $changed;
     }

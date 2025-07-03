@@ -19,6 +19,7 @@ use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Place;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Handles Updates in DataStructure via Callbacks
@@ -38,6 +39,14 @@ class DataStructureUpdateHandler
         $dataStructurePlaces = $placesService->getAvailablePlacesUsingConfigurationHandlerIdentifier(
             \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
+
+        foreach ($dataStructurePlaces as $place) {
+            $options = $place->getOptions();
+            // Do not run flexformPrepare, otherwise the DS gets blindly converted and we do not see it.
+            $options['dataConfigurationHandler']['flexformPrepare'] = false;
+            $place->setOptions($options);
+        }
+
         $placesService->loadConfigurationsByPlaces($dataStructurePlaces);
 
 
@@ -56,7 +65,6 @@ class DataStructureUpdateHandler
     {
         /** @var DataStructure */
         $dataStructure = $dataConfiguration->getDataStructure();
-
         $changed = $this->processUpdate($dataStructure, $rootCallbacks, $elementCallbacks);
         if ($changed) {
             $dataConfiguration->setDataStructure($dataStructure);
@@ -86,14 +94,19 @@ class DataStructureUpdateHandler
             }
         }
 
-        if (!isset($data['sheets'])) {
-            return $changed;
+        // @deprecated Remove in TV+ next as we will always have minimum default sheet sDEF
+        if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
+            foreach ($sheetData['ROOT']['el'] as &$element) {
+                $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+            }
         }
 
-        foreach ($data['sheets'] as $sheetName => &$sheetData) {
-            if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
-                foreach ($sheetData['ROOT']['el'] as &$element) {
-                    $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+        if (isset($data['sheets'])) {
+            foreach ($data['sheets'] as $sheetName => &$sheetData) {
+                if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
+                    foreach ($sheetData['ROOT']['el'] as &$element) {
+                        $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
+                    }
                 }
             }
         }

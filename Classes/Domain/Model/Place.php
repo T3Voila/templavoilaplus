@@ -53,6 +53,9 @@ class Place
     /** @var int Indentation no/tabs/spaces for writing files */
     protected $indentation = 0;
 
+    /** @var array Array of options for the place */
+    protected $options = [];
+
     /**
      * @param $identifier string The global name of this place it should be unique, take the PHP Namespace as an orientation.
      * @param $name string A name for this place in english or an LLL entry.
@@ -150,6 +153,16 @@ class Place
         $this->configurations[$configurationIdentifier] = $configuration;
 
         $configuration->getConfigurationHandler()->saveConfiguration($configuration);
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
+    public function setOptions(array $options): void
+    {
+        $this->options = $options;
     }
 
     /**
