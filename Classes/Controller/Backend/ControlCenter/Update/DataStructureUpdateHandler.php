@@ -75,6 +75,9 @@ class DataStructureUpdateHandler
         return false;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function processUpdate(
         array &$data,
         array $rootCallbacks,
@@ -95,8 +98,8 @@ class DataStructureUpdateHandler
         }
 
         // @deprecated Remove in TV+ next as we will always have minimum default sheet sDEF
-        if (isset($sheetData['ROOT']['el']) && is_array($sheetData['ROOT']['el'])) {
-            foreach ($sheetData['ROOT']['el'] as &$element) {
+        if (isset($data['ROOT']['el']) && is_array(data['ROOT']['el'])) {
+            foreach (data['ROOT']['el'] as &$element) {
                 $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
             }
         }
@@ -113,6 +116,9 @@ class DataStructureUpdateHandler
         return $changed;
     }
 
+    /**
+     * @throws \Exception
+     */
     protected function fixPerElement(array &$element, array $elementCallbacks): bool
     {
         $changed = false;
