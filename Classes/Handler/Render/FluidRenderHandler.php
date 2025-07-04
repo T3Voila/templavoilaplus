@@ -92,7 +92,7 @@ class FluidRenderHandler implements RenderHandlerInterface
                 $pageRenderer->addCssFile($cssConfiguration['href'], $cssConfiguration['rel'], $cssConfiguration['media']);
             }
         }
-var_dump($headerConfiguration);die();
+
         // Javascript
         if (isset($headerConfiguration['javascript']) && is_array($headerConfiguration['javascript'])) {
             foreach ($headerConfiguration['javascript'] as $jsConfiguration) {

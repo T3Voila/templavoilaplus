@@ -98,8 +98,8 @@ class DataStructureUpdateHandler
         }
 
         // @deprecated Remove in TV+ next as we will always have minimum default sheet sDEF
-        if (isset($data['ROOT']['el']) && is_array(data['ROOT']['el'])) {
-            foreach (data['ROOT']['el'] as &$element) {
+        if (isset($data['ROOT']['el']) && is_array($data['ROOT']['el'])) {
+            foreach ($data['ROOT']['el'] as &$element) {
                 $changed = $this->fixPerElement($element, $elementCallbacks) || $changed;
             }
         }
