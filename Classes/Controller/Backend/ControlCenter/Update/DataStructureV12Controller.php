@@ -111,6 +111,7 @@ class DataStructureV12Controller extends AbstractUpdateController
 
     /**
      * Ensures a data structure has a default sheet, and no duplicate data
+     * @throws \RuntimeException
      */
     public function ensureDefaultSheet(array &$dataStructure): bool
     {
