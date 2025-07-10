@@ -240,7 +240,8 @@ class PageLayoutController extends ActionController
             $contentBody .= $this->callHandler(BackendConfiguration::HANDLER_DOCTYPE, $activePage['doktype'], $activePage);
         } else {
             $pageTitle = '';
-            if ($this->pageId === '0') {
+
+            if ($this->pageId === 0) {
                 //  no page selected
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDefaultIntroduction'),
