@@ -38,6 +38,7 @@ class ContentElements extends AbstractResponse
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
+        $parameters['elementRow'] = json_decode($parameters['elementRow'], true);
 
         /** @TODO LanguageHandling! */
         /** @TODO Should we hide every element on create as it isn't configured yet? */
@@ -92,6 +93,7 @@ class ContentElements extends AbstractResponse
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
 
         $parameters = $request->getParsedBody();
+
         try {
             $result = $processingService->moveElement(
                 $parameters['sourcePointer'] ?? '',

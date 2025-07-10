@@ -391,96 +391,6 @@ div.tvjs-dropzone {
     display: none;
 }
 
-/** Tooltipster own light mode */
-
-.tooltipster-sidetip .tooltipster-content {
-    max-height: 90vh;
-}
-
-.tooltipster-sidetip .tooltipster-content h2 {
-    margin-top: 0.5em;
-}
-
-.tooltipster-sidetip .tooltipster-box {
-    overflow: hidden;
-}
-
-.tooltipster-sidetip .tooltipster-box {
-    border-radius: 4px;
-    border: 1px solid #2d2d2d;
-    background: #eee;
-}
-
-.tooltipster-sidetip .tooltipster-content {
-    color: #333;
-}
-
-.tooltipster-sidetip .tooltipster-arrow {
-    height: 9px;
-    margin-left: -9px;
-    width: 18px;
-}
-
-.tooltipster-sidetip.tooltipster-left .tooltipster-arrow,
-.tooltipster-sidetip.tooltipster-right .tooltipster-arrow {
-    height: 18px;
-    margin-left: 0;
-    margin-top: -9px;
-    width: 9px;
-}
-
-.tooltipster-sidetip .tooltipster-arrow-background {
-    border: 9px solid transparent;
-}
-
-.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
-    border-bottom-color: #eee;
-    top: 1px;
-}
-
-.tooltipster-sidetip.tooltipster-left .tooltipster-arrow-background {
-    border-left-color: #eee;
-    left: -1px;
-}
-
-.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
-    border-right-color: #eee;
-    left: 1px;
-}
-
-.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
-    border-top-color: #eee;
-    top: -1px;
-}
-
-.tooltipster-sidetip .tooltipster-arrow-border {
-    border: 9px solid transparent;
-}
-
-.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
-    border-bottom-color: #2d2d2d;
-}
-
-.tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
-    border-left-color: #2d2d2d;
-}
-
-.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
-    border-right-color: #2d2d2d;
-}
-
-.tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
-    border-top-color: #2d2d2d;
-}
-
-.tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-uncropped {
-    top: -9px;
-}
-
-.tooltipster-sidetip.tooltipster-right .tooltipster-arrow-uncropped {
-    left: -9px;
-}
-
 .dragHandle {
     cursor: move;
 }
@@ -495,6 +405,10 @@ div.tvjs-dropzone {
 
 .blue {
     background-color: #98c3ff;
+}
+
+.tvpPopover {
+    --bs-popover-max-width: 50vw;
 }
 
 /** DARK MODE **/
@@ -572,46 +486,4 @@ div.tvjs-dropzone {
 
 .dark-mode-on .bg-info {
     background-color: rgba(35, 40, 90, var(--bs-bg-opacity)) !important;
-}
-
-/** Tooltipster own dark mode */
-.dark-mode-on .tooltipster-sidetip .tooltipster-box {
-    border: 1px solid #999;
-    background: #393939;
-}
-
-.dark-mode-on .tooltipster-sidetip .tooltipster-content {
-    color: #fff;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-background {
-    border-bottom-color: #393939;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-background {
-    border-left-color: #393939;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-background {
-    border-right-color: #393939;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-background {
-    border-top-color: #393939;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-bottom .tooltipster-arrow-border {
-    border-bottom-color: #999;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-left .tooltipster-arrow-border {
-    border-left-color: #999;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-right .tooltipster-arrow-border {
-    border-right-color: #999;
-}
-
-.dark-mode-on .tooltipster-sidetip.tooltipster-top .tooltipster-arrow-border {
-    border-top-color: #999;
 }
