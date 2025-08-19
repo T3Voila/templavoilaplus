@@ -8,6 +8,15 @@ import Severity from "@typo3/backend/severity.js";
 
 class PageLayout {
 
+    popoverConfig = {
+        html: true,
+        placement: 'left',
+        fallbackPlacement: ['left'],
+        trigger: 'focus',
+        content: 'Loading...',
+        sanitize: false,
+        customClass: 'tvpPopover',
+    };
     myModal = null;
     clipboard = null;
     trash = null;
@@ -374,14 +383,7 @@ class PageLayout {
             const popover = BootstrapPopover.getInstance(contentElementWizard);
             if (popover === null) {
                 Popover.popover(contentElementWizard);
-                Popover.setOptions(contentElementWizard, {
-                    html: true,
-                    placement: 'left',
-                    trigger: 'focus',
-                    content: 'Loading...',
-                    sanitize: false,
-                    customClass: 'tvpPopover',
-                });
+                Popover.setOptions(contentElementWizard, that.popoverConfig);
                 contentElementWizard.addEventListener('show.bs.popover', function () {
                     //document.querySelector('#moduleShadowing').classList.remove('hidden');
                     if (!that.baseElement.dataset.loadedContentElementWizard) {
@@ -438,14 +440,7 @@ class PageLayout {
             if (popover === null) {
 
                 Popover.popover(clipboard);
-                Popover.setOptions(clipboard, {
-                    html: true,
-                    placement: 'left',
-                    trigger: 'focus',
-                    content: 'Loading...',
-                    sanitize: false,
-                    customClass: 'tvpPopover',
-                });
+                Popover.setOptions(clipboard, that.popoverConfig);
                 clipboard.addEventListener('show.bs.popover', function () {
                     //document.querySelector('#moduleShadowing').classList.remove('hidden');
                     if (!that.baseElement.dataset.loadedClipboard) {
@@ -504,14 +499,7 @@ class PageLayout {
             if (popover === null) {
 
                 Popover.popover(trash);
-                Popover.setOptions(trash, {
-                    html: true,
-                    placement: 'left',
-                    trigger: 'focus',
-                    content: 'Loading...',
-                    sanitize: false,
-                    customClass: 'tvpPopover',
-                });
+                Popover.setOptions(trash, that.popoverConfig);
                 trash.addEventListener('show.bs.popover', function () {
                     //document.querySelector('#moduleShadowing').classList.remove('hidden');
                     if (!that.baseElement.dataset.loadedTrash) {
