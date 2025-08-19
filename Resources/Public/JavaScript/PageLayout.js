@@ -11,7 +11,7 @@ class PageLayout {
     popoverConfig = {
         html: true,
         placement: 'left',
-        fallbackPlacement: ['left'],
+        fallbackPlacements: ['left'],
         trigger: 'focus',
         content: 'Loading...',
         sanitize: false,
