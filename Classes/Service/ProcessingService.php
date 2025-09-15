@@ -767,7 +767,7 @@ class ProcessingService
                 1666475603708
             );
         }
-        if(!isset($sourcePointer['foundFieldReferences'])) {
+        if (!isset($sourcePointer['foundFieldReferences'])) {
             throw new ProcessingException(
                 sprintf('Error make local copy: sourcePointer %s is themself inside a reference.', $sourcePointerString),
                 1666475603708
