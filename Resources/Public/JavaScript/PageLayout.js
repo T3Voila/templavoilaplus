@@ -851,7 +851,7 @@ class PageLayout {
         this.showInProgress(item);
 
         var params = new URLSearchParams();
-        params.set(sourcePointer, items.dataset.parentPointer);
+        params.set('sourcePointer', item.dataset.parentPointer);
         params.set('uid', uid);
 
         fetch(TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_makelocal'], {
@@ -873,7 +873,7 @@ class PageLayout {
             that.showSuccess(div.firstElementChild);
             item.parentNode.replaceChild(div.firstElementChild, item);
         }).catch(function(errorException) {
-            that.showError(items);
+            that.showError(item);
             that.showErrorNotification(errorException);
         });
     }

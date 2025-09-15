@@ -761,6 +761,19 @@ class ProcessingService
         // Check and get all information about the source position:
         $sourcePointer = $this->getValidPointer($sourcePointerString);
 
+        if (!$sourcePointer) {
+            throw new ProcessingException(
+                sprintf('Error make local copy: sourcePointer %s not valid.', $sourcePointerString),
+                1666475603708
+            );
+        }
+        if(!isset($sourcePointer['foundFieldReferences'])) {
+            throw new ProcessingException(
+                sprintf('Error make local copy: sourcePointer %s is themself inside a reference.', $sourcePointerString),
+                1666475603708
+            );
+        }
+
         $sourceElementTable = $sourcePointer['foundFieldReferences']['referenceTable'];
         $sourceElementUid = $sourcePointer['foundFieldReferences']['references'][$sourcePointer['position']];
 
