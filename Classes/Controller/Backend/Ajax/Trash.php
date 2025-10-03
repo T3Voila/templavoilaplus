@@ -50,7 +50,7 @@ class Trash extends AbstractResponse
 
         $unusedElements = $this->trash2fluid((int)$parameters['pid']);
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Trash.html', $request, $this->getSettings());
+        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/Trash.html', $request, $this->getSettings(0));
         $view->assign('unusedElements', $unusedElements);
 
         return new HtmlResponse($view->render());

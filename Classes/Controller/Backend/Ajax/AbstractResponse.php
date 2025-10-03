@@ -93,8 +93,13 @@ abstract class AbstractResponse
         $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
-        $allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages($pageId, true, true, []);
-        $allExistingPageLanguages = TemplaVoilaUtility::getExistingPageLanguages($pageId, true, true, []);
+        $allAvailableLanguages = [];
+        $allExistingPageLanguages = [];
+
+        if ($pageId !== 0) {
+            $allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages($pageId, true, true, []);
+            $allExistingPageLanguages = TemplaVoilaUtility::getExistingPageLanguages($pageId, true, true, []);
+        }
 
         return [
             'configuration' => [
