@@ -21,6 +21,7 @@ use Tvp\TemplaVoilaPlus\Controller\Backend\PageLayoutController;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Service\ApiService;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
+use Tvp\TemplaVoilaPlus\Service\PreviewService;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -42,7 +43,8 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
         $apiService = GeneralUtility::makeInstance(ApiService::class, 'pages');
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
-
+        /** @var PreviewService */
+        $previewService = GeneralUtility::makeInstance(PreviewService::class);
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
@@ -82,6 +84,7 @@ class DoktypeDefaultHandler extends AbstractDoktypeHandler
 
                 $nodeTree = $processingService->getNodeWithTree('pages', $pageRecord);
                 $unusedElements = $processingService->getUnusedElements($pageRecord, $nodeTree['usedElements']);
+                $nodeTree = $previewService->buildPreviewInTree($pageRecord, $nodeTree);
 
                 $controller->getView()->assign(
                     'doktypeDefault',

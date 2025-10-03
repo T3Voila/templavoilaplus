@@ -19,6 +19,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend\Ajax;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Exception\ProcessingException;
+use Tvp\TemplaVoilaPlus\Service\PreviewService;
 use Tvp\TemplaVoilaPlus\Service\ProcessingService;
 use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -59,9 +60,20 @@ abstract class AbstractResponse
             throw new ProcessingException(sprintf('Trying to render %s:%u, but record not available', $table, $uid));
         }
 
+        if ($table === 'pages') {
+            $pageRecord = $row;
+        } else {
+            $pageRecord = BackendUtility::getRecord('pages', $row['pid']);
+        }
+
         /** @var ProcessingService */
         $processingService = GeneralUtility::makeInstance(ProcessingService::class);
+        /** @var PreviewService */
+        $previewService = GeneralUtility::makeInstance(PreviewService::class);
+
         $nodeTree = $processingService->getNodeWithTree($table, $row);
+        $nodeTree = $previewService->buildPreviewInTree($pageRecord, $nodeTree);
+
         if ($parentPointer) {
             $nodeTree['node']['rendering']['parentPointer'] = $parentPointer;
         }

@@ -6,10 +6,19 @@
     <f:variable name="previewTyped" value="{node.raw.entity.{typeColumn} -> f:format.case(mode:'capital')}"/>
 </f:if>
 
-<div class="tvp-preview">
-    <f:render partial="Backend/Preview/{previewTable}/{previewTyped}" optional="1" arguments="{node: node}">
-        <f:render partial="Backend/Preview/{previewTable}" optional="1" arguments="{node: node}">
-            <f:render partial="Backend/Preview/Default" arguments="{node: node}" />
-        </f:render>
-    </f:render>
-</div>
+<f:if condition="{node.rendering.preview}">
+    <f:then>
+        <div class="core-preview">
+            <f:format.raw>{node.rendering.preview}</f:format.raw>
+        </div>
+    </f:then>
+    <f:else>
+        <div class="tvp-preview">
+            <f:render partial="Backend/Preview/{previewTable}/{previewTyped}" optional="1" arguments="{node: node}">
+                <f:render partial="Backend/Preview/{previewTable}" optional="1" arguments="{node: node}">
+                    <f:render partial="Backend/Preview/Default" arguments="{node: node}" />
+                </f:render>
+            </f:render>
+        </div>
+    </f:else>
+</f:if>
