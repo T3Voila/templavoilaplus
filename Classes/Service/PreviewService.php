@@ -27,14 +27,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class PreviewService
 {
-
     public function buildPreviewInTree(array $pageRow, array $nodeTree): array
     {
         $backendLayout = BackendLayout::create('TV+', 'TV+', []);
         $pageLayoutContext = GeneralUtility::makeInstance(PageLayoutContext::class, $pageRow, $backendLayout);
 
-        $nodeTree['node']['rendering']['preview'] =
-            $this->buildNodePreview($pageRow, $nodeTree['node'], $pageLayoutContext);
+        $nodeTree['node']['rendering']['preview'] = $this->buildNodePreview($pageRow, $nodeTree['node'], $pageLayoutContext);
 
         if (!empty($nodeTree['node']['childNodes'] ?? [])) {
             $childNodes = $nodeTree['node']['childNodes'];
