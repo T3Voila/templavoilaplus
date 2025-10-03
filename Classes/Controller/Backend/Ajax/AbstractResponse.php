@@ -78,20 +78,31 @@ abstract class AbstractResponse
             $nodeTree['node']['rendering']['parentPointer'] = $parentPointer;
         }
 
-        $view = $this->getFluidTemplateObject('EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html', $request, $this->getSettings());
+        $view = $this->getFluidTemplateObject(
+            'EXT:templavoilaplus/Resources/Private/Templates/Backend/Ajax/InsertNode.html',
+            $request,
+            $this->getSettings((int) $pageRecord['uid'])
+        );
         $view->assign('nodeTree', $nodeTree);
 
         return $view->render();
     }
 
-    protected function getSettings()
+    protected function getSettings(int $pageId)
     {
         $typo3Version = new \TYPO3\CMS\Core\Information\Typo3Version();
         /** @TODO better handle this with an configuration object */
         /** @TODO Duplicated more or less from PageLayoutController */
+        $allAvailableLanguages = TemplaVoilaUtility::getAvailableLanguages($pageId, true, true, []);
+        $allExistingPageLanguages = TemplaVoilaUtility::getExistingPageLanguages($pageId, true, true, []);
+
         return [
             'configuration' => [
-                'allAvailableLanguages' => TemplaVoilaUtility::getAvailableLanguages(0, true, true, []),
+                'allAvailableLanguages' => $allAvailableLanguages,
+                // If we have more then "all-languages" and 1 editors language available
+                'moreThenOneLanguageAvailable' => count($allAvailableLanguages) > 2 ? true : false,
+                'allExistingPageLanguages' => $allExistingPageLanguages,
+                'moreThanOneLanguageShouldBeShown' => count($allExistingPageLanguages) > 1 ? true : false,
                 'lllFile' => 'LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf',
                 'userSettings' => TemplaVoilaUtility::getBackendUser()->uc['templavoilaplus'] ?? [],
                 'is11orNewer' => version_compare($typo3Version->getVersion(), '11.0.0', '>=') ? true : false,
