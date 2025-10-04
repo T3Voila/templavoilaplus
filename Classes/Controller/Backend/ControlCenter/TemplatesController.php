@@ -31,13 +31,6 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 class TemplatesController extends ActionController
 {
     /**
-     * Initialize action
-     */
-    protected function initializeAction()
-    {
-    }
-
-    /**
      * List all available configurations for templates
      */
     public function listAction(): ResponseInterface

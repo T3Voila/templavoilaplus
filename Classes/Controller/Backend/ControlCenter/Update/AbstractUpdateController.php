@@ -56,13 +56,6 @@ class AbstractUpdateController extends ActionController
         $this->extConf = $configurationService->getExtensionConfig();
     }
 
-    /**
-     * Initialize action
-     */
-    protected function initializeAction()
-    {
-    }
-
     protected function initializeView(\TYPO3Fluid\Fluid\View\ViewInterface $view)
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);

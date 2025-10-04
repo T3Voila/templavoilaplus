@@ -6,6 +6,7 @@ services:
 
   Tvp\TemplaVoilaPlus\:
     resource: '../Classes/*'
+    exclude: '../Classes/Configuration/FlexForm/FlexFormTools*'
 
   Tvp\TemplaVoilaPlus\Configuration\FlexForm\ParsingModifyEventListener:
     tags:

@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Contains functions for manipulating flex form data
  */
-class FlexFormTools8 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
+class FlexFormTools12 extends \TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools
 {
     /**
      * The method locates a specific data structure from given TCA and row combination

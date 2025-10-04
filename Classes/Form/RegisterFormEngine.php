@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Form;
  */
 
 use TYPO3\CMS\Core\Core\Event\BootCompletedEvent;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 class RegisterFormEngine
 {
@@ -28,7 +29,12 @@ class RegisterFormEngine
 
     public function registerHookFormEngine()
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-            = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8::class;
+        if (version_compare((string) new Typo3Version(), '13.0', '>')) {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+                = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools13::class;
+        } else {
+            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
+                = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools12::class;
+        }
     }
 }

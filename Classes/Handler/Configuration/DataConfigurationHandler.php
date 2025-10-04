@@ -18,9 +18,11 @@ namespace Tvp\TemplaVoilaPlus\Handler\Configuration;
  */
 
 use Symfony\Component\Finder\SplFileInfo;
-use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools8;
+use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools12;
+use Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools13;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\AbstractConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\DataConfiguration;
+use TYPO3\CMS\Core\Information\Typo3Version;
 
 class DataConfigurationHandler extends AbstractConfigurationHandler
 {
@@ -33,7 +35,11 @@ class DataConfigurationHandler extends AbstractConfigurationHandler
         $options = $this->place->getOptions();
 
         if ($options['dataConfigurationHandler']['flexformPrepare'] ?? true) {
-            $dataStructure = (new FlexFormTools8())->prepareFlexform($dataStructure);
+            if (version_compare((string) new Typo3Version(), '13.0', '>')) {
+                $dataStructure = (new FlexFormTools13())->prepareFlexform($dataStructure);
+            } else {
+                $dataStructure = (new FlexFormTools12())->prepareFlexform($dataStructure);
+            }
         }
 
         // Read title from XML file and set, if not empty or ROOT

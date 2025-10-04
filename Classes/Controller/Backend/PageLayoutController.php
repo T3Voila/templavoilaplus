@@ -161,7 +161,7 @@ class PageLayoutController extends ActionController
     /**
      * Initialize action
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         $this->moduleTemplate = $this->moduleTemplateFactory->create($this->request);
         // determine id parameter
@@ -267,7 +267,7 @@ class PageLayoutController extends ActionController
         $this->moduleTemplate->assign('pageTitle', $pageTitle);
         $this->moduleTemplate->assign('pageDescription', $activePage[$GLOBALS['TCA']['pages']['ctrl']['descriptionColumn']] ?? '');
         $this->moduleTemplate->assign('pageDoktype', $activePage['doktype'] ?? null);
-        $this->moduleTemplate->assign('pageMessages', $this->getFlashMessageQueue('TVP')->getAllMessages());
+        $this->moduleTemplate->assign('pageMessages', $this->getFlashMessageQueue()->getAllMessages());
 
         $this->moduleTemplate->assign('calcPerms', $this->calcPerms);
         $this->moduleTemplate->assign('basicEditRights', $this->hasBasicEditRights(isset($this->pageInfo['uid']) ? 'pages' : null, isset($this->pageInfo['uid']) ? $this->pageInfo : null));
@@ -289,8 +289,6 @@ class PageLayoutController extends ActionController
             $this->moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
         }
         $this->registerDocheaderButtons($this->moduleTemplate);
-
-        // $this->view->setFlashMessageQueue($this->getFlashMessageQueue());
 
         return $this->moduleTemplate->renderResponse('Show');
     }
@@ -757,35 +755,5 @@ class PageLayoutController extends ActionController
     public function permissionContentEdit(): bool
     {
         return TemplaVoilaUtility::getBackendUser()->isAdmin() || ($this->calcPerms & Permission::CONTENT_EDIT) === Permission::CONTENT_EDIT;
-    }
-
-    /**
-     * Creates a Message object and adds it to the FlashMessageQueue.
-     *
-     * @param string $messageBody The message
-     * @param string $messageTitle Optional message title
-     * @param int $severity Optional severity, must be one of \TYPO3\CMS\Core\Messaging\FlashMessage constants
-     * @param bool $storeInSession Optional, defines whether the message should be stored in the session (default) or not
-     * @param array $buttons Optional array of button configuration
-     * @throws \InvalidArgumentException if the message body is no string
-     */
-    public function addFlashMessage(
-        $messageBody,
-        $messageTitle = '',
-        $severity = ContextualFeedbackSeverity::OK,
-        $storeInSession = false,
-        array $buttons = []
-    ) {
-        /* @var \Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage $flashMessage */
-        $flashMessage = GeneralUtility::makeInstance(
-            FlashMessage::class,
-            (string)$messageBody,
-            (string)$messageTitle,
-            $severity,
-            $storeInSession,
-            $buttons
-        );
-
-        $this->getFlashMessageQueue('TVP')->enqueue($flashMessage);
     }
 }

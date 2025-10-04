@@ -40,13 +40,6 @@ class DataStructuresController extends ActionController
     protected $view;
 
     /**
-     * Initialize action
-     */
-    protected function initializeAction()
-    {
-    }
-
-    /**
      * Displays the page with layout and content elements
      */
     public function listAction(): ResponseInterface

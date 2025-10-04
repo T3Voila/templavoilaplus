@@ -47,7 +47,7 @@ class ControlCenterController extends ActionController
     /**
      * Initialize action
      */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         // determine id parameter
         $this->pageId = (int)($this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? 0);
