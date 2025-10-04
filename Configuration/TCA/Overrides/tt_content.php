@@ -28,6 +28,7 @@ $tempColumns = [
         'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoilaplus_map',
+            'ds' => [],
             'ds_pointerType' => 'combinedMappingIdentifier',
         ],
     ],
