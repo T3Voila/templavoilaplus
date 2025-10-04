@@ -28,6 +28,7 @@ use Tvp\TemplaVoilaPlus\Utility\TemplaVoilaUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException as CoreInvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -157,8 +158,8 @@ class ProcessingService
             ->select('*')
             ->from($table)
             ->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], \PDO::PARAM_INT)),
-                $queryBuilder->expr()->eq($l10n_parent_field, $queryBuilder->createNamedParameter(0, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter((int)$pageRow['uid'], Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq($l10n_parent_field, $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
             );
         if (!empty($usedUids)) {
             $queryBuilder->andWhere(
@@ -166,7 +167,7 @@ class ProcessingService
             );
         }
 
-        $row = $queryBuilder->executeQuery()->fetchAll(\PDO::FETCH_ASSOC);
+        $row = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         return $row;
     }

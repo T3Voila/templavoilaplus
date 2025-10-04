@@ -18,6 +18,7 @@ namespace Tvp\TemplaVoilaPlus\Domain\Repository;
  */
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
@@ -43,9 +44,9 @@ class PageRepository extends \TYPO3\CMS\Core\Domain\Repository\PageRepository
         $queryBuilder
             ->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, \PDO::PARAM_INT)));
+            ->where($queryBuilder->expr()->eq('content_from_pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)));
 
-        $pages = $queryBuilder->executeQuery()->fetchAll();
+        $pages = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         if ($pages) {
             foreach ($pages as $key => $page) {

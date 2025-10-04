@@ -63,12 +63,12 @@ class LocalizationRepository
                 ->where(
                     $queryBuilder->expr()->eq(
                         $tcaCtrl['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($uid, \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->gt($tcaCtrl['languageField'], 0)
                 );
 
-            $result = $queryBuilder->executeQuery()->fetchAll();
+            $result = $queryBuilder->executeQuery()->fetchAllAssociative();
         }
 
         return $result;
