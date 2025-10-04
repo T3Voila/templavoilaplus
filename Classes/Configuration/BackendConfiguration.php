@@ -59,7 +59,6 @@ class BackendConfiguration
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_MOUNTPOINT, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeMountpointHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SPACER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSpacerHandler::class);
         $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_SYSFOLDER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeSysfolderHandler::class);
-        $this->setItem(self::HANDLER_DOCTYPE, \TYPO3\CMS\Core\Domain\Repository\PageRepository::DOKTYPE_RECYCLER, \Tvp\TemplaVoilaPlus\Controller\Backend\Handler\DoktypeRecyclerHandler::class);
     }
 
     public function setItem($type, $key, $value)
