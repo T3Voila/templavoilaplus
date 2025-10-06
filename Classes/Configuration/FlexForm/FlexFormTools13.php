@@ -335,4 +335,3 @@ readonly class FlexFormTools13 extends \TYPO3\CMS\Core\Configuration\FlexForm\Fl
         return $dataStructureIdentifier;
     }
 }
-
