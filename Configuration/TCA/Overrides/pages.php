@@ -41,7 +41,6 @@ $tempColumns = [
         'config' => [
             'type' => 'flex',
             'ds_pointerField' => 'tx_templavoilaplus_map',
-            'ds' => [],
             'ds_pointerField_searchParent' => 'pid',
             'ds_pointerField_searchParent_subField' => 'tx_templavoilaplus_next_map',
             'ds_pointerType' => 'combinedMappingIdentifier',
