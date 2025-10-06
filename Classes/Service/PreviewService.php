@@ -58,12 +58,14 @@ class PreviewService
     {
         foreach ($sheetConfig as $fieldName => $fieldConfig) {
             if (($fieldConfig['type'] ?? '') == 'array') {
-                if (($fieldConfig['section'] ?? '') == 1) {
-                    foreach ($sheetNodes[$fieldName] as $id => $sectionNodes) {
-                        $sheetNodes[$fieldName][$id] = $this->buildFieldTreePreview($pageRow, $fieldConfig['el'], $sheetNodes[$fieldName][$id]);
+                if (isset($sheetNodes[$fieldName])) {
+                    if (($fieldConfig['section'] ?? '') == 1) {
+                        foreach ($sheetNodes[$fieldName] as $id => $sectionNodes) {
+                            $sheetNodes[$fieldName][$id] = $this->buildFieldTreePreview($pageRow, $fieldConfig['el'], $sheetNodes[$fieldName][$id]);
+                        }
+                    } else {
+                        $sheetNodes[$fieldName] = $this->buildFieldTreePreview($pageRow, $fieldConfig['el'], $sheetNodes[$fieldName]);
                     }
-                } else {
-                    $sheetNodes[$fieldName] = $this->buildFieldTreePreview($pageRow, $fieldConfig['el'], $sheetNodes[$fieldName]);
                 }
             } elseif (isset($sheetNodes[$fieldName]['vDEF'])) {
                 foreach ($sheetNodes[$fieldName]['vDEF'] as $position => $node) {
