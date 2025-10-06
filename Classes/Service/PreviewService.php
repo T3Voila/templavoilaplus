@@ -82,10 +82,17 @@ class PreviewService
         $columnObject = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $columnObject, $node['raw']['entity']);
 
+        $table = $node['raw']['table'];
+
+        // StandardPreviewRendererResolver cannot handle type fields in the format localField:foreignField
+        if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && str_contains($GLOBALS['TCA'][$table]['ctrl']['type'], ':')) {
+            return null;
+        }
+
         try {
             $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
                 ->resolveRendererFor(
-                    $node['raw']['table'],
+                    $table,
                     $node['raw']['entity'],
                     (int)$pageRow['uid']
                 );
@@ -97,7 +104,7 @@ class PreviewService
         // Dispatch event to allow listeners adding an alternative content type
         // specific preview or to manipulate the content elements' record data.
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-            new PageContentPreviewRenderingEvent($node['raw']['table'], $node['raw']['entity'], $pageLayoutContext)
+            new PageContentPreviewRenderingEvent($table, $node['raw']['entity'], $pageLayoutContext)
         );
 
         // Update the modified record data
