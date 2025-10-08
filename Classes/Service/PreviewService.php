@@ -50,7 +50,6 @@ class PreviewService
             $nodeTree['node']['localization'][$languageKey]['rendering']['preview'] = $preview;
             // \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($preview);
         }
-
         return $nodeTree;
     }
 
@@ -83,9 +82,13 @@ class PreviewService
         $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $columnObject, $node['raw']['entity']);
 
         $table = $node['raw']['table'];
+        $row = $node['raw']['entity'];
 
         // StandardPreviewRendererResolver cannot handle type fields in the format localField:foreignField
         if (isset($GLOBALS['TCA'][$table]['ctrl']['type']) && str_contains($GLOBALS['TCA'][$table]['ctrl']['type'], ':')) {
+            return null;
+        }
+        if ($table === 'tt_content' && $row['CType'] === 'templavoilaplus_pi1') {
             return null;
         }
 
@@ -93,7 +96,7 @@ class PreviewService
             $previewRenderer = GeneralUtility::makeInstance(StandardPreviewRendererResolver::class)
                 ->resolveRendererFor(
                     $table,
-                    $node['raw']['entity'],
+                    $row,
                     (int)$pageRow['uid']
                 );
         } catch (\RuntimeException $e) {
@@ -104,7 +107,7 @@ class PreviewService
         // Dispatch event to allow listeners adding an alternative content type
         // specific preview or to manipulate the content elements' record data.
         $event = GeneralUtility::makeInstance(EventDispatcherInterface::class)->dispatch(
-            new PageContentPreviewRenderingEvent($table, $node['raw']['entity'], $pageLayoutContext)
+            new PageContentPreviewRenderingEvent($table, $row, $pageLayoutContext)
         );
 
         // Update the modified record data
