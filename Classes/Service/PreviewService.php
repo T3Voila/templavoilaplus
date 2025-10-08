@@ -121,8 +121,8 @@ class PreviewService
         }
 
         // Remove the links from StandardContentPreviewRenderer::linkEditContent
-        $previewHeader = preg_replace('/<a[^>]*>(.*?)<\/a>/', '$1', $previewHeader);
-        $previewContent = preg_replace('/<a[^>]*>(.*?)<\/a>/', '$1', $previewContent);
+        $previewHeader = preg_replace('/<a[^>]*>(.*?)<\/a>/s', '$1', $previewHeader);
+        $previewContent = preg_replace('/<a[^>]*>(.*?)<\/a>/s', '$1', $previewContent);
 
         return $previewHeader . $previewContent . $columnItem->getFooterInfo();
     }
