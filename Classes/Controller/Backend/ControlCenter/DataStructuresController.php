@@ -64,7 +64,7 @@ class DataStructuresController extends ActionController
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
 
-        return $moduleTemplate->renderResponse('List');
+        return $moduleTemplate->renderResponse('Backend/ControlCenter/DataStructures/List');
     }
 
     /**

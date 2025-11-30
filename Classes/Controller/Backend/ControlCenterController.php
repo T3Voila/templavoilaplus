@@ -87,7 +87,7 @@ class ControlCenterController extends ActionController
 
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation($this->pageInfo);
 
-        return $moduleTemplate->renderResponse('Show');
+        return $moduleTemplate->renderResponse('Backend/ControlCenter/Show');
     }
 
     public function debugAction(): ResponseInterface
@@ -117,7 +117,7 @@ class ControlCenterController extends ActionController
             ->setIcon($iconFactory->getIcon('actions-view-go-back', Icon::SIZE_SMALL));
         $buttonBar->addButton($button, ButtonBar::BUTTON_POSITION_LEFT, 1);
 
-        return $moduleTemplate->renderResponse('Debug');
+        return $moduleTemplate->renderResponse('Backend/ControlCenter/Debug');
     }
 
     /**

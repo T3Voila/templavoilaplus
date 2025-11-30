@@ -55,7 +55,7 @@ class TemplatesController extends ActionController
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
 
-        return $moduleTemplate->renderResponse('List');
+        return $moduleTemplate->renderResponse('Backend/ControlCenter/Templates/List');
     }
 
     /**
@@ -88,7 +88,7 @@ class TemplatesController extends ActionController
         $moduleTemplate->getDocHeaderComponent()->setMetaInformation([]);
         $this->registerDocheaderButtons($moduleTemplate);
 
-        return $moduleTemplate->renderResponse('Info');
+        return $moduleTemplate->renderResponse('Backend/ControlCenter/Templates/Info');
     }
 
     /**

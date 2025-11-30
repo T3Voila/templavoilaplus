@@ -34,7 +34,7 @@ class UpdateController extends Update\AbstractUpdateController
         $this->moduleTemplate->assign('pageTitle', 'TemplaVoilà! Plus - Update Scripts');
         $this->moduleTemplate->assign('hasServerMigrationFile', $this->hasServerMigrationFile());
 
-        return $this->moduleTemplate->renderResponse('info');
+        return $this->moduleTemplate->renderResponse('Backend/ControlCenter/Update/Info');
     }
 
     protected function hasServerMigrationFile(): bool

@@ -290,7 +290,7 @@ class PageLayoutController extends ActionController
         }
         $this->registerDocheaderButtons($this->moduleTemplate);
 
-        return $this->moduleTemplate->renderResponse('Show');
+        return $this->moduleTemplate->renderResponse('Backend/PageLayout/Show');
     }
 
     /**

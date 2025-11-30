@@ -30,7 +30,7 @@ class DataStructureV10Controller extends AbstractUpdateController
 
     protected function stepStartAction()
     {
-        return $this->moduleTemplate->renderResponse('stepStart');
+        return $this->moduleTemplate->renderResponse('Backend/ControlCenter/Update/DataStructureV10/StepStart');
     }
 
     protected function stepFinalAction()
@@ -51,7 +51,7 @@ class DataStructureV10Controller extends AbstractUpdateController
             'hasErrors' => !empty($this->errors),
             'errors' => $this->errors,
         ]);
-        return $this->moduleTemplate->renderResponse('stepFinal');
+        return $this->moduleTemplate->renderResponse('Backend/ControlCenter/Update/DataStructureV10/StepFinal');
     }
 
     /**
