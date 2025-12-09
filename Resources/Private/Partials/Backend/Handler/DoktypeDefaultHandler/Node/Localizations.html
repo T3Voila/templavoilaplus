@@ -30,15 +30,13 @@
                         </f:then>
                         <f:else>
                             <div class="tvp-localization-row">
-                                <a href="{node.localizationActions.{language.uid}.actionUrl}">
-                                    <button type="button" class="btn btn-default btn-sm tvp-clipboard-release">
-                                        <core:icon identifier="actions-document-add" size="small"/>
-                                        <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
-                                            <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
-                                        </span>
-                                        <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation" arguments="{1:'{settings.configuration.allAvailableLanguages.{language.uid}.title}',2:'{settings.configuration.allAvailableLanguages.{language.uid}.ISOcode}'}" />
-                                    </button>
-                                </a>
+                                <button type="button" class="btn btn-default btn-sm tvp-record-localize" data-language-uid="{language.uid}">
+                                    <core:icon identifier="actions-document-add" size="small"/>
+                                    <span title="{settings.configuration.allAvailableLanguages.{language.uid}.title}">
+                                        <core:icon identifier="{settings.configuration.allAvailableLanguages.{language.uid}.flagIcon}"/>
+                                    </span>
+                                    <f:translate key="{settings.configuration.lllFile}:createCopyForTranslation" arguments="{1:'{settings.configuration.allAvailableLanguages.{language.uid}.title}',2:'{settings.configuration.allAvailableLanguages.{language.uid}.ISOcode}'}" />
+                                </button>
                             </div>
                         </f:else>
                     </f:if>

@@ -91,6 +91,11 @@ return [
         'access' => 'user,group',
         'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::editform',
     ],
+    'templavoilaplus_record_localize' => [
+        'path' => '/templavoilaplus/record/localize',
+        'access' => 'user,group',
+        'target' => \Tvp\TemplaVoilaPlus\Controller\Backend\Ajax\Record::class . '::localize',
+    ],
     'templavoilaplus_usersettings_enableDarkMode' => [
         'path' => '/templavoilaplus/usersettings/enableDarkMode',
         'access' => 'user,group',

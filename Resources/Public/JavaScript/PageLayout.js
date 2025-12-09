@@ -121,6 +121,7 @@ class PageLayout {
         this.initClipboardAddListener(base);
         this.initMakeLocalCopy(base);
         this.initSwitchVisibilityListener(base);
+        this.initLocalizeListener(base);
     }
 
     initSortable = function (base) {
@@ -606,12 +607,24 @@ class PageLayout {
 
     initSwitchVisibilityListener = function(base) {
         let that = this;
-        var allItems = base.querySelectorAll('div.tvp-node  button.tvp-record-switch-visibility');
+        var allItems = base.querySelectorAll('div.tvp-node button.tvp-record-switch-visibility');
 
         for (const item of allItems) {
             item.addEventListener('click', function(event) {
                 var origItem = item.closest('.tvp-node');
                 that.recordSwitchVisibility(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            })
+        }
+    }
+
+    initLocalizeListener = function(base) {
+        let that = this;
+        var allItems = base.querySelectorAll('div.tvp-node button.tvp-record-localize');
+
+        for (const item of allItems) {
+            item.addEventListener('click', function(event) {
+                var origItem = item.closest('.tvp-node');
+                that.recordLocalize(origItem.dataset.recordTable, origItem.dataset.recordUid, event.srcElement.dataset.languageUid);
             })
         }
     }
@@ -750,6 +763,35 @@ class PageLayout {
         params.set('table', table);
         params.set('uid', uid);
         fetch(TYPO3.settings.ajaxUrls['templavoilaplus_record_switch_visibility'], {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: params,
+        }).then(async function(response) {
+            if (!response.ok) {
+                var errorJson = await response.json();
+                throw new Error("Visibility error", {cause: {response: response, errorJson: errorJson}});
+            }
+            return response.json()
+        }).then(function(data) {
+            that.reloadRecord(table, uid);
+        }).catch(function(errorException) {
+            that.showError(item);
+            that.showErrorNotification(errorException);
+        });
+    }
+
+    recordLocalize = function(table, uid, langUid) {
+        var that = this;
+        var item = document.querySelector('div.tvp-node[data-record-table="' + table +'"][data-record-uid="' + uid +'"]');
+        this.showInProgress(item);
+
+        var params = new URLSearchParams();
+        params.set('table', table);
+        params.set('uid', uid);
+        params.set('langUid', langUid);
+        fetch(TYPO3.settings.ajaxUrls['templavoilaplus_record_localize'], {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

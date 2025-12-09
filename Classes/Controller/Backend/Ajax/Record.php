@@ -86,6 +86,32 @@ class Record extends AbstractResponse
         ]);
     }
 
+    public function localize(ServerRequestInterface $request): ResponseInterface
+    {
+        $parameters = $request->getParsedBody();
+        $table = $parameters['table'];
+        $uid = (int)$parameters['uid'];
+        $langUid = (int)$parameters['langUid'];
+
+        $dataHandlerCommand = [
+            $table => [
+                $uid => [
+                    'localize' => $langUid,
+                ],
+            ],
+        ];
+
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], $dataHandlerCommand);
+        $dataHandler->process_cmdmap();
+
+        return new JsonResponse([
+            'uid' => $uid,
+            'nodeHtml' => '',
+        ]);
+    }
+
     /**
      * @param ServerRequestInterface $request the current request
      * @return ResponseInterface the response with the content
