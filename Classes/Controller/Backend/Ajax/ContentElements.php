@@ -69,7 +69,7 @@ class ContentElements extends AbstractResponse
     {
         $parameters = $request->getParsedBody();
 
-        if ($parameters['table'] && (int)$parameters['uid'] > 0) {
+        if (isset($parameters['table']) && $parameters['table'] !== '' && (int)$parameters['uid'] > 0) {
             return new JsonResponse([
                 'nodeHtml' => $this->record2html($parameters['table'], (int)$parameters['uid'], $request),
             ]);
