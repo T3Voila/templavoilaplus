@@ -29,12 +29,5 @@ class RegisterFormEngine
 
     public function registerHookFormEngine()
     {
-        if (version_compare((string) new Typo3Version(), '13.0', '>')) {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-                = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools13::class;
-        } else {
-            $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['className']
-                = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\FlexFormTools12::class;
-        }
     }
 }

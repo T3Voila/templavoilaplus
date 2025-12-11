@@ -20,6 +20,7 @@ namespace Tvp\TemplaVoilaPlus\Configuration\FlexForm;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,7 +52,7 @@ class DataStructureIdentifierHook
                 ->where(
                     $queryBuilder->expr()->eq(
                         'uid',
-                        $queryBuilder->createNamedParameter($identifier['uid'], \PDO::PARAM_INT)
+                        $queryBuilder->createNamedParameter($identifier['uid'], Connection::PARAM_INT)
                     )
                 )
                 ->executeQuery()

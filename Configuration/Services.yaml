@@ -11,6 +11,10 @@ services:
   Tvp\TemplaVoilaPlus\Configuration\FlexForm\ParsingModifyEventListener:
     tags:
         - name: event.listener
+          identifier: 'templavoilaplus/initializeDataStructureIdentifier'
+          method: 'initializeDataStructureIdentifier'
+          event: TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent
+        - name: event.listener
           identifier: 'templavoilaplus/handleFlexformIdentifier'
           method: 'setDataStructure'
           event: TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent

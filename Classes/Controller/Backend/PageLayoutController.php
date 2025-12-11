@@ -17,6 +17,7 @@ namespace Tvp\TemplaVoilaPlus\Controller\Backend;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Configuration\BackendConfiguration;
 use Tvp\TemplaVoilaPlus\Core\Messaging\FlashMessage;
 use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
@@ -207,6 +208,11 @@ class PageLayoutController extends ActionController
     public function getCurrentPageInfo(): array
     {
         return $this->pageInfo;
+    }
+
+    public function getRequest(): ServerRequestInterface
+    {
+        return $this->request;
     }
 
     /**

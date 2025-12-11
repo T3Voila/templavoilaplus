@@ -72,7 +72,7 @@ abstract class AbstractResponse
         $previewService = GeneralUtility::makeInstance(PreviewService::class);
 
         $nodeTree = $processingService->getNodeWithTree($table, $row);
-        $nodeTree = $previewService->buildPreviewInTree($pageRecord, $nodeTree);
+        $nodeTree = $previewService->buildPreviewInTree($pageRecord, $nodeTree, $request, BackendUtility::getPagesTSconfig($pageRecord['uid']));
 
         if ($parentPointer) {
             $nodeTree['node']['rendering']['parentPointer'] = $parentPointer;
