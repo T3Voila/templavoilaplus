@@ -63,6 +63,7 @@ class ExtendedNewContentElementController extends \TYPO3\CMS\Backend\Controller\
                 $this->colPos,
                 $this->sys_language,
                 $this->uid_pid,
+                $request,
             )
         )->getWizardItems();
 
