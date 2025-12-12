@@ -143,22 +143,21 @@ div.tvjs-dropzone {
 }
 
 .tvp-component-sidebar {
-    position: absolute;
+    position: fixed;
     top: 35px;
     height: 100%;
 }
 
-#tvp-component-sidebar-left {
-    width: 0;
-    left: 0;
-    box-shadow: 6px 0 20px #333;
+.tvp-component-sidebar.v13 {
+    top: 78px;
 }
 
 #tvp-component-sidebar-right {
     width: 90px;
     right: 0;
-    border-left: 1px solid #c3c3c3;
-    background-color: #eee;
+    border-left: 1px solid var(--module-docheader-border-color);
+    background-color: var(--module-docheader-bg);
+    padding: 1.5rem .5rem;
 }
 
 #tvp-component-stage-container {
@@ -314,9 +313,8 @@ div.tvjs-dropzone {
     padding: 0;
     height: 100%;
     position: absolute;
-    top: 70px;
+    top: 35px;
     right: 0;
-    transform: translateX(0%);
 }
 
 .sidenav-menu {
@@ -328,8 +326,9 @@ div.tvjs-dropzone {
 
 .sidenav-item {
     color: #198734;
-    background-color: #eee;
-    border: 1px solid #c3c3c3;
+    background-color: var(--typo3-state-default-bg);
+    border: var(--typo3-input-border-width) solid var(--typo3-state-default-border-color, #bbbbbb);
+    border-radius: var(--typo3-input-border-radius);
     margin: 0.4rem 1rem;
     padding: 1rem;
 }
@@ -353,7 +352,9 @@ div.tvjs-dropzone {
 }
 
 .sidenav-item.disabled {
-    background-color: #d7d7d7;
+    color: var(--typo3-state-default-disabled-color);
+    background-color: var(--typo3-state-default-disabled-bg, );
+    border-color: var(--typo3-state-default-disabled-border-color, #bbbbbb)
 }
 
 .sidenav-item.disabled .icon {
@@ -361,7 +362,8 @@ div.tvjs-dropzone {
 }
 
 .sidenav-item:hover:not(.disabled) {
-    background-color: #d7d7d7;
+    background-color:var(--typo3-state-default-hover-bg, #cacaca);
+    border-color: var(--typo3-state-default-hover-border-color, #bebebe);
 }
 
 .sidenav-item .badge {
