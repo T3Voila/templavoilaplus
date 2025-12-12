@@ -43,7 +43,7 @@ div.tvjs-dropzone {
 
 .tvp-childs-table .col.t3-grid-cell {
     padding: 0;
-    background-color: #fafafa;
+    background-color: var(--pagemodule-grid-cell-bg, #fafafa);
 }
 
 .tvp-record-edit:empty + .row.tvp-childs-table {
@@ -179,7 +179,8 @@ div.tvjs-dropzone {
 
 .tvp-node-header {
     align-items: center;
-    background-color: rgb(238, 238, 238);
+    background-color: var(--pagemodule-element-bg, rgb(238, 238, 238));
+    border:1px solid var(--pagemodule-element-border-color);
     flex-wrap: nowrap !important;
     display: flex;
     margin-bottom: 0;
@@ -410,82 +411,8 @@ div.tvjs-dropzone {
 }
 
 .tvpPopover {
+    /*v12*/
     --bs-popover-max-width: 50vw;
-}
-
-/** DARK MODE **/
-
-.dark-mode-on #sidenav {
-    background-color: #2d2d2d;
-}
-
-.dark-mode-on .sidenav-item {
-    background-color: #393939;
-    border-color: #2d2d2d;
-}
-
-.dark-mode-on .sidenav-item.disabled {
-    background-color: #2d2d2d;
-}
-
-.dark-mode-on .dark-mode-on .sidenav-item:hover:not(.disabled) {
-    background-color: #aaa;
-}
-
-/** TYPO3 Module Elements **/
-.dark-mode-on .module {
-    background-color: #666;
-}
-
-.dark-mode-on .module-docheader {
-    border: none;
-    background-color: #2d2d2d;
-    color: #fff;
-}
-
-.dark-mode-on .t3-page-column-header,
-.dark-mode-on .t3-page-ce .t3-page-ce-header {
-    background-color: #393939;
-    color: #999;
-    border: none;
-}
-
-.dark-mode-on .t3-page-ce .t3-page-ce-body {
-    background-color: #666;
-}
-
-.dark-mode-on .btn-default,
-.dark-mode-on .btn-light,
-.dark-mode-on .icon-status-dialog-notification {
-    background-color: #393939;
-    border-color: #999;
-    color: #999;
-}
-
-.dark-mode-on .card,
-.dark-mode-on .panel {
-    background-color: #393939;
-    border-color: #999;
-    color: #999;
-}
-
-.dark-mode-on .bg-light {
-    background-color: rgba(128, 128, 128, var(--bs-bg-opacity)) !important;
-}
-
-.dark-mode-on .nav-tabs,
-.dark-mode-on .panel .panel-heading {
-    background-color: #808080;
-    color: #000;
-}
-
-.dark-mode-on .nav-tabs > li > a.nav-link.active,
-.dark-mode-on .nav.nav-tabs > li:not(.nav-item) > a.active:not(.nav-link) {
-    background-color: #393939;
-    color: #ddd;
-    border-bottom-color: #393939;
-}
-
-.dark-mode-on .bg-info {
-    background-color: rgba(35, 40, 90, var(--bs-bg-opacity)) !important;
+    /*v13*/
+    --typo3-popover-max-width: 50vw;
 }
