@@ -22,8 +22,8 @@
     "homepage": "https://templavoila.plus/",
     "require": {
         "php": ">=8.1.0 <8.4.99",
-        "typo3/cms-core": "^12.4.0",
-        "typo3/cms-frontend": "^12.4.0"
+        "typo3/cms-core": "^12.4.0 || ^13.4.0",
+        "typo3/cms-frontend": "^12.4.0 || ^13.4.0"
     },
     "require-dev": {
         "codeception/codeception": "^4.1 || ^5.0.0",
