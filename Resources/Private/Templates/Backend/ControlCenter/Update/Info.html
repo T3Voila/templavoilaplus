@@ -84,5 +84,19 @@
             Update DataStructure from TYPO3 v11 LTS to v12 LTS
         </f:link.action>
     </f:be.infobox>
+
+    <f:be.infobox title="You should run this, to fix the TYPO3 TCA Changes between TYPO3 v12 LTS and v13 LTS" state="{f:if(condition: '{is13orNewer}', then: '-1', else: '-2')}" disableIcon="true">
+        <f:link.action controller="Backend\ControlCenter\Update\DataStructureV13" action="stepStart" class="btn btn-info btn-block btn-lg {f:if(condition: '!{is13orNewer}', then: 'disabled')}">
+            <f:if condition="{is13orNewer}">
+                <f:then>
+                    <core:icon identifier="actions-play" />
+                </f:then>
+                <f:else>
+                    <core:icon identifier="actions-ban" />
+                </f:else>
+            </f:if>
+            Update DataStructure from TYPO3 v12 LTS to v13 LTS
+        </f:link.action>
+    </f:be.infobox>
 </div></div>
 </f:section>

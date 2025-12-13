@@ -1,0 +1,31 @@
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+
+<f:layout name="Module" />
+
+<f:section name="Content">
+<div class="callout callout-warning">
+<div class="callout-content">
+    <div class="callout-title">
+        <h2 class="text-primary">Update DataStructure for usage with TYPO3 v13 LTS</h2>
+    </div>
+    <f:be.infobox title="Warning" state="2">Please backup your theme files before running any of the update scripts!</f:be.infobox>
+
+    <p class="lead">This script will update all DataStructures, which are in TemplaVoilà! Plus places, to be useable with TYPO3 v13 LTS. They may not backward compatible afterwards.</p>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <f:link.action controller="Backend\ControlCenter\Update" action="info" class="btn btn-default btn-block btn-lg">
+                <core:icon identifier="actions-view-go-back" /> Back to TV+ Update Script collection
+            </f:link.action>
+        </div>
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-5">
+            <f:link.action action="stepFinal" class="btn btn-warning  btn-block btn-lg">
+                <core:icon identifier="actions-view-go-forward" /> Run Update DataStructure from TYPO3 v12 LTS to v13 LTS <small><small>(Version: 1.0.0)</small></small>
+            </f:link.action>
+        </div>
+    </div>
+</div>
+</div>
+</f:section>
