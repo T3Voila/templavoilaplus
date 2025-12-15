@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Like VariableViewHelper but against an array
  */
 class ArrayVariableViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to assign. If not in arguments then taken from tag content');
@@ -24,25 +20,20 @@ class ArrayVariableViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * @return void
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $value = ($arguments['value'] ?? $renderChildrenClosure());
+    public function render()
+    {
+        $value = ($this->arguments['value'] ?? $this->renderChildren());
 
         $container = [];
 
-        if ($renderingContext->getVariableProvider()->exists($arguments['name'])) {
-            $container = $renderingContext->getVariableProvider()->get($arguments['name']);
+        if ($this->renderingContext->getVariableProvider()->exists($this->arguments['name'])) {
+            $container = $this->renderingContext->getVariableProvider()->get($this->arguments['name']);
         }
 
-        $container = ArrayUtility::setValueByPath($container, $arguments['key'], $value, '.');
+        $container = ArrayUtility::setValueByPath($container, $this->arguments['key'], $value, '.');
 
-        $renderingContext->getVariableProvider()->add($arguments['name'], $container);
+        $this->renderingContext->getVariableProvider()->add($this->arguments['name'], $container);
     }
 }

@@ -7,17 +7,13 @@ namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 use Tvp\TemplaVoilaPlus\Service\ConfigurationService;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Like VariableViewHelper but against an array
  */
 class RenderLayoutViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * @var bool
      */
@@ -32,31 +28,26 @@ class RenderLayoutViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $combinedConfigurationIdentifier = $arguments['combinedConfigurationIdentifier'];
-        $variables = (array)$arguments['arguments'];
-        $subpart = (string)$arguments['subpart'];
+    public function render()
+    {
+        $combinedConfigurationIdentifier = $this->arguments['combinedConfigurationIdentifier'];
+        $variables = (array)$this->arguments['arguments'];
+        $subpart = (string)$this->arguments['subpart'];
 
         if ($subpart) {
             $variables['__SUBPART__'] = $subpart;
         }
 
         /** Add scoped variables ('settings') to container */
-        $variables = $renderingContext->getVariableProvider()->getScopeCopy($variables)->getAll();
+        $variables = $this->renderingContext->getVariableProvider()->getScopeCopy($variables)->getAll();
 
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
 
         $backendLayoutConfiguration = ApiHelperUtility::getBackendLayoutConfiguration($combinedConfigurationIdentifier);
         $renderer = $configurationService->getHandler($backendLayoutConfiguration->getRenderHandlerIdentifier());
-        return $renderer->renderTemplate($backendLayoutConfiguration, $variables, [], $renderingContext->getRequest());
+        return $renderer->renderTemplate($backendLayoutConfiguration, $variables, [], $this->renderingContext->getRequest());
     }
 }

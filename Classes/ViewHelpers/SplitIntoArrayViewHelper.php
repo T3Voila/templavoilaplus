@@ -4,17 +4,13 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Like VariableViewHelper but against an array
  */
 class SplitIntoArrayViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     public function initializeArguments()
     {
         $this->registerArgument('value', 'mixed', 'Value to assign. If not in arguments then taken from tag content');
@@ -24,18 +20,13 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
+     * @return array
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $pattern = $arguments['pattern'] ?? ($arguments['delimiterDecimal'] ? '\x' . dechex($arguments['delimiterDecimal']) : '');
-        $value = $arguments['value'] ?? $renderChildrenClosure() ?? '';
-        $limit = $arguments['limit'] ?? -1;
+    public function render()
+    {
+        $pattern = $this->arguments['pattern'] ?? ($this->arguments['delimiterDecimal'] ? '\x' . dechex($this->arguments['delimiterDecimal']) : '');
+        $value = $this->arguments['value'] ?? $this->renderChildren() ?? '';
+        $limit = $this->arguments['limit'] ?? -1;
         // mb_split default is -1
 
         $result = mb_split($pattern, $value, $limit);

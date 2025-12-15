@@ -17,9 +17,7 @@ declare(strict_types=1);
 
 namespace Tvp\TemplaVoilaPlus\ViewHelpers\Format;
 
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderStatic;
 
 /**
  * Taken from the TYPO3 Core Fluid component and extended.
@@ -77,8 +75,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithContentArgumentAndRenderS
  */
 class StripTagsViewHelper extends AbstractViewHelper
 {
-    use CompileWithContentArgumentAndRenderStatic;
-
     /**
      * No output escaping as some tags may be allowed
      *
@@ -108,24 +104,18 @@ class StripTagsViewHelper extends AbstractViewHelper
     /**
      * Applies strip_tags() on the specified value.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
      * @see https://www.php.net/manual/function.strip-tags.php
      * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
-        $value = $renderChildrenClosure();
-        $allowedTags = $arguments['allowedTags'];
+    public function render()
+    {
+        $value = $this->renderChildren();
+        $allowedTags = $this->arguments['allowedTags'];
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
         $value = (string)$value;
-        if ($arguments['whitespace']) {
+        if ($this->arguments['whitespace']) {
             $value = preg_replace('/(\S)<\//', '\1 </', $value);
         }
         return strip_tags($value, $allowedTags);

@@ -7,23 +7,26 @@ namespace Tvp\TemplaVoilaPlus\ViewHelpers\Backend;
 use Tvp\TemplaVoilaPlus\Exception\ConfigurationException;
 use Tvp\TemplaVoilaPlus\Exception\MissingPlacesException;
 use Tvp\TemplaVoilaPlus\Utility\ApiHelperUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Returns name of MappingConfiguration
  */
 class LabelFromMappingConfigurationViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * No output escaping as some tags may be allowed
      *
      * @var bool
      */
     protected $escapeOutput = false;
+
+    /**
+     * To ensure all tags are removed, child node's output must not be escaped
+     *
+     * @var bool
+     */
+    protected $escapeChildren = false;
 
     /**
      * Initialize ViewHelper arguments
@@ -36,28 +39,12 @@ class LabelFromMappingConfigurationViewHelper extends AbstractViewHelper
     }
 
     /**
-     * To ensure all tags are removed, child node's output must not be escaped
-     *
-     * @var bool
-     */
-    protected $escapeChildren = false;
-
-    /**
-     * Applies strip_tags() on the specified value.
-     *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param \TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface $renderingContext
-     * @see https://www.php.net/manual/function.strip-tags.php
      * @return string
      */
-    public static function renderStatic(
-        array $arguments,
-        \Closure $renderChildrenClosure,
-        RenderingContextInterface $renderingContext
-    ) {
+    public function render()
+    {
         try {
-            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($arguments['identifier']);
+            $mappingConfiguration = ApiHelperUtility::getMappingConfiguration($this->arguments['identifier']);
             return $mappingConfiguration->getName();
         } catch (ConfigurationException | MissingPlacesException $e) {
             return $e->getMessage();
