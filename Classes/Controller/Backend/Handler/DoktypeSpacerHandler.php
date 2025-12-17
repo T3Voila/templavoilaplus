@@ -37,7 +37,8 @@ class DoktypeSpacerHandler extends AbstractDoktypeHandler
         $controller->addFlashMessage(
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDoktypeSpacerCannotEdit'),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeSpacer'),
-            ContextualFeedbackSeverity::INFO
+            ContextualFeedbackSeverity::INFO,
+            false
         );
 
         return '';

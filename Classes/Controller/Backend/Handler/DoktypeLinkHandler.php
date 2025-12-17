@@ -41,7 +41,8 @@ class DoktypeLinkHandler extends AbstractDoktypeHandler
                 htmlspecialchars($pageRecord['url'])
             ),
             TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:titleDoktypeLink'),
-            ContextualFeedbackSeverity::INFO
+            ContextualFeedbackSeverity::INFO,
+            false
         );
 
         return '';

@@ -252,7 +252,8 @@ class PageLayoutController extends ActionController
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoDefaultIntroduction'),
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
-                    ContextualFeedbackSeverity::INFO
+                    ContextualFeedbackSeverity::INFO,
+                    false
                 );
                 $this->moduleTemplate->assign('tutorial', true);
             } else {
@@ -260,7 +261,8 @@ class PageLayoutController extends ActionController
                 $this->addFlashMessage(
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:infoPageNotFound'),
                     TemplaVoilaUtility::getLanguageService()->sL('LLL:EXT:templavoilaplus/Resources/Private/Language/Backend/PageLayout.xlf:title'),
-                    ContextualFeedbackSeverity::INFO
+                    ContextualFeedbackSeverity::INFO,
+                    false
                 );
             }
         }
