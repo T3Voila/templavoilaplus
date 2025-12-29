@@ -413,6 +413,7 @@ div.tvjs-dropzone {
 .tvpPopover {
     /* v12 */
     --bs-popover-max-width: 50vw;
+
     /* v13 */
     --typo3-popover-max-width: 50vw;
 }
