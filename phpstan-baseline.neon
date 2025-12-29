@@ -9,3 +9,13 @@ parameters:
 			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Core\\\\Utility\\\\GeneralUtility\\:\\:devLog\\(\\)\\.$#"
 			count: 4
 			path: Classes/Service/DataHandling/DataHandler.php
+
+		-
+			message: "#^Access to constant LayoutView on an unknown class TYPO3\\\\CMS\\\\Backend\\\\View\\\\PageViewMode\\.$#"
+			count: 1
+			path: Classes/Service/PreviewService.php
+
+		-
+			message: "#^Call to an undefined static method TYPO3\\\\CMS\\\\Backend\\\\View\\\\Drawing\\\\DrawingConfiguration\\:\\:create\\(\\)\\.$#"
+			count: 1
+			path: Classes/Service/PreviewService.php
