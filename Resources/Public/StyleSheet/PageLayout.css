@@ -157,7 +157,7 @@ div.tvjs-dropzone {
     right: 0;
     border-left: 1px solid var(--module-docheader-border-color);
     background-color: var(--module-docheader-bg);
-    padding: 1.5rem .5rem;
+    padding: 1.5rem 0.5rem;
 }
 
 #tvp-component-stage-container {
@@ -180,7 +180,7 @@ div.tvjs-dropzone {
 .tvp-node-header {
     align-items: center;
     background-color: var(--pagemodule-element-bg, rgb(238, 238, 238));
-    border:1px solid var(--pagemodule-element-border-color);
+    border: 1px solid var(--pagemodule-element-border-color);
     flex-wrap: nowrap !important;
     display: flex;
     margin-bottom: 0;
@@ -328,7 +328,7 @@ div.tvjs-dropzone {
 .sidenav-item {
     color: #198734;
     background-color: var(--typo3-state-default-bg);
-    border: var(--typo3-input-border-width) solid var(--typo3-state-default-border-color, #bbbbbb);
+    border: var(--typo3-input-border-width) solid var(--typo3-state-default-border-color, #bbb);
     border-radius: var(--typo3-input-border-radius);
     margin: 0.4rem 1rem;
     padding: 1rem;
@@ -354,8 +354,8 @@ div.tvjs-dropzone {
 
 .sidenav-item.disabled {
     color: var(--typo3-state-default-disabled-color);
-    background-color: var(--typo3-state-default-disabled-bg, );
-    border-color: var(--typo3-state-default-disabled-border-color, #bbbbbb)
+    background-color: var(--typo3-state-default-disabled-bg);
+    border-color: var(--typo3-state-default-disabled-border-color, #bbb);
 }
 
 .sidenav-item.disabled .icon {
@@ -363,7 +363,7 @@ div.tvjs-dropzone {
 }
 
 .sidenav-item:hover:not(.disabled) {
-    background-color:var(--typo3-state-default-hover-bg, #cacaca);
+    background-color: var(--typo3-state-default-hover-bg, #cacaca);
     border-color: var(--typo3-state-default-hover-border-color, #bebebe);
 }
 
@@ -411,8 +411,8 @@ div.tvjs-dropzone {
 }
 
 .tvpPopover {
-    /*v12*/
+    /* v12 */
     --bs-popover-max-width: 50vw;
-    /*v13*/
+    /* v13 */
     --typo3-popover-max-width: 50vw;
 }
