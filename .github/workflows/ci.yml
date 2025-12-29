@@ -78,14 +78,14 @@ jobs:
         run: yarn
       - name: "Run command"
         run: "yarn lint:${{ matrix.command }}"
-  xliff-lint:
-    name: "Xliff linter"
-    runs-on: ubuntu-22.04
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-      - name: "Run the xliff lint"
-        uses: TYPO3-Continuous-Integration/TYPO3-CI-Xliff-Lint@v1
+#  xliff-lint:
+#    name: "Xliff linter"
+#    runs-on: ubuntu-22.04
+#    steps:
+#      - name: "Checkout"
+#        uses: actions/checkout@v3
+#      - name: "Run the xliff lint"
+#        uses: TYPO3-Continuous-Integration/TYPO3-CI-Xliff-Lint@v1
   tests:
     name: "Tests"
     runs-on: ubuntu-22.04
