@@ -35,8 +35,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 
 class ParsingModifyEventListener
 {
+    // phpcs:disable Generic.Metrics.CyclomaticComplexity
     public function initializeDataStructureIdentifier(BeforeFlexFormDataStructureIdentifierInitializedEvent $event): void
     {
+        // phpcs:enable
         $fieldTca = $event->getFieldTca();
         $row = $event->getRow();
         $fieldName = $event->getFieldName();
