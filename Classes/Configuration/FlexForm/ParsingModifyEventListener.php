@@ -70,19 +70,16 @@ class ParsingModifyEventListener
                 if (!empty($pointerSubFieldName)) {
                     $queryBuilder->addSelect($pointerSubFieldName);
                 }
-                $queryStatement = $queryBuilder->from($tableName)
+                $row = $queryBuilder->from($tableName)
                     ->where(
                         $queryBuilder->expr()->eq(
                             'uid',
                             $queryBuilder->createNamedParameter($row[$parentFieldName], Connection::PARAM_INT)
                         )
                     )
-                    ->executeQuery();
-                $rowCount = $queryBuilder
-                    ->count('uid')
                     ->executeQuery()
-                    ->fetchOne(0);
-                if ($rowCount !== 1) {
+                    ->fetchAssociative();
+                if ($row === false) {
                     throw new InvalidParentRowException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
@@ -90,7 +87,6 @@ class ParsingModifyEventListener
                         1463833794
                     );
                 }
-                $row = $queryStatement->fetchAssociative();
                 if (isset($handledUids[$row[$parentFieldName]])) {
                     // Row has been fetched before already -> loop detected!
                     throw new InvalidParentRowLoopException(
