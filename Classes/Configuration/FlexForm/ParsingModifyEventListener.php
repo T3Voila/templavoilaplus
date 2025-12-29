@@ -47,12 +47,11 @@ class ParsingModifyEventListener
         }
         $finalPointerFieldName = $fieldTca['config']['ds_pointerField'];
         $pointerFieldName = $finalPointerFieldName;
-        if (!array_key_exists($pointerFieldName, $row)) {
-            // The user may not have rights to edit this field so set it to empty
-            // Will validate later on, if there is a parent available which have something set
-            $row[$pointerFieldName] = '';
-        }
-        $pointerValue = $row[$pointerFieldName];
+
+        // The user may not have rights to edit this field so use empty now
+        // Will validate later on, if there is a parent available which have something set
+        $pointerValue = $row[$pointerFieldName] ?? '';
+
         // If set, this is typically set to "pid"
         $parentFieldName = $fieldTca['config']['ds_pointerField_searchParent'] ?? null;
         $pointerSubFieldName = $fieldTca['config']['ds_pointerField_searchParent_subField'] ?? null;
