@@ -344,6 +344,9 @@ class Clipboard extends AbstractResponse
             if (isset($clipBoardData['el'])) {
                 foreach ($clipBoardData['el'] as $clipBoardElement => $value) {
                     [$table, $uid] = explode('|', $clipBoardElement);
+                    if (str_starts_with($table, '_')) {
+                        continue;
+                    }
                     if (!isset($clipBoard[$table])) {
                         $clipBoard[$table] = [
                             'label' => $GLOBALS['TCA'][$table]['ctrl']['title'],
