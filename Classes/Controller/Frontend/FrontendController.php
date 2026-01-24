@@ -210,7 +210,7 @@ class FrontendController
             // Run TypoScript over DSdata and include TypoScript vars while mapping into TemplateData
             /** @TODO Do we need flexibility here? */
             /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
-            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class);
+            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $request);
             $processedValues = $mappingHandler->process($mappingConfiguration, $flexformValues, $table, $row);
 
             $processedValues = $this->addSettings($processedValues, $conf);
@@ -342,7 +342,7 @@ class FrontendController
         $childSelectors = $mappingConfiguration->getChildSelectors();
         if (!empty($childSelectors)) {
             /** @var \Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler */
-            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class);
+            $mappingHandler = GeneralUtility::makeInstance(\Tvp\TemplaVoilaPlus\Handler\Mapping\DefaultMappingHandler::class, $request);
 
             foreach ($childSelectors as $childSelectorConfig) {
                 $childSelectionValue = $mappingHandler->valueProcessing($childSelectorConfig, $flexformData, $table, $row);

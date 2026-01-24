@@ -17,11 +17,13 @@ namespace Tvp\TemplaVoilaPlus\Handler\Mapping;
  * The TYPO3 project - inspiring people to share!
  */
 
+use Psr\Http\Message\ServerRequestInterface;
 use Tvp\TemplaVoilaPlus\Domain\Model\Configuration\MappingConfiguration;
 use Tvp\TemplaVoilaPlus\Domain\Repository\Localization\LocalizationRepository;
 use Tvp\TemplaVoilaPlus\Utility\RecordFalUtility;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\TypoScript\TypoScriptStringFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -36,6 +38,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentDataProcessor;
  */
 class DefaultMappingHandler
 {
+    private array $feTypoScript = [];
+
+    public function __construct(ServerRequestInterface $request)
+    {
+        $this->feTypoScript = $request->getAttribute('frontend.typoscript')->getSetupArray();
+    }
+
     public function process(MappingConfiguration $mappingConfiguration, array $flexformData, string $table, array $row): array
     {
         $processedMapping = [];
@@ -78,7 +87,7 @@ class DefaultMappingHandler
                 }
                 break;
             case 'typoscriptObjectPath':
-                [$name, $conf] = $this->getTypoScriptParser()->getVal($instructions['dataPath'], $GLOBALS['TSFE']->tmpl->setup);
+                [$name, $conf] = $this->getVal($instructions['dataPath'], $this->feTypoScript);
                 $processedValue = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row)->cObjGetSingle($name, $conf, 'TemplaVoila_ProcObjPath--' . str_replace('.', '*', $instructions['dataPath']) . '.');
                 break;
             default:
@@ -126,7 +135,9 @@ class DefaultMappingHandler
     protected function processTypoScript(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript): string
     {
         /** @var TypoScriptParser $tsparserObj */
-        $tsparserObj = $this->getTypoScriptParser();
+        //$tsparserObj = $this->getTypoScriptParser();
+
+        $tsStringFactory = $this->getTypoScriptStringFactory();
         /** @var ContentObjectRenderer $cObj */
         $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
         $restoreData = [];
@@ -135,19 +146,9 @@ class DefaultMappingHandler
         /** @TODO On every value which gets processed? Not really? */
         $restoreData = $this->registerTypoScriptParentRec($row);
 
-        // Copy current global TypoScript configuration except numerical objects:
-        /** @TODO On every value which gets processed? Not really? */
-        if (is_array($GLOBALS['TSFE']->tmpl->setup)) {
-            foreach ($GLOBALS['TSFE']->tmpl->setup as $tsObjectKey => $tsObjectValue) {
-                if ($tsObjectKey !== (int)$tsObjectKey) {
-                    $tsparserObj->setup[$tsObjectKey] = $tsObjectValue;
-                }
-            }
-        }
-
-        $tsparserObj->parse($theTypoScript);
-        $processedValue = $cObj->cObjGet($tsparserObj->setup, 'TemplaVoila_Proc.');
-
+        $tsRootNode = $tsStringFactory->parseFromStringWithIncludes('tvp-A', $theTypoScript);
+        $tsComplete = $this->feTypoScript + $tsRootNode->toArray();
+        $processedValue = $cObj->cObjGet($tsRootNode->toArray(), 'TemplaVoila_Proc.');
         if (count($restoreData)) {
             /** @TODO On every value which gets processed? Not really? */
             $this->restoreTypoScriptParentRec($restoreData);
@@ -158,14 +159,13 @@ class DefaultMappingHandler
 
     protected function processDataProcessing(array $flexformData, $processedValue, string $table, array $row, string $theTypoScript)
     {
-        /** @var TypoScriptParser $tsparserObj */
-        $tsparserObj = $this->getTypoScriptParser();
+        $tsStringFactory = $this->getTypoScriptStringFactory();
         /** @var ContentObjectRenderer $cObj */
         $cObj = $this->getContentObjectRenderer($flexformData, $processedValue, $table, $row);
 
-        $tsparserObj->parse($theTypoScript);
+        $tsRootNode = $tsStringFactory->parseFromStringWithIncludes('tvp-', $theTypoScript);
         $dataProcessor = GeneralUtility::makeInstance(ContentDataProcessor::class);
-        $processedValue = $dataProcessor->process($cObj, ['dataProcessing.' => $tsparserObj->setup], $flexformData + $row);
+        $processedValue = $dataProcessor->process($cObj, ['dataProcessing.' => $tsRootNode->toArray()], $flexformData + $row);
 
         if (isset($processedValue['_processedValue_'])) {
             return $processedValue['_processedValue_'];
@@ -209,11 +209,9 @@ class DefaultMappingHandler
         return $postprocessedValue;
     }
 
-    protected function getTypoScriptParser(): TypoScriptParser
+    protected function getTypoScriptStringFactory(): TypoScriptStringFactory
     {
-        /** @var TypoScriptParser $tsparserObj */
-        $tsparserObj = GeneralUtility::makeInstance(TypoScriptParser::class);
-        return $tsparserObj;
+        return GeneralUtility::makeInstance(TypoScriptStringFactory::class);
     }
 
     protected function getContentObjectRenderer(array $flexformData, $processedValue, string $table, array $row): ContentObjectRenderer
@@ -265,4 +263,47 @@ class DefaultMappingHandler
             $GLOBALS['TSFE']->register[$dkey] = $dvalue;
         }
     }
+
+    /**
+     * Taken from TYPO3 v12 TypoScriptParser
+     *
+     * Get a value/property pair for an object path in TypoScript, eg. "myobject.myvalue.mysubproperty".
+     * Here: Used by the "copy" operator, <
+     *
+     * @param string $string Object path for which to get the value
+     * @param array $setup Global setup code if $string points to a global object path. But if string is prefixed with "." then its the local setup array.
+     * @return array An array with keys 0/1 being value/property respectively
+     */
+    public function getVal($string, $setup): array
+    {
+        $retArr = [
+            0 => '',
+            1 => [],
+        ];
+        if ((string)$string === '') {
+            return $retArr;
+        }
+
+        [$key, $remainingKey] = $this->parseNextKeySegment($string);
+        $subKey = $key . '.';
+        if ($remainingKey === '') {
+            $retArr[0] = $setup[$key] ?? $retArr[0];
+            $retArr[1] = $setup[$subKey] ?? $retArr[1];
+            return $retArr;
+        }
+        if (isset($setup[$subKey])) {
+            return $this->getVal($remainingKey, $setup[$subKey]);
+        }
+
+        return $retArr;
+    }
+
+    public function parseNextKeySegment(string $string): array
+    {
+        $path = str_getcsv($string, '.', '"', '\\');
+        $key = array_shift($path);
+
+        return [$key, implode('.', $path)];
+    }
+
 }
