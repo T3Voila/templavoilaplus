@@ -305,5 +305,4 @@ class DefaultMappingHandler
 
         return [$key, implode('.', $path)];
     }
-
 }
