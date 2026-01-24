@@ -20,4 +20,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\Exception\AbstractInvalidDataStructure
 /**
  * Thrown if something went wrong with pointer or parent pointer field.
  */
-class FlexFormInvalidPointerFieldException extends AbstractInvalidDataStructureException {}
+class FlexFormInvalidPointerFieldException extends AbstractInvalidDataStructureException
+{
+}
