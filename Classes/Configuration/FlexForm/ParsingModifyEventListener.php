@@ -21,10 +21,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowLoopException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidParentRowRootException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidPointerFieldValueException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Database\Connection;
@@ -32,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use Tvp\TemplaVoilaPlus\Exception\FlexFormInvalidPointerFieldException;
 
 class ParsingModifyEventListener
 {
@@ -81,7 +78,7 @@ class ParsingModifyEventListener
                     ->executeQuery()
                     ->fetchAssociative();
                 if ($row === false) {
-                    throw new InvalidParentRowException(
+                    throw new FlexFormInvalidPointerFieldException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
                         . ' with uid "' . $row[$parentFieldName] . '" was done. However, this row does not exist or was deleted.',
@@ -90,7 +87,7 @@ class ParsingModifyEventListener
                 }
                 if (isset($handledUids[$row[$parentFieldName]])) {
                     // Row has been fetched before already -> loop detected!
-                    throw new InvalidParentRowLoopException(
+                    throw new FlexFormInvalidPointerFieldException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
                         . ' with uid "' . $row[$parentFieldName] . '" was done. A loop of records was detected, the tree is broken.',
@@ -108,7 +105,7 @@ class ParsingModifyEventListener
                 }
                 if (!$pointerValue && ((int)$row[$parentFieldName] === 0 || $row[$parentFieldName] === null)) {
                     // If on root level and still no valid pointer found -> exception
-                    throw new InvalidParentRowRootException(
+                    throw new FlexFormInvalidPointerFieldException(
                         'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
                         . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
                         . ' with uid "' . $row[$parentFieldName] . '" was done. Root node with uid "' . $row['uid'] . '"'
@@ -120,7 +117,7 @@ class ParsingModifyEventListener
         }
         if (!$pointerValue) {
             // Still no valid pointer value -> exception, This still can be a data integrity issue, so throw a catchable exception
-            throw new InvalidPointerFieldValueException(
+            throw new FlexFormInvalidPointerFieldException(
                 'No data structure for field "' . $fieldName . '" in table "' . $tableName . '" found, no "ds" array'
                 . ' configured and data structure could be found by resolving parents. This is probably a TCA misconfiguration.',
                 1464114011
