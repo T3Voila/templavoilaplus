@@ -579,6 +579,15 @@ class PageLayout {
                 that.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
             })
         }
+
+        var allPreviews = base.querySelectorAll('div.tvp-node .tvp-record-preview:not(:has(.disable-tvp-preview-onclick))');
+
+        for (const item of allPreviews) {
+            item.addEventListener('click', function (event) {
+                var origItem = item.closest('.tvp-node');
+                that.openRecordEdit(origItem.dataset.recordTable, origItem.dataset.recordUid);
+            });
+        }
     }
 
     initClipboardAddListener = function(base) {
