@@ -247,6 +247,7 @@
             "rm .gitattributes",
             "rm .mergify.yml",
             "rm .php-cs-fixer.php",
+            "rm .phpstan.bootstrap.php",
             "rm .phpstorm.meta.php",
             "rm .eslintignore",
             "rm .eslintrc.json",

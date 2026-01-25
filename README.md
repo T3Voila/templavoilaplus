@@ -1,7 +1,7 @@
 # TemplaVoilà! Plus
 
 [![license](https://img.shields.io/github/license/T3Voila/templavoilaplus.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0-standalone.html)
-[![version](https://img.shields.io/badge/TER_version-8.1.3-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
+[![version](https://img.shields.io/badge/TER_version-12.0.4-green.svg)](https://extensions.typo3.org/extension/templavoilaplus)
 [![packagist](https://img.shields.io/packagist/v/templavoilaplus/templavoilaplus.svg)](https://packagist.org/packages/templavoilaplus/templavoilaplus)
 [![Tests](https://github.com/T3Voila/templavoilaplus/actions/workflows/ci.yml/badge.svg)](https://github.com/T3Voila/templavoilaplus/actions/workflows/ci.yml)
 
@@ -15,7 +15,7 @@ But also our complete documentation needs a rewrite, please help there.
 
 ## Next release TV+ v12
 
-The next TV+ release will be v12, starting with 12.0.0 as first alpha release. It will support TYPO3 v12 LTS.
+The next TV+ release will be v12, starting with 12.0.0 as first alpha release. It will support TYPO3 v12/v13 LTS.
 
 ### Missing parts from old TemplaVoilà!
 
@@ -26,7 +26,7 @@ The next TV+ release will be v12, starting with 12.0.0 as first alpha release. I
 
 ### On all this missing parts, what the hell is new/better?
 
-* Compatible with TYPO3 v8 to v11 (with TV+ v8) or with TYPO3 v12 (with TV+ 12)
+* Compatible with TYPO3 v8 to v11 (with TV+ v8) or with TYPO3 v12 and v13 (with TV+ v12)
 * No database records for templates and structures anymore, which helps on servers which use deployments and prepare this rollouts on testing/staging systems.
 * Split frontend between data organization and rendering, this allows us to integrate different templating engines like [fluid](https://github.com/T3Voila/tvplus_fluid).
 * Backend written with fluid templates, which allows us to use fluid templates for the backend layouts or backend previews, instead of the marker based templates.
@@ -37,6 +37,7 @@ The next TV+ release will be v12, starting with 12.0.0 as first alpha release. I
 ## What may come next after v12
 
 Nobody knows and it depends on the requests from outside, from the community, from you.
+Planned is TV+ v14 which will be compatible to TYPO3 v14.
 
 ## How is the configuration handling differently
 
