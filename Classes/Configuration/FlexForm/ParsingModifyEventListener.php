@@ -115,7 +115,7 @@ class ParsingModifyEventListener
                 }
             }
         }
-         if (!$pointerValue) {
+        if (!$pointerValue) {
             // Field has no value, for example on non TV+ content element
             $event->setIdentifier([]);
             return;
