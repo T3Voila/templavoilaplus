@@ -115,13 +115,10 @@ class ParsingModifyEventListener
                 }
             }
         }
-        if (!$pointerValue) {
-            // Still no valid pointer value -> exception, This still can be a data integrity issue, so throw a catchable exception
-            throw new FlexFormInvalidPointerFieldException(
-                'No data structure for field "' . $fieldName . '" in table "' . $tableName . '" found, no "ds" array'
-                . ' configured and data structure could be found by resolving parents. This is probably a TCA misconfiguration.',
-                1464114011
-            );
+         if (!$pointerValue) {
+            // Field has no value, for example on non TV+ content element
+            $event->setIdentifier([]);
+            return;
         }
 
         // Implement pointerType for TV+ Mapping
