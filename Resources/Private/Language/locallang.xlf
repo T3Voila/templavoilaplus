@@ -36,21 +36,6 @@
 			<trans-unit id="field_submit" resname="field_submit">
 				<source>submit</source>
 			</trans-unit>
-			<trans-unit id="extconf.staticWizard.header" resname="extconf.staticWizard.header">
-				<source>Migrate</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.messageMigration" resname="extconf.staticWizard.messageMigration">
-				<source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.messageNoMigration" resname="extconf.staticWizard.messageNoMigration">
-				<source>You do not use staticDS, so no migration needed.</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.messageMigrationDone" resname="extconf.staticWizard.messageMigrationDone">
-				<source>Fine, no migration needed. There is no datastructure inside your database.</source>
-			</trans-unit>
-			<trans-unit id="extconf.staticWizard.link" resname="extconf.staticWizard.link">
-				<source>Click here to run the wizard</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>
