@@ -47,26 +47,6 @@
         <source>submit</source>
         <target state="needs-translation">submit</target>
       </trans-unit>
-      <trans-unit id="extconf.staticWizard.header" resname="extconf.staticWizard.header">
-        <source>Migrate</source>
-        <target state="needs-translation">Migrate</target>
-      </trans-unit>
-      <trans-unit id="extconf.staticWizard.messageMigration" resname="extconf.staticWizard.messageMigration">
-        <source>Please use the migration wizard to move all datastructures from your database to the filesystem.</source>
-        <target state="needs-translation">Please use the migration wizard to move all datastructures from your database to the filesystem.</target>
-      </trans-unit>
-      <trans-unit id="extconf.staticWizard.messageNoMigration" resname="extconf.staticWizard.messageNoMigration">
-        <source>You do not use staticDS, so no migration needed.</source>
-        <target state="needs-translation">You do not use staticDS, so no migration needed.</target>
-      </trans-unit>
-      <trans-unit id="extconf.staticWizard.messageMigrationDone" resname="extconf.staticWizard.messageMigrationDone">
-        <source>Fine, no migration needed. There is no datastructure inside your database.</source>
-        <target state="needs-translation">Fine, no migration needed. There is no datastructure inside your database.</target>
-      </trans-unit>
-      <trans-unit id="extconf.staticWizard.link" resname="extconf.staticWizard.link">
-        <source>Click here to run the wizard</source>
-        <target state="needs-translation">Click here to run the wizard</target>
-      </trans-unit>
     </body>
   </file>
 </xliff>
