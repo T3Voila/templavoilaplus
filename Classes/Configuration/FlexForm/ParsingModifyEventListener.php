@@ -130,7 +130,6 @@ class ParsingModifyEventListener
     {
         $identifier = $event->getIdentifier();
         if (($identifier['type'] ?? '') === 'combinedMappingIdentifier') {
-
             $dataStructure = [
                 'sheets' => [],
             ];
