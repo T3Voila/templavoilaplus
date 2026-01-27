@@ -39,7 +39,6 @@ tt_content.menu.20.3.indexField.data = register:tx_templavoilaplus_pi1.current_f
 
 ', 'defaultContentRendering');
 
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig(
     '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:templavoilaplus/Configuration/TSConfig/Page.ts">'
 );
@@ -63,17 +62,10 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['move
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals']['templavoilaplus']
     = \Tvp\TemplaVoilaPlus\Service\UserFunc\Access::class . '->recordEditAccessInternals';
 // Hook after ext_tables run to do all FormHandler registering things
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['GLOBAL']['extTablesInclusion-PostProcessing']['templavoilaplus']
-    = \Tvp\TemplaVoilaPlus\Hooks\TableConfigurationPostProcessingHook::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['typo3/backend.php']['constructPostProcess']['templavoilaplus']
     = \Tvp\TemplaVoilaPlus\Hooks\BackendControllerHook::class . '->addInlineSettings';
 
 // Since TV+ 8.0.0
 \Tvp\TemplaVoilaPlus\Utility\ExtensionUtility::registerExtension('templavoilaplus');
-
-// Hook to enrich tt_content form flex element with finisher settings and form list drop down
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools::class]['flexParsing'][
-    \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class
-] = \Tvp\TemplaVoilaPlus\Configuration\FlexForm\DataStructureIdentifierHook::class;
 
 $GLOBALS['TYPO3_CONF_VARS']['BE']['stylesheets']['templavoilaplus'] = 'EXT:templavoilaplus/Resources/Public/StyleSheet/Skin';
