@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class with static functions for data structures templavoila.
- *
- * @author Alexander Opitz <opitz@pluspol-interactive.de>
  */
 final class DataStructureUtility
 {
@@ -32,10 +30,6 @@ final class DataStructureUtility
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $conf = $configurationService->getExtensionConfig();
-
-        if ($indentation === -1 && isset($conf['ds']['indentation'])) {
-            $indentation = (int)$conf['ds']['indentation'];
-        }
 
         return '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'
         . LF

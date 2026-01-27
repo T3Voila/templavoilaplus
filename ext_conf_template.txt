@@ -1,6 +1,3 @@
 #Needs to be first to shown last on tab basic
-# cat=basic/ds; type=integer; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:ds.indentation
-ds.indentation = 0
-
 # cat=basic/enable; type=boolean; label=LLL:EXT:templavoilaplus/Resources/Private/Language/PluginConfiguration.xlf:enable.renderFCEHeader
 enable.renderFCEHeader = 0

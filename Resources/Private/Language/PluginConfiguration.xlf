@@ -6,9 +6,6 @@
             <trans-unit id="enable.renderFCEHeader" resname="enable.renderFCEHeader">
                 <source>Enable Header for FCE&#39;s:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
             </trans-unit>
-            <trans-unit id="ds.indentation" resname="ds.indentation">
-                <source>Defines the XML indentation in the Data Structures.:This is useful for static Data Structures. Number smaller than zero means no indentation, zero means using tabs and number larger than zero means number of space chars.</source>
-            </trans-unit>
         </body>
     </file>
 </xliff>

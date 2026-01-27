@@ -47,7 +47,7 @@ class XmlLoadSaveHandler extends AbstractFileLoadSaveHandler implements LoadSave
 
     public function save(SplFileInfo $file, array $data): void
     {
-        $xmlContent = DataStructureUtility::array2xml($data);
+        $xmlContent = DataStructureUtility::array2xml($data, $this->place->getIndentation());
         GeneralUtility::writeFile($file->getPathname(), $xmlContent);
     }
 
