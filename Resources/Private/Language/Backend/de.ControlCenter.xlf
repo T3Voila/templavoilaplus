@@ -5,7 +5,7 @@
     <body>
       <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
         <source>TemplaVoilà!+</source>
-        <target state="needs-translation">TemplaVoilà!+</target>
+        <target state="translated">TemplaVoilà!+</target>
       </trans-unit>
       <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
         <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
@@ -61,11 +61,11 @@
       </trans-unit>
       <trans-unit id="filereference" resname="filereference">
         <source>File reference</source>
-        <target state="needs-translation">File reference</target>
+        <target state="translated">Dateireferenz</target>
       </trans-unit>
       <trans-unit id="description" resname="description">
         <source>Description</source>
-        <target state="needs-translation">Description</target>
+        <target state="translated">Beschreibung</target>
       </trans-unit>
       <trans-unit id="fces" resname="fces">
         <source>Flexible CE</source>
