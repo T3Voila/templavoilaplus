@@ -9,7 +9,7 @@
       </trans-unit>
       <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
         <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
-        <target state="needs-translation">TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</target>
+        <target state="translated">TemplaVoilà! Plus Control Center listet alle verfügbaren Datenstrukturen und Template-Objekte auf</target>
       </trans-unit>
       <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel" approved="yes">
         <source>TemplaVoilà! Plus Control Center</source>
