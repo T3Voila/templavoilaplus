@@ -56,12 +56,21 @@ class ContentElementWizardItems
                     ) {
                         continue;
                     }
-                    $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
-                        'iconIdentifier' => ($mappingConfiguration->getIconIdentifier() ?: 'extensions-templavoila-template-default'),
-                        'description' => TemplaVoilaUtility::getLanguageService()->sL($mappingConfiguration->getDescription()),
-                        'title' => $mappingConfiguration->getName(),
-                        'tt_content_defValues' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
-                    ];
+                    if (version_compare((new \TYPO3\CMS\Core\Information\Typo3Version())->getVersion(), '13.0.0', '>=')) {
+                        $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
+                            'iconIdentifier' => ($mappingConfiguration->getIconIdentifier() ?: 'extensions-templavoila-template-default'),
+                            'description' => TemplaVoilaUtility::getLanguageService()->sL($mappingConfiguration->getDescription()),
+                            'title' => $mappingConfiguration->getName(),
+                            'defaultValues' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
+                        ];
+                    } else {
+                        $fceWizardItems['fce_' . $combinedMappingIdentifier] = [
+                            'iconIdentifier' => ($mappingConfiguration->getIconIdentifier() ?: 'extensions-templavoila-template-default'),
+                            'description' => TemplaVoilaUtility::getLanguageService()->sL($mappingConfiguration->getDescription()),
+                            'title' => $mappingConfiguration->getName(),
+                            'tt_content_defValues' => $this->getDataHandlerDefaultValues($combinedMappingIdentifier),
+                        ];
+                    }
                 }
             }
         }

@@ -191,8 +191,14 @@ class ContentElementWizard extends AbstractResponse
                     }
                 }
                 /** ENDE */
+                /** Feature-102834-Auto-registrationOfNewContentElementWizardViaTCA.rst */
+                /** v12 BE compatibility */
                 if (isset($contentElement['tt_content_defValues']) && is_array($contentElement['tt_content_defValues'])) {
                     $contentElement['element-row'] = $contentElement['tt_content_defValues'];
+                }
+                // v13+ variant
+                if (isset($contentElement['defaultValues']) && is_array($contentElement['defaultValues'])) {
+                    $contentElement['element-row'] = $contentElement['defaultValues'];
                 }
                 $contentElementsConfig[$tabKey]['contentElements'][$_key] = $contentElement;
             }
