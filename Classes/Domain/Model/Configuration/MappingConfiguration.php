@@ -40,6 +40,10 @@ class MappingConfiguration extends AbstractConfiguration
     /** @var array [string => array] */
     protected $childSelectors = [];
 
+    protected string $description = '';
+
+    protected string $iconIdentifier = '';
+
     /**
      * Retrieve the DS configuration identifier
      */
@@ -136,5 +140,25 @@ class MappingConfiguration extends AbstractConfiguration
     public function addChildSelector(string $childSelectorName, array $configuration): void
     {
         $this->childSelectors[$childSelectorName] = $configuration;
+    }
+
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setIconIdentifier(string $iconIdentifier): void
+    {
+        $this->iconIdentifier = $iconIdentifier;
+    }
+
+    public function getIconIdentifier(): string
+    {
+        return $this->iconIdentifier;
     }
 }

@@ -66,6 +66,9 @@ class MappingConfigurationHandler extends AbstractConfigurationHandler
                 $mappingConfiguration->addChildSelector($childName, $childSelectorConfiguration);
             }
         }
+
+        $mappingConfiguration->setDescription($configuration['tvp-mapping']['meta']['description'] ?? '');
+        $mappingConfiguration->setIconIdentifier($configuration['tvp-mapping']['meta']['iconIdentifier'] ?? '');
         return $mappingConfiguration;
     }
 
