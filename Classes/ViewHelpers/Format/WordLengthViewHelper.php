@@ -43,12 +43,14 @@ class WordLengthViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        $maxCharacter = $this->arguments['maxCharacters'];
+
         $value = $this->renderChildren();
 
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
 
-        return  preg_replace('/(\S{' . $this->arguments['maxCharacters'] . '})/', '\1 ', (string)$value);
+        return  preg_replace('/(\S{' . $maxCharacter . '})/', '\1 ', (string)$value);
     }
 }

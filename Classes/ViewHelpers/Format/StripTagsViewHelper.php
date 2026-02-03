@@ -109,13 +109,14 @@ class StripTagsViewHelper extends AbstractViewHelper
      */
     public function render()
     {
-        $value = $this->renderChildren();
         $allowedTags = $this->arguments['allowedTags'];
+        $whitespaces = $this->arguments['whitespace'];
+        $value = $this->renderChildren();
         if (!is_string($value) && !(is_object($value) && method_exists($value, '__toString'))) {
             return $value;
         }
         $value = (string)$value;
-        if ($this->arguments['whitespace']) {
+        if ($whitespaces) {
             $value = preg_replace('/(\S)<\//', '\1 </', $value);
         }
         return strip_tags($value, $allowedTags);

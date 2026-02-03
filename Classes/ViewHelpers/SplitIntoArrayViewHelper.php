@@ -25,9 +25,9 @@ class SplitIntoArrayViewHelper extends AbstractViewHelper
     public function render()
     {
         $pattern = $this->arguments['pattern'] ?? ($this->arguments['delimiterDecimal'] ? '\x' . dechex($this->arguments['delimiterDecimal']) : '');
-        $value = $this->arguments['value'] ?? $this->renderChildren() ?? '';
-        $limit = $this->arguments['limit'] ?? -1;
         // mb_split default is -1
+        $limit = $this->arguments['limit'] ?? -1;
+        $value = $this->arguments['value'] ?? $this->renderChildren() ?? '';
 
         $result = mb_split($pattern, $value, $limit);
 

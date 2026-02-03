@@ -24,16 +24,18 @@ class ArrayVariableViewHelper extends AbstractViewHelper
      */
     public function render()
     {
+        $nameOfArray = $this->arguments['name'];
+        $nameOfKey = $this->arguments['key'];
+
         $value = ($this->arguments['value'] ?? $this->renderChildren());
 
         $container = [];
 
-        if ($this->renderingContext->getVariableProvider()->exists($this->arguments['name'])) {
-            $container = $this->renderingContext->getVariableProvider()->get($this->arguments['name']);
+        if ($this->renderingContext->getVariableProvider()->exists($nameOfArray)) {
+            $container = $this->renderingContext->getVariableProvider()->get($nameOfArray);
         }
+        $container = ArrayUtility::setValueByPath($container, $nameOfKey, $value, '.');
 
-        $container = ArrayUtility::setValueByPath($container, $this->arguments['key'], $value, '.');
-
-        $this->renderingContext->getVariableProvider()->add($this->arguments['name'], $container);
+        $this->renderingContext->getVariableProvider()->add($nameOfArray, $container);
     }
 }
