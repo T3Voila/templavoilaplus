@@ -407,7 +407,7 @@ class ProcessingService
                     if (!isset($node['flexform']['data'][$sheetKey][$lKey]) || !is_array($node['flexform']['data'][$sheetKey][$lKey])) {
                         $node['flexform']['data'][$sheetKey][$lKey] = [];
                     }
-                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
+                    $childs[$sheetKey][$lKey] = $this->getNodeChildsFromElements($node, $sheetKey, '', $sheetData['ROOT']['el'], $lKey, $node['flexform']['data'][$sheetKey][$lKey], $basePid, $usedElements);
                 }
             }
         }
@@ -415,22 +415,23 @@ class ProcessingService
         return $childs;
     }
 
-    protected function getNodeChildsFromElements(array $baseNode, string $baseSheetKey, array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
+    protected function getNodeChildsFromElements(array $baseNode, string $baseSheetKey, string $baseFieldKey, array $elements, string $lKey, array $values, int $basePid, array &$usedElements): array
     {
         $childs = [];
         /** @TODO We need this dynamically */
         $vKeys = ['vDEF'];
 
         foreach ($elements as $fieldKey => $fieldConfig) {
+            $fieldComleteKey = $baseFieldKey . '#' . $fieldKey;
             if (($fieldConfig['type'] ?? '') === 'array') {
                 if ($fieldConfig['section'] ?? '' === 1) {
                     if (is_array($values[$fieldKey]['el'] ?? null)) {
                         foreach ($values[$fieldKey]['el'] as $key => $fieldValue) {
-                            $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
+                            $childs[$fieldKey][$key] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldComleteKey . '#el#' . $key, $fieldConfig['el'], $lKey, $fieldValue, $basePid, $usedElements);
                         }
                     }
                 } else {
-                    $childs[$fieldKey] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
+                    $childs[$fieldKey] = $this->getNodeChildsFromElements($baseNode, $baseSheetKey, $fieldComleteKey . '#el', $fieldConfig['el'], $lKey, $values[$fieldKey]['el'], $basePid, $usedElements);
                 }
             } else {
                 // If the current field points to another table
@@ -444,7 +445,7 @@ class ProcessingService
                             foreach ($vKeys as $vKey) {
                                 $listOfSubElementUids = ($values[$fieldKey][$vKey] ?? null);
                                 if ($listOfSubElementUids) {
-                                    $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, $vKey);
+                                    $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldComleteKey, $lKey, $vKey);
                                     $childs[$fieldKey][$vKey] = $this->getNodesFromListWithTree($listOfSubElementUids, $parentPointer, $basePid, $table, $usedElements);
                                 } else {
                                     $childs[$fieldKey][$vKey] = [];
@@ -453,7 +454,7 @@ class ProcessingService
                             break;
                         case 'file':
                             $listOfSubElementUids = (string) $baseNode['raw']['entity']['uid'];
-                            $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldKey, $lKey, 'vDEF');
+                            $parentPointer = $this->createParentPointer($baseNode, $baseSheetKey, $fieldComleteKey, $lKey, 'vDEF');
                             $childs[$fieldKey]['vDEF'] = $this->getNodesFromListWithTree('', $parentPointer, 0, 'sys_file_reference', $usedElements, '', $baseNode['raw']['entity']['uid'], $baseNode['raw']['table'], $fieldConfig['config']);
                             break;
                         default:
@@ -1144,14 +1145,15 @@ class ProcessingService
         return $flexformPointerString;
     }
 
-    protected function createParentPointer(array $node, string $sheetKey, string $fieldKey, string $lKey, string $vKey): array
+    protected function createParentPointer(array $node, string $sheetKey, string $fieldComleteKey, string $lKey, string $vKey): array
     {
+        $fieldComleteKey = ltrim($fieldComleteKey, '#');
         return [
             'table' => $node['raw']['table'],
             'uid' => $node['raw']['entity']['uid'],
             'sheet' => $sheetKey,
             'sLang' => $lKey,
-            'field' => $fieldKey,
+            'field' => $fieldComleteKey,
             'vLang' => $vKey,
             'position' => 0,
         ];
