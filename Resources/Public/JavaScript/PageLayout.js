@@ -746,6 +746,8 @@ define([
             type: 'POST',
             data: {
                 sourcePointer: items[0].dataset.parentPointer,
+                uid: uid,
+                pid: $('#moduleWrapper').data('tvpPageId'),
             },
             url: TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_makelocal'],
             success: function(data) {

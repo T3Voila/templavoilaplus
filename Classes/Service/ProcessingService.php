@@ -732,10 +732,29 @@ class ProcessingService
         return $newElementUid;
     }
 
-    public function makeLocalCopy(string $sourcePointerString)
+    public function makeLocalCopy(string $sourcePointerString, int $targetPid)
     {
         // Check and get all information about the source position:
         $sourcePointer = $this->getValidPointer($sourcePointerString);
+
+        if (!$sourcePointer) {
+            throw new ProcessingException(
+                sprintf('Error make local copy: sourcePointer %s not valid.', $sourcePointerString),
+                1666475603708
+            );
+        }
+        if (!isset($sourcePointer['foundFieldReferences'])) {
+            throw new ProcessingException(
+                sprintf('Error make local copy: sourcePointer %s is themself inside a reference.', $sourcePointerString),
+                1666475603708
+            );
+        }
+        if ($sourcePointer['foundRecord']['pid'] !== $targetPid) {
+            throw new ProcessingException(
+                sprintf('Possible parent isn\'t on target page (%s), maybe itself is a reference.', $targetPid),
+                1666475603708
+            );
+        }
 
         $sourceElementTable = $sourcePointer['foundFieldReferences']['referenceTable'];
         $sourceElementUid = $sourcePointer['foundFieldReferences']['references'][$sourcePointer['position']];
