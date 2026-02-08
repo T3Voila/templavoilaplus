@@ -904,6 +904,7 @@ class PageLayout {
         var params = new URLSearchParams();
         params.set('sourcePointer', item.dataset.parentPointer);
         params.set('uid', uid);
+        params.set('pid', this.baseElement.dataset.tvpPageId);
 
         fetch(TYPO3.settings.ajaxUrls['templavoilaplus_contentElement_makelocal'], {
             method: 'POST',

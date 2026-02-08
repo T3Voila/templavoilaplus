@@ -150,7 +150,8 @@ class ContentElements extends AbstractResponse
         $parameters = $request->getParsedBody();
         try {
             $result = $processingService->makeLocalCopy(
-                $parameters['sourcePointer'] ?? ''
+                $parameters['sourcePointer'] ?? '',
+                (int)($parameters['pid'] ?? 0)
             );
 
             if ($result) {
