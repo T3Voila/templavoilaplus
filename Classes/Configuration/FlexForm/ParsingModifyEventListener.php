@@ -115,16 +115,6 @@ class ParsingModifyEventListener
                 } else {
                     $pointerValue = $row[$pointerFieldName];
                 }
-                if (!$pointerValue && ((int)$row[$parentFieldName] === 0 || $row[$parentFieldName] === null)) {
-                    // If on root level and still no valid pointer found -> exception
-                    throw new FlexFormInvalidPointerFieldException(
-                        'The data structure for field "' . $fieldName . '" in table "' . $tableName . '" has to be looked up'
-                        . ' in field "' . $pointerFieldName . '". That field had no valid value, so a lookup in parent record'
-                        . ' with uid "' . $row[$parentFieldName] . '" was done. Root node with uid "' . $row['uid'] . '"'
-                        . ' was fetched and still no valid pointer field value was found.',
-                        1464112555
-                    );
-                }
             }
         }
 
