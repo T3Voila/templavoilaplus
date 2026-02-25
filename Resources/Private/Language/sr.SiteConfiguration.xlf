@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2026-02-15T02:33:44+01:00" target-language="sr">
+    <header/>
+    <body>
+      <trans-unit id="site.templavoilaplus_allowed_places.label" resname="site.templavoilaplus_allowed_places.label">
+        <source>Allowed themes</source>
+        <target state="needs-translation">Allowed themes</target>
+      </trans-unit>
+      <trans-unit id="site.templavoilaplus_allowed_places.description" resname="site.templavoilaplus_allowed_places.description">
+        <source>You can define which places from which theme can be used for this site. Leave empty to allow all. You can also use the Page TSconfig mod.web_txtemplavoilaplusLayout.filterMaps for finer grained configuration.</source>
+        <target state="needs-translation">You can define which places from which theme can be used for this site. Leave empty to allow all. You can also use the Page TSconfig mod.web_txtemplavoilaplusLayout.filterMaps for finer grained configuration.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
