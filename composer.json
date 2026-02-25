@@ -38,7 +38,7 @@
         "jpmschuler/tvplus_test_theme": "*@dev",
         "php-coveralls/php-coveralls": "^2.5.2",
         "phpspec/prophecy": "^1.20",
-        "phpspec/prophecy-phpunit": "dev-master",
+        "phpspec/prophecy-phpunit": "^v2.5.0",
         "phpstan/extension-installer": "^1.1.0",
         "phpstan/phpstan": "^1.6.2",
         "phpstan/phpstan-phpunit": "^1.1.1",
