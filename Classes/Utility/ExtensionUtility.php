@@ -63,7 +63,7 @@ class ExtensionUtility implements SingletonInterface
         // Temnplating TV+
         foreach (self::$registeredExtensions as $extensionKey => $path) {
             self::loadDataStructurePlaces($extensionKey, $path);
-            self::loadTemplatePlaces($extensionKey,$path);
+            self::loadTemplatePlaces($extensionKey, $path);
             self::loadBackendLayoutPlaces($extensionKey, $path);
 
             // Last one, as it contain references to the other ones
@@ -130,8 +130,7 @@ class ExtensionUtility implements SingletonInterface
         string $extensionKey,
         string $pathAndFilename,
         string $defaultConfigurationHandlerIdentifier
-    ): void
-    {
+    ): void {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placeConfigurations = self::getFileContentArray($pathAndFilename);
         foreach ($placeConfigurations as $identifier => $placeConfiguration) {
