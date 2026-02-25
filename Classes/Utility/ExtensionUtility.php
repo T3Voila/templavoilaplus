@@ -62,23 +62,23 @@ class ExtensionUtility implements SingletonInterface
         }
         // Temnplating TV+
         foreach (self::$registeredExtensions as $extensionKey => $path) {
-            self::loadDataStructurePlaces($path);
-            self::loadTemplatePlaces($path);
-            self::loadBackendLayoutPlaces($path);
+            self::loadDataStructurePlaces($extensionKey, $path);
+            self::loadTemplatePlaces($extensionKey,$path);
+            self::loadBackendLayoutPlaces($extensionKey, $path);
 
             // Last one, as it contain references to the other ones
-            self::loadMappingPlaces($path);
+            self::loadMappingPlaces($extensionKey, $path);
         }
     }
 
     /**
      * Loads the DataStructurePlaces.php inside the extension path
-     * @param string $path
      * @internal
      */
-    protected static function loadDataStructurePlaces($path)
+    protected static function loadDataStructurePlaces(string $extensionKey, string $path): void
     {
         static::loadPlaces(
+            $extensionKey,
             $path . '/DataStructurePlaces.php',
             \Tvp\TemplaVoilaPlus\Handler\Configuration\DataConfigurationHandler::$identifier
         );
@@ -86,12 +86,12 @@ class ExtensionUtility implements SingletonInterface
 
     /**
      * Loads the MappingPlaces.php inside the extension path
-     * @param string $path
      * @internal
      */
-    protected static function loadMappingPlaces($path)
+    protected static function loadMappingPlaces(string $extensionKey, string $path): void
     {
         static::loadPlaces(
+            $extensionKey,
             $path . '/MappingPlaces.php',
             \Tvp\TemplaVoilaPlus\Handler\Configuration\MappingConfigurationHandler::$identifier
         );
@@ -99,12 +99,12 @@ class ExtensionUtility implements SingletonInterface
 
     /**
      * Loads the TemplatePlaces.php inside the extension path
-     * @param string $path
      * @internal
      */
-    protected static function loadTemplatePlaces($path)
+    protected static function loadTemplatePlaces(string $extensionKey, string $path): void
     {
         static::loadPlaces(
+            $extensionKey,
             $path . '/TemplatePlaces.php',
             \Tvp\TemplaVoilaPlus\Handler\Configuration\TemplateConfigurationHandler::$identifier
         );
@@ -112,23 +112,25 @@ class ExtensionUtility implements SingletonInterface
 
     /**
      * Loads the TemplatePlaces.php inside the extension path
-     * @param string $path
      * @internal
      */
-    protected static function loadBackendLayoutPlaces($path)
+    protected static function loadBackendLayoutPlaces(string $extensionKey, string $path): void
     {
         static::loadPlaces(
+            $extensionKey,
             $path . '/BackendLayoutPlaces.php',
             \Tvp\TemplaVoilaPlus\Handler\Configuration\BackendLayoutConfigurationHandler::$identifier
         );
     }
     /**
      * Loads the places inside the extension files
-     * @param string $pathAndFilename
-     * @param string $defaultConfigurationHandlerIdentifier
      * @internal
      */
-    protected static function loadPlaces(string $pathAndFilename, string $defaultConfigurationHandlerIdentifier)
+    protected static function loadPlaces(
+        string $extensionKey,
+        string $pathAndFilename,
+        string $defaultConfigurationHandlerIdentifier
+    ): void
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         $placeConfigurations = self::getFileContentArray($pathAndFilename);
@@ -136,6 +138,7 @@ class ExtensionUtility implements SingletonInterface
             $configurationService->registerPlace(
                 $identifier,
                 $placeConfiguration['name'],
+                $extensionKey,
                 $placeConfiguration['scope'] ?? '',
                 $placeConfiguration['configurationHandler'] ?? $defaultConfigurationHandlerIdentifier,
                 $placeConfiguration['loadSaveHandler'],
@@ -150,7 +153,7 @@ class ExtensionUtility implements SingletonInterface
      * @param string $path
      * @internal
      */
-    protected static function loadExtending($path)
+    protected static function loadExtending(string $path): void
     {
         $extending = self::getFileContentArray($path . '/Extending.php');
         if (isset($extending['renderHandler'])) {
@@ -173,7 +176,7 @@ class ExtensionUtility implements SingletonInterface
         }
     }
 
-    protected static function registerHandler(array $handlerConfigurations, string $implementorsInterface)
+    protected static function registerHandler(array $handlerConfigurations, string $implementorsInterface): void
     {
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
         foreach ($handlerConfigurations as $identifier => $handlerConfiguration) {
@@ -188,10 +191,9 @@ class ExtensionUtility implements SingletonInterface
 
     /**
      * Loads the Extending.php inside the extension path and registers dataStructureHandler
-     * @param string $path
      * @internal
      */
-    protected static function loadNewContentElementWizardConfiguration($path)
+    protected static function loadNewContentElementWizardConfiguration(string $path): void
     {
         /** @var ConfigurationService */
         $configurationService = GeneralUtility::makeInstance(ConfigurationService::class);
@@ -219,7 +221,7 @@ class ExtensionUtility implements SingletonInterface
      * @param string $file Absolute path and filename
      * @internal
      */
-    protected static function getFileContentArray($file): array
+    protected static function getFileContentArray(string $file): array
     {
         if (is_file($file) && is_readable($file)) {
             $content = require $file;

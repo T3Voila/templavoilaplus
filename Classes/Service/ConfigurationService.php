@@ -101,6 +101,7 @@ class ConfigurationService implements SingletonInterface
     public function registerPlace(
         string $identifier,
         string $name,
+        string $extension,
         /** @TODO */
         $scope,
         string $configurationHandlerIdentifier,
@@ -118,7 +119,7 @@ class ConfigurationService implements SingletonInterface
         // $this->checkHandler $loadSaveHandlerIdentifier
 
         $placesService->registerPlace(
-            new Place($identifier, $name, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint, $indentation)
+            new Place($identifier, $name, $extension, $scope, $configurationHandlerIdentifier, $loadSaveHandlerIdentifier, $entryPoint, $indentation)
         );
     }
 

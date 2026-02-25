@@ -38,6 +38,8 @@ class Place
     /** @var string */
     protected $name = '';
 
+    protected string $extensionKey;
+
     /** @var string Identifier of the handler to manage coverting between configuration object and configuration array */
     protected $configurationHandlerIdentifier = '';
 
@@ -68,6 +70,7 @@ class Place
     public function __construct(
         string $identifier,
         string $name,
+        string $extensionKey,
         /* @TODO */
         $scope,
         string $configurationHandlerIdentifier,
@@ -77,6 +80,7 @@ class Place
     ) {
         $this->identifier = $identifier;
         $this->name = $name;
+        $this->extensionKey = $extensionKey;
         $this->scope = $scope;
         $this->configurationHandlerIdentifier = $configurationHandlerIdentifier;
         $this->loadSaveHandlerIdentifier = $loadSaveHandlerIdentifier;
@@ -97,6 +101,11 @@ class Place
     public function getName(): string
     {
         return TemplaVoilaUtility::getLanguageService()->sL($this->name);
+    }
+
+    public function getExtensionKey(): string
+    {
+        return $this->extensionKey;
     }
 
     public function getConfigurationHandlerIdentifier(): string

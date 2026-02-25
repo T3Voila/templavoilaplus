@@ -42,12 +42,12 @@ class ItemsProcFunc
             ['', ''],
         ];
 
-        $currentPageId = $params['table'] === 'pages' ? $params['row']['uid'] : $params['row']['pid'];
+        $currentPageId = (int)($params['table'] === 'pages' ? $params['row']['uid'] : $params['row']['pid']);
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = $pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'];
 
         foreach ($mappingPlaces as $mappingPlace) {
-            if ($mappingPlace->getScope() === $scope && static::isMappingPlaceVisible($tvpPageTsConfig, $mappingPlace->getIdentifier())) {
+            if ($mappingPlace->getScope() === $scope && static::isMappingPlaceAllowed($tvpPageTsConfig, $currentPageId, $mappingPlace->getIdentifier())) {
                 $mappingConfigurations = $mappingPlace->getConfigurations();
 
                 foreach ($mappingConfigurations as $mappingConfiguration) {
@@ -90,21 +90,43 @@ class ItemsProcFunc
      *
      * @return bool
      */
-    public static function isMappingPlaceVisible(array $tvpPageTsConfig, string $mappingPlace): bool
+    public static function isMappingPlaceAllowed(array $tvpPageTsConfig, int $pageId, string $mappingPlaceIdentifier): bool
     {
-        if (isset($tvpPageTsConfig['filterMaps.'])) {
-            $allowedPlaces = $tvpPageTsConfig['filterMaps.'];
-        } elseif (isset($tvpPageTsConfig['filterMaps'])) {
-            $allowedPlaces[] = $tvpPageTsConfig['filterMaps'];
-        } else {
-            return true;
+        $sitesConfiguration = \Tvp\TemplaVoilaPlus\Utility\SitesUtility::getSitesConfiguration($pageId);
+        $allowedPlaces = $sitesConfiguration['templavoilaplus_allowed_places'] ?? '';
+
+        if ($allowedPlaces !== '') {
+            $allowedPlacesIdentifiers = GeneralUtility::trimExplode(',', $allowedPlaces, true);
+
+            $result = self::checkIfAllowed($allowedPlacesIdentifiers, $mappingPlaceIdentifier);
+            if ($result === false) {
+                return false;
+            }
         }
 
-        foreach ($allowedPlaces as $allowedPlace) {
-            if (strpos($mappingPlace, $allowedPlace) !== false) {
+        $allowedPlacesIdentifiers = $tvpPageTsConfig['filterMaps.'] ?? $tvpPageTsConfig['filterMaps'] ?? '';
+
+        if ($allowedPlacesIdentifiers !== '') {
+            if (!is_array($allowedPlacesIdentifiers)) {
+                $allowedPlacesIdentifiers = [$allowedPlacesIdentifiers];
+            }
+            return self::checkIfAllowed($allowedPlacesIdentifiers, $mappingPlaceIdentifier);
+        }
+
+        return true;
+    }
+
+    protected static function checkIfAllowed(array $allowedPlacesIdentifiers, string $mappingPlaceIdentifier): bool
+    {
+        /**
+         * @TODO Maybe use array_find if PHP > 8.4
+         */
+        foreach ($allowedPlacesIdentifiers as $allowedPlaceIdentifier) {
+            if (strpos($mappingPlaceIdentifier, $allowedPlaceIdentifier) !== false) {
                 return true;
             }
         }
+
         return false;
     }
 }

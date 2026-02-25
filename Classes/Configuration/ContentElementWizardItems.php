@@ -92,7 +92,7 @@ class ContentElementWizardItems
         $pageTsConfig = BackendUtility::getPagesTSconfig($currentPageId);
         $tvpPageTsConfig = ($pageTsConfig['mod.']['web_txtemplavoilaplusLayout.'] ?? []);
         $fcePageTsConfig = ($pageTsConfig['mod.']['wizards.']['newContentElement.']['wizardItems.']['fce.'] ?? []);
-        if (ItemsProcFunc::isMappingPlaceVisible($tvpPageTsConfig, $combinedMappingIdentifier)) {
+        if (ItemsProcFunc::isMappingPlaceAllowed($tvpPageTsConfig, $currentPageId, $combinedMappingIdentifier)) {
             if (isset($fcePageTsConfig['show']) && $fcePageTsConfig['show']) {
                 return $fcePageTsConfig['show'] === '*'
                     || in_array($wizardLabel, explode(',', $fcePageTsConfig['show']), false)
