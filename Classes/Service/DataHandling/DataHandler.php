@@ -505,7 +505,7 @@ class DataHandler
                     }
                 }
             }
-            if (($res == 1) && !$pObj->doesRecordExist($table, $id, 'editcontent')) {
+            if (($res == 1) && !$pObj->doesRecordExist($table, $id, 2)) {
                 $res = null;
             }
         }
