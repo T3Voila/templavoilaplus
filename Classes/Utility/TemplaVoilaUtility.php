@@ -140,6 +140,7 @@ final class TemplaVoilaUtility
             $languages[-1] = [
                 'uid' => -1,
                 'title' => static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
+                'locale' => 'all',
                 'flagIcon' => 'flags-multiple',
             ];
         }
@@ -339,6 +340,7 @@ final class TemplaVoilaUtility
             $useableLanguages[$languageId] = [
                 'uid' => $languageId,
                 'title' => $language->getTitle(),
+                'locale' => $language->getLocale(),
                 'flagIcon' => $language->getFlagIdentifier(),
             ];
         }

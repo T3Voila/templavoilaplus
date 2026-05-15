@@ -1,1 +1,8 @@
-<f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: nodeTree.node, beLayout: nodeTree.node.rendering.beLayout}" />
+<f:if condition="{nodeTree.node.raw.table} == 'pages'">
+    <f:then>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Page" arguments="{node: nodeTree.node, beLayout: nodeTree.node.rendering.beLayout}" />
+    </f:then>
+    <f:else>
+        <f:render partial="Backend/Handler/DoktypeDefaultHandler/Node" arguments="{node: nodeTree.node, beLayout: nodeTree.node.rendering.beLayout}" />
+    </f:else>
+</f:if>
