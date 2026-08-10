@@ -5,7 +5,7 @@
     <body>
       <trans-unit id="enable.renderFCEHeader" resname="enable.renderFCEHeader">
         <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
-        <target state="needs-translation">Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</target>
+        <target state="translated">Fejléc engedélyezése az FCE-khez: Ha ez a jelölőnégyzet be van jelölve, az FCE típusú tartalomelemek fejléce a többi tartalomelem fejlécéhez hasonlóan jelenik meg.</target>
       </trans-unit>
     </body>
   </file>
