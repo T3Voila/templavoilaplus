@@ -5,19 +5,19 @@
     <body>
       <trans-unit id="access_noDSaccess" resname="access_noDSaccess">
         <source>You have no access to data structure of this record</source>
-        <target state="needs-translation">You have no access to data structure of this record</target>
+        <target state="translated">Nincs hozzáférésed ennek a rekordnak az adatszerkezetéhez</target>
       </trans-unit>
       <trans-unit id="access_noTOaccess" resname="access_noTOaccess">
         <source>You have no access to template object of this record</source>
-        <target state="needs-translation">You have no access to template object of this record</target>
+        <target state="translated">Nincs hozzáférésed ennek a rekordnak a sablonobjektumához</target>
       </trans-unit>
       <trans-unit id="access_noModifyAccess" resname="access_noModifyAccess">
         <source>Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</source>
-        <target state="needs-translation">Modification of record %s:%d is not allowed because user has no access to its DS and/or TO</target>
+        <target state="translated">A(z) %s:%d rekord módosítása nem engedélyezett, mert a felhasználónak nincs hozzáférése a DS-hez és/vagy TO-hoz</target>
       </trans-unit>
       <trans-unit id="access_noCreateAccess" resname="access_noCreateAccess">
         <source>Creation of record in %s is not allowed because user has no access to its DS and/or TO</source>
-        <target state="needs-translation">Creation of record in %s is not allowed because user has no access to its DS and/or TO</target>
+        <target state="translated">Rekord létrehozása itt: %s nem engedélyezett, mert a felhasználónak nincs hozzáférése a DS-hez és/vagy TO-hoz</target>
       </trans-unit>
     </body>
   </file>
