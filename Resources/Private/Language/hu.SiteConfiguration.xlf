@@ -5,11 +5,11 @@
     <body>
       <trans-unit id="site.templavoilaplus_allowed_places.label" resname="site.templavoilaplus_allowed_places.label">
         <source>Allowed themes</source>
-        <target state="needs-translation">Allowed themes</target>
+        <target state="translated">Engedélyezett témák</target>
       </trans-unit>
       <trans-unit id="site.templavoilaplus_allowed_places.description" resname="site.templavoilaplus_allowed_places.description">
         <source>You can define which places from which theme can be used for this site. Leave empty to allow all. You can also use the Page TSconfig mod.web_txtemplavoilaplusLayout.filterMaps for finer grained configuration.</source>
-        <target state="needs-translation">You can define which places from which theme can be used for this site. Leave empty to allow all. You can also use the Page TSconfig mod.web_txtemplavoilaplusLayout.filterMaps for finer grained configuration.</target>
+        <target state="translated">Meghatározhatod, hogy melyik témából mely helyek használhatók ehhez a webhelyhez. Hagyd üresen az összes engedélyezéséhez. Finomabb konfigurációhoz használhatod a mod.web_txtemplavoilaplusLayout.filterMaps Page TSconfig beállítást is.</target>
       </trans-unit>
     </body>
   </file>
