@@ -5,367 +5,367 @@
     <body>
       <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
         <source>TemplaVoilà!+</source>
-        <target state="needs-translation">TemplaVoilà!+</target>
+        <target state="translated">TemplaVoilà!+</target>
       </trans-unit>
       <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
         <source>TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</source>
-        <target state="needs-translation">TemplaVoilà! Plus Control Center lists all Data Structures and Template Objects available</target>
+        <target state="translated">A TemplaVoilà! Plus vezérlőközpont felsorolja az összes elérhető adatszerkezetet és sablonobjektumot</target>
       </trans-unit>
       <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
         <source>TemplaVoilà! Plus Control Center</source>
-        <target state="needs-translation">TemplaVoilà! Plus Control Center</target>
+        <target state="translated">TemplaVoilà! Plus vezérlőközpont</target>
       </trans-unit>
       <trans-unit id="title" resname="title">
         <source>TemplaVoilà! Plus Control Center</source>
-        <target state="needs-translation">TemplaVoilà! Plus Control Center</target>
+        <target state="translated">TemplaVoilà! Plus vezérlőközpont</target>
       </trans-unit>
       <trans-unit id="storagefolders" resname="storagefolders">
         <source>Storage Folders</source>
-        <target state="needs-translation">Storage Folders</target>
+        <target state="translated">Tárolási mappák</target>
       </trans-unit>
       <trans-unit id="datastructures" resname="datastructures">
         <source>Data Structures</source>
-        <target state="needs-translation">Data Structures</target>
+        <target state="translated">Adatszerkezetek</target>
       </trans-unit>
       <trans-unit id="datastructures.description" resname="datastructures.description">
         <source>Data Structures define the elements and areas that are used to structure the content of a mapping.</source>
-        <target state="needs-translation">Data Structures define the elements and areas that are used to structure the content of a mapping.</target>
+        <target state="translated">Az adatszerkezetek meghatározzák azokat az elemeket és területeket, amelyeket a tartalom leképezésének strukturálásához használnak.</target>
       </trans-unit>
       <trans-unit id="mappings" resname="mappings">
         <source>Mappings</source>
-        <target state="needs-translation">Mappings</target>
+        <target state="translated">Leképezések</target>
       </trans-unit>
       <trans-unit id="mappings.description" resname="mappings.description">
         <source>Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</source>
-        <target state="needs-translation">Mappings allow to define which TemplaVoilà! Plus configuration should be used for a specific page or content element.</target>
+        <target state="translated">A leképezések segítségével meghatározható, hogy egy adott oldalhoz vagy tartalomelemhez melyik TemplaVoilà! Plus konfigurációt kell használni.</target>
       </trans-unit>
       <trans-unit id="templates" resname="templates">
         <source>Templates</source>
-        <target state="needs-translation">Templates</target>
+        <target state="translated">Sablonok</target>
       </trans-unit>
       <trans-unit id="templates.description" resname="templates.description">
         <source>Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</source>
-        <target state="needs-translation">Templates define which elements should be mapped to specific parts of an e.g. HTML template in order to create the output.</target>
+        <target state="translated">A sablonok meghatározzák, hogy mely elemeket kell egy pl. HTML sablon egyes részeihez leképezni a kimenet létrehozásához.</target>
       </trans-unit>
       <trans-unit id="templateobjects" resname="templateobjects">
         <source>Template Objects</source>
-        <target state="needs-translation">Template Objects</target>
+        <target state="translated">Sablonobjektumok</target>
       </trans-unit>
       <trans-unit id="templatefiles" resname="templatefiles">
         <source>Template Files</source>
-        <target state="needs-translation">Template Files</target>
+        <target state="translated">Sablonfájlok</target>
       </trans-unit>
       <trans-unit id="pagetemplates" resname="pagetemplates">
         <source>Page templates</source>
-        <target state="needs-translation">Page templates</target>
+        <target state="translated">Oldalsablonok</target>
       </trans-unit>
       <trans-unit id="filereference" resname="filereference">
         <source>File reference</source>
-        <target state="needs-translation">File reference</target>
+        <target state="translated">Fájlhivatkozás</target>
       </trans-unit>
       <trans-unit id="description" resname="description">
         <source>Description</source>
-        <target state="needs-translation">Description</target>
+        <target state="translated">Leírás</target>
       </trans-unit>
       <trans-unit id="fces" resname="fces">
         <source>Flexible CE</source>
-        <target state="needs-translation">Flexible CE</target>
+        <target state="translated">Rugalmas CE</target>
       </trans-unit>
       <trans-unit id="other" resname="other">
         <source>Other</source>
-        <target state="needs-translation">Other</target>
+        <target state="translated">Egyéb</target>
       </trans-unit>
       <trans-unit id="unknown" resname="unknown">
         <source>Unknown "%s"</source>
-        <target state="needs-translation">Unknown "%s"</target>
+        <target state="translated">Ismeretlen "%s"</target>
       </trans-unit>
       <trans-unit id="losttos" resname="losttos">
         <source>Lost TOs [%d]</source>
-        <target state="needs-translation">Lost TOs [%d]</target>
+        <target state="translated">Elveszett TO-k [%d]</target>
       </trans-unit>
       <trans-unit id="overview" resname="overview">
         <source>XML file</source>
-        <target state="needs-translation">XML file</target>
+        <target state="translated">XML fájl</target>
       </trans-unit>
       <trans-unit id="dstotitle" resname="dstotitle">
         <source>DS/TO Title</source>
-        <target state="needs-translation">DS/TO Title</target>
+        <target state="translated">DS/TO cím</target>
       </trans-unit>
       <trans-unit id="localization" resname="localization">
         <source>Localization</source>
-        <target state="needs-translation">Localization</target>
+        <target state="translated">Lokalizáció</target>
       </trans-unit>
       <trans-unit id="showdetails" resname="showdetails">
         <source>Show Details</source>
-        <target state="needs-translation">Show Details</target>
+        <target state="translated">Részletek megjelenítése</target>
       </trans-unit>
       <trans-unit id="showuused" resname="showuused">
         <source>Show unused datastructures</source>
-        <target state="needs-translation">Show unused datastructures</target>
+        <target state="translated">Nem használt adatszerkezetek megjelenítése</target>
       </trans-unit>
       <trans-unit id="containerstatus" resname="containerstatus">
         <source>Container status</source>
-        <target state="needs-translation">Container status</target>
+        <target state="translated">Tároló állapota</target>
       </trans-unit>
       <trans-unit id="mappingstatus" resname="mappingstatus">
         <source>Mapping status</source>
-        <target state="needs-translation">Mapping status</target>
+        <target state="translated">Leképezés állapota</target>
       </trans-unit>
       <trans-unit id="usagecount" resname="usagecount">
         <source>Usage count</source>
-        <target state="needs-translation">Usage count</target>
+        <target state="translated">Használatok száma</target>
       </trans-unit>
       <trans-unit id="templatestatus" resname="templatestatus">
         <source>Template Status</source>
-        <target state="needs-translation">Template Status</target>
+        <target state="translated">Sablon állapota</target>
       </trans-unit>
       <trans-unit id="rendertype" resname="rendertype">
         <source>Render Type</source>
-        <target state="needs-translation">Render Type</target>
+        <target state="translated">Megjelenítési típus</target>
       </trans-unit>
       <trans-unit id="language" resname="language">
         <source>Language</source>
-        <target state="needs-translation">Language</target>
+        <target state="translated">Nyelv</target>
       </trans-unit>
       <trans-unit id="globalprocessing_xml" resname="globalprocessing_xml">
         <source>Global Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
-        <target state="needs-translation">Global Processing &lt;strong&gt;XML&lt;/strong&gt;</target>
+        <target state="translated">Globális feldolgozás &lt;strong&gt;XML&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="localprocessing_xml" resname="localprocessing_xml">
         <source>Local Processing &lt;strong&gt;XML&lt;/strong&gt;</source>
-        <target state="needs-translation">Local Processing &lt;strong&gt;XML&lt;/strong&gt;</target>
+        <target state="translated">Helyi feldolgozás &lt;strong&gt;XML&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="usedby" resname="usedby">
         <source>Used by</source>
-        <target state="needs-translation">Used by</target>
+        <target state="translated">Használja</target>
       </trans-unit>
       <trans-unit id="created" resname="created">
         <source>Created</source>
-        <target state="needs-translation">Created</target>
+        <target state="translated">Létrehozva</target>
       </trans-unit>
       <trans-unit id="updated" resname="updated">
         <source>Updated</source>
-        <target state="needs-translation">Updated</target>
+        <target state="translated">Frissítve</target>
       </trans-unit>
       <trans-unit id="noicon" resname="noicon">
         <source>[No icon]</source>
-        <target state="needs-translation">[No icon]</target>
+        <target state="translated">[Nincs ikon]</target>
       </trans-unit>
       <trans-unit id="filenotfound" resname="filenotfound">
         <source>[File not found!]</source>
-        <target state="needs-translation">[File not found!]</target>
+        <target state="translated">[A fájl nem található!]</target>
       </trans-unit>
       <trans-unit id="createnewto" resname="createnewto">
         <source>Create new Template Object</source>
-        <target state="needs-translation">Create new Template Object</target>
+        <target state="translated">Új sablonobjektum létrehozása</target>
       </trans-unit>
       <trans-unit id="containerwithseparatelocalization" resname="containerwithseparatelocalization">
         <source>Container element with separate localization!</source>
-        <target state="needs-translation">Container element with separate localization!</target>
+        <target state="translated">Külön lokalizációjú tárolóelem!</target>
       </trans-unit>
       <trans-unit id="mixofcontentandref" resname="mixofcontentandref">
         <source>Mix of content and references, OK, but be careful!</source>
-        <target state="needs-translation">Mix of content and references, OK, but be careful!</target>
+        <target state="translated">Tartalom és hivatkozások keveréke, rendben van, de legyél óvatos!</target>
       </trans-unit>
       <trans-unit id="nocontentfields" resname="nocontentfields">
         <source>No content fields, recommended to set "&lt;langDisable&gt;" = 1</source>
-        <target state="needs-translation">No content fields, recommended to set "&lt;langDisable&gt;" = 1</target>
+        <target state="translated">Nincs tartalommező, javasolt a "&lt;langDisable&gt;" = 1 beállítás</target>
       </trans-unit>
       <trans-unit id="towasupdated" resname="towasupdated">
         <source>Template file was updated since last mapping (%s) and you might need to remap the Template Object!</source>
-        <target state="needs-translation">Template file was updated since last mapping (%s) and you might need to remap the Template Object!</target>
+        <target state="translated">A sablonfájl az utolsó leképezés (%s) óta frissült, és lehet, hogy újra kell leképezni a sablonobjektumot!</target>
       </trans-unit>
       <trans-unit id="warning_mappingstatus" resname="warning_mappingstatus">
         <source>%s (TO: "%s")</source>
-        <target state="needs-translation">%s (TO: "%s")</target>
+        <target state="translated">%s (TO: "%s")</target>
       </trans-unit>
       <trans-unit id="mapping_uptodate" resname="mapping_uptodate">
         <source>Mapping is up to date.</source>
-        <target state="needs-translation">Mapping is up to date.</target>
+        <target state="translated">A leképezés naprakész.</target>
       </trans-unit>
       <trans-unit id="update_mapping" resname="update_mapping">
         <source>Update mapping</source>
-        <target state="needs-translation">Update mapping</target>
+        <target state="translated">Leképezés frissítése</target>
       </trans-unit>
       <trans-unit id="notmapped" resname="notmapped">
         <source>Not mapped yet!</source>
-        <target state="needs-translation">Not mapped yet!</target>
+        <target state="translated">Még nincs leképezve!</target>
       </trans-unit>
       <trans-unit id="updatemapping_info" resname="updatemapping_info">
         <source>- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà! Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</source>
-        <target state="needs-translation">- &lt;em&gt;(It might also mean that the TO was mapped with an older version of TemplaVoilà! Plus - then just go and save the mapping again at this will be updated.)&lt;/em&gt;</target>
+        <target state="translated">- &lt;em&gt;(Az is előfordulhat, hogy a TO-t a TemplaVoilà! Plus egy régebbi verziójával képezték le - ebben az esetben csak mentsd el újra a leképezést, és ez frissülni fog.)&lt;/em&gt;</target>
       </trans-unit>
       <trans-unit id="map" resname="map">
         <source>Map</source>
-        <target state="needs-translation">Map</target>
+        <target state="translated">Leképezés</target>
       </trans-unit>
       <trans-unit id="remap" resname="remap">
         <source>Remap</source>
-        <target state="needs-translation">Remap</target>
+        <target state="translated">Újra leképezés</target>
       </trans-unit>
       <trans-unit id="preview" resname="preview">
         <source>Preview</source>
-        <target state="needs-translation">Preview</target>
+        <target state="translated">Előnézet</target>
       </trans-unit>
       <trans-unit id="toused_title" resname="toused_title">
         <source>Title</source>
-        <target state="needs-translation">Title</target>
+        <target state="translated">Cím</target>
       </trans-unit>
       <trans-unit id="toused_pid" resname="toused_pid">
         <source>Page ID</source>
-        <target state="needs-translation">Page ID</target>
+        <target state="translated">Oldalazonosító</target>
       </trans-unit>
       <trans-unit id="toused_path" resname="toused_path">
         <source>Path</source>
-        <target state="needs-translation">Path</target>
+        <target state="translated">Útvonal</target>
       </trans-unit>
       <trans-unit id="toused_workspace" resname="toused_workspace">
         <source>Workspace</source>
-        <target state="needs-translation">Workspace</target>
+        <target state="translated">Munkaterület</target>
       </trans-unit>
       <trans-unit id="toused_uid" resname="toused_uid">
         <source>UID</source>
-        <target state="needs-translation">UID</target>
+        <target state="translated">UID</target>
       </trans-unit>
       <trans-unit id="toused_header" resname="toused_header">
         <source>Header</source>
-        <target state="needs-translation">Header</target>
+        <target state="translated">Fejléc</target>
       </trans-unit>
       <trans-unit id="toused_usedin" resname="toused_usedin">
         <source>Used in %d Elements</source>
-        <target state="needs-translation">Used in %d Elements</target>
+        <target state="translated">Használat %d elemben</target>
       </trans-unit>
       <trans-unit id="noaccess" resname="noaccess">
         <source>No Access</source>
-        <target state="needs-translation">No Access</target>
+        <target state="translated">Nincs hozzáférés</target>
       </trans-unit>
       <trans-unit id="usage" resname="usage">
         <source>Usage</source>
-        <target state="needs-translation">Usage</target>
+        <target state="translated">Használat</target>
       </trans-unit>
       <trans-unit id="action" resname="action">
         <source>Action</source>
-        <target state="needs-translation">Action</target>
+        <target state="translated">Művelet</target>
       </trans-unit>
       <trans-unit id="invalidtemplatevalues" resname="invalidtemplatevalues">
         <source>Invalid template values in %d elements</source>
-        <target state="needs-translation">Invalid template values in %d elements</target>
+        <target state="translated">Érvénytelen sablonértékek %d elemben</target>
       </trans-unit>
       <trans-unit id="noerrorsfound" resname="noerrorsfound">
         <source>No errors found!</source>
-        <target state="needs-translation">No errors found!</target>
+        <target state="translated">Nem található hiba!</target>
       </trans-unit>
       <trans-unit id="byuser" resname="byuser">
         <source>by user</source>
-        <target state="needs-translation">by user</target>
+        <target state="translated">felhasználó által</target>
       </trans-unit>
       <trans-unit id="file" resname="file">
         <source>File</source>
-        <target state="needs-translation">File</target>
+        <target state="translated">Fájl</target>
       </trans-unit>
       <trans-unit id="newdsto" resname="newdsto">
         <source>New DS/TO</source>
-        <target state="needs-translation">New DS/TO</target>
+        <target state="translated">Új DS/TO</target>
       </trans-unit>
       <trans-unit id="usedfiles" resname="usedfiles">
         <source>Used files</source>
-        <target state="needs-translation">Used files</target>
+        <target state="translated">Használt fájlok</target>
       </trans-unit>
       <trans-unit id="templatearchive" resname="templatearchive">
         <source>Template Archive</source>
-        <target state="needs-translation">Template Archive</target>
+        <target state="translated">Sablonarchívum</target>
       </trans-unit>
       <trans-unit id="configuration" resname="configuration">
         <source>Configuration</source>
-        <target state="needs-translation">Configuration</target>
+        <target state="translated">Konfiguráció</target>
       </trans-unit>
       <trans-unit id="fceislocalized" resname="fceislocalized">
         <source>FCE-element is localized</source>
-        <target state="needs-translation">FCE-element is localized</target>
+        <target state="translated">Az FCE-elem lokalizálva van</target>
       </trans-unit>
       <trans-unit id="fceinlineislocalized" resname="fceinlineislocalized">
         <source>FCE-inline-elements of the FCE-element are localized</source>
-        <target state="needs-translation">FCE-inline-elements of the FCE-element are localized</target>
+        <target state="translated">Az FCE-elem beágyazott (inline) elemei lokalizálva vannak</target>
       </trans-unit>
       <trans-unit id="casttointeger" resname="casttointeger">
         <source>the entered/computed value will be cast to an integer</source>
-        <target state="needs-translation">the entered/computed value will be cast to an integer</target>
+        <target state="translated">a megadott/kiszámított érték egész számmá alakul</target>
       </trans-unit>
       <trans-unit id="hsced" resname="hsced">
         <source>the entered/computed value will be passed to htmlentities</source>
-        <target state="needs-translation">the entered/computed value will be passed to htmlentities</target>
+        <target state="translated">a megadott/kiszámított érték a htmlentities függvényen megy át</target>
       </trans-unit>
       <trans-unit id="hsc_on" resname="hsc_on">
         <source>[HTML-code won't be available]</source>
-        <target state="needs-translation">[HTML-code won't be available]</target>
+        <target state="translated">[A HTML-kód nem lesz elérhető]</target>
       </trans-unit>
       <trans-unit id="hsc_off" resname="hsc_off">
         <source>[HTML-code will be displayed as-is]</source>
-        <target state="needs-translation">[HTML-code will be displayed as-is]</target>
+        <target state="translated">[A HTML-kód változatlan formában jelenik meg]</target>
       </trans-unit>
       <trans-unit id="stdwrap" resname="stdwrap">
         <source>the entered/computed value will be wrapped</source>
-        <target state="needs-translation">the entered/computed value will be wrapped</target>
+        <target state="translated">a megadott/kiszámított érték be lesz csomagolva</target>
       </trans-unit>
       <trans-unit id="redundant" resname="redundant">
         <source>redundant</source>
-        <target state="needs-translation">redundant</target>
+        <target state="translated">redundáns</target>
       </trans-unit>
       <trans-unit id="illegalcharacters" resname="illegalcharacters">
         <source>entry contains illegal characters and/or has multiple lines</source>
-        <target state="needs-translation">entry contains illegal characters and/or has multiple lines</target>
+        <target state="translated">a bejegyzés tiltott karaktereket tartalmaz és/vagy több soros</target>
       </trans-unit>
       <trans-unit id="dsdetails_nobasicdefinitions" resname="dsdetails_nobasicdefinitions">
         <source>The element has no basic definitions!</source>
-        <target state="needs-translation">The element has no basic definitions!</target>
+        <target state="translated">Az elemnek nincsenek alapdefiníciói!</target>
       </trans-unit>
       <trans-unit id="dsdetails_notceformdefinitions" resname="dsdetails_notceformdefinitions">
         <source>The element has no TCE-form definitions!</source>
-        <target state="needs-translation">The element has no TCE-form definitions!</target>
+        <target state="translated">Az elemnek nincsenek TCE-űrlapdefiníciói!</target>
       </trans-unit>
       <trans-unit id="dsdetails_notes" resname="dsdetails_notes">
         <source>Notes</source>
-        <target state="needs-translation">Notes</target>
+        <target state="translated">Megjegyzések</target>
       </trans-unit>
       <trans-unit id="dsdetails_ts" resname="dsdetails_ts">
         <source>TypoScript</source>
-        <target state="needs-translation">TypoScript</target>
+        <target state="translated">TypoScript</target>
       </trans-unit>
       <trans-unit id="dsdetails_column" resname="dsdetails_column">
         <source>Column-positioning</source>
-        <target state="needs-translation">Column-positioning</target>
+        <target state="translated">Oszlop-elhelyezés</target>
       </trans-unit>
       <trans-unit id="dsdetails_preset" resname="dsdetails_preset">
         <source>Preset used for the element</source>
-        <target state="needs-translation">Preset used for the element</target>
+        <target state="translated">Az elemhez használt előbeállítás</target>
       </trans-unit>
       <trans-unit id="dsdetails_tsutilize" resname="dsdetails_tsutilize">
         <source>will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</source>
-        <target state="needs-translation">will utilize the TS-structure %s defined inside the &lt;TypoScriptObjPath&gt;-entry</target>
+        <target state="translated">a &lt;TypoScriptObjPath&gt;-bejegyzésben definiált %s TS-struktúrát fogja használni</target>
       </trans-unit>
       <trans-unit id="dsdetails_tslines" resname="dsdetails_tslines">
         <source>%d lines of TS-code inside the &lt;TypoScript&gt;-entry</source>
-        <target state="needs-translation">%d lines of TS-code inside the &lt;TypoScript&gt;-entry</target>
+        <target state="translated">%d sor TS-kód a &lt;TypoScript&gt;-bejegyzésben</target>
       </trans-unit>
       <trans-unit id="dsdetails_tsconstants" resname="dsdetails_tsconstants">
         <source>%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</source>
-        <target state="needs-translation">%d TS-constants defined for use in the &lt;TypoScript&gt;-entry</target>
+        <target state="translated">%d TS-konstans van definiálva a &lt;TypoScript&gt;-bejegyzésben való használatra</target>
       </trans-unit>
       <trans-unit id="warnings" resname="warnings">
         <source>Warnings</source>
-        <target state="needs-translation">Warnings</target>
+        <target state="translated">Figyelmeztetések</target>
       </trans-unit>
       <trans-unit id="fatalerrors" resname="fatalerrors">
         <source>Fatal errors</source>
-        <target state="needs-translation">Fatal errors</target>
+        <target state="translated">Végzetes hibák</target>
       </trans-unit>
       <trans-unit id="invaliddatastructure_xmlbroken" resname="invaliddatastructure_xmlbroken">
         <source>The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</source>
-        <target state="needs-translation">The the element "%1$s" within the datastructure seems to contain invalid XML, therefore the required data can't be displayed.</target>
+        <target state="translated">Úgy tűnik, hogy az adatszerkezeten belüli "%1$s" elem érvénytelen XML-t tartalmaz, ezért a szükséges adatok nem jeleníthetők meg.</target>
       </trans-unit>
       <trans-unit id="description_pagesWithCertainDsTo" resname="description_pagesWithCertainDsTo">
         <source>The following pages in the root line contain data structures and template objects</source>
-        <target state="needs-translation">The following pages in the root line contain data structures and template objects</target>
+        <target state="translated">A következő oldalak a gyökérsorban adatszerkezeteket és sablonobjektumokat tartalmaznak</target>
       </trans-unit>
     </body>
   </file>
