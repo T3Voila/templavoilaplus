@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:47:44+02:00" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="enable.renderFCEHeader" resname="enable.renderFCEHeader">
+        <source>Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</source>
+        <target state="needs-translation">Enable Header for FCE's:If this checkbox is checked the header of Content Element type FCE will be rendered like headers of other Content Elements.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

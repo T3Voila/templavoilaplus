@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:31+02:00" target-language="fr">
+    <header/>
+    <body>
+      <trans-unit id="cm1_title" resname="cm1_title">
+        <source>TemplaVoilà! Plus</source>
+        <target state="needs-translation">TemplaVoilà! Plus</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
+        <source>View: Sub elements</source>
+        <target state="needs-translation">View: Sub elements</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
+        <source>View: FlexForm XML</source>
+        <target state="needs-translation">View: FlexForm XML</target>
+      </trans-unit>
+      <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
+        <source>View: DS/TO</source>
+        <target state="needs-translation">View: DS/TO</target>
+      </trans-unit>
+      <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement">
+        <source>Pages using this element -&gt;</source>
+        <target state="needs-translation">Pages using this element -&gt;</target>
+      </trans-unit>
+      <trans-unit id="wiz_refElements" resname="wiz_refElements">
+        <source>Reference unused content elements (templavoilaplus)</source>
+        <target state="needs-translation">Reference unused content elements (templavoilaplus)</target>
+      </trans-unit>
+      <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
+        <source>Rename a field in pages.tx_templavoilaplus_flex</source>
+        <target state="needs-translation">Rename a field in pages.tx_templavoilaplus_flex</target>
+      </trans-unit>
+      <trans-unit id="field_sourceField" resname="field_sourceField">
+        <source>source field</source>
+        <target state="needs-translation">source field</target>
+      </trans-unit>
+      <trans-unit id="field_destinationField" resname="field_destinationField">
+        <source>destination field</source>
+        <target state="needs-translation">destination field</target>
+      </trans-unit>
+      <trans-unit id="field_simulateField" resname="field_simulateField">
+        <source>Simulate Change only</source>
+        <target state="needs-translation">Simulate Change only</target>
+      </trans-unit>
+      <trans-unit id="field_submit" resname="field_submit">
+        <source>submit</source>
+        <target state="needs-translation">submit</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
