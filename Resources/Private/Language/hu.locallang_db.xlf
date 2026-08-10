@@ -5,35 +5,35 @@
     <body>
       <trans-unit id="be_groups.tx_templavoilaplus_access" resname="be_groups.tx_templavoilaplus_access">
         <source>Disallow access to TemplaVoilà! Plus objects:</source>
-        <target state="needs-translation">Disallow access to TemplaVoilà! Plus objects:</target>
+        <target state="translated">TemplaVoilà! Plus objektumokhoz való hozzáférés letiltása:</target>
       </trans-unit>
       <trans-unit id="tt_content.tx_templavoilaplus_map" resname="tt_content.tx_templavoilaplus_map">
         <source>Element Design:</source>
-        <target state="needs-translation">Element Design:</target>
+        <target state="translated">Elemterv:</target>
       </trans-unit>
       <trans-unit id="tt_content.tx_templavoilaplus_flex" resname="tt_content.tx_templavoilaplus_flex">
         <source>Content:</source>
-        <target state="needs-translation">Content:</target>
+        <target state="translated">Tartalom:</target>
       </trans-unit>
       <trans-unit id="tt_content.CType_pi1" resname="tt_content.CType_pi1">
         <source>Flexible Content</source>
-        <target state="needs-translation">Flexible Content</target>
+        <target state="translated">Rugalmas tartalom</target>
       </trans-unit>
       <trans-unit id="pages.tx_templavoilaplus_map" resname="pages.tx_templavoilaplus_map">
         <source>Use Design:</source>
-        <target state="needs-translation">Use Design:</target>
+        <target state="translated">Terv használata:</target>
       </trans-unit>
       <trans-unit id="pages.tx_templavoilaplus_next_map" resname="pages.tx_templavoilaplus_next_map">
         <source>Subpages - Use Design:</source>
-        <target state="needs-translation">Subpages - Use Design:</target>
+        <target state="translated">Aloldalak - Terv használata:</target>
       </trans-unit>
       <trans-unit id="pages.tab.tx_templavoilaplus_flex" resname="pages.tab.tx_templavoilaplus_flex">
         <source>TemplaVoilà! Plus Content</source>
-        <target state="needs-translation">TemplaVoilà! Plus Content</target>
+        <target state="translated">TemplaVoilà! Plus tartalom</target>
       </trans-unit>
       <trans-unit id="pages.tx_templavoilaplus_flex" resname="pages.tx_templavoilaplus_flex">
         <source>Content:</source>
-        <target state="needs-translation">Content:</target>
+        <target state="translated">Tartalom:</target>
       </trans-unit>
     </body>
   </file>
