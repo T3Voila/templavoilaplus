@@ -115,6 +115,6 @@ class DataStructuresController extends ActionController
             ContextualFeedbackSeverity::INFO
         );
 
-        $this->redirect('list');
+        return $this->redirect('list');
     }
 }
