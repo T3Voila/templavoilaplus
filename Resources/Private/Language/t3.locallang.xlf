@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:31+02:00" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="cm1_title" resname="cm1_title">
+        <source>TemplaVoilà! Plus</source>
+        <target>crwdns226505:0crwdne226505:0</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewsubelements" resname="cm1_viewsubelements">
+        <source>View: Sub elements</source>
+        <target>crwdns226412:0crwdne226412:0</target>
+      </trans-unit>
+      <trans-unit id="cm1_viewflexformxml" resname="cm1_viewflexformxml">
+        <source>View: FlexForm XML</source>
+        <target>crwdns226507:0crwdne226507:0</target>
+      </trans-unit>
+      <trans-unit id="cm_viewdsto" resname="cm_viewdsto">
+        <source>View: DS/TO</source>
+        <target>crwdns226416:0crwdne226416:0</target>
+      </trans-unit>
+      <trans-unit id="cm1_pagesusingthiselement" resname="cm1_pagesusingthiselement">
+        <source>Pages using this element -&gt;</source>
+        <target>crwdns226418:0crwdne226418:0</target>
+      </trans-unit>
+      <trans-unit id="wiz_refElements" resname="wiz_refElements">
+        <source>Reference unused content elements (templavoilaplus)</source>
+        <target>crwdns226420:0crwdne226420:0</target>
+      </trans-unit>
+      <trans-unit id="wiz_renameFieldsInPage" resname="wiz_renameFieldsInPage">
+        <source>Rename a field in pages.tx_templavoilaplus_flex</source>
+        <target>crwdns226422:0crwdne226422:0</target>
+      </trans-unit>
+      <trans-unit id="field_sourceField" resname="field_sourceField">
+        <source>source field</source>
+        <target>crwdns226424:0crwdne226424:0</target>
+      </trans-unit>
+      <trans-unit id="field_destinationField" resname="field_destinationField">
+        <source>destination field</source>
+        <target>crwdns226426:0crwdne226426:0</target>
+      </trans-unit>
+      <trans-unit id="field_simulateField" resname="field_simulateField">
+        <source>Simulate Change only</source>
+        <target>crwdns226428:0crwdne226428:0</target>
+      </trans-unit>
+      <trans-unit id="field_submit" resname="field_submit">
+        <source>submit</source>
+        <target>crwdns226430:0crwdne226430:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
