@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:t3="http://typo3.org/schemas/xliff" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" original="messages" datatype="plaintext" product-name="templavoilaplus" date="2022-10-29T16:48:40+02:00" target-language="t3">
+    <header/>
+    <body>
+      <trans-unit id="title" resname="title">
+        <source>View FlexForm XML data</source>
+        <target>crwdns226386:0crwdne226386:0</target>
+      </trans-unit>
+      <trans-unit id="needsCleaning" resname="needsCleaning">
+        <source>It seems the FlexForm XML can be cleaned up a bit. Please compare the current and suggested XML structure and press the "Clean" button below if you wish to clean it!</source>
+        <target>crwdns226388:0crwdne226388:0</target>
+      </trans-unit>
+      <trans-unit id="XMLclean" resname="XMLclean">
+        <source>XML is clean</source>
+        <target>crwdns226390:0crwdne226390:0</target>
+      </trans-unit>
+      <trans-unit id="cleanUp" resname="cleanUp">
+        <source>Save clean XML to record!</source>
+        <target>crwdns226392:0crwdne226392:0</target>
+      </trans-unit>
+      <trans-unit id="current" resname="current">
+        <source>Current XML:</source>
+        <target>crwdns226394:0crwdne226394:0</target>
+      </trans-unit>
+      <trans-unit id="clean" resname="clean">
+        <source>Clean XML:</source>
+        <target>crwdns226396:0crwdne226396:0</target>
+      </trans-unit>
+      <trans-unit id="diff" resname="diff">
+        <source>Difference:</source>
+        <target>crwdns226398:0crwdne226398:0</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
